@@ -59,7 +59,9 @@ const navItems: {
   { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
   { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
   { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
-  { href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" },
+  ...(process.env.NEXT_PUBLIC_JAAZ_ENABLED !== "false" 
+    ? [{ href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" }] 
+    : []),
   { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
   { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
   { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
