@@ -28,6 +28,15 @@ import {
   controlledSubstanceLog,
   treatmentTemplates,
   treatmentTemplateItems,
+  wellnessPlans,
+  wellnessEnrollments,
+  files,
+  consentForms,
+  consentRequests,
+  problemList,
+  vitalSigns,
+  treatmentPlans,
+  treatmentPlanItems,
 } from "./schema/index";
 
 // Pre-hashed bcrypt value for "password123"
@@ -101,6 +110,12 @@ async function seed() {
     getCsEntries,
     getTemplatesData,
     miscTranslations,
+    wellnessPlansData,
+    consentFormsData,
+    fileTemplatesData,
+    problemListData,
+    allergyPoolData,
+    treatmentPlansData,
   } = localeData;
 
   console.log("Seeding database...\n");
@@ -204,17 +219,22 @@ async function seed() {
   );
   console.log("Patient weights recorded");
 
-  // Patient allergies (a few)
-  await db.insert(patientAllergies).values(
-    miscTranslations.allergies.map((a, i) => ({
-      patientId: insertedPatients[i * 3]!.id,
-      allergen: a.allergen,
-      reaction: a.reaction,
-      severity: (i === 0 || i === 2 ? "severe" : i === 1 ? "moderate" : "mild") as const,
-      notedBy: vets[i % vets.length]!.id,
-    }))
-  );
-  console.log("Patient allergies recorded");
+  // Patient allergies (~16 records across ~14 patients)
+  const pool = allergyPoolData || miscTranslations.allergies;
+  const allergyPatientIndices = [0, 0, 2, 5, 8, 9, 12, 15, 18, 20, 23, 26, 29, 31, 35, 35];
+  const insertedAllergies = await db.insert(patientAllergies).values(
+    allergyPatientIndices.map((patIdx, i) => {
+      const item = pool[i % pool.length]!;
+      return {
+        patientId: insertedPatients[patIdx % insertedPatients.length]!.id,
+        allergen: item.allergen,
+        reaction: item.reaction,
+        severity: ("severity" in item ? item.severity : (i % 3 === 0 ? "severe" : "moderate")) as const,
+        notedBy: vets[i % vets.length]!.id,
+      };
+    })
+  ).returning();
+  console.log(`Patient allergies: ${insertedAllergies.length} recorded`);
 
   // =========================================================================
   // 6. Appointment Types
@@ -269,9 +289,11 @@ async function seed() {
   thisMonday.setDate(today.getDate() - (currentDow === 0 ? 6 : currentDow - 1));
   const lastMonday = new Date(thisMonday);
   lastMonday.setDate(thisMonday.getDate() - 7);
+  const nextMonday = new Date(thisMonday);
+  nextMonday.setDate(thisMonday.getDate() + 7);
 
-  for (let w = 0; w < 2; w++) {
-    const weekStart = w === 0 ? lastMonday : thisMonday;
+  for (let w = 0; w < 3; w++) {
+    const weekStart = w === 0 ? lastMonday : w === 1 ? thisMonday : nextMonday;
     for (let d = 0; d < 5; d++) {
       const day = new Date(weekStart);
       day.setDate(weekStart.getDate() + d);
@@ -930,6 +952,205 @@ async function seed() {
   console.log(`Treatment templates: ${templatesData.length} created`);
 
   // =========================================================================
+  // 21. Wellness plans & enrollments
+  // =========================================================================
+  const insertedWellnessPlans = await db
+    .insert(wellnessPlans)
+    .values(
+      wellnessPlansData.map((plan) => ({
+        practiceId,
+        name: plan.name,
+        description: plan.description,
+        price: plan.price,
+        billingInterval: plan.billingInterval,
+        active: true,
+      }))
+    )
+    .returning();
+  console.log(`Wellness plans: ${insertedWellnessPlans.length} created`);
+
+  const wellnessEnrollmentValues = [];
+  const enrolledPatients = insertedPatients.slice(0, 10);
+  for (let i = 0; i < enrolledPatients.length; i++) {
+    const patient = enrolledPatients[i]!;
+    const plan = insertedWellnessPlans[i % insertedWellnessPlans.length]!;
+    const isCancelled = i % 4 === 3;
+    const startN = 30 + i * 15;
+    wellnessEnrollmentValues.push({
+      practiceId,
+      planId: plan.id,
+      clientId: patient.clientId,
+      patientId: patient.id,
+      status: isCancelled ? ("cancelled" as const) : ("active" as const),
+      startDate: dateStr(daysAgo(startN)),
+      nextBillingDate: dateStr(daysFromNow(isCancelled ? -10 : 15 + (i % 15))),
+      cancelledAt: isCancelled ? daysAgo(5) : null,
+    });
+  }
+  const insertedWellnessEnrollments = await db
+    .insert(wellnessEnrollments)
+    .values(wellnessEnrollmentValues)
+    .returning();
+  console.log(`Wellness enrollments: ${insertedWellnessEnrollments.length} created`);
+
+  // =========================================================================
+  // 22. Files & Consent Forms / Requests
+  // =========================================================================
+  const insertedConsentForms = await db
+    .insert(consentForms)
+    .values(
+      consentFormsData.map((form) => ({
+        practiceId,
+        slug: form.slug,
+        title: form.title,
+        body: form.body,
+        sortOrder: form.sortOrder,
+        isActive: true,
+      }))
+    )
+    .returning();
+  console.log(`Consent forms: ${insertedConsentForms.length} created`);
+
+  const fileTargetPatients = insertedPatients.slice(0, 4);
+  const fileValues = fileTemplatesData.map((f, i) => {
+    const targetPatient = fileTargetPatients[i % fileTargetPatients.length]!;
+    const matchingAppt = insertedAppointments.find((a) => a.patientId === targetPatient.id);
+    return {
+      practiceId,
+      uploadedBy: vets[i % vets.length]!.id,
+      fileName: f.fileName,
+      fileKey: `seed/files/patient-${targetPatient.id}/${f.fileName}`,
+      fileUrl: `https://storage.example.com/seed/files/${f.fileName}`,
+      mimeType: f.mimeType,
+      fileSizeBytes: f.fileSizeBytes,
+      category: f.category,
+      entityType: "patient",
+      entityId: targetPatient.id,
+      appointmentId: matchingAppt ? matchingAppt.id : null,
+    };
+  });
+  const insertedFiles = await db.insert(files).values(fileValues).returning();
+  console.log(`Files: ${insertedFiles.length} created`);
+
+  const consentRequestValues = [];
+  for (let i = 0; i < 6; i++) {
+    const form = insertedConsentForms[i % insertedConsentForms.length]!;
+    const patient = fileTargetPatients[i % fileTargetPatients.length]!;
+    const client = insertedClients.find((c) => c.id === patient.clientId);
+    const clientName = client ? `${client.firstName} ${client.lastName}` : "Client";
+    const isSigned = i < 4;
+    const matchingAppt = insertedAppointments.find((a) => a.patientId === patient.id);
+
+    consentRequestValues.push({
+      practiceId,
+      patientId: patient.id,
+      createdBy: vets[i % vets.length]!.id,
+      appointmentId: matchingAppt ? matchingAppt.id : null,
+      formId: form.id,
+      token: crypto.randomBytes(32).toString("hex"),
+      expiresAt: daysFromNow(7),
+      title: form.title,
+      bodyText: form.body,
+      status: isSigned ? "signed" : "pending",
+      signerName: isSigned ? clientName : null,
+      signedAt: isSigned ? daysAgo(i + 1) : null,
+      fileId: isSigned && insertedFiles[i] ? insertedFiles[i]!.id : null,
+    });
+  }
+  const insertedConsentRequests = await db
+    .insert(consentRequests)
+    .values(consentRequestValues)
+    .returning();
+  console.log(`Consent requests: ${insertedConsentRequests.length} created`);
+
+  // =========================================================================
+  // 23. Treatment plans & plan items
+  // =========================================================================
+  let totalPlanItems = 0;
+  const planTargetPatients = insertedPatients.slice(0, 3);
+  const insertedTreatmentPlans = [];
+
+  for (let i = 0; i < treatmentPlansData.length; i++) {
+    const tplData = treatmentPlansData[i]!;
+    const patient = planTargetPatients[i % planTargetPatients.length]!;
+    const [planRow] = await db
+      .insert(treatmentPlans)
+      .values({
+        practiceId,
+        patientId: patient.id,
+        title: tplData.title,
+        description: tplData.description,
+        status: tplData.status,
+        startDate: dateStr(daysAgo(15 + i * 5)),
+        createdBy: vets[i % vets.length]!.id,
+      })
+      .returning();
+    insertedTreatmentPlans.push(planRow!);
+
+    const itemValues = tplData.items.map((item, idx) => ({
+      planId: planRow!.id,
+      description: item.description,
+      instructions: item.instructions,
+      status: item.status,
+      sortOrder: idx,
+    }));
+
+    const insertedItems = await db
+      .insert(treatmentPlanItems)
+      .values(itemValues)
+      .returning();
+    totalPlanItems += insertedItems.length;
+  }
+  console.log(`Treatment plans: ${insertedTreatmentPlans.length} created with ${totalPlanItems} items`);
+
+  // =========================================================================
+  // 24. Problem list & Vital signs
+  // =========================================================================
+  const problemListValues = problemListData.map((item) => {
+    const patient = insertedPatients[item.patientIdx]!;
+    return {
+      practiceId,
+      patientId: patient.id,
+      description: item.description,
+      status: item.status,
+      onsetDate: dateStr(daysAgo(item.onsetDaysAgo)),
+      resolvedDate: item.resolvedDaysAgo ? dateStr(daysAgo(item.resolvedDaysAgo)) : null,
+    };
+  });
+  const insertedProblems = await db
+    .insert(problemList)
+    .values(problemListValues)
+    .returning();
+  console.log(`Problem list: ${insertedProblems.length} created`);
+
+  const sampleApptsForVitals = insertedAppointments.slice(0, 40);
+  const vitalSignsValues = sampleApptsForVitals.map((appt, i) => {
+    const isDog = i % 2 === 0;
+    const isSk = locale === "sk";
+    return {
+      practiceId,
+      patientId: appt.patientId,
+      appointmentId: appt.id,
+      recordedBy: techs[i % techs.length]!.id,
+      recordedAt: appt.startTime || daysAgo(i),
+      temperatureC: (38.1 + (i % 10) * 0.1).toFixed(1),
+      heartRateBpm: isDog ? 85 + (i % 25) * 2 : 150 + (i % 30) * 2,
+      respiratoryRateBpm: 18 + (i % 12),
+      weightKg: (5.0 + (i % 15) * 1.8).toFixed(1),
+      bodyConditionScore: 4 + (i % 3),
+      painScore: i % 6 === 0 ? 1 : 0,
+      mucousMembrane: isSk ? "Ružové, vlhké" : "Pink, moist",
+      capillaryRefillSec: "1.5",
+      notes: isSk ? "Vitálne funkcie v norme." : "Vital signs within normal limits.",
+    };
+  });
+  const insertedVitals = await db
+    .insert(vitalSigns)
+    .values(vitalSignsValues)
+    .returning();
+  console.log(`Vital signs: ${insertedVitals.length} created`);
+
+  // =========================================================================
   // Done!
   // =========================================================================
   console.log("\nSeed completed successfully!");
@@ -956,6 +1177,15 @@ Summary:
   - ${templatesData.length} treatment templates
   - ${insertedServices.length} services
   - ${insertedProducts.length} products
+  - ${insertedWellnessPlans.length} wellness plans
+  - ${insertedWellnessEnrollments.length} wellness enrollments
+  - ${insertedFiles.length} files
+  - ${insertedConsentForms.length} consent forms
+  - ${insertedConsentRequests.length} consent requests
+  - ${insertedProblems.length} problem list entries
+  - ${insertedVitals.length} vital signs entries
+  - ${insertedTreatmentPlans.length} treatment plans with ${totalPlanItems} plan items
+  - ${insertedAllergies.length} patient allergies
   `);
 }
 

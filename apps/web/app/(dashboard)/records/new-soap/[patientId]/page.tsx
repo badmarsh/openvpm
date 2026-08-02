@@ -34,7 +34,7 @@ const SoapNoteEditorLoader = () => {
   const t = useTranslations();
   return (
     <div className="min-h-32 rounded-lg border border-border bg-muted/20 p-3 text-sm text-muted-foreground">
-      {t("newSoap.loadingEditor", "Loading editor...")}
+      {t("newSoap.loadingEditor")}
     </div>
   );
 };
@@ -98,7 +98,7 @@ export default function NewSoapNotePage() {
 
   const createNote = trpc.records.createSoapNote.useMutation({
     onSuccess: () => {
-      toast.success(t("newSoap.noteCreated", "SOAP note created"));
+      toast.success(t("newSoap.noteCreated"));
       router.push("/records");
     },
     onError: (err) => {
@@ -117,7 +117,7 @@ export default function NewSoapNotePage() {
       setObjective(draftTextToHtml(draft.objective));
       setAssessment(draftTextToHtml(draft.assessment));
       setPlan(draftTextToHtml(draft.plan));
-      toast.success(t("newSoap.draftReady", "Draft ready. Review and edit before saving."));
+      toast.success(t("newSoap.draftReady"));
     },
     onError: (err) => toast.error(err.message),
   });
@@ -135,11 +135,11 @@ export default function NewSoapNotePage() {
 
   function handleSave() {
     if (!params.patientId || !patient) {
-      toast.error(t("newSoap.loadPatientFirst", "Load the patient before saving a SOAP note"));
+      toast.error(t("newSoap.loadPatientFirst"));
       return;
     }
     if (!canSave) {
-      toast.error(t("newSoap.addSectionFirst", "Add at least one SOAP section before saving"));
+      toast.error(t("newSoap.addSectionFirst"));
       return;
     }
     createNote.mutate({
@@ -173,13 +173,13 @@ export default function NewSoapNotePage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <ShieldAlert className="h-12 w-12 text-muted-foreground mb-4" />
-        <h2 className="font-heading text-xl font-semibold">{t("newSoap.accessDenied", "Access denied")}</h2>
+        <h2 className="font-heading text-xl font-semibold">{t("newSoap.accessDenied")}</h2>
         <Button
           variant="outline"
           className="mt-4"
           onClick={() => router.push("/records")}
         >
-          {t("newSoap.backToRecords", "Back to Records")}
+          {t("newSoap.backToRecords")}
         </Button>
       </div>
     );
@@ -189,7 +189,7 @@ export default function NewSoapNotePage() {
     return (
       <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        {t("newSoap.loadingPatient", "Loading patient...")}
+        {t("newSoap.loadingPatient")}
       </div>
     );
   }
@@ -198,13 +198,13 @@ export default function NewSoapNotePage() {
     return (
       <EmptyState
         icon={AlertCircle}
-        title={t("newSoap.unableToLoadPatient", "Unable to load patient")}
+        title={t("newSoap.unableToLoadPatient")}
         description={
           patientError?.message ??
           "Choose a patient from Records before creating a SOAP note."
         }
         action={{
-          label: t("newSoap.backToRecords", "Back to Records"),
+          label: t("newSoap.backToRecords"),
           onClick: () => router.push("/records"),
           icon: ArrowLeft,
         }}
@@ -221,23 +221,23 @@ export default function NewSoapNotePage() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        {t("newSoap.backToRecords", "Back to Records")}
+        {t("newSoap.backToRecords")}
       </Button>
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-heading text-xl font-semibold">{t("newSoap.heading", "New SOAP Note")}</h2>
+          <h2 className="font-heading text-xl font-semibold">{t("newSoap.heading")}</h2>
           {patient && (
             <p className="text-sm text-muted-foreground">
-              {t("newSoap.addSectionHint", "Add at least one section to save this note.")}
+              {t("newSoap.addSectionHint")}
             </p>
           )}
           <Button variant="outline" onClick={() => router.push("/records")}>
-            {t("newSoap.cancel", "Cancel")}
+            {t("newSoap.cancel")}
           </Button>
           {createNote.isError && (
             <p className="text-sm text-destructive">
-              {t("newSoap.failedToSave", "Failed to save:")} {createNote.error.message}
+              {t("newSoap.failedToSave")} {createNote.error.message}
             </p>
           )}
         </div>

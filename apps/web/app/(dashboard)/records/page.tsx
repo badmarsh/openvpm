@@ -91,14 +91,16 @@ import {
 
 type Tab = "soap" | "vaccinations" | "prescriptions" | "problems" | "labResults" | "procedures";
 
-const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "soap", label: t("records.notes"), icon: FileText },
-  { id: "vaccinations", label: t("records.vaccinations"), icon: Syringe },
-  { id: "prescriptions", label: "Predpisy", icon: Pill },
-  { id: "problems", label: t("records.problems"), icon: ClipboardList },
-  { id: "labResults", label: t("records.labResults"), icon: FlaskConical },
-  { id: "procedures", label: "Postupy", icon: Scissors },
-];
+function getTabs(t: ReturnType<typeof import("next-intl")["useTranslations"]>): { id: Tab; label: string; icon: React.ElementType }[] {
+  return [
+    { id: "soap", label: t("records.notes"), icon: FileText },
+    { id: "vaccinations", label: t("records.vaccinations"), icon: Syringe },
+    { id: "prescriptions", label: t("records.prescriptions"), icon: Pill },
+    { id: "problems", label: t("records.problems"), icon: ClipboardList },
+    { id: "labResults", label: t("records.labResults"), icon: FlaskConical },
+    { id: "procedures", label: t("records.procedures"), icon: Scissors },
+  ];
+}
 
 function RecordsChartChunkLoading() {
   return (
@@ -174,6 +176,7 @@ function formatClinicalDate(
 
 function getVaccineDueStatus(
   nextDueDate: string | null,
+  t: ReturnType<typeof import("next-intl")["useTranslations"]>,
   timeZone?: string | null
 ): {
   label: string;
@@ -190,7 +193,7 @@ function getVaccineDueStatus(
 
   if (daysUntilDue < 0)
     return {
-      label: "Po splatnosti",
+      label: t("records.overdue"),
       className:
         "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
     };
@@ -379,6 +382,7 @@ function PrescriptionSafetyPanel({
   errorMessage?: string;
   warnings: PrescriptionSafetyWarning[];
 }) {
+  const t = useTranslations();
   if (medicationName.trim().length < 2) return null;
 
   if (isLoading) {
@@ -717,7 +721,7 @@ export default function RecordsPage() {
       selectedPrescriptionProduct !== undefined &&
       prescriptionQuantity !== undefined &&
       prescriptionQuantity <= selectedPrescriptionProduct.stockQuantity);
-  const visibleTabs = tabs.filter(
+  const visibleTabs = getTabs(t).filter(
     (tab) =>
       userRole !== "front_desk" || !frontDeskRestrictedTabs.includes(tab.id)
   );
@@ -1403,6 +1407,7 @@ export default function RecordsPage() {
                         {vaccinations.map((vax) => {
                           const dueStatus = getVaccineDueStatus(
                             vax.nextDueDate,
+                            t,
                             recordsTimeZone
                           );
                           return (

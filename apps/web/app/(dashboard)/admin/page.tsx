@@ -217,7 +217,7 @@ export default function AdminPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/30 text-left text-muted-foreground">
-              <th className="px-4 py-2.5 font-medium">Cvičenie</th>
+              <th className="px-4 py-2.5 font-medium">Prax</th>
               <th className="px-4 py-2.5 font-medium">Plán</th>
               <th className="px-4 py-2.5 font-medium">Stav</th>
               <th className="px-4 py-2.5 font-medium">Zdroj</th>

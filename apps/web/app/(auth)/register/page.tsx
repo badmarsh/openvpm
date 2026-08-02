@@ -175,7 +175,7 @@ function RegisterPageInner() {
               </div>
             ) : null}
 
-            <FormField label="Názov cvičenia" htmlFor="practiceName">
+            <FormField label="Názov praxe" htmlFor="practiceName">
               <Input
                 id="practiceName"
                 value={practiceName}

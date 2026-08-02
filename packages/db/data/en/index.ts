@@ -509,3 +509,121 @@ export const miscTranslations = {
     smsReminderTemplate: (firstName: string) => `Hi ${firstName}, Neighborhood Vet Hospital reminder for tomorrow's appointment. Reply C to confirm or R to reschedule.`
   }
 };
+
+export const wellnessPlansData = [
+  {
+    name: "Basic Wellness Plan",
+    description: "Essential preventive care including annual exams, core vaccines, and routine screening.",
+    price: "29.99",
+    billingInterval: "monthly" as const,
+  },
+  {
+    name: "Comprehensive Care Plan",
+    description: "Complete wellness coverage with bi-annual exams, dental scaling, bloodwork, and unlimited copay-free visits.",
+    price: "49.99",
+    billingInterval: "monthly" as const,
+  },
+  {
+    name: "Senior Pet Care Plan",
+    description: "Specialized geriatric care including comprehensive blood panels, joint health monitoring, and bi-annual X-rays.",
+    price: "69.99",
+    billingInterval: "monthly" as const,
+  },
+];
+
+export const consentFormsData = [
+  {
+    slug: "surgical-anesthesia",
+    title: "Surgical & General Anesthesia Consent",
+    body: "I hereby authorize the veterinarians and staff of Neighborhood Veterinary Hospital to perform the surgical procedure and administer general anesthesia as deemed necessary. I understand the inherent risks associated with anesthesia and surgical procedures.",
+    sortOrder: 1,
+  },
+  {
+    slug: "dental-procedure",
+    title: "Dental Prophylaxis & Extraction Consent",
+    body: "I authorize dental examination, scaling, polishing, and necessary tooth extractions under anesthesia. I agree to pre-anesthetic blood testing to evaluate organ function prior to sedation.",
+    sortOrder: 2,
+  },
+  {
+    slug: "high-risk-procedure",
+    title: "High-Risk Procedure & Intensive Care Consent",
+    body: "I acknowledge that my pet's condition carries elevated clinical risk. I authorize emergency medical intervention, intensive care monitoring, and necessary diagnostic procedures.",
+    sortOrder: 3,
+  },
+];
+
+export const fileTemplatesData = [
+  { fileName: "Rabies_Vaccination_Certificate.pdf", mimeType: "application/pdf", fileSizeBytes: 245000, category: "certificate" },
+  { fileName: "Chest_Radiograph_AP_Lateral.jpg", mimeType: "image/jpeg", fileSizeBytes: 2450000, category: "radiology" },
+  { fileName: "Complete_Blood_Count_CBC_Report.pdf", mimeType: "application/pdf", fileSizeBytes: 512000, category: "lab" },
+  { fileName: "Signed_Surgical_Consent_Form.pdf", mimeType: "application/pdf", fileSizeBytes: 180000, category: "consent" },
+  { fileName: "Abdominal_Ultrasound_Scan.pdf", mimeType: "application/pdf", fileSizeBytes: 1200000, category: "radiology" },
+  { fileName: "Vaccination_History_Record.pdf", mimeType: "application/pdf", fileSizeBytes: 320000, category: "certificate" },
+  { fileName: "Dental_Radiograph_Full_Mouth.jpg", mimeType: "image/jpeg", fileSizeBytes: 1850000, category: "radiology" },
+  { fileName: "Echocardiogram_Diagnostic_Summary.pdf", mimeType: "application/pdf", fileSizeBytes: 890000, category: "lab" },
+  { fileName: "Fecal_Parasite_Screen_Results.pdf", mimeType: "application/pdf", fileSizeBytes: 150000, category: "lab" },
+  { fileName: "Histopathology_Biopsy_Report.pdf", mimeType: "application/pdf", fileSizeBytes: 410000, category: "lab" },
+];
+
+export const problemListData = [
+  { patientIdx: 0, description: "Canine Osteoarthritis (Bilateral Hips)", status: "chronic" as const, onsetDaysAgo: 365, resolvedDaysAgo: null },
+  { patientIdx: 0, description: "Periodontal Disease Stage 2", status: "active" as const, onsetDaysAgo: 120, resolvedDaysAgo: null },
+  { patientIdx: 1, description: "Chronic Kidney Disease Stage II (IRIS)", status: "chronic" as const, onsetDaysAgo: 240, resolvedDaysAgo: null },
+  { patientIdx: 2, description: "Feline Lower Urinary Tract Disease (FLUTD)", status: "resolved" as const, onsetDaysAgo: 180, resolvedDaysAgo: 30 },
+  { patientIdx: 3, description: "Atopic Dermatitis (Environmental Allergen)", status: "active" as const, onsetDaysAgo: 90, resolvedDaysAgo: null },
+  { patientIdx: 4, description: "Hypothyroidism", status: "chronic" as const, onsetDaysAgo: 300, resolvedDaysAgo: null },
+  { patientIdx: 5, description: "Feline Hyperthyroidism", status: "active" as const, onsetDaysAgo: 60, resolvedDaysAgo: null },
+];
+
+export const allergyPoolData = [
+  { allergen: "Penicillin / Amoxicillin", reaction: "Urticaria, facial edema, acute respiratory distress", severity: "severe" as const },
+  { allergen: "Chicken Protein", reaction: "Pruritus, erythematous skin, chronic diarrhea", severity: "moderate" as const },
+  { allergen: "Beef Protein", reaction: "Cutaneous flare-ups, recurrent otitis externa", severity: "moderate" as const },
+  { allergen: "Flea Saliva (FAD)", reaction: "Severe lumbosacral alopecia, intense pruritus", severity: "severe" as const },
+  { allergen: "Environmental Pollen", reaction: "Seasonal sneezing, pododermatitis, watery eyes", severity: "mild" as const },
+  { allergen: "Vaccine Adjuvant", reaction: "Post-vaccinal lethargy, localized injection swelling", severity: "mild" as const },
+  { allergen: "Neomycin Topical", reaction: "Localized contact hypersensitivity, erythema", severity: "moderate" as const },
+  { allergen: "Dairy / Lactose", reaction: "Acute emesis, abdominal cramping, loose stool", severity: "mild" as const },
+  { allergen: "Storage Mites (Tyrophagus)", reaction: "Generalized papular dermatitis", severity: "moderate" as const },
+  { allergen: "Suture Material (Chromic Gut)", reaction: "Delayed tissue reaction, sterile abscess formation", severity: "severe" as const },
+];
+
+export const treatmentPlansData = [
+  {
+    title: "Dental Prophylaxis Plan",
+    description: "Multi-step dental prophylaxis including scaling, polishing, and post-procedure recovery monitoring.",
+    status: "active" as const,
+    templateIdx: 1,
+    items: [
+      { description: "Pre-anesthetic bloodwork panel", instructions: "Evaluate hepatic and renal function prior to sedation.", status: "done" as const },
+      { description: "General anesthesia (first 30 min)", instructions: "Monitor heart rate, SpO2, and blood pressure continuously.", status: "done" as const },
+      { description: "Dental scale and polish", instructions: "Perform supragingival and subgingival scaling.", status: "in_progress" as const },
+      { description: "Post-op pain management & discharge", instructions: "Administer analgesics as directed.", status: "pending" as const },
+    ],
+  },
+  {
+    title: "Canine Spay Recovery Plan",
+    description: "Surgical recovery and post-operative monitoring plan for routine spay.",
+    status: "active" as const,
+    templateIdx: 2,
+    items: [
+      { description: "Pre-surgical exam & bloodwork", instructions: "Verify clear vitals and blood panel results.", status: "done" as const },
+      { description: "Spay surgery — under 40 lb", instructions: "Perform routine ovariohysterectomy.", status: "done" as const },
+      { description: "Take-home pain medication (3 days)", instructions: "Dispense Meloxicam oral suspension.", status: "done" as const },
+      { description: "E-collar fitting & discharge instructions", instructions: "Ensure strict rest for 10-14 days.", status: "in_progress" as const },
+      { description: "Suture line re-check appointment", instructions: "Evaluate surgical site healing at 10-14 days post-op.", status: "pending" as const },
+    ],
+  },
+  {
+    title: "Senior Wellness & Joint Management Plan",
+    description: "Comprehensive management plan for senior canine osteoarthritis and mobility support.",
+    status: "active" as const,
+    templateIdx: 0,
+    items: [
+      { description: "Senior blood panel & urinalysis", instructions: "Screen for renal, hepatic, and metabolic abnormalities.", status: "done" as const },
+      { description: "Joint supplement & NSAID regimen", instructions: "Initiate joint supplement therapy and daily anti-inflammatory medication.", status: "in_progress" as const },
+      { description: "Orthopedic re-evaluation (6-month)", instructions: "Evaluate gait, joint pain scores, and mobility improvements.", status: "pending" as const },
+    ],
+  },
+];
+

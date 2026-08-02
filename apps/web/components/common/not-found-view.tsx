@@ -15,19 +15,18 @@ export function NotFoundView() {
       <div className="mt-4 text-center">
         <p className="text-sm font-medium text-primary">404</p>
         <h1 className="mt-1 font-heading text-2xl font-semibold text-foreground">
-          
-          Stránka sa nenašla
+          Page not found / Stránka sa nenašla
         </h1>
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          
+          This page may have moved or the link may no longer be available.
+          <br />
           Táto stránka sa mohla premiestniť alebo odkaz už nemusí byť dostupný.
         </p>
       </div>
       <Button asChild className="mt-6 gap-2">
-        <Link href="/">
+        <Link href="/dashboard">
           <Home className="h-4 w-4" aria-hidden="true" />
-          
-          Prejsť na informačný panel
+          Go to dashboard / Prejsť na informačný panel
         </Link>
       </Button>
     </main>

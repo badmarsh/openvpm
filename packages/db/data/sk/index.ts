@@ -516,3 +516,121 @@ export const miscTranslations = {
     smsReminderTemplate: (firstName: string) => `Dobrý deň ${firstName}, Susedská Veterinárna Klinika Vám pripomína zajtrajší termín. Odpovedzte C pre potvrdenie alebo R pre zmenu termínu.`
   }
 };
+
+export const wellnessPlansData = [
+  {
+    name: "Základný Wellness Plán",
+    description: "Základná preventívna starostlivosť vrátane ročných prehliadok, povinných očkovaní a koprogramu.",
+    price: "29.99",
+    billingInterval: "monthly" as const,
+  },
+  {
+    name: "Prémiový Wellness Plán",
+    description: "Kompletný preventívny balík vrátane 2x ročne prehliadky, čistenia zubov, odberu krvi a bezpoplatkových kontrol.",
+    price: "49.99",
+    billingInterval: "monthly" as const,
+  },
+  {
+    name: "Senior Care Plán",
+    description: "Špecializovaný balík pre staršie zvieratá: 2x ročne kompletný krvný profil, kĺbová výživa a RTG vyšetrenie.",
+    price: "69.99",
+    billingInterval: "monthly" as const,
+  },
+];
+
+export const consentFormsData = [
+  {
+    slug: "surgical-anesthesia",
+    title: "Súhlas s chirurgickým zákrokom a celkovou anestéziou",
+    body: "Týmto dávam súhlas veterinárnym lekárom a personálu Susedskej Veterinárnej Kliniky na vykonanie chirurgického zákroku a podanie celkovej anestézie podľa potreby. Rozumiem možným rizikám spojeným s anestéziou a operačným zákrokom.",
+    sortOrder: 1,
+  },
+  {
+    slug: "dental-procedure",
+    title: "Súhlas so stomatologickým ošetrením a extrakciou",
+    body: "Súhlasím so stomatologickým vyšetrením, odstránením zubného kameňa ultrazvukom a prípadnými extrakciami poškodených zubov v celkovej anestézii. Súhlasím s predoperačným vyšetrením krvi.",
+    sortOrder: 2,
+  },
+  {
+    slug: "high-risk-procedure",
+    title: "Súhlas s vysokorizikovým zákrokom a intenzívnou starostlivosťou",
+    body: "Beriem na vedomie, že zdravotný stav môjho zvieraťa predstavuje zvýšené klinické riziko. Dávam súhlas na neodkladné lekárske zásahy, monitorovanie na JIS a potrebné diagnostické úkony.",
+    sortOrder: 3,
+  },
+];
+
+export const fileTemplatesData = [
+  { fileName: "Potvrdenie_Ockovanie_Besnota.pdf", mimeType: "application/pdf", fileSizeBytes: 245000, category: "certificate" },
+  { fileName: "RTG_Hrudnika_AP_Lateral.jpg", mimeType: "image/jpeg", fileSizeBytes: 2450000, category: "radiology" },
+  { fileName: "Krvny_Obraz_CBC_Nalez.pdf", mimeType: "application/pdf", fileSizeBytes: 512000, category: "lab" },
+  { fileName: "Podpisany_Suhlas_Operacia.pdf", mimeType: "application/pdf", fileSizeBytes: 180000, category: "consent" },
+  { fileName: "USG_Vysetrenie_Brucha.pdf", mimeType: "application/pdf", fileSizeBytes: 1200000, category: "radiology" },
+  { fileName: "Ockovaci_Preukaz_Kopia.pdf", mimeType: "application/pdf", fileSizeBytes: 320000, category: "certificate" },
+  { fileName: "RTG_Chrupu_Celuste.jpg", mimeType: "image/jpeg", fileSizeBytes: 1850000, category: "radiology" },
+  { fileName: "Echokardiografia_Sprava.pdf", mimeType: "application/pdf", fileSizeBytes: 890000, category: "lab" },
+  { fileName: "Koprologicke_Vysetrenie_Parasity.pdf", mimeType: "application/pdf", fileSizeBytes: 150000, category: "lab" },
+  { fileName: "Histopatologia_Biopsia_Nalez.pdf", mimeType: "application/pdf", fileSizeBytes: 410000, category: "lab" },
+];
+
+export const problemListData = [
+  { patientIdx: 0, description: "Osteoartritída (Obojstranná dysplázia bedrových kĺbov)", status: "chronic" as const, onsetDaysAgo: 365, resolvedDaysAgo: null },
+  { patientIdx: 0, description: "Parodontitída 2. stupňa", status: "active" as const, onsetDaysAgo: 120, resolvedDaysAgo: null },
+  { patientIdx: 1, description: "Chronické ochorenie obličiek (IRIS štádium II)", status: "chronic" as const, onsetDaysAgo: 240, resolvedDaysAgo: null },
+  { patientIdx: 2, description: "Ochorenie dolných močových ciest mačiek (FLUTD)", status: "resolved" as const, onsetDaysAgo: 180, resolvedDaysAgo: 30 },
+  { patientIdx: 3, description: "Atopická dermatitída (Environmentálne alergény)", status: "active" as const, onsetDaysAgo: 90, resolvedDaysAgo: null },
+  { patientIdx: 4, description: "Hypotyreóza", status: "chronic" as const, onsetDaysAgo: 300, resolvedDaysAgo: null },
+  { patientIdx: 5, description: "Hypertyreóza mačiek", status: "active" as const, onsetDaysAgo: 60, resolvedDaysAgo: null },
+];
+
+export const allergyPoolData = [
+  { allergen: "Penicilín / Amoxicilín", reaction: "Žihľavka, opuch tváre, akútna dýchacia tieseň", severity: "severe" as const },
+  { allergen: "Kuracie mäso", reaction: "Svrbenie, erytematózna koža, chronická hnačka", severity: "moderate" as const },
+  { allergen: "Hovädzie mäso", reaction: "Kožné vyrážky, opakovaná otitída", severity: "moderate" as const },
+  { allergen: "Blšie sliny (FAD)", reaction: "Silná dermatitída v krížovej oblasti, vypadávanie srsti", severity: "severe" as const },
+  { allergen: "Environmentálny peľ", reaction: "Sezónne kýchanie, pododermatitída, slzenie očí", severity: "mild" as const },
+  { allergen: "Vakcínový adjuvant", reaction: "Povaočkovacia letargia, lokálny opuch v mieste vpichu", severity: "mild" as const },
+  { allergen: "Neomycín topický", reaction: "Lokálna kontaktná precitlivenosť, začervenanie", severity: "moderate" as const },
+  { allergen: "Mliečna bielkovina / Laktoóza", reaction: "Zvracanie, kŕče v bruchu, riedka stolica", severity: "mild" as const },
+  { allergen: "Skladiskové roztoče (Tyrophagus)", reaction: "Generalizovaná papulózna dermatitída", severity: "moderate" as const },
+  { allergen: "Šijací materiál (Chrómový ketgut)", reaction: "Kaskádová tkanivová reakcia, sterilný absces", severity: "severe" as const },
+];
+
+export const treatmentPlansData = [
+  {
+    title: "Plán stomatologického ošetrenia",
+    description: "Viacstupňový plán dentálnej hygieny vrátane odstránenia zubného kameňa a pooperačného monitoringu.",
+    status: "active" as const,
+    templateIdx: 1,
+    items: [
+      { description: "Predoperačné vyšetrenie a krvný obraz", instructions: "Zhodnoťte funkciu pečene a obličiek pred sedáciou.", status: "done" as const },
+      { description: "Celková anestézia (60 min)", instructions: "Priebežne monitorujte tep, SpO2 a krvný tlak.", status: "done" as const },
+      { description: "Odstránenie zubného kameňa a leštenie", instructions: "Vykonajte supragingiválne a subgingiválne čistenie.", status: "in_progress" as const },
+      { description: "Pooperačný manažment bolesti a prepustenie", instructions: "Podávajte analgetiká podľa pokynov.", status: "pending" as const },
+    ],
+  },
+  {
+    title: "Kastrácia a pooperačná starostlivosť",
+    description: "Chirurgické zotavenie a pooperačný monitorovací plán pre rutinnú kastráciu fenky.",
+    status: "active" as const,
+    templateIdx: 2,
+    items: [
+      { description: "Predoperačné vyšetrenie a krvný obraz", instructions: "Overte vitálne funkcie a výsledky krvi.", status: "done" as const },
+      { description: "Kastrácia fenky — do 18 kg", instructions: "Vykonajte rutinnú ovariohysterektómiu.", status: "done" as const },
+      { description: "Lieky od bolesti domov (na 3 dni)", instructions: "Vydajte oralnu suspenziu Meloxicam.", status: "done" as const },
+      { description: "Nasadzanie ochranného goliera a pokyny", instructions: "Zabezpečte prísny kľudový režim na 10-14 dní.", status: "in_progress" as const },
+      { description: "Kontrola stehov po 10-14 dňoch", instructions: "Skontrolujte hojenie operačnej rany.", status: "pending" as const },
+    ],
+  },
+  {
+    title: "Manažment seniora a kĺbová starostlivosť",
+    description: "Komplexný manažment osteoartritídy a podpory mobility pre staršie psov.",
+    status: "active" as const,
+    templateIdx: 0,
+    items: [
+      { description: "Geriatrický krvný profil a rozbor moču", instructions: "Vyscreenujte funkcie obličiek a pečene.", status: "done" as const },
+      { description: "Kĺbová výživa a NSAID režim", instructions: "Zaveďte kĺbové doplnky a dennú protizápalovú liečbu.", status: "in_progress" as const },
+      { description: "Ortopedická reevaluácia (po 6 mesiacoch)", instructions: "Zhodnoťte chôdzu, bolestivosť kĺbov a zlepšenie mobility.", status: "pending" as const },
+    ],
+  },
+];
+

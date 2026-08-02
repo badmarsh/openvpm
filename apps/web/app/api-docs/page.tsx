@@ -3,7 +3,7 @@ import { WEBHOOK_EVENT_DEFINITIONS } from "@/lib/webhook-events";
 
 export const metadata: Metadata = {
   title: "OpenVPM API Reference",
-  description: "Dokumentácia API pre riadenie veterinárnej praxe OpenVPM",
+  description: "API documentation for OpenVPM veterinary practice management",
 };
 
 // ── Endpoint definitions ─────────────────────────────────────
@@ -27,9 +27,9 @@ interface Section {
 const sections: Section[] = [
   {
     id: "auth",
-    title: "Autentifikácia",
+    title: "Authentication",
     description:
-      "Zaregistrujte postupy a získajte aktuálnu reláciu používateľa. Postupy riadiacej dosky používajú súbory cookie relácie; portál a koncové body REST používajú svoje vlastné toky tokenov/kľúčov.",
+      "Register practices and retrieve the current user session. Dashboard procedures use session cookies; the portal and REST endpoints use their own token/key flows.",
     endpoints: [
       {
         name: "auth.register",
@@ -62,7 +62,7 @@ const sections: Section[] = [
   },
   {
     id: "clients",
-    title: "Klienti",
+    title: "Clients",
     description: "Manual lab entry only",
     endpoints: [
       {
@@ -747,7 +747,7 @@ const sections: Section[] = [
       {
         name: "apiKeys.list",
         method: "GET",
-        description: "Uveďte aktívne kľúče API pre cvičenie.",
+        description: "List active API keys for the practice.",
         response: `Array<{
   id: string,
   name: string,
@@ -891,7 +891,7 @@ const sections: Section[] = [
       {
         name: "webhooks.list",
         method: "GET",
-        description: "Uveďte všetky webhooky pre cvičenie.",
+        description: "List all webhooks for the practice.",
         response: `Webhook[]`,
         auth: "Admin only",
       },
@@ -1108,12 +1108,12 @@ const sections: Section[] = [
   {
     id: "settings",
     title: "Nastavenia",
-    description: "Cvičenie koncových bodov konfigurácie iba pre správcov.",
+    description: "Admin-only practice configuration endpoints.",
     endpoints: [
       {
         name: "settings.listLocations",
         method: "GET",
-        description: "Uveďte miesta aktívneho cvičenia.",
+        description: "List active practice locations.",
         response: `Array<{
   id: string,
   name: string,
@@ -1127,7 +1127,7 @@ const sections: Section[] = [
         name: "settings.createLocation",
         method: "POST",
         description:
-          "Vytvorte miesto na cvičenie a synchronizujte hostované fakturačné množstvá.",
+          "Create a practice location and sync hosted billing quantities.",
         input: `{
   name: string,
   address?: string,
