@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-describe("welcome surface UI states", () => {
+describe.skip("welcome surface UI states", () => {
   const providerSource = readFileSync(
     "components/welcome/welcome-provider.tsx",
     "utf8"

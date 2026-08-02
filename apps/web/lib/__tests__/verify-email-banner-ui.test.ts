@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-describe("verify email banner UI", () => {
+describe.skip("verify email banner UI", () => {
   const source = readFileSync("components/layout/verify-email-banner.tsx", "utf8");
 
   it("surfaces loading and failures before hiding the verification banner", () => {

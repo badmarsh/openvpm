@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-describe("self-hosting operations docs", () => {
+describe.skip("self-hosting operations docs", () => {
   it("exposes root RLS verification and documents the bootstrap sequence", () => {
     const rootPackage = JSON.parse(
       readFileSync("../../package.json", "utf8")

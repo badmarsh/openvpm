@@ -592,12 +592,11 @@ function WellnessEnrollmentPanel({
         <div className="flex items-start gap-3">
           <HeartPulse className="mt-0.5 h-5 w-5 text-primary" />
           <div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center justify-between gap-2">
               <h3 className="font-heading text-lg font-semibold">
-                
-                Wellness členstvo
+                Wellness Membership Plans
               </h3>
-              <Badge variant="secondary">Rozpis faktúr</Badge>
+              <Badge variant="secondary">Invoice schedule</Badge>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
               {isLoading
@@ -611,9 +610,7 @@ function WellnessEnrollmentPanel({
                 : `${activePlans.length} active plan${activePlans.length === 1 ? "" : "s"}`}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              
-              Registrácia vytvára plánované faktúry; uložené karty nie sú
-              automaticky nabité.
+              Enrollment creates scheduled invoices; saved cards are not auto-charged.
             </p>
           </div>
         </div>
@@ -674,8 +671,7 @@ function WellnessEnrollmentPanel({
         </div>
       ) : enrollmentsMissing ? (
         <div className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          
-          Nepodarilo sa načítať wellness členstvá. Skúste to znova.
+          Unable to load wellness memberships. Please retry.
         </div>
       ) : enrollmentsQuery.isLoading ? (
         <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
@@ -691,8 +687,7 @@ function WellnessEnrollmentPanel({
                 <th className="px-4 py-3 text-left font-medium">Plán</th>
                 <th className="px-4 py-3 text-left font-medium">Pacient</th>
                 <th className="px-4 py-3 text-left font-medium">
-                  
-                  Ďalšia faktúra
+                  Next Invoice
                 </th>
                 <th className="px-4 py-3 text-right font-medium">Cena</th>
                 <th className="px-4 py-3 text-right font-medium">

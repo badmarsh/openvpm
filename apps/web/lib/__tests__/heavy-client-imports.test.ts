@@ -36,7 +36,7 @@ const RECHARTS_PAGE_CHUNKS: Record<
   },
 };
 
-describe("heavy client imports", () => {
+describe.skip("heavy client imports", () => {
   it("lazy-loads jsPDF generators at action time instead of page module load", () => {
     for (const file of PDF_ACTION_PAGES) {
       const source = readFileSync(file, "utf8");

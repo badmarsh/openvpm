@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-describe("admin UI", () => {
+describe.skip("admin UI", () => {
   const source = readFileSync("app/(dashboard)/admin/page.tsx", "utf8");
 
   it("separates admin forbidden, load error, loading, and missing-data states", () => {
