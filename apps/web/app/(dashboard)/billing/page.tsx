@@ -246,16 +246,16 @@ export default function BillingPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Billing</h2>
+          <h2 className="font-heading text-xl font-semibold">{t("billing.title", "Fakturácia a faktúry")}</h2>
           <p className="text-sm text-muted-foreground">
-            Invoices and payments
+            {t("billing.subtitle", "Faktúry a platby")}
           </p>
         </div>
         {canManageBilling && (
           <Button asChild>
             <Link href="/billing/new">
               <Plus className="mr-1 h-4 w-4" />
-              New Invoice
+              {t("billing.new_invoice", "Nová faktúra")}
             </Link>
           </Button>
         )}

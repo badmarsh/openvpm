@@ -86,7 +86,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
     <>
       <Button variant="outline" size="sm" onClick={handleOpen}>
         <Camera className="mr-2 h-4 w-4" />
-        Capture photos
+        
+        Zachyťte fotografie
       </Button>
 
       {open && (
@@ -101,10 +102,12 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-heading text-base font-semibold">
-                    Capture photos
+                    
+                    Zachyťte fotografie
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Scan with any phone. The code works for 30 minutes.
+                    
+                    Skenujte pomocou ľubovoľného telefónu. Kód funguje 30 minút.
                   </p>
                 </div>
                 <button
@@ -125,7 +128,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
                 ) : createSession.isError ? (
                   <div className="flex h-60 w-full flex-col items-center justify-center gap-3 rounded-lg border border-border bg-muted/30 p-4 text-center">
                     <p className="text-sm text-muted-foreground">
-                      Could not make a code. Please try again.
+                      
+                      Nepodarilo sa vytvoriť kód. Skúste to znova.
                     </p>
                     <Button
                       variant="outline"
@@ -133,7 +137,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
                       onClick={() => createSession.mutate({ patientId })}
                     >
                       <RefreshCw className="mr-2 h-4 w-4" />
-                      Try again
+                      
+                      Skúste to znova
                     </Button>
                   </div>
                 ) : (
@@ -142,7 +147,7 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={qrDataUrl}
-                        alt="QR code for the photo capture link"
+                        alt="QR kód pre odkaz na zachytenie fotografie"
                         className="h-60 w-60 rounded-lg border border-border bg-white p-2"
                       />
                     ) : (
@@ -169,7 +174,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
                         : `${addedCount} photos added`}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    New photos show up here.
+                    
+                    Tu sa zobrazujú nové fotografie.
                   </p>
                 </div>
                 {recentFiles.length > 0 && (
@@ -189,7 +195,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
 
               <div className="mt-5 flex justify-end">
                 <Button variant="outline" size="sm" onClick={handleClose}>
-                  Done
+                  
+                  Hotovo
                 </Button>
               </div>
             </div>

@@ -19,7 +19,7 @@ const mocks = vi.hoisted(() => {
     practiceId,
     patientId,
     createdBy,
-    title: "Consent to treatment",
+    title: "Súhlas s liečbou",
     bodyText: "I agree to treatment for my pet.",
     status: "pending",
     signerName: null,
@@ -177,7 +177,7 @@ describe("GET /api/sign/[token]", () => {
     const res = await callGet(TOKEN);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
-      title: "Consent to treatment",
+      title: "Súhlas s liečbou",
       bodyText: "I agree to treatment for my pet.",
       patientName: "Peanut",
       practiceName: "Drill Vet",

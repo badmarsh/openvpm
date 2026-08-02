@@ -3,7 +3,7 @@ import { WEBHOOK_EVENT_DEFINITIONS } from "@/lib/webhook-events";
 
 export const metadata: Metadata = {
   title: "OpenVPM API Reference",
-  description: "API documentation for OpenVPM veterinary practice management",
+  description: "Dokumentácia API pre riadenie veterinárnej praxe OpenVPM",
 };
 
 // ── Endpoint definitions ─────────────────────────────────────
@@ -27,14 +27,14 @@ interface Section {
 const sections: Section[] = [
   {
     id: "auth",
-    title: "Authentication",
+    title: "Autentifikácia",
     description:
-      "Register practices and retrieve the current user session. Dashboard procedures use session cookies; portal and REST endpoints use their own token/key flows.",
+      "Zaregistrujte postupy a získajte aktuálnu reláciu používateľa. Postupy riadiacej dosky používajú súbory cookie relácie; portál a koncové body REST používajú svoje vlastné toky tokenov/kľúčov.",
     endpoints: [
       {
         name: "auth.register",
         method: "POST",
-        description: "Register a new practice with an admin user account.",
+        description: "Zaregistrujte si novú prax pomocou používateľského účtu správcu.",
         input: `{
   practiceName: string,
   name: string,
@@ -47,7 +47,7 @@ const sections: Section[] = [
       {
         name: "auth.me",
         method: "GET",
-        description: "Get the current authenticated user and practice details.",
+        description: "Získajte aktuálne overeného používateľa a podrobnosti o praxi.",
         response: `{
   id: string,
   email: string,
@@ -62,13 +62,13 @@ const sections: Section[] = [
   },
   {
     id: "clients",
-    title: "Clients",
-    description: "Manage pet owners / client records.",
+    title: "Klienti",
+    description: "Manual lab entry only",
     endpoints: [
       {
         name: "clients.list",
         method: "GET",
-        description: "List clients with optional search and pagination.",
+        description: "Zoznam klientov s voliteľným vyhľadávaním a stránkovaním.",
         input: `{
   search?: string,
   limit?: number,    // 1-100, default 25
@@ -82,14 +82,14 @@ const sections: Section[] = [
       {
         name: "clients.search",
         method: "GET",
-        description: "Quick search clients by name, email, or phone. Returns up to 10 results.",
+        description: "Rýchle vyhľadávanie klientov podľa mena, e-mailu alebo telefónu. Vráti až 10 výsledkov.",
         input: `{ query: string }`,
         response: `Client[]`,
       },
       {
         name: "clients.getById",
         method: "GET",
-        description: "Get a single client with their patients.",
+        description: "Získajte jedného klienta so svojimi pacientmi.",
         input: `{ id: string }`,
         response: `{
   ...Client,
@@ -100,7 +100,7 @@ const sections: Section[] = [
         name: "clients.create",
         method: "POST",
         description:
-          "Create a new client record and issue a private portal access token.",
+          "Vytvorte nový záznam klienta a vydajte prístupový token súkromného portálu.",
         input: `{
   firstName: string,
   lastName: string,
@@ -117,7 +117,7 @@ const sections: Section[] = [
         name: "clients.rotatePortalAccessToken",
         method: "POST",
         description:
-          "Create or rotate a client's private portal link. Existing portal URLs stop working immediately after rotation.",
+          "Vytvorte alebo otočte prepojenie na súkromný portál klienta. Existujúce adresy URL portálu prestanú fungovať ihneď po otočení.",
         input: `{ id: string }`,
         response: `{
   id: string,
@@ -127,7 +127,7 @@ const sections: Section[] = [
       {
         name: "clients.update",
         method: "POST",
-        description: "Update an existing client.",
+        description: "Aktualizujte existujúceho klienta.",
         input: `{
   id: string,
   firstName?: string,
@@ -144,7 +144,7 @@ const sections: Section[] = [
       {
         name: "clients.delete",
         method: "POST",
-        description: "Soft-delete a client record.",
+        description: "Soft-vymazať záznam klienta.",
         input: `{ id: string }`,
         response: `{ success: true }`,
       },
@@ -152,13 +152,13 @@ const sections: Section[] = [
   },
   {
     id: "patients",
-    title: "Patients",
-    description: "Manage animal patient records, weights, and allergies.",
+    title: "Pacienti",
+    description: "Manage billing",
     endpoints: [
       {
         name: "patients.list",
         method: "GET",
-        description: "List patients with optional filters.",
+        description: "Uveďte pacientov s voliteľnými filtrami.",
         input: `{
   search?: string,
   species?: string,
@@ -174,14 +174,14 @@ const sections: Section[] = [
       {
         name: "patients.search",
         method: "GET",
-        description: "Quick search patients by name. Returns up to 10 results.",
+        description: "Rýchle vyhľadávanie pacientov podľa mena. Vráti až 10 výsledkov.",
         input: `{ query: string }`,
         response: `Patient[]`,
       },
       {
         name: "patients.getById",
         method: "GET",
-        description: "Get full patient details including weights, allergies, and owner info.",
+        description: "Získajte úplné podrobnosti o pacientovi vrátane hmotnosti, alergií a informácií o majiteľovi.",
         input: `{ id: string }`,
         response: `{
   ...Patient,
@@ -193,7 +193,7 @@ const sections: Section[] = [
       {
         name: "patients.create",
         method: "POST",
-        description: "Create a new patient record.",
+        description: "Vytvorte nový záznam pacienta.",
         input: `{
   clientId: string,
   name: string,
@@ -209,7 +209,7 @@ const sections: Section[] = [
       {
         name: "patients.update",
         method: "POST",
-        description: "Update an existing patient record.",
+        description: "Aktualizujte existujúci záznam pacienta.",
         input: `{
   id: string,
   name?: string,
@@ -226,14 +226,14 @@ const sections: Section[] = [
       {
         name: "patients.delete",
         method: "POST",
-        description: "Soft-delete a patient record.",
+        description: "Jemné vymazanie záznamu pacienta.",
         input: `{ id: string }`,
         response: `{ success: true }`,
       },
       {
         name: "patients.addWeight",
         method: "POST",
-        description: "Record a weight measurement.",
+        description: "Zaznamenajte meranie hmotnosti.",
         input: `{
   patientId: string,
   weight: number,
@@ -244,7 +244,7 @@ const sections: Section[] = [
       {
         name: "patients.addAllergy",
         method: "POST",
-        description: "Record a known allergy.",
+        description: "Zaznamenajte známu alergiu.",
         input: `{
   patientId: string,
   allergen: string,
@@ -257,13 +257,13 @@ const sections: Section[] = [
   },
   {
     id: "appointments",
-    title: "Appointments",
-    description: "Schedule and manage appointments.",
+    title: "Stretnutia",
+    description: "Plánujte a spravujte stretnutia.",
     endpoints: [
       {
         name: "appointments.list",
         method: "GET",
-        description: "List appointments within a date range.",
+        description: "Zoznam schôdzok v rámci rozsahu dátumov.",
         input: `{
   startDate: string,  // ISO date
   endDate: string,    // ISO date
@@ -274,14 +274,14 @@ const sections: Section[] = [
       {
         name: "appointments.getById",
         method: "GET",
-        description: "Get full appointment details.",
+        description: "Získajte úplné podrobnosti o stretnutí.",
         input: `{ id: string }`,
         response: `Appointment`,
       },
       {
         name: "appointments.create",
         method: "POST",
-        description: "Schedule a new appointment.",
+        description: "Naplánujte si nový termín.",
         input: `{
   patientId: string,
   clientId: string,
@@ -299,7 +299,7 @@ const sections: Section[] = [
         name: "appointments.updateStatus",
         method: "POST",
         description:
-          "Update appointment status (e.g., confirm, check in, exam, check out, cancel).",
+          "Aktualizácia stavu stretnutia (napr. potvrdenie, nahlásenie, skúška, odhlásenie, zrušenie).",
         input: `{
   id: string,
   status: "scheduled" | "confirmed" | "checked_in" | "in_exam" | "checked_out" | "no_show" | "cancelled"
@@ -309,19 +309,19 @@ const sections: Section[] = [
       {
         name: "appointments.listTypes",
         method: "GET",
-        description: "List available appointment types for the practice.",
+        description: "Uveďte dostupné typy stretnutí pre prax.",
         response: `AppointmentType[]`,
       },
       {
         name: "appointments.listDoctors",
         method: "GET",
-        description: "List veterinarians available for scheduling.",
+        description: "Uveďte zoznam veterinárnych lekárov, ktorí sú k dispozícii na plánovanie.",
         response: `Doctor[]`,
       },
       {
         name: "appointments.listRooms",
         method: "GET",
-        description: "List exam rooms.",
+        description: "Uveďte skúšobné miestnosti.",
         response: `Room[]`,
       },
     ],
@@ -330,19 +330,19 @@ const sections: Section[] = [
     id: "records",
     title: "Medical Records",
     description:
-      "SOAP notes, vaccinations, lab results, procedures, problems, and prescriptions.",
+      "SOAP poznámky, očkovania, laboratórne výsledky, postupy, problémy a predpisy.",
     endpoints: [
       {
         name: "records.listSoapNotes",
         method: "GET",
-        description: "List SOAP notes for a patient.",
+        description: "Zoznam poznámok SOAP pre pacienta.",
         input: `{ patientId: string }`,
         response: `SoapNote[]`,
       },
       {
         name: "records.createSoapNote",
         method: "POST",
-        description: "Create a SOAP note.",
+        description: "Vytvorte poznámku SOAP.",
         input: `{
   patientId: string,
   subjective: string,
@@ -355,14 +355,14 @@ const sections: Section[] = [
       {
         name: "records.listVaccinations",
         method: "GET",
-        description: "List vaccination records for a patient.",
+        description: "Uveďte záznamy o očkovaní pacienta.",
         input: `{ patientId: string }`,
         response: `Vaccination[]`,
       },
       {
         name: "records.createVaccination",
         method: "POST",
-        description: "Record a vaccination.",
+        description: "Zaznamenajte očkovanie.",
         input: `{
   patientId: string,
   vaccineName: string,
@@ -377,14 +377,14 @@ const sections: Section[] = [
       {
         name: "records.listLabResults",
         method: "GET",
-        description: "List lab results for a patient.",
+        description: "Uveďte laboratórne výsledky pre pacienta.",
         input: `{ patientId: string }`,
         response: `LabResult[]`,
       },
       {
         name: "records.createLabResult",
         method: "POST",
-        description: "Create a lab result entry.",
+        description: "Vytvorte záznam laboratórneho výsledku.",
         input: `{
   patientId: string,
   testName: string,
@@ -397,7 +397,7 @@ const sections: Section[] = [
       {
         name: "records.updateLabResultStatus",
         method: "POST",
-        description: "Update the status of a lab result.",
+        description: "Aktualizujte stav laboratórneho výsledku.",
         input: `{
   id: string,
   status: "pending" | "completed" | "reviewed"
@@ -407,14 +407,14 @@ const sections: Section[] = [
       {
         name: "records.listProcedures",
         method: "GET",
-        description: "List procedures performed on a patient.",
+        description: "Uveďte postupy vykonávané na pacientovi.",
         input: `{ patientId: string }`,
         response: `Procedure[]`,
       },
       {
         name: "records.createProcedure",
         method: "POST",
-        description: "Record a procedure.",
+        description: "Zaznamenajte postup.",
         input: `{
   patientId: string,
   name: string,
@@ -426,14 +426,14 @@ const sections: Section[] = [
       {
         name: "records.listProblems",
         method: "GET",
-        description: "List active and resolved problems for a patient.",
+        description: "Uveďte aktívne a vyriešené problémy pacienta.",
         input: `{ patientId: string }`,
         response: `Problem[]`,
       },
       {
         name: "records.createProblem",
         method: "POST",
-        description: "Add a problem to the patient's problem list.",
+        description: "Pridajte problém do zoznamu problémov pacienta.",
         input: `{
   patientId: string,
   description: string,
@@ -445,7 +445,7 @@ const sections: Section[] = [
       {
         name: "records.updateProblemStatus",
         method: "POST",
-        description: "Mark a problem as resolved or reactivate it.",
+        description: "Mark as Paid",
         input: `{
   id: string,
   status: "active" | "resolved"
@@ -455,14 +455,14 @@ const sections: Section[] = [
       {
         name: "records.listPrescriptions",
         method: "GET",
-        description: "List prescriptions for a patient.",
+        description: "Zoznam receptov pre pacienta.",
         input: `{ patientId: string }`,
         response: `Prescription[]`,
       },
       {
         name: "records.createPrescription",
         method: "POST",
-        description: "Create a prescription.",
+        description: "Vytvorte recept.",
         input: `{
   patientId: string,
   medicationName: string,
@@ -482,13 +482,13 @@ const sections: Section[] = [
   },
   {
     id: "billing",
-    title: "Billing",
-    description: "Invoices, payments, services, and estimates.",
+    title: "Fakturácia",
+    description: "Faktúry, platby, služby a odhady.",
     endpoints: [
       {
         name: "billing.listInvoices",
         method: "GET",
-        description: "List invoices with optional filters.",
+        description: "Zoznam faktúr s voliteľnými filtrami.",
         input: `{
   status?: string,
   isEstimate?: boolean,
@@ -503,7 +503,7 @@ const sections: Section[] = [
       {
         name: "billing.getInvoice",
         method: "GET",
-        description: "Get full invoice with line items and payments.",
+        description: "Získajte úplnú faktúru s riadkovými položkami a platbami.",
         input: `{ id: string }`,
         response: `{
   ...Invoice,
@@ -514,7 +514,7 @@ const sections: Section[] = [
       {
         name: "billing.createInvoice",
         method: "POST",
-        description: "Create an invoice or estimate.",
+        description: "Vytvorte faktúru alebo odhad.",
         input: `{
   clientId: string,
   patientId?: string,
@@ -533,7 +533,7 @@ const sections: Section[] = [
       {
         name: "billing.updateInvoiceStatus",
         method: "POST",
-        description: "Update invoice status.",
+        description: "Aktualizujte stav faktúry.",
         input: `{
   id: string,
   status: "draft" | "sent" | "paid" | "overdue" | "void"
@@ -543,14 +543,14 @@ const sections: Section[] = [
       {
         name: "billing.convertEstimateToInvoice",
         method: "POST",
-        description: "Convert an approved estimate into a billable invoice.",
+        description: "Preveďte schválený odhad na fakturovateľnú faktúru.",
         input: `{ id: string }`,
         response: `Invoice`,
       },
       {
         name: "billing.recordPayment",
         method: "POST",
-        description: "Record a payment against an invoice.",
+        description: "Zaznamenajte platbu na faktúru.",
         input: `{
   invoiceId: string,
   amount: number,
@@ -562,28 +562,28 @@ const sections: Section[] = [
       {
         name: "billing.createCardPaymentCheckout",
         method: "POST",
-        description: "Create a Stripe Checkout link for the remaining adjusted invoice balance.",
+        description: "Vytvorte prepojenie Stripe Checkout pre zostávajúci upravený zostatok faktúry.",
         input: `{ invoiceId: string }`,
         response: `{ url: string }`,
       },
       {
         name: "billing.listPayments",
         method: "GET",
-        description: "List payments for an invoice.",
+        description: "Uveďte platby na faktúru.",
         input: `{ invoiceId: string }`,
         response: `Payment[]`,
       },
       {
         name: "billing.listAdjustments",
         method: "GET",
-        description: "List credits and write-offs for an invoice.",
+        description: "K faktúre uveďte dobropisy a odpisy.",
         input: `{ invoiceId: string }`,
         response: `InvoiceAdjustment[]`,
       },
       {
         name: "billing.applyInvoiceAdjustment",
         method: "POST",
-        description: "Apply a credit or write-off to an invoice balance.",
+        description: "Použiť dobropis alebo odpis na zostatok faktúry.",
         input: `{
   invoiceId: string,
   type: "credit" | "write_off",
@@ -595,34 +595,34 @@ const sections: Section[] = [
       {
         name: "billing.voidInvoice",
         method: "POST",
-        description: "Void an invoice with no payment or adjustment history.",
+        description: "Zrušenie faktúry bez histórie platieb alebo úprav.",
         input: `{ id: string }`,
         response: `Invoice`,
       },
       {
         name: "billing.listServices",
         method: "GET",
-        description: "List all services offered by the practice.",
+        description: "Uveďte všetky služby, ktoré ordinácia ponúka.",
         response: `Service[]`,
       },
       {
         name: "billing.listProducts",
         method: "GET",
-        description: "List products available for invoicing.",
+        description: "Zoznam produktov dostupných na fakturáciu.",
         response: `Product[]`,
       },
     ],
   },
   {
     id: "portal",
-    title: "Client Portal",
+    title: "Klientsky portál",
     description:
-      "Token-based public access for pet owners. No session required -- uses a unique access token per client.",
+      "Verejný prístup založený na tokenoch pre majiteľov domácich zvierat. Nevyžaduje sa žiadna relácia – používa jedinečný prístupový token na klienta.",
     endpoints: [
       {
         name: "portal.getClient",
         method: "GET",
-        description: "Get client profile and pets via portal token.",
+        description: "Získajte profil klienta a domáce zvieratá prostredníctvom tokenu portálu.",
         input: `{ token: string }`,
         response: `{
   client: Client,
@@ -633,7 +633,7 @@ const sections: Section[] = [
       {
         name: "portal.getPetDetail",
         method: "GET",
-        description: "Get full pet details including medical history.",
+        description: "Získajte úplné podrobnosti o zvierati vrátane anamnézy.",
         input: `{
   token: string,
   patientId: string
@@ -650,7 +650,7 @@ const sections: Section[] = [
       {
         name: "portal.getAppointments",
         method: "GET",
-        description: "List upcoming appointments for the client.",
+        description: "Uveďte nadchádzajúce stretnutia pre klienta.",
         input: `{ token: string }`,
         response: `Appointment[]`,
         auth: "Portal token",
@@ -658,7 +658,7 @@ const sections: Section[] = [
       {
         name: "portal.getInvoices",
         method: "GET",
-        description: "List invoices for the client.",
+        description: "Vypisujte faktúry pre klienta.",
         input: `{ token: string }`,
         response: `Invoice[]`,
         auth: "Portal token",
@@ -666,7 +666,7 @@ const sections: Section[] = [
       {
         name: "portal.getMessages",
         method: "GET",
-        description: "List portal messages for the client.",
+        description: "Vypísať správy portálu pre klienta.",
         input: `{ token: string }`,
         response: `{
   timezone: string | null,
@@ -685,7 +685,7 @@ const sections: Section[] = [
       {
         name: "portal.createMessage",
         method: "POST",
-        description: "Send a portal message from the client into the shared inbox.",
+        description: "Odošlite správu portálu od klienta do zdieľanej doručenej pošty.",
         input: `{
   token: string,
   content: string
@@ -696,7 +696,7 @@ const sections: Section[] = [
       {
         name: "portal.markMessagesRead",
         method: "POST",
-        description: "Mark outbound clinic portal messages as read after the client opens the thread.",
+        description: ". Zdravotné záznamy",
         input: `{ token: string }`,
         response: `{ success: true, updated: number }`,
         auth: "Portal token",
@@ -704,7 +704,7 @@ const sections: Section[] = [
       {
         name: "portal.getAppointmentTypes",
         method: "GET",
-        description: "List appointment types available for portal booking.",
+        description: "Uveďte typy stretnutí, ktoré sú k dispozícii na rezerváciu na portáli.",
         input: `{ token: string }`,
         response: `Array<{ id: string, name: string, durationMinutes: number }>`,
         auth: "Portal token",
@@ -712,7 +712,7 @@ const sections: Section[] = [
       {
         name: "portal.availableSlots",
         method: "GET",
-        description: "List suggested open times for a portal booking date.",
+        description: "Uveďte navrhované otváracie časy pre dátum rezervácie portálu.",
         input: `{
   token: string,
   date: string, // YYYY-MM-DD
@@ -724,7 +724,7 @@ const sections: Section[] = [
       {
         name: "portal.requestAppointment",
         method: "POST",
-        description: "Submit an appointment request from the portal using an exact requested time.",
+        description: "Odošlite žiadosť o stretnutie z portálu pomocou presného požadovaného času.",
         input: `{
   token: string,
   patientId: string,
@@ -740,14 +740,14 @@ const sections: Section[] = [
   },
   {
     id: "apiKeys",
-    title: "API Keys",
+    title: "Kľúče API",
     description:
-      "Admin-only API key management for server-to-server integrations. Raw keys are returned once at creation.",
+      "Správa kľúčov API iba pre správcu pre integrácie server-to-server. Nespracované kľúče sa vrátia raz pri vytváraní.",
     endpoints: [
       {
         name: "apiKeys.list",
         method: "GET",
-        description: "List active API keys for the practice.",
+        description: "Uveďte aktívne kľúče API pre cvičenie.",
         response: `Array<{
   id: string,
   name: string,
@@ -762,7 +762,7 @@ const sections: Section[] = [
         name: "apiKeys.create",
         method: "POST",
         description:
-          "Create an API key for REST integrations. The raw key is returned once and is never stored in plaintext. The agent:write scope must be paired with agent:run or *.",
+          "Vytvorte kľúč API pre integrácie REST. Surový kľúč sa vráti raz a nikdy sa neuloží ako čistý text. Rozsah agent:write musí byť spárovaný s agentom:run alebo *.",
         input: `{
   name: string,
   scopes: Array<"clients:read" | "patients:read" | "appointments:read" | "appointments:write" | "records:write" | "agent:run" | "agent:write" | "*">
@@ -773,7 +773,7 @@ const sections: Section[] = [
       {
         name: "apiKeys.revoke",
         method: "POST",
-        description: "Revoke an API key.",
+        description: "Odvolať kľúč API.",
         input: `{ id: string }`,
         response: `{ success: true }`,
         auth: "Admin only",
@@ -784,12 +784,12 @@ const sections: Section[] = [
     id: "restApi",
     title: "REST API",
     description:
-      "API-key authenticated /api/v1 endpoints for external integrations. Send Authorization: Bearer <api-key>.",
+      "Koncové body /api/v1 overené kľúčom API pre externé integrácie. Odoslať autorizáciu: Nositeľ <api-key>.",
     endpoints: [
       {
         name: "GET /api/v1/clients",
         method: "GET",
-        description: "List clients for the authenticated practice.",
+        description: "Uveďte klientov pre overenú prax.",
         input: `?limit=25&offset=0`,
         response: `{ data: Client[], pagination: Pagination }`,
         auth: "API key: clients:read",
@@ -797,14 +797,14 @@ const sections: Section[] = [
       {
         name: "GET /api/v1/clients/:id",
         method: "GET",
-        description: "Fetch a single client.",
+        description: "Získajte jedného klienta.",
         response: `{ data: Client }`,
         auth: "API key: clients:read",
       },
       {
         name: "GET /api/v1/patients",
         method: "GET",
-        description: "List patients, optionally filtered by client.",
+        description: "Zoznam pacientov, voliteľne filtrovaný podľa klienta.",
         input: `?client_id=uuid&limit=25&offset=0`,
         response: `{ data: Patient[], pagination: Pagination }`,
         auth: "API key: patients:read",
@@ -812,7 +812,7 @@ const sections: Section[] = [
       {
         name: "GET /api/v1/patients/:id",
         method: "GET",
-        description: "Fetch a single patient.",
+        description: "Priveďte jedného pacienta.",
         response: `{ data: Patient }`,
         auth: "API key: patients:read",
       },
@@ -820,7 +820,7 @@ const sections: Section[] = [
         name: "GET /api/v1/appointments",
         method: "GET",
         description:
-          "List appointments, optionally filtered by client, patient, status, or start-time window. Date-only filters use UTC day bounds.",
+          "Zoznam schôdzok, voliteľne filtrovaných podľa klienta, pacienta, stavu alebo počiatočného okna. Filtre iba na základe dátumu používajú ohraničenie dňa UTC.",
         input: `?client_id=uuid&patient_id=uuid&status=scheduled&from=YYYY-MM-DD-or-ISO-timestamp&to=YYYY-MM-DD-or-ISO-timestamp&limit=25&offset=0`,
         response: `{ data: Appointment[], pagination: Pagination }`,
         auth: "API key: appointments:read",
@@ -828,7 +828,7 @@ const sections: Section[] = [
       {
         name: "GET /api/v1/appointments/:id",
         method: "GET",
-        description: "Fetch a single appointment.",
+        description: "Získajte jednu schôdzku.",
         response: `{ data: Appointment }`,
         auth: "API key: appointments:read",
       },
@@ -836,7 +836,7 @@ const sections: Section[] = [
         name: "POST /api/v1/appointments",
         method: "POST",
         description:
-          "Create an appointment and emit the appointment.created webhook with camelCase appointment fields.",
+          "Vytvorte schôdzku a vygenerujte webhook vymenovanie.vytvorený s poľami schôdzky camelCase.",
         input: `{
   client_id?: string,
   patient_id?: string,
@@ -854,7 +854,7 @@ const sections: Section[] = [
         name: "POST /api/v1/soap-notes",
         method: "POST",
         description:
-          "Create a SOAP note for an external AI scribe and emit the soap_note.created webhook.",
+          "Vytvorte poznámku SOAP pre externého zapisovateľa AI a vygenerujte webhook soap_note.created.",
         input: `{
   patient_id: string,
   appointment_id?: string,
@@ -872,7 +872,7 @@ const sections: Section[] = [
         name: "POST /api/v1/agent",
         method: "POST",
         description:
-          "Run the OpenVPM Agent from an external automation. Instruction text is trimmed and must be nonblank. Write-enabled runs require agent:write plus each write tool's resource scope.",
+          "Spustite OpenVPM Agenta z externej automatizácie. Text pokynov je orezaný a nesmie byť prázdny. Spustenia s povoleným zápisom vyžadujú agent:write plus rozsah prostriedkov každého nástroja na zápis.",
         input: `{
   instruction: string,
   allow_writes?: boolean
@@ -884,14 +884,14 @@ const sections: Section[] = [
   },
   {
     id: "webhooks",
-    title: "Webhooks",
+    title: "Webhooky",
     description:
-      "Subscribe to real-time events. Webhook payloads are signed with HMAC-SHA256 using the secret provided at creation.",
+      "Prihláste sa na odber udalostí v reálnom čase. Užitočné zaťaženia webhooku sú podpísané pomocou HMAC-SHA256 pomocou tajomstva poskytnutého pri vytváraní.",
     endpoints: [
       {
         name: "webhooks.list",
         method: "GET",
-        description: "List all webhooks for the practice.",
+        description: "Uveďte všetky webhooky pre cvičenie.",
         response: `Webhook[]`,
         auth: "Admin only",
       },
@@ -899,7 +899,7 @@ const sections: Section[] = [
         name: "webhooks.create",
         method: "POST",
         description:
-          "Create a webhook subscription. The secret is returned once and cannot be retrieved again.",
+          "Vytvorte si predplatné webhooku. Tajomstvo sa raz vráti a nie je možné ho znova získať.",
         input: `{
   url: string,
   events: WebhookEvent[]
@@ -913,7 +913,7 @@ const sections: Section[] = [
       {
         name: "webhooks.toggle",
         method: "POST",
-        description: "Enable or disable a webhook.",
+        description: "Povoliť alebo zakázať webhook.",
         input: `{ id: string }`,
         response: `Webhook`,
         auth: "Admin only",
@@ -921,7 +921,7 @@ const sections: Section[] = [
       {
         name: "webhooks.delete",
         method: "POST",
-        description: "Delete a webhook subscription.",
+        description: "Odstráňte predplatné webhooku.",
         input: `{ id: string }`,
         response: `{ success: true }`,
         auth: "Admin only",
@@ -930,13 +930,13 @@ const sections: Section[] = [
   },
   {
     id: "inventory",
-    title: "Inventory",
-    description: "Track products, stock levels, and suppliers.",
+    title: "Inventár",
+    description: "Sledujte produkty, stav zásob a dodávateľov.",
     endpoints: [
       {
         name: "inventory.list",
         method: "GET",
-        description: "List inventory items with optional filters.",
+        description: "Zoznam položiek inventára pomocou voliteľných filtrov.",
         input: `{
   search?: string,
   category?: string,
@@ -961,7 +961,7 @@ const sections: Section[] = [
       {
         name: "inventory.create",
         method: "POST",
-        description: "Add a new inventory item.",
+        description: "Pridajte novú položku inventára.",
         input: `{
   name: string,
   sku?: string,
@@ -979,7 +979,7 @@ const sections: Section[] = [
         name: "inventory.update",
         method: "POST",
         description:
-          "Update inventory item metadata. Use inventory.adjustStock for stock quantity changes so every movement has a reason.",
+          "Aktualizujte metadáta inventárnej položky. Použite inventar.adjustStock na zmeny množstva zásob, takže každý pohyb má svoj dôvod.",
         input: `{
   id: string,
   name?: string,
@@ -996,7 +996,7 @@ const sections: Section[] = [
       {
         name: "inventory.adjustStock",
         method: "POST",
-        description: "Adjust stock quantity (positive or negative).",
+        description: "Upravte množstvo zásob (kladné alebo záporné).",
         input: `{
   id: string,
   adjustment: number,
@@ -1007,13 +1007,13 @@ const sections: Section[] = [
       {
         name: "inventory.listSuppliers",
         method: "GET",
-        description: "List all suppliers.",
+        description: "Uveďte všetkých dodávateľov.",
         response: `Supplier[]`,
       },
       {
         name: "inventory.createSupplier",
         method: "POST",
-        description: "Add a new supplier.",
+        description: "Pridajte nového dodávateľa.",
         input: `{
   name: string,
   contactEmail?: string,
@@ -1026,7 +1026,7 @@ const sections: Section[] = [
       {
         name: "inventory.updateSupplier",
         method: "POST",
-        description: "Update supplier contact details.",
+        description: "Aktualizujte kontaktné údaje dodávateľa.",
         input: `{
   id: string,
   name?: string,
@@ -1041,14 +1041,14 @@ const sections: Section[] = [
   },
   {
     id: "reports",
-    title: "Reports",
-    description: "Run practice analytics over configurable date ranges.",
+    title: "Správy",
+    description: "Spustite praktickú analýzu počas konfigurovateľných rozsahov dátumov.",
     endpoints: [
       {
         name: "reports.revenue",
         method: "GET",
         description:
-          "Revenue totals, previous-period comparison, and daily revenue for a selected range.",
+          "Celkové výnosy, porovnanie za predchádzajúce obdobie a denné výnosy pre vybratý rozsah.",
         input: `{
   startDate?: "YYYY-MM-DD",
   endDate?: "YYYY-MM-DD"
@@ -1064,7 +1064,7 @@ const sections: Section[] = [
         name: "reports.appointments",
         method: "GET",
         description:
-          "Appointment KPIs and doctor breakdown for a selected range.",
+          "KPI vymenovania a rozpis lekárov pre vybraný rozsah.",
         input: `{
   startDate?: "YYYY-MM-DD",
   endDate?: "YYYY-MM-DD"
@@ -1083,7 +1083,7 @@ const sections: Section[] = [
         name: "reports.topServices",
         method: "GET",
         description:
-          "Top billed service items by count and revenue for a selected range.",
+          "Najlepšie fakturované položky služieb podľa počtu a výnosov pre vybratý rozsah.",
         input: `{
   startDate?: "YYYY-MM-DD",
   endDate?: "YYYY-MM-DD"
@@ -1096,7 +1096,7 @@ const sections: Section[] = [
       {
         name: "reports.inventoryAlerts",
         method: "GET",
-        description: "Current low-stock, expired, and expiring-product alerts.",
+        description: "Aktuálne upozornenia na nízke zásoby, expiráciu a expiráciu produktov.",
         response: `{
   lowStock: Product[],
   expired: Product[],
@@ -1107,13 +1107,13 @@ const sections: Section[] = [
   },
   {
     id: "settings",
-    title: "Settings",
-    description: "Admin-only practice configuration endpoints.",
+    title: "Nastavenia",
+    description: "Cvičenie koncových bodov konfigurácie iba pre správcov.",
     endpoints: [
       {
         name: "settings.listLocations",
         method: "GET",
-        description: "List active practice locations.",
+        description: "Uveďte miesta aktívneho cvičenia.",
         response: `Array<{
   id: string,
   name: string,
@@ -1127,7 +1127,7 @@ const sections: Section[] = [
         name: "settings.createLocation",
         method: "POST",
         description:
-          "Create a practice location and sync hosted billing quantities.",
+          "Vytvorte miesto na cvičenie a synchronizujte hostované fakturačné množstvá.",
         input: `{
   name: string,
   address?: string,
@@ -1140,7 +1140,7 @@ const sections: Section[] = [
       {
         name: "settings.updateLocation",
         method: "POST",
-        description: "Update a tenant-scoped location.",
+        description: "Aktualizujte umiestnenie v rozsahu nájomníka.",
         input: `{
   id: string,
   name?: string,
@@ -1153,7 +1153,7 @@ const sections: Section[] = [
       {
         name: "settings.setPrimaryLocation",
         method: "POST",
-        description: "Make one active tenant location the primary location.",
+        description: "Uveďte jedno aktívne miesto nájomníka ako primárne miesto.",
         input: `{ id: string }`,
         response: `Location`,
         auth: "Admin only",
@@ -1162,7 +1162,7 @@ const sections: Section[] = [
         name: "settings.deleteLocation",
         method: "POST",
         description:
-          "Retire a location, disable its texting setup, preserve at least one active location, and sync hosted billing quantities.",
+          "Zrušte umiestnenie, zakážte nastavenie odosielania správ, zachovajte aspoň jedno aktívne miesto a synchronizujte hostované fakturačné množstvá.",
         input: `{ id: string }`,
         response: `{ success: true }`,
         auth: "Admin only",
@@ -1171,14 +1171,14 @@ const sections: Section[] = [
   },
   {
     id: "communications",
-    title: "Communications",
-    description: "Track client communications across channels.",
+    title: "Komunikácia",
+    description: "Sledujte komunikáciu klientov naprieč kanálmi.",
     endpoints: [
       {
         name: "communications.list",
         method: "GET",
         description:
-          "List communications with optional filters. The sent inbox filter includes sent, delivered, and read outbound messages.",
+          "Zobrazte komunikáciu pomocou voliteľných filtrov. Filter odoslaných prijatých správ zahŕňa odoslané, doručené a prečítané odchádzajúce správy.",
         input: `{
   clientId?: string,
   status?: string,
@@ -1199,7 +1199,7 @@ const sections: Section[] = [
         name: "communications.listConversations",
         method: "GET",
         description:
-          "List one latest message per shared-inbox conversation, with unread counts derived server-side. The sent inbox filter includes sent, delivered, and read outbound conversations.",
+          "Uveďte jednu najnovšiu správu pre každú konverzáciu v zdieľanej schránke s neprečítanými počtami odvodenými na strane servera. Filter odoslanej doručenej pošty zahŕňa odoslané, doručené a prečítané odchádzajúce konverzácie.",
         input: `{
   inboxFilter?: "all" | "unread" | "sent",
   limit?: number,
@@ -1218,7 +1218,7 @@ const sections: Section[] = [
       {
         name: "communications.getByClient",
         method: "GET",
-        description: "Get all communications for a specific client.",
+        description: "Získajte všetku komunikáciu pre konkrétneho klienta.",
         input: `{ clientId: string }`,
         response: `Array<Communication & {
   readAt: Date | null,
@@ -1229,7 +1229,7 @@ const sections: Section[] = [
       {
         name: "communications.markClientRead",
         method: "POST",
-        description: "Mark unread inbound messages for a client thread as read.",
+        description: ". Lekárska anamnéza bola stiahnutá",
         input: `{ clientId: string }`,
         response: `{ ok: true, updated: number }`,
       },
@@ -1237,7 +1237,7 @@ const sections: Section[] = [
         name: "communications.assignClient",
         method: "POST",
         description:
-          "Assign or unassign a client conversation in the shared inbox.",
+          "Priraďte alebo zrušte priradenie konverzácie klienta v zdieľanej doručenej pošte.",
         input: `{
   clientId: string,
   action: "assign_to_me" | "unassign",
@@ -1254,7 +1254,7 @@ const sections: Section[] = [
         name: "communications.linkCommunicationToClient",
         method: "POST",
         description:
-          "Link an unmatched inbound inbox message to a tenant client.",
+          "Prepojte nezhodnú prichádzajúcu správu doručenej pošty s klientom nájomníka.",
         input: `{
   communicationId: string,
   clientId: string
@@ -1271,7 +1271,7 @@ const sections: Section[] = [
         name: "communications.create",
         method: "POST",
         description:
-          "Send outbound SMS/email from the inbox, or send/log internal portal communications visible in the client portal.",
+          "Odosielajte odchádzajúce SMS/e-maily z doručenej pošty alebo odosielajte/zapisujte internú komunikáciu portálu viditeľnú na klientskom portáli.",
         input: `{
   clientId: string,
   channel: "phone" | "sms" | "email" | "portal",
@@ -1286,7 +1286,7 @@ const sections: Section[] = [
         name: "communications.updateStatus",
         method: "POST",
         description:
-          "Mark one unread inbound communication as read. Delivery lifecycle statuses are managed by send and provider webhook handlers.",
+          "Označiť odchádzajúce správy na portáli ako prečítané po otvorení vlákna klienta",
         input: `{
   id: string,
   status: "read"
@@ -1334,7 +1334,8 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
         {endpoint.input && (
           <div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-              Input
+              
+              Vstup
             </p>
             <pre className="overflow-x-auto rounded bg-slate-50 p-3 text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
               {endpoint.input}
@@ -1344,7 +1345,8 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
         {endpoint.response && (
           <div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-              Response
+              
+              Odpoveď
             </p>
             <pre className="overflow-x-auto rounded bg-slate-50 p-3 text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
               {endpoint.response}
@@ -1367,7 +1369,7 @@ export default function ApiDocsPage() {
           <h2 className="text-lg font-bold text-teal-600 dark:text-teal-400">
             OpenVPM API
           </h2>
-          <p className="text-xs text-slate-500">v1.0 Reference</p>
+          <p className="text-xs text-slate-500">v1.0 Referencia</p>
         </div>
         <ul className="space-y-1">
           {sections.map((s) => (
@@ -1388,21 +1390,24 @@ export default function ApiDocsPage() {
               href="#webhook-events"
               className="block rounded px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             >
-              Webhook Events
+              
+              Webhook Udalosti
             </a>
           </li>
         </ul>
 
         <div className="mt-8 border-t border-slate-200 pt-4 dark:border-slate-700">
           <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            Base URL
+            
+            Základná adresa URL
           </h3>
           <code className="block rounded bg-slate-50 p-2 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
             /api/trpc/ + /api/v1/
           </code>
           <p className="mt-3 text-xs text-slate-500">
-            Dashboard procedures use tRPC under <code>/api/trpc</code>. External
-            integrations use API-key REST endpoints under <code>/api/v1</code>.
+            
+            Postupy palubnej dosky používajú tRPC pod <code>/api/trpc</code>. Vonkajšie
+            integrácie používajú koncové body REST s kľúčom API pod <code>/api/v1</code>.
           </p>
         </div>
       </nav>
@@ -1416,39 +1421,46 @@ export default function ApiDocsPage() {
               OpenVPM API Reference
             </h1>
             <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">
-              Complete API documentation for the OpenVPM veterinary practice
-              management system. The dashboard API uses tRPC, client portal
-              flows use portal tokens, and external integrations use API keys
-              with REST endpoints under <code>/api/v1</code>.
+              
+              Kompletná dokumentácia API pre veterinárnu prax OpenVPM
+              systém riadenia. Rozhranie dashboard API používa tRPC, klientsky portál
+              toky používajú tokeny portálu a externé integrácie používajú kľúče API
+              s koncovými bodmi REST pod <code>/api/v1</code>.
             </p>
 
             {/* Quick info cards */}
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
                 <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Authentication
+                  
+                  Autentifikácia
                 </h3>
                 <p className="mt-1 text-xs text-slate-500">
-                  Dashboard calls use NextAuth session cookies, portal flows use
-                  client tokens, and REST integrations use API keys.
+                  
+                  Volania ovládacieho panela používajú súbory cookie relácie NextAuth, využívajú toky portálu
+                  klientske tokeny a integrácie REST používajú kľúče API.
                 </p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
                 <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Multi-tenancy
+                  
+                  Viacnásobný nájom
                 </h3>
                 <p className="mt-1 text-xs text-slate-500">
-                  All data is scoped to the authenticated user&apos;s practice.
-                  No cross-practice data access is possible.
+                  
+                  Všetky údaje sa vzťahujú na prax overeného používateľa.
+                  Nie je možný žiadny krížový prístup k údajom.
                 </p>
               </div>
               <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
                 <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Real-time Events
+                  
+                  Udalosti v reálnom čase
                 </h3>
                 <p className="mt-1 text-xs text-slate-500">
-                  Subscribe to the live webhook catalog. Events are HMAC signed
-                  with each subscription secret.
+                  
+                  Prihláste sa na odber živého katalógu webhookov. Udalosti sú podpísané HMAC
+                  s každým predplatiteľským tajomstvom.
                 </p>
               </div>
             </div>
@@ -1477,11 +1489,13 @@ export default function ApiDocsPage() {
           <section id="webhook-events" className="mb-12">
             <div className="mb-4 border-b border-slate-200 pb-2 dark:border-slate-700">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                Webhook Events
+                
+                Webhook Udalosti
               </h2>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                Available event types for webhook subscriptions. Payloads are
-                signed with HMAC-SHA256 using the webhook secret.
+                
+                Dostupné typy udalostí pre predplatné webhooku. Užitočné zaťaženia sú
+                podpísané pomocou HMAC-SHA256 pomocou tajomstva webhooku.
               </p>
             </div>
             <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
@@ -1489,10 +1503,12 @@ export default function ApiDocsPage() {
                 <thead>
                   <tr className="bg-slate-50 dark:bg-slate-800">
                     <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
-                      Event
+                      
+                      Udalosť
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
-                      Description
+                      
+                      Popis
                     </th>
                   </tr>
                 </thead>
@@ -1516,7 +1532,8 @@ export default function ApiDocsPage() {
             {/* Payload example */}
             <div className="mt-4 rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
               <h3 className="mb-2 text-sm font-medium text-slate-900 dark:text-slate-100">
-                Webhook Payload Format
+                
+                Formát užitočného zaťaženia webhooku
               </h3>
               <pre className="overflow-x-auto rounded bg-slate-50 p-3 text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
                 {`POST https://your-server.com/webhook
@@ -1541,7 +1558,8 @@ X-Webhook-Signature: <hmac-sha256-hex>
             {/* Signature verification */}
             <div className="mt-4 rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
               <h3 className="mb-2 text-sm font-medium text-slate-900 dark:text-slate-100">
-                Verifying Signatures
+                
+                Overovanie podpisov
               </h3>
               <pre className="overflow-x-auto rounded bg-slate-50 p-3 text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
                 {`import crypto from "crypto";
@@ -1567,17 +1585,21 @@ function verifySignature(
           {/* Footer */}
           <footer className="mt-16 border-t border-slate-200 pt-6 text-center text-sm text-slate-500 dark:border-slate-700">
             <p>
-              OpenVPM &mdash; Open-source veterinary practice management.
+              
+              OpenVPM Agent nie je nakonfigurovaný.
             </p>
             <p className="mt-1">
-              API questions? Check the{" "}
+              
+              Otázky týkajúce sa API? Skontrolujte{" "}
               <a
                 href="https://github.com/evangauer/openvpm"
                 className="text-teal-600 hover:underline dark:text-teal-400"
               >
-                GitHub repository
+                
+                Úložisko GitHub
               </a>{" "}
-              or open an issue.
+              
+              alebo otvorte problém.
             </p>
           </footer>
         </div>

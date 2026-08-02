@@ -91,12 +91,12 @@ import {
 type Tab = "soap" | "vaccinations" | "prescriptions" | "problems" | "labResults" | "procedures";
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "soap", label: "SOAP Notes", icon: FileText },
-  { id: "vaccinations", label: "Vaccinations", icon: Syringe },
-  { id: "prescriptions", label: "Prescriptions", icon: Pill },
-  { id: "problems", label: "Problems", icon: ClipboardList },
-  { id: "labResults", label: "Lab Results", icon: FlaskConical },
-  { id: "procedures", label: "Procedures", icon: Scissors },
+  { id: "soap", label: "Poznámky SOAP", icon: FileText },
+  { id: "vaccinations", label: "Očkovanie", icon: Syringe },
+  { id: "prescriptions", label: "Predpisy", icon: Pill },
+  { id: "problems", label: "Problémy", icon: ClipboardList },
+  { id: "labResults", label: "Laboratórne výsledky", icon: FlaskConical },
+  { id: "procedures", label: "Postupy", icon: Scissors },
 ];
 
 function RecordsChartChunkLoading() {
@@ -189,18 +189,18 @@ function getVaccineDueStatus(
 
   if (daysUntilDue < 0)
     return {
-      label: "Overdue",
+      label: "Po splatnosti",
       className:
         "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
     };
   if (daysUntilDue <= 30)
     return {
-      label: "Due Soon",
+      label: "Termín čoskoro",
       className:
         "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
     };
   return {
-    label: "Current",
+    label: "Aktuálne",
     className:
       "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
   };
@@ -384,7 +384,8 @@ function PrescriptionSafetyPanel({
     return (
       <div className="flex items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        Checking prescription safety
+        
+        Kontrola bezpečnosti predpisovania
       </div>
     );
   }
@@ -393,7 +394,7 @@ function PrescriptionSafetyPanel({
     return (
       <div className="flex items-start gap-2 rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-        <span>Unable to check prescription safety. {errorMessage}</span>
+        <span>Nie je možné skontrolovať bezpečnosť predpisovania. {errorMessage}</span>
       </div>
     );
   }
@@ -402,7 +403,8 @@ function PrescriptionSafetyPanel({
     return (
       <div className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
         <CheckCircle2 className="h-4 w-4" />
-        No allergy or active-medication warnings found.
+        
+        Nenašli sa žiadne upozornenia na alergie alebo aktívne lieky.
       </div>
     );
   }
@@ -425,7 +427,8 @@ function PrescriptionSafetyPanel({
             hasBlockingWarning ? "text-amber-700" : "text-muted-foreground"
           )}
         />
-        Prescription safety warnings
+        
+        Bezpečnostné upozornenia na predpis
       </div>
       <div className="space-y-2">
         {warnings.map((warning, index) => (
@@ -439,7 +442,7 @@ function PrescriptionSafetyPanel({
                 {warning.severity}
               </Badge>
               {warning.requiresOverride && (
-                <Badge variant="outline">Override required</Badge>
+                <Badge variant="outline">Vyžaduje sa prepísanie</Badge>
               )}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -722,7 +725,7 @@ export default function RecordsPage() {
 
   const createVaccination = trpc.records.createVaccination.useMutation({
     onSuccess: () => {
-      toast.success("Vaccination recorded");
+      toast.success("Očkovanie zaznamenané");
       refetchVaccinations();
       setShowVaccinationForm(false);
       setVaccinationForm(initialVaccinationForm());
@@ -733,7 +736,7 @@ export default function RecordsPage() {
   });
   const createProblem = trpc.records.createProblem.useMutation({
     onSuccess: () => {
-      toast.success("Problem added");
+      toast.success("Problém pridaný");
       refetchProblems();
       setShowProblemForm(false);
       setProblemForm(initialProblemForm());
@@ -744,7 +747,7 @@ export default function RecordsPage() {
   });
   const updateProblemStatus = trpc.records.updateProblemStatus.useMutation({
     onSuccess: () => {
-      toast.success("Problem status updated");
+      toast.success("Stav problému bol aktualizovaný");
       refetchProblems();
     },
     onError: (err) => {
@@ -753,7 +756,7 @@ export default function RecordsPage() {
   });
   const createLabResult = trpc.records.createLabResult.useMutation({
     onSuccess: () => {
-      toast.success("Lab result created");
+      toast.success("Výsledok laboratória vytvorený");
       refetchLabResults();
       setShowLabForm(false);
       setLabForm(initialLabResultForm());
@@ -765,7 +768,7 @@ export default function RecordsPage() {
   const updateLabResultStatus =
     trpc.records.updateLabResultStatus.useMutation({
       onSuccess: () => {
-        toast.success("Lab result status updated");
+        toast.success("Stav výsledkov laboratória bol aktualizovaný");
         refetchLabResults();
       },
       onError: (err) => {
@@ -774,7 +777,7 @@ export default function RecordsPage() {
     });
   const createProcedure = trpc.records.createProcedure.useMutation({
     onSuccess: () => {
-      toast.success("Procedure recorded");
+      toast.success("Zaznamenaný postup");
       refetchProcedures();
       setShowProcedureForm(false);
       setProcedureForm(initialProcedureForm());
@@ -785,7 +788,7 @@ export default function RecordsPage() {
   });
   const createPrescription = trpc.records.createPrescription.useMutation({
     onSuccess: () => {
-      toast.success("Prescription created");
+      toast.success("Predpis vytvorený");
       refetchPrescriptions();
       setShowPrescriptionForm(false);
       setPrescriptionForm(initialPrescriptionForm(recordsTimeZone));
@@ -894,7 +897,8 @@ export default function RecordsPage() {
             Medical Records
           </h2>
           <p className="text-sm text-muted-foreground">
-            Clinical documentation and patient history
+            
+            Klinická dokumentácia a anamnéza pacienta
           </p>
         </div>
         {selectedPatient && canCreateSoapNotes && (
@@ -904,7 +908,8 @@ export default function RecordsPage() {
             }
           >
             <Plus className="mr-2 h-4 w-4" />
-            New SOAP Note
+            
+            Nová poznámka SOAP
           </Button>
         )}
       </div>
@@ -914,7 +919,7 @@ export default function RecordsPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search patients by name..."
+            placeholder="Hľadať pacientov podľa mena..."
             value={searchQuery}
             maxLength={PATIENT_SEARCH_MAX_LENGTH}
             onChange={(e) => {
@@ -941,11 +946,13 @@ export default function RecordsPage() {
             ) : isSearchingPatients ? (
               <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                Searching patients...
+                
+                Hľadáme pacientov...
               </div>
             ) : searchResults && searchResults.length === 0 ? (
               <div className="px-4 py-3 text-sm text-muted-foreground">
-                No patients found
+                
+                Nenašli sa žiadni pacienti
               </div>
             ) : (
               searchResults?.map((patient) => (
@@ -979,7 +986,8 @@ export default function RecordsPage() {
                   </div>
                   {patient.clientFirstName && (
                     <span className="text-xs text-muted-foreground">
-                      Owner: {patient.clientFirstName}{" "}
+                      
+                      Vlastník: {patient.clientFirstName}{" "}
                       {patient.clientLastName}
                     </span>
                   )}
@@ -1004,7 +1012,8 @@ export default function RecordsPage() {
             </span>
             {selectedPatient.clientFirstName && (
               <span className="ml-3 text-muted-foreground">
-                Owner: {selectedPatient.clientFirstName}{" "}
+                
+                Vlastník: {selectedPatient.clientFirstName}{" "}
                 {selectedPatient.clientLastName}
               </span>
             )}
@@ -1027,7 +1036,8 @@ export default function RecordsPage() {
               setPrescriptionForm(initialPrescriptionForm());
             }}
           >
-            Change Patient
+            
+            Zmeniť pacienta
           </Button>
         </div>
       )}
@@ -1072,7 +1082,7 @@ export default function RecordsPage() {
                 }
               />
             ) : recordsSettingsLoading ? (
-              <RecordsLoadingPanel label="Loading records settings..." />
+              <RecordsLoadingPanel label="Načítavajú sa nastavenia záznamov..." />
             ) : (
               <>
             {/* SOAP Notes Tab */}
@@ -1087,7 +1097,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingSoapNotes ? (
-                  <RecordsLoadingPanel label="Loading SOAP notes..." />
+                  <RecordsLoadingPanel label="Načítavam poznámky SOAP..." />
                 ) : soapNotes && soapNotes.length > 0 ? (
                   <div className="space-y-3">
                     {soapNotes.map((note) => {
@@ -1117,7 +1127,8 @@ export default function RecordsPage() {
                                   </p>
                                   {note.imported ? (
                                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-                                      Imported
+                                      
+                                      Dovezené
                                     </span>
                                   ) : null}
                                 </div>
@@ -1147,7 +1158,8 @@ export default function RecordsPage() {
                             <div className="border-t border-border px-4 py-4 space-y-4">
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                                  Subjective
+                                  
+                                  Subjektívne
                                 </h4>
                                 <p className="text-sm">
                                   {note.subjective || "--"}
@@ -1155,7 +1167,8 @@ export default function RecordsPage() {
                               </div>
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                                  Objective
+                                  
+                                  Agenta OpenVPM môžu spustiť iba správcovia a veterinári.
                                 </h4>
                                 <p className="text-sm">
                                   {note.objective || "--"}
@@ -1163,7 +1176,8 @@ export default function RecordsPage() {
                               </div>
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                                  Assessment
+                                  
+                                  Hodnotenie
                                 </h4>
                                 <p className="text-sm">
                                   {note.assessment || "--"}
@@ -1171,7 +1185,8 @@ export default function RecordsPage() {
                               </div>
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                                  Plan
+                                  
+                                  Plán
                                 </h4>
                                 <p className="text-sm">{note.plan || "--"}</p>
                               </div>
@@ -1184,11 +1199,11 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={FileText}
-                    title="No SOAP notes yet"
+                    title="Zatiaľ žiadne poznámky SOAP"
                     action={
                       canCreateSoapNotes
                         ? {
-                            label: "Create first note",
+                            label: "Vytvoriť prvú poznámku",
                             onClick: () =>
                               router.push(
                                 `/records/new-soap/${selectedPatient.id}`
@@ -1218,7 +1233,8 @@ export default function RecordsPage() {
                       }}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Vaccination
+                      
+                      Pridať očkovanie
                     </Button>
                   </div>
                 )}
@@ -1244,7 +1260,8 @@ export default function RecordsPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Vaccine *
+                          
+                          Vakcína *
                         </label>
                         <Input
                           name="vaccineName"
@@ -1257,12 +1274,13 @@ export default function RecordsPage() {
                               vaccineName: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Rabies"
+                          placeholder="napr. Besnota"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Next Due
+                          
+                          Ďalší termín
                         </label>
                         <Input
                           name="nextDueDate"
@@ -1283,7 +1301,8 @@ export default function RecordsPage() {
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Lot Number
+                          
+                          Číslo šarže
                         </label>
                         <Input
                           name="lotNumber"
@@ -1295,12 +1314,13 @@ export default function RecordsPage() {
                               lotNumber: e.target.value,
                             }))
                           }
-                          placeholder="e.g. RAB-2026-04"
+                          placeholder="napr. RAB-2026-04"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Manufacturer
+                          
+                          Mark Reviewed
                         </label>
                         <Input
                           name="manufacturer"
@@ -1312,7 +1332,7 @@ export default function RecordsPage() {
                               manufacturer: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Zoetis"
+                          placeholder="napr. Zoetis"
                         />
                       </div>
                     </div>
@@ -1333,7 +1353,8 @@ export default function RecordsPage() {
                           setVaccinationForm(initialVaccinationForm());
                         }}
                       >
-                        Cancel
+                        
+                        Zrušiť
                       </Button>
                     </div>
                   </form>
@@ -1348,26 +1369,31 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingVaccinations ? (
-                  <RecordsLoadingPanel label="Loading vaccinations..." />
+                  <RecordsLoadingPanel label="Načítava sa očkovanie..." />
                 ) : vaccinations && vaccinations.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-border bg-muted/50">
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Vaccine
+                            
+                            Vakcína
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Date Administered
+                            
+                            Dátum podania
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Next Due
+                            
+                            Ďalší termín
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Administered By
+                            
+                            Spravuje
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Status
+                            
+                            Stav
                           </th>
                         </tr>
                       </thead>
@@ -1423,7 +1449,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={Syringe}
-                    title="No vaccination records yet"
+                    title="Zatiaľ žiadne záznamy o očkovaní"
                   />
                 )}
               </div>
@@ -1453,7 +1479,8 @@ export default function RecordsPage() {
                       }}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      New Prescription
+                      
+                      Nový predpis
                     </Button>
                   </div>
                 )}
@@ -1472,7 +1499,7 @@ export default function RecordsPage() {
                         !prescriptionForm.acknowledgeSafetyWarnings
                       ) {
                         toast.error(
-                          "Acknowledge prescription safety warnings before saving."
+                          "Pred uložením si vezmite na vedomie bezpečnostné upozornenia na predpis."
                         );
                         return;
                       }
@@ -1517,12 +1544,13 @@ export default function RecordsPage() {
                               acknowledgeSafetyWarnings: false,
                             }))
                           }
-                          placeholder="e.g. Carprofen"
+                          placeholder="napr. Carprofen"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Inventory Item
+                          
+                          Položka zásob
                         </label>
                         <select
                           value={prescriptionForm.productId}
@@ -1545,18 +1573,18 @@ export default function RecordsPage() {
                           }}
                           className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         >
-                          <option value="">Not dispensed from inventory</option>
+                          <option value="">. Poznámky</option>
                           {inventoryProducts.isLoading ? (
-                            <option disabled>Loading inventory...</option>
+                            <option disabled>Načítavam inventár...</option>
                           ) : null}
                           {inventoryProducts.error || inventoryProductsMissing ? (
-                            <option disabled>Inventory unavailable</option>
+                            <option disabled>Inventár nie je k dispozícii</option>
                           ) : null}
                           {verifiedInventoryProducts
                             ? verifiedInventoryProducts.items.map((product) => (
                                 <option key={product.id} value={product.id}>
-                                  {product.name} ({product.stockQuantity} on
-                                  hand)
+                                  {product.name} ({product.stockQuantity}  na
+                                  ruka)
                                 </option>
                               ))
                             : null}
@@ -1569,13 +1597,15 @@ export default function RecordsPage() {
                         ) : prescriptionForm.productId &&
                           selectedPrescriptionProduct ? (
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Stock will be deducted by the dispensed quantity.
+                            
+                            Zásoby budú odpočítané podľa vydaného množstva.
                           </p>
                         ) : null}
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Dosage *
+                          
+                          Dávkovanie *
                         </label>
                         <Input
                           required
@@ -1587,12 +1617,13 @@ export default function RecordsPage() {
                               dosage: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 75 mg"
+                          placeholder="napr. 75 mg"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Frequency *
+                          
+                          Frekvencia *
                         </label>
                         <Input
                           required
@@ -1604,12 +1635,13 @@ export default function RecordsPage() {
                               frequency: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Every 12 hours"
+                          placeholder="napr. Každých 12 hodín"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Quantity
+                          
+                          Množstvo
                         </label>
                         <Input
                           type="number"
@@ -1623,12 +1655,13 @@ export default function RecordsPage() {
                               quantity: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 30"
+                          placeholder="napr. 30"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Refills
+                          
+                          Náplne
                         </label>
                         <Input
                           type="number"
@@ -1646,7 +1679,8 @@ export default function RecordsPage() {
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Start Date *
+                          
+                          Dátum začiatku *
                         </label>
                         <Input
                           type="date"
@@ -1662,7 +1696,8 @@ export default function RecordsPage() {
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          End Date
+                          
+                          Dátum ukončenia
                         </label>
                         <Input
                           type="date"
@@ -1678,7 +1713,8 @@ export default function RecordsPage() {
                       </div>
                       <div className="sm:col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Instructions
+                          
+                          Pokyny
                         </label>
                         <Input
                           value={prescriptionForm.instructions}
@@ -1689,7 +1725,7 @@ export default function RecordsPage() {
                               instructions: e.target.value,
                             }))
                           }
-                          placeholder="Give with food"
+                          placeholder="Podávajte s jedlom"
                         />
                       </div>
                     </div>
@@ -1723,8 +1759,9 @@ export default function RecordsPage() {
                             className="mt-0.5"
                           />
                           <span>
-                            Clinician reviewed and accepts these prescription
-                            safety warnings.
+                            
+                            Lekár skontroloval a akceptuje tieto predpisy
+                            bezpečnostné upozornenia.
                           </span>
                         </label>
                       )}
@@ -1739,7 +1776,8 @@ export default function RecordsPage() {
                         {createPrescription.isPending ? (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         ) : null}
-                        Save Prescription
+                        
+                        Uložiť predpis
                       </Button>
                       <Button
                         type="button"
@@ -1752,7 +1790,8 @@ export default function RecordsPage() {
                           );
                         }}
                       >
-                        Cancel
+                        
+                        Zrušiť
                       </Button>
                     </div>
                   </form>
@@ -1767,7 +1806,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingPrescriptions ? (
-                  <RecordsLoadingPanel label="Loading prescriptions..." />
+                  <RecordsLoadingPanel label="Načítavam recepty..." />
                 ) : prescriptionsList && prescriptionsList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1777,22 +1816,28 @@ export default function RecordsPage() {
                             Medication
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Dosage
+                            
+                            Dávkovanie
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Frequency
+                            
+                            Frekvencia
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Inventory
+                            
+                            Inventár
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Status
+                            
+                            Stav
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Refills
+                            
+                            Náplne
                           </th>
                           <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                            Actions
+                            
+                            Akcie
                           </th>
                         </tr>
                       </thead>
@@ -1815,7 +1860,8 @@ export default function RecordsPage() {
                                   {rx.productName}
                                   {rx.quantity != null ? (
                                     <span className="block text-xs">
-                                      Dispensed {rx.quantity}
+                                      
+                                      Vydané {rx.quantity}
                                     </span>
                                   ) : null}
                                 </span>
@@ -1840,7 +1886,7 @@ export default function RecordsPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                title="Print Label"
+                                title="Vytlačiť štítok"
                                 onClick={async () => {
                                   const clientName = [
                                     selectedPatient?.clientFirstName,
@@ -1882,7 +1928,8 @@ export default function RecordsPage() {
                                 }}
                               >
                                 <Tag className="mr-1 h-3.5 w-3.5" />
-                                Print Label
+                                
+                                Vytlačiť štítok
                               </Button>
                             </td>
                           </tr>
@@ -1891,7 +1938,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Pill} title="No prescriptions yet" />
+                  <EmptyState icon={Pill} title="Zatiaľ žiadne recepty" />
                 )}
               </div>
             )}
@@ -1912,7 +1959,8 @@ export default function RecordsPage() {
                       }}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Problem
+                      
+                      Pridať problém
                     </Button>
                   </div>
                 )}
@@ -1934,7 +1982,8 @@ export default function RecordsPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Problem *
+                          
+                          Problém *
                         </label>
                         <Input
                           name="description"
@@ -1947,12 +1996,13 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Chronic otitis"
+                          placeholder="napr. Chronický zápal stredného ucha"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Status
+                          
+                          Stav
                         </label>
                         <select
                           name="status"
@@ -1974,7 +2024,8 @@ export default function RecordsPage() {
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Onset Date
+                          
+                          Otvoriť v časti Fakturácia
                         </label>
                         <Input
                           name="onsetDate"
@@ -2011,7 +2062,8 @@ export default function RecordsPage() {
                           setProblemForm(initialProblemForm());
                         }}
                       >
-                        Cancel
+                        
+                        Zrušiť
                       </Button>
                     </div>
                   </form>
@@ -2026,7 +2078,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProblems ? (
-                  <RecordsLoadingPanel label="Loading problems..." />
+                  <RecordsLoadingPanel label="Problémy s načítaním..." />
                 ) : problems && problems.length > 0 ? (
                   <div className="space-y-2">
                     {problems.map((problem) => (
@@ -2047,7 +2099,8 @@ export default function RecordsPage() {
                           </p>
                           {problem.onsetDate && (
                             <p className="text-xs text-muted-foreground mt-0.5">
-                              Onset:{" "}
+                              
+                              Otvorený rozvrh{" "}
                               {formatClinicalDate(
                                 problem.onsetDate,
                                 recordsTimeZone
@@ -2083,7 +2136,8 @@ export default function RecordsPage() {
                                     })
                                   }
                                 >
-                                  Reopen
+                                  
+                                  Znovu otvoriť
                                 </Button>
                               )}
                               {problem.status !== "chronic" && (
@@ -2099,7 +2153,8 @@ export default function RecordsPage() {
                                     })
                                   }
                                 >
-                                  Chronic
+                                  
+                                  Chronická
                                 </Button>
                               )}
                               {problem.status !== "resolved" && (
@@ -2115,7 +2170,8 @@ export default function RecordsPage() {
                                     })
                                   }
                                 >
-                                  Resolve
+                                  
+                                  Vyriešiť
                                 </Button>
                               )}
                             </div>
@@ -2127,7 +2183,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={ClipboardList}
-                    title="No problems recorded"
+                    title="Žiadne zaznamenané problémy"
                   />
                 )}
               </div>
@@ -2141,12 +2197,14 @@ export default function RecordsPage() {
                     <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
                     <div>
                       <p className="font-medium">
-                        Manual lab entry only
+                        
+                        Manufacturer
                       </p>
                       <p className="mt-1 text-xs leading-5 text-amber-900 dark:text-amber-200">
-                        Reference lab ordering is disabled until IDEXX, Antech,
-                        or Zoetis provider credentials and a real adapter are
-                        connected.
+                        
+                        Objednávanie referenčného laboratória je zakázané, kým IDEXX, Antech,
+                        alebo poverenia poskytovateľa Zoetis a skutočný adaptér sú
+                        pripojený.
                       </p>
                     </div>
                   </div>
@@ -2159,7 +2217,8 @@ export default function RecordsPage() {
                       }}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Manual Lab Result
+                      
+                      Pridať výsledok manuálneho laboratória
                     </Button>
                   )}
                 </div>
@@ -2185,7 +2244,8 @@ export default function RecordsPage() {
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Test Name *
+                          
+                          Text z vášho existujúceho čísla
                         </label>
                         <Input
                           name="testName"
@@ -2198,12 +2258,13 @@ export default function RecordsPage() {
                               testName: e.target.value,
                             }))
                           }
-                          placeholder="e.g. CBC"
+                          placeholder="napr. CBC"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Result Value
+                          
+                          Hodnota výsledku
                         </label>
                         <Input
                           name="resultValue"
@@ -2215,12 +2276,13 @@ export default function RecordsPage() {
                               resultValue: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 12.5"
+                          placeholder="napr. 12,5"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Unit
+                          
+                          Jednotka
                         </label>
                         <Input
                           name="unit"
@@ -2232,12 +2294,13 @@ export default function RecordsPage() {
                               unit: e.target.value,
                             }))
                           }
-                          placeholder="e.g. mg/dL"
+                          placeholder="napr. mg/dl"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Ref. Range Low
+                          
+                          Ref. Nízky rozsah
                         </label>
                         <Input
                           name="referenceRangeLow"
@@ -2257,12 +2320,13 @@ export default function RecordsPage() {
                               referenceRangeLow: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 7.0"
+                          placeholder="napr. 7,0"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Ref. Range High
+                          
+                          Ref. Vysoký rozsah
                         </label>
                         <Input
                           name="referenceRangeHigh"
@@ -2286,7 +2350,7 @@ export default function RecordsPage() {
                               referenceRangeHigh: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 27.0"
+                          placeholder="napr. 27,0"
                         />
                       </div>
                     </div>
@@ -2307,7 +2371,8 @@ export default function RecordsPage() {
                           setLabForm(initialLabResultForm());
                         }}
                       >
-                        Cancel
+                        
+                        Zrušiť
                       </Button>
                     </div>
                   </form>
@@ -2322,7 +2387,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingLabResults ? (
-                  <RecordsLoadingPanel label="Loading lab results..." />
+                  <RecordsLoadingPanel label="Načítavajú sa laboratórne výsledky..." />
                 ) : labResultsList && labResultsList.length > 0 ? (
                   <div className="space-y-4">
                     {labTrendGroups.length > 0 && (
@@ -2333,28 +2398,37 @@ export default function RecordsPage() {
                         <thead>
                           <tr className="border-b border-border bg-muted/50">
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Test Name
+                              
+                              Pripomenutie názvu každého miesta || Testovacia správa od odoslaná || Číslo testu * || klientov
+          ktorí odpovedajú, pristanú vo vašej doručenej pošte; STOP opt-outs sú spracované automaticky.
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Result
+                              
+                              Výsledok
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Unit
+                              
+                              Jednotka
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Reference Range
+                              
+                              Referenčný rozsah
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Status
+                              
+                              Stav
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Ordered By
+                              
+                              Zoradené podľa
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Date
+                              
+                              Dátum
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                              Actions
+                              
+                              Akcie
                             </th>
                           </tr>
                         </thead>
@@ -2429,7 +2503,8 @@ export default function RecordsPage() {
                                         updateLabResultStatus.isPending
                                       }
                                     >
-                                      Mark Reviewed
+                                      
+                                      Mark a problem as resolved or reactivate it.
                                     </Button>
                                   ) : null}
                                 </td>
@@ -2441,7 +2516,7 @@ export default function RecordsPage() {
                     </div>
                   </div>
                 ) : (
-                  <EmptyState icon={FlaskConical} title="No lab results yet" />
+                  <EmptyState icon={FlaskConical} title="Zatiaľ žiadne laboratórne výsledky" />
                 )}
               </div>
             )}
@@ -2461,7 +2536,8 @@ export default function RecordsPage() {
                       }}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Procedure
+                      
+                      Pridať postup
                     </Button>
                   </div>
                 )}
@@ -2491,7 +2567,8 @@ export default function RecordsPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Name *
+                          
+                          Meno *
                         </label>
                         <Input
                           name="name"
@@ -2504,12 +2581,13 @@ export default function RecordsPage() {
                               name: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Dental Prophylaxis"
+                          placeholder="napr. Zubná profylaxia"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Duration (minutes)
+                          
+                          Trvanie (minúty)
                         </label>
                         <Input
                           name="durationMinutes"
@@ -2529,12 +2607,13 @@ export default function RecordsPage() {
                               durationMinutes: e.target.value,
                             }))
                           }
-                          placeholder="e.g. 45"
+                          placeholder="napr. 45"
                         />
                       </div>
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Description
+                          
+                          Popis
                         </label>
                         <Input
                           name="description"
@@ -2546,12 +2625,13 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder="Brief description of the procedure"
+                          placeholder="Stručný opis postupu"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Anesthesia Used
+                          
+                          Použitá anestézia
                         </label>
                         <Input
                           name="anesthesiaUsed"
@@ -2563,12 +2643,13 @@ export default function RecordsPage() {
                               anesthesiaUsed: e.target.value,
                             }))
                           }
-                          placeholder="e.g. Isoflurane"
+                          placeholder="napr. Izofluran"
                         />
                       </div>
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
-                          Notes
+                          
+                          Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
                         </label>
                         <Input
                           name="notes"
@@ -2580,7 +2661,7 @@ export default function RecordsPage() {
                               notes: e.target.value,
                             }))
                           }
-                          placeholder="Additional notes"
+                          placeholder="Doplňujúce poznámky"
                         />
                       </div>
                     </div>
@@ -2601,7 +2682,8 @@ export default function RecordsPage() {
                           setProcedureForm(initialProcedureForm());
                         }}
                       >
-                        Cancel
+                        
+                        Zrušiť
                       </Button>
                     </div>
                   </form>
@@ -2616,26 +2698,31 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProcedures ? (
-                  <RecordsLoadingPanel label="Loading procedures..." />
+                  <RecordsLoadingPanel label="Postupy načítania..." />
                 ) : proceduresList && proceduresList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-border bg-muted/50">
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Name
+                            
+                            Meno
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Performed By
+                            
+                            Účinkuje
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Duration
+                            
+                            Trvanie
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Anesthesia
+                            
+                            Anestézia
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                            Date
+                            
+                            Dátum
                           </th>
                         </tr>
                       </thead>
@@ -2678,7 +2765,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Scissors} title="No procedures recorded" />
+                  <EmptyState icon={Scissors} title="Neboli zaznamenané žiadne postupy" />
                 )}
               </div>
             )}
@@ -2693,7 +2780,7 @@ export default function RecordsPage() {
         <EmptyState
           className="mt-6"
           icon={Search}
-          title="Search for a patient above to view their medical records"
+          title="Vyhľadajte pacienta vyššie a pozrite si jeho lekárske záznamy"
         />
       )}
     </div>

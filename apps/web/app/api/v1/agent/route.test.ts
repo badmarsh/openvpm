@@ -149,7 +149,7 @@ describe("POST /api/v1/agent", () => {
 
     expect(response.status).toBe(413);
     expect(json).toEqual({
-      error: { message: "Request body too large" },
+      error: { message: "Telo požiadavky je príliš veľké" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalled();
     expect(mocks.withTenant).not.toHaveBeenCalled();
@@ -226,7 +226,7 @@ describe("POST /api/v1/agent", () => {
 
     expect(response.status).toBe(403);
     expect(json).toEqual({
-      error: { message: "API key missing required scope: agent:write" },
+      error: { message: "Kľúč API chýba požadovaný rozsah: agent:write" },
     });
     expect(mocks.withTenant).not.toHaveBeenCalled();
     expect(mocks.runAgent).not.toHaveBeenCalled();
@@ -283,7 +283,7 @@ describe("POST /api/v1/agent", () => {
 
     expect(response.status).toBe(404);
     expect(json).toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
     expect(mocks.runAgent).not.toHaveBeenCalled();
     expect(mocks.tx.select).toHaveBeenCalled();
@@ -310,7 +310,7 @@ describe("POST /api/v1/agent", () => {
       resetAt.toISOString()
     );
     expect(json).toEqual({
-      error: { message: "Too many agent runs. Try again later." },
+      error: { message: "Príliš veľa behu agentov. Skúste to znova neskôr." },
     });
     expect(mocks.runAgent).toHaveBeenCalledWith({
       instruction: "Summarize today's schedule",
@@ -336,7 +336,7 @@ describe("POST /api/v1/agent", () => {
 
     expect(response.status).toBe(404);
     expect(json).toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
   });
 

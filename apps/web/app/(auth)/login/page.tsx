@@ -15,25 +15,25 @@ import { isValidEmail } from "@/lib/utils";
 const DEMO_ROLES = [
   {
     label: "Admin",
-    description: "Full access. Everything a practice owner sees.",
+    description: "Úplný prístup. Všetko, čo majiteľ praxe vidí.",
     email: "admin@neighborhoodvet.example.com",
     password: "password123",
   },
   {
     label: "Veterinarian",
-    description: "Exam room, SOAP notes, prescriptions",
+    description: "Skúšobňa, poznámky SOAP, recepty",
     email: "sarah.chen@neighborhoodvet.example.com",
     password: "password123",
   },
   {
     label: "Technician",
-    description: "Treatments, lab workflow, whiteboard",
+    description: "Ošetrenia, pracovný postup v laboratóriu, tabuľa",
     email: "jamie.torres@neighborhoodvet.example.com",
     password: "password123",
   },
   {
-    label: "Front Desk",
-    description: "Scheduling, check-in, billing",
+    label: "Recepcia",
+    description: "Plánovanie, registrácia, fakturácia",
     email: "morgan.bailey@neighborhoodvet.example.com",
     password: "password123",
   },
@@ -116,20 +116,24 @@ function LoginPageInner() {
             <PawMark className="h-6 w-6" />
           </span>
           <h1 className="font-heading text-2xl font-bold text-foreground">
-            OpenVPM
+            
+            Agent OpenVPM
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Sign in to your practice
+            
+            Prihláste sa do svojej praxe
           </p>
         </div>
 
         {DEMO_MODE && (
           <div className="mb-6 rounded-md border border-primary/20 bg-primary/5 p-4">
             <p className="mb-1 text-sm font-semibold text-foreground">
-              Try the demo — one click to log in
+              
+              Vyskúšajte demo — jedným kliknutím sa prihláste
             </p>
             <p className="mb-3 text-xs text-muted-foreground">
-              You&apos;re in the live OpenVPM demo. Pick a role to sign in instantly.
+              
+              Nachádzate sa v živej ukážke OpenVPM. Vyberte rolu, aby ste sa mohli okamžite prihlásiť.
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {DEMO_ROLES.map((role) => (
@@ -141,7 +145,8 @@ function LoginPageInner() {
                   className="group flex flex-col rounded-md border border-border bg-background p-2.5 text-left transition-colors hover:border-primary hover:bg-primary/5 disabled:opacity-50"
                 >
                   <span className="text-sm font-medium text-foreground group-hover:text-primary">
-                    Log in as {role.label}
+                    
+                    Prihláste sa ako {role.label}
                   </span>
                   <span className="mt-0.5 text-xs text-muted-foreground">
                     {role.description}
@@ -151,7 +156,8 @@ function LoginPageInner() {
             </div>
             <details className="mt-3 text-xs text-muted-foreground">
               <summary className="cursor-pointer select-none hover:text-foreground">
-                View raw credentials
+                
+                Zobraziť nespracované poverenia
               </summary>
               <div className="mt-2 space-y-1 rounded border border-border bg-background p-2 font-mono">
                 {DEMO_ROLES.map((role) => (
@@ -208,7 +214,7 @@ function LoginPageInner() {
               required
               maxLength={AUTH_PASSWORD_MAX_LENGTH}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="Enter your password"
+              placeholder="Zadajte svoje heslo"
             />
           </div>
 
@@ -223,13 +229,16 @@ function LoginPageInner() {
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
           <Link href="/forgot-password" className="text-primary hover:underline">
-            Forgot your password?
+            
+            Zabudli ste heslo?
           </Link>
         </p>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
+          
+          Nemáte účet?{" "}
           <Link href="/register" className="text-primary hover:underline">
-            Register your practice
+            
+            Zaregistrujte svoju prax
           </Link>
         </p>
       </div>

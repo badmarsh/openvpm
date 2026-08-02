@@ -18,7 +18,8 @@ export function DayVignette() {
     >
       <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
         <ClipboardList className="h-3 w-3" aria-hidden="true" />
-        Today
+        
+        Dnes
       </div>
       <div className="flex items-center gap-2">
         <span className="w-8 text-right text-[10px] tabular-nums text-muted-foreground">
@@ -26,9 +27,11 @@ export function DayVignette() {
         </span>
         <span className="flex flex-1 items-center gap-1.5 rounded-md bg-primary/15 px-2 py-1 text-xs font-medium text-primary">
           <PawPrint className="h-3 w-3" aria-hidden="true" />
-          Biscuit · Wellness
+          
+          Sušienky · Wellness
           <span className="ml-auto rounded-full bg-white px-1.5 py-0.5 text-[9px] font-semibold text-primary shadow-sm">
-            Here
+            
+            Tu
           </span>
         </span>
       </div>
@@ -37,7 +40,8 @@ export function DayVignette() {
           11:30
         </span>
         <span className="flex-1 rounded-md bg-white px-2 py-1 text-xs text-foreground shadow-sm">
-          Luna · Vaccines
+          
+          Luna · Vakcíny
         </span>
       </div>
       <div className="flex items-center gap-2">
@@ -45,7 +49,8 @@ export function DayVignette() {
           2:00
         </span>
         <span className="flex-1 rounded-md border border-dashed border-border bg-white/60 px-2 py-1 text-xs text-muted-foreground">
-          Open slot
+          
+          OpenVPM — Správa veterinárnej praxe s otvoreným zdrojom.
         </span>
       </div>
     </div>
@@ -64,9 +69,10 @@ export function PortalVignette() {
           <PawPrint className="h-3.5 w-3.5" aria-hidden="true" />
         </span>
         <div className="leading-tight">
-          <p className="text-xs font-semibold">Biscuit</p>
+          <p className="text-xs font-semibold">Sušienka</p>
           <p className="text-[10px] text-muted-foreground">
-            Jordan&apos;s portal
+            
+            Jordanov portál
           </p>
         </div>
         <Globe
@@ -89,9 +95,11 @@ export function PortalVignette() {
         ))}
       </div>
       <div className="rounded-md bg-white px-2 py-1.5 text-[11px] leading-4 text-foreground shadow-sm">
-        Next visit: Tuesday 9:00
+        
+        Ďalšia návšteva: utorok 9:00
         <span className="mt-0.5 block text-[10px] text-muted-foreground">
-          Request a new visit any time
+          
+          Požiadať o novú návštevu kedykoľvek
         </span>
       </div>
     </div>
@@ -108,7 +116,8 @@ export function CalendarVignette() {
     >
       <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
         <CalendarPlus className="h-3 w-3" aria-hidden="true" />
-        Your calendar
+        
+        Váš kalendár
       </div>
       <div className="grid grid-cols-7 gap-1">
         {days.map((d) => (
@@ -129,7 +138,8 @@ export function CalendarVignette() {
           className="h-2 w-2 rounded-full bg-primary"
           aria-hidden="true"
         />
-        Biscuit · Wellness · 9:00
+        
+        Sušienka · Wellness · 9:00
       </div>
     </div>
   );

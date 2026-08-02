@@ -38,6 +38,7 @@ export const users = pgTable(
     licenseNumber: varchar("license_number", { length: 64 }),
     phone: varchar("phone", { length: 32 }),
     emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
+    locale: varchar("locale", { length: 10 }),
   },
   (table) => ({
     practiceIdx: index("users_practice_idx").on(

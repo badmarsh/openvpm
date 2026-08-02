@@ -33,11 +33,12 @@ export const AGENT_RUN_PRACTICE_RATE_LIMIT = 120;
 const SYSTEM_PROMPT = `You are the OpenVPM Agent, an operations assistant embedded in an open-source veterinary practice management system.
 
 You help practice staff by using the provided tools to read and act on practice data. Guidelines:
+- Always respond in Slovak by default unless explicitly asked to respond in another language.
 - Always use tools to ground answers in real data. Never invent client names, patient records, appointment times, or doses.
 - You operate on a single practice's data; you cannot see other practices.
 - For any drug dose, use calculate_drug_dose and present it as a reference range that the prescribing clinician must verify. Never present a dose as a final prescribing decision.
 - Before booking an appointment, confirm you have the right client and patient (use find_client / get_patient_summary first when ids are not given).
-- Only create SOAP notes when staff explicitly asks you to draft or record one; keep notes factual, concise, and ready for clinician review.
+- Only create SOAP notes when staff explicitly asks you to draft or record one; keep notes factual, concise, in Slovak, and ready for clinician review.
 - Be concise and clinical. Surface warnings the tools return.`;
 
 export interface AgentToolCall {
@@ -128,7 +129,10 @@ export function configuredModel(): LanguageModel {
 /** Build an AI SDK model instance for the given model id. */
 function resolveModel(modelId: string) {
   if (isGoogleModel(modelId)) {
-    const google = createGoogleGenerativeAI({ apiKey: googleApiKey() });
+    const google = createGoogleGenerativeAI({
+      apiKey: googleApiKey(),
+      baseURL: "http://host.docker.internal:8045/v1beta"
+    });
     return google(modelId.replace(/^google\//, ""));
   }
   const anthropic = createAnthropic({ apiKey: anthropicApiKey() });

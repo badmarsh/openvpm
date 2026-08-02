@@ -88,7 +88,8 @@ export default function NewInvoicePage() {
     return (
       <div className="mx-auto max-w-3xl">
         <InlineQueryMessage kind="loading">
-          Checking billing access...
+          
+          Kontroluje sa prístup k fakturácii...
         </InlineQueryMessage>
       </div>
     );
@@ -104,14 +105,15 @@ export default function NewInvoicePage() {
           onClick={() => router.push("/billing")}
         >
           <ArrowLeft className="mr-1 h-4 w-4" />
-          Back to Billing
+          
+          Späť na Fakturáciu
         </Button>
         <EmptyState
           icon={FileText}
-          title="Billing actions are read-only"
-          description="Only admins and front desk staff can create invoices or estimates."
+          title="Fakturačné akcie sú len na čítanie"
+          description="Poznámky SOAP môžu vytvárať iba veterinári a správcovia."
           action={{
-            label: "Back to Billing",
+            label: "Späť na Fakturáciu",
             onClick: () => router.push("/billing"),
           }}
         />
@@ -205,7 +207,7 @@ function NewInvoiceForm() {
   const utils = trpc.useUtils();
   const createInvoice = trpc.billing.createInvoice.useMutation({
     onSuccess: () => {
-      toast.success("Invoice created");
+      toast.success("Faktúra vytvorená");
       utils.billing.listInvoices.invalidate();
       router.push("/billing");
     },
@@ -316,7 +318,8 @@ function NewInvoiceForm() {
         onClick={() => router.push("/billing")}
       >
         <ArrowLeft className="mr-1 h-4 w-4" />
-        Back to Billing
+        
+        Späť na Fakturáciu
       </Button>
 
       <div className="flex items-center justify-between">
@@ -337,14 +340,14 @@ function NewInvoiceForm() {
             onChange={(e) => setIsEstimate(e.target.checked)}
             className="rounded border-gray-300"
           />
-          <span className="font-medium">Estimate</span>
+          <span className="font-medium">Odhad</span>
         </label>
       </div>
 
       {/* Client Search */}
       <div className="mt-6 space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Client *</label>
+          <label className="block text-sm font-medium mb-1">Klient *</label>
           {selectedClient ? (
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">
@@ -359,13 +362,14 @@ function NewInvoiceForm() {
                   setClientSearch("");
                 }}
               >
-                Change
+                
+                Zmeniť
               </Button>
             </div>
           ) : (
             <div className="relative">
               <Input
-                placeholder="Search clients..."
+                placeholder="Hľadať klientov..."
                 value={clientSearch}
                 maxLength={CLIENT_SEARCH_MAX_LENGTH}
                 onChange={(e) => setClientSearch(e.target.value)}
@@ -384,11 +388,13 @@ function NewInvoiceForm() {
                   ) : clientResults.isLoading ? (
                     <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      Searching clients...
+                      
+                      Hľadajú sa klienti...
                     </div>
                   ) : clientOptions.length === 0 ? (
                     <div className="px-4 py-3 text-sm text-muted-foreground">
-                      No clients found
+                      
+                      Nenašli sa žiadni klienti
                     </div>
                   ) : (
                     clientOptions.map((client) => (
@@ -426,14 +432,15 @@ function NewInvoiceForm() {
         {selectedClient && (
           <div>
             <label className="block text-sm font-medium mb-1">
-              Patient (optional)
+              
+              Pacient (voliteľné)
             </label>
             <select
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               value={selectedPatientId}
               onChange={(e) => setSelectedPatientId(e.target.value)}
             >
-              <option value="">-- No patient --</option>
+              <option value="">-- Žiadny pacient --</option>
               {patientOptions.map((patient) => (
                 <option key={patient.id} value={patient.id}>
                   {patient.name} ({patient.species})
@@ -449,7 +456,8 @@ function NewInvoiceForm() {
             ) : patientResults.isLoading ? (
               <div className="mt-2">
                 <InlineQueryMessage kind="loading">
-                  Loading client patients...
+                  
+                  Načítavam pacientov klientov...
                 </InlineQueryMessage>
               </div>
             ) : null}
@@ -458,7 +466,7 @@ function NewInvoiceForm() {
 
         {/* Add Line Item */}
         <div>
-          <label className="block text-sm font-medium mb-1">Line Items</label>
+          <label className="block text-sm font-medium mb-1">Riadkové položky</label>
           <div className="rounded-lg border border-border p-4 space-y-3">
             {servicesQuery.error || servicesMissing ? (
               <InlineQueryMessage kind="error">
@@ -468,7 +476,8 @@ function NewInvoiceForm() {
               </InlineQueryMessage>
             ) : servicesQuery.isLoading ? (
               <InlineQueryMessage kind="loading">
-                Loading billing services...
+                
+                Načítavam fakturačné služby...
               </InlineQueryMessage>
             ) : null}
             <div className="grid grid-cols-12 gap-2">
@@ -486,7 +495,7 @@ function NewInvoiceForm() {
               </div>
               <div className="col-span-3">
                 <Input
-                  placeholder="Description"
+                  placeholder="Popis"
                   value={itemDescription}
                   maxLength={BILLING_INVOICE_LINE_DESCRIPTION_MAX_LENGTH}
                   onChange={(e) => setItemDescription(e.target.value)}
@@ -498,7 +507,7 @@ function NewInvoiceForm() {
                   min={BILLING_INVOICE_LINE_QUANTITY_MIN}
                   max={BILLING_INVOICE_LINE_QUANTITY_MAX}
                   step={1}
-                  placeholder="Qty"
+                  placeholder="Množstvo"
                   value={itemQuantity}
                   onChange={(e) =>
                     setItemQuantity(Math.max(1, parseInt(e.target.value) || 1))
@@ -511,7 +520,7 @@ function NewInvoiceForm() {
                   step="0.01"
                   min={0}
                   max={BILLING_UNIT_PRICE_MAX}
-                  placeholder="Unit Price"
+                  placeholder="Jednotková cena"
                   value={itemUnitPrice}
                   onChange={(e) => setItemUnitPrice(e.target.value)}
                 />
@@ -525,7 +534,8 @@ function NewInvoiceForm() {
                   disabled={!canAddItem}
                 >
                   <Plus className="mr-1 h-4 w-4" />
-                  Add
+                  
+                  Pridať
                 </Button>
               </div>
             </div>
@@ -537,16 +547,20 @@ function NewInvoiceForm() {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="py-2 text-left font-medium text-muted-foreground">
-                        Description
+                        
+                        Popis
                       </th>
                       <th className="py-2 text-right font-medium text-muted-foreground">
-                        Qty
+                        
+                        Množstvo
                       </th>
                       <th className="py-2 text-right font-medium text-muted-foreground">
-                        Unit Price
+                        
+                        Jednotková cena
                       </th>
                       <th className="py-2 text-right font-medium text-muted-foreground">
-                        Total
+                        
+                        Celkom
                       </th>
                       <th className="py-2 w-10" />
                     </tr>
@@ -591,27 +605,29 @@ function NewInvoiceForm() {
             {taxConfigQuery.error || taxConfigMissing ? (
               <div className="mb-3">
                 <InlineQueryMessage kind="error">
-                  Unable to load practice tax settings. Preview totals omit tax
-                  until settings load.
+                  
+                  Nie je možné načítať cvičné nastavenia dane. Ukážka súčtov bez dane
+                  kým sa nenačítajú nastavenia.
                 </InlineQueryMessage>
               </div>
             ) : taxConfigQuery.isLoading ? (
               <div className="mb-3">
                 <InlineQueryMessage kind="loading">
-                  Loading practice tax settings...
+                  
+                  Načítavajú sa nastavenia dane z praxe...
                 </InlineQueryMessage>
               </div>
             ) : null}
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-muted-foreground">Medzisúčet</span>
               <span className="tabular-nums">{fmt(subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Tax ({taxPercent}%)</span>
+              <span className="text-muted-foreground">Daň ({taxPercent}%)</span>
               <span className="tabular-nums">{fmt(tax)}</span>
             </div>
             <div className="flex justify-between font-semibold border-t border-border pt-1">
-              <span>Total</span>
+              <span>Celkom</span>
               <span className="tabular-nums">{fmt(total)}</span>
             </div>
           </div>
@@ -619,7 +635,7 @@ function NewInvoiceForm() {
 
         {/* Due Date */}
         <div>
-          <label className="block text-sm font-medium mb-1">Due Date</label>
+          <label className="block text-sm font-medium mb-1">Dátum splatnosti</label>
           <Input
             type="date"
             value={dueDate}
@@ -630,12 +646,14 @@ function NewInvoiceForm() {
           />
           {!dueDate && taxConfigQuery.isLoading ? (
             <p className="mt-1 text-xs text-muted-foreground">
-              Loading practice date settings...
+              
+              Načítavajú sa nastavenia dátumu tréningu...
             </p>
           ) : null}
           {!dueDate && (taxConfigQuery.error || taxConfigMissing) ? (
             <p className="mt-1 text-xs text-destructive">
-              Choose a due date manually. Practice settings could not load.
+              
+              Vyberte dátum splatnosti ručne. Cvičné nastavenia sa nepodarilo načítať.
             </p>
           ) : null}
         </div>
@@ -655,7 +673,8 @@ function NewInvoiceForm() {
               : "Create Invoice"}
           </Button>
           <Button variant="outline" onClick={() => router.push("/billing")}>
-            Cancel
+            
+            Zrušiť
           </Button>
         </div>
 

@@ -26,36 +26,34 @@ export function TrialEndingEmail({
   unsubscribeUrl,
 }: TrialEndingEmailProps) {
   const whenLabel =
-    daysLeft <= 1 ? "tomorrow" : `in ${daysLeft} days`;
+    daysLeft <= 1 ? "zajtra" : `o ${daysLeft} dní`;
   return (
     <EmailLayout
       brand={brand}
-      preview={`Your OpenVPM trial ends ${whenLabel}. Add a card and nothing changes.`}
+      preview={`Vaša skúšobná verzia OpenVPM končí ${whenLabel}. Pridajte kartu a nič sa nezmení.`}
       unsubscribeUrl={unsubscribeUrl}
     >
-      <Heading>Your trial ends {whenLabel}</Heading>
+      <Heading>Vaša skúšobná verzia končí {whenLabel}</Heading>
       <Paragraph>
-        Hi {practiceName}, your OpenVPM trial ends on{" "}
-        <strong>{trialEndDate}</strong>. Add a card now and nothing changes.
-        Your schedule, your records, and everything you&apos;ve set up stay
-        exactly as they are.
+        Dobrý deň {practiceName}, vaša skúšobná verzia OpenVPM končí{" "}
+        <strong>{trialEndDate}</strong>. Pridajte kartu teraz a nič sa nezmení.
+        Váš harmonogram, záznamy a všetko, čo ste nastavili, zostanú presne tak, ako sú.
       </Paragraph>
 
       <InfoCard tone="warning">
-        <Label>Simple, flat pricing</Label>
-        <Stat>{monthlyPrice}/location per month</Stat>
+        <Label>Jednoduchá, pevná cena</Label>
+        <Stat>{monthlyPrice}/pracovisko mesačne</Stat>
         <Paragraph muted>
-          Unlimited staff, with AI and SMS allowances included. Cancel anytime.
+          Neobmedzený personál, vrátane AI a SMS správ. Zrušte kedykoľvek.
         </Paragraph>
       </InfoCard>
 
       <Section style={{ margin: "8px 0" }}>
-        <Button href={billingUrl}>Add billing</Button>
+        <Button href={billingUrl}>Pridať fakturáciu</Button>
       </Section>
 
       <Paragraph muted>
-        If your trial lapses, your workspace simply becomes read only. Nothing
-        is deleted, and you can turn it back on anytime by adding a card.
+        Ak vaša skúšobná verzia vyprší, váš pracovný priestor sa jednoducho stane iba na čítanie. Nič sa nevymaže a môžete ho kedykoľvek znova zapnúť pridaním karty.
       </Paragraph>
     </EmailLayout>
   );

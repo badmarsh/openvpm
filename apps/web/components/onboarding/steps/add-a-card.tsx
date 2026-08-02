@@ -47,7 +47,7 @@ export function AddACardStep({
       });
       const url = result?.url;
       if (!url || !isSafeCheckoutRedirectUrl(url)) {
-        toast.error("Checkout is unavailable right now. Please try again.");
+        toast.error("Pokladňa je momentálne nedostupná. Skúste to znova.");
         setRedirecting(false);
         return;
       }
@@ -63,9 +63,10 @@ export function AddACardStep({
   return (
     <div className="space-y-5">
       <p className="text-sm leading-6 text-slate-600">
-        This is optional. Your 14-day trial is fully featured and needs no card.
-        Add one whenever you are ready and your plan continues without a gap when
-        the trial ends.
+        
+        Toto je voliteľné. Vaša 14-dňová skúšobná verzia je plne vybavená a nepotrebuje žiadnu kartu.
+        Pridajte jeden, kedykoľvek budete pripravení, a váš plán bude pokračovať bez prestávky
+        súdny proces končí.
       </p>
 
       <div className="rounded-lg border border-slate-200 bg-slate-50/60 p-4">
@@ -74,23 +75,27 @@ export function AddACardStep({
           <span className="font-heading text-lg font-bold text-slate-900">
             ${unitPrice}
             <span className="text-sm font-normal text-slate-500">
-              /location / month
+              
+              /miesto / mesiac
             </span>
           </span>
         </div>
         <p className="mt-1 text-xs text-slate-500">
-          Unlimited staff included. Billed only after your free trial.
+          
+          Vrátane neobmedzeného počtu zamestnancov. Fakturované až po bezplatnej skúšobnej verzii.
         </p>
       </div>
 
       <div className="flex items-center gap-2 text-xs text-slate-500">
         <ShieldCheck className="h-4 w-4 text-emerald-600" />
-        Payments are handled securely by Stripe. Cancel anytime.
+        
+        Stripe spravuje platby bezpečne. Zrušiť kedykoľvek.
       </div>
 
       {alreadyHasCard ? (
         <p className="text-sm font-medium text-emerald-700">
-          A card is already on file. You are all set.
+          
+          Karta je už uložená. Všetko je nastavené.
         </p>
       ) : (
         <Button type="button" variant="outline" onClick={addCard} disabled={redirecting}>
@@ -99,7 +104,8 @@ export function AddACardStep({
           ) : (
             <CreditCard className="mr-2 h-4 w-4" />
           )}
-          Add a card
+          
+          Pridať kartu
         </Button>
       )}
     </div>

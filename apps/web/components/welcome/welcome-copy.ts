@@ -18,7 +18,7 @@ export const WELCOME_COPY = {
   setupInstead: "Set up my clinic instead",
   doneBadge: "Done",
   allDone: {
-    title: "You tried them all!",
+    title: "Vyskúšali ste ich všetky!",
     body: "That was every guide. Ready to make OpenVPM yours? Add your logo, your team, and your real clients.",
     accept: "Make it mine",
     later: "Later",

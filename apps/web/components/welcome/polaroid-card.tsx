@@ -70,7 +70,8 @@ export function PolaroidCard({
         {done ? (
           <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded-full bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-primary shadow-sm">
             <Check className="h-3 w-3" aria-hidden="true" />
-            Done
+            
+            Hotovo
           </span>
         ) : null}
       </span>

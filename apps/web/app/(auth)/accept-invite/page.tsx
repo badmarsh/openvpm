@@ -30,25 +30,28 @@ function AcceptInviteInner() {
     <div className="flex min-h-screen items-center justify-center bg-surface">
       <div className="w-full max-w-sm rounded-lg border border-border bg-card p-8">
         <div className="mb-6 text-center">
-          <h1 className="font-heading text-2xl font-bold text-foreground">OpenVPM</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Accept your invite</p>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Agent OpenVPM</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Prijmite pozvanie</p>
         </div>
 
         {done ? (
           <div className="text-center">
             <p className="text-sm text-foreground">
-              Your account is ready. You can now sign in.
+              
+              Váš účet je pripravený. Teraz sa môžete prihlásiť.
             </p>
             <Link
               href="/login"
               className="mt-6 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              Sign in
+              
+              Prihlásiť sa
             </Link>
           </div>
         ) : !token ? (
           <p className="text-center text-sm text-destructive">
-            This invite link is invalid. Ask your administrator to send a new one.
+            
+            Tento odkaz na pozvánku je neplatný. Požiadajte správcu o zaslanie nového.
           </p>
         ) : (
           <form
@@ -61,7 +64,7 @@ function AcceptInviteInner() {
                 return;
               }
               if (password !== confirm) {
-                toast.error("Passwords don't match");
+                toast.error("Heslá sa nezhodujú");
                 return;
               }
               accept.mutate({ token, password });
@@ -70,7 +73,8 @@ function AcceptInviteInner() {
           >
             <div>
               <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-foreground">
-                Create a password
+                
+                Vytvoriť heslo
               </label>
               <input
                 id="password"
@@ -86,7 +90,8 @@ function AcceptInviteInner() {
             </div>
             <div>
               <label htmlFor="confirm" className="mb-1.5 block text-sm font-medium text-foreground">
-                Confirm password
+                
+                Potvrdiť heslo
               </label>
               <input
                 id="confirm"
@@ -97,7 +102,7 @@ function AcceptInviteInner() {
                 minLength={AUTH_PASSWORD_MIN_LENGTH}
                 maxLength={AUTH_PASSWORD_MAX_LENGTH}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                placeholder="Re-enter your password"
+                placeholder="Znova zadajte svoje heslo"
               />
             </div>
             <button

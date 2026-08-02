@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/common/empty-state";
 import { TableSkeleton } from "@/components/common/loading";
 import { CLIENT_SEARCH_MAX_LENGTH } from "@/lib/clients/policy";
 import { formatClinicalDate } from "@/lib/records/clinical-dates";
+import { useTranslations } from "next-intl";
 
 function canManageClientsRole(role?: string | null): boolean {
   return (
@@ -22,6 +23,7 @@ function canManageClientsRole(role?: string | null): boolean {
 }
 
 export default function ClientsPage() {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const [search, setSearch] = useState("");
@@ -44,15 +46,15 @@ export default function ClientsPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Clients</h2>
+          <h2 className="font-heading text-xl font-semibold">{t("clients.title")}</h2>
           <p className="text-sm text-muted-foreground">
-            Manage client information
+            {t("clients.subtitle")}
           </p>
         </div>
         {canManageClients && (
           <Button onClick={() => router.push("/clients/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            New Client
+            {t("clients.new_client")}
           </Button>
         )}
       </div>
@@ -61,7 +63,7 @@ export default function ClientsPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search clients..."
+            placeholder={t("clients.search_placeholder")}
             value={search}
             maxLength={CLIENT_SEARCH_MAX_LENGTH}
             onChange={(e) => setSearch(e.target.value)}
@@ -70,15 +72,14 @@ export default function ClientsPage() {
         </div>
         {verifiedClientList && (
           <p className="text-sm text-muted-foreground">
-            {verifiedClientList.total} client
-            {verifiedClientList.total !== 1 ? "s" : ""}
+            {t(verifiedClientList.total === 1 ? "clients.plural_one" : "clients.plural_other", { count: verifiedClientList.total })}
           </p>
         )}
       </div>
 
       {error || clientsMissing ? (
         <div className="mt-6 rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          {error?.message ?? "Unable to load clients. Please retry."}
+          {error?.message ?? t("common.error_retry")}
         </div>
       ) : isLoading ? (
         <TableSkeleton rows={8} cols={5} />
@@ -88,19 +89,19 @@ export default function ClientsPage() {
             <thead>
               <tr className="border-b border-border bg-muted/50">
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                  Name
+                  {t("clients.column_name")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                  Email
+                  {t("clients.column_email")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                  Phone
+                  {t("clients.column_phone")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                  City
+                  {t("clients.column_city")}
                 </th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                  Created
+                  {t("clients.column_created")}
                 </th>
               </tr>
             </thead>
@@ -139,16 +140,16 @@ export default function ClientsPage() {
         <EmptyState
           className="mt-6"
           icon={Users}
-          title={hasSearch ? "No clients match your search" : "No clients yet"}
+          title={hasSearch ? t("clients.empty_search_title") : t("clients.empty_title")}
           description={
             hasSearch
-              ? "Try a different name, phone number, or email address."
-              : "Create a client record before adding patients, appointments, or invoices."
+              ? t("clients.empty_search_desc")
+              : t("clients.empty_desc")
           }
           action={
             !hasSearch && canManageClients
               ? {
-                  label: "Add your first client",
+                  label: t("clients.empty_action"),
                   onClick: () => router.push("/clients/new"),
                   icon: Plus,
                 }

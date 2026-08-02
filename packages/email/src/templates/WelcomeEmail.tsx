@@ -14,9 +14,9 @@ export interface WelcomeEmailProps {
 }
 
 const STEPS = [
-  "Take the 60-second tour of the schedule, records, and billing.",
-  "Make it yours: add your logo, accent color, and invite your team.",
-  "Ask the AI assistant something, like “which pets are overdue for vaccines?”",
+  "Absolvujte 60-sekundovú prehliadku harmonogramu, záznamov a fakturácie.",
+  "Prispôsobte si ho: pridajte logo, farbu akcentu a pozvite svoj tím.",
+  "Opýtajte sa asistenta AI na cokoľvek, napr. „ktoré zvieratá majú skontrolovať vakcíny?“",
 ];
 
 export function WelcomeEmail({
@@ -27,25 +27,22 @@ export function WelcomeEmail({
   return (
     <EmailLayout
       brand={brand}
-      preview={`Welcome to OpenVPM — your ${trialDays}-day trial is ready`}
+      preview={`Vitajte v OpenVPM — vaša ${trialDays}-dňová skúšobná verzia je pripravená`}
     >
-      <Heading>Welcome to OpenVPM 🎉</Heading>
+      <Heading>Vitajte v OpenVPM 🎉</Heading>
       <Paragraph>
-        Hi {practiceName}, your workspace is ready. We set it up with a sample
-        practice — real clients, pets, and appointments — so the app feels alive
-        from the very first minute.
+        Dobrý deň {practiceName}, váš pracovný priestor je pripravený. Nastavili sme ho so vzorovou praxou — reálnymi klientmi, zvieratami a termínmi — aby aplikácia žila od prvej minúty.
       </Paragraph>
       <Paragraph muted>
-        Your {trialDays}-day trial is fully featured with no credit card
-        required, and your data is always yours to export.
+        Vaša {trialDays}-dňová skúšobná verzia má všetky funkcie bez nutnosti kreditnej karty a vaše údaje sú vždy vaše na export.
       </Paragraph>
 
       <Section style={{ margin: "28px 0 8px" }}>
-        <Button href={brand.appUrl}>Open your dashboard</Button>
+        <Button href={brand.appUrl}>Otvoriť nástenku</Button>
       </Section>
 
       <InfoCard tone="brand">
-        <Label>Get started</Label>
+        <Label>Začnite</Label>
         {STEPS.map((s, i) => (
           <Text
             key={i}
@@ -63,7 +60,7 @@ export function WelcomeEmail({
       </InfoCard>
 
       <Paragraph muted>
-        Questions? Just reply to this email — it reaches a real person.
+        Máte otázky? Stačí odpovedať na tento e-mail — odpovie vám skutočný človek.
       </Paragraph>
     </EmailLayout>
   );

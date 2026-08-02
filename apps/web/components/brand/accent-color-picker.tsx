@@ -107,7 +107,8 @@ export function AccentColorPicker({
         {open ? (
           <div className="absolute left-0 top-11 z-30 w-56 rounded-lg border border-border bg-popover p-3 shadow-lg">
             <p className="mb-2 text-xs font-medium text-foreground">
-              Your brand color
+              
+              Farba vašej značky
             </p>
             <div className="flex items-center gap-2">
               <input
@@ -147,7 +148,8 @@ export function AccentColorPicker({
               disabled={!normalizeHex(draft) || disabled}
               className="mt-2.5 h-8 w-full rounded-md bg-primary text-xs font-medium text-primary-foreground disabled:opacity-50"
             >
-              Use this color
+              
+              Použite túto farbu
             </button>
           </div>
         ) : null}

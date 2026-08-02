@@ -49,16 +49,16 @@ interface StepDef {
  */
 function buildSteps(billingEnforced: boolean): StepDef[] {
   return [
-    { id: "basics", title: "Tell us about your clinic." },
-    { id: "branding", title: "Make it feel like yours." },
-    { id: "team", title: "Bring your team in." },
-    { id: "data", title: "Add your real clients and pets." },
-    { id: "agent", title: "Try your AI helper." },
-    { id: "phone", title: "Set up texting." },
+    { id: "basics", title: "Povedzte nám o svojej klinike." },
+    { id: "branding", title: "Nech sa vám páči." },
+    { id: "team", title: "Priveďte svoj tím." },
+    { id: "data", title: "Pridajte svojich skutočných klientov a domácich miláčikov." },
+    { id: "agent", title: "Vyskúšajte svojho pomocníka AI." },
+    { id: "phone", title: "Nastavte si posielanie SMS správ." },
     ...(billingEnforced
-      ? [{ id: "billing" as const, title: "Add a card." }]
+      ? [{ id: "billing" as const, title: "Pridajte kartu." }]
       : []),
-    { id: "allSet", title: "You're all set." },
+    { id: "allSet", title: "Všetko je pripravené." },
   ];
 }
 
@@ -327,10 +327,12 @@ function JourneyShell({
           <div className="flex items-center justify-between gap-4">
             <div className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700">
               <PawPrint className="h-4 w-4" />
-              Make it yours
+              
+              Prispôsobte si ju
             </div>
             <span className="text-xs font-medium text-slate-500">
-              Step {index + 1} of {total}
+              
+              Krok {index + 1}  z {total}
             </span>
           </div>
 
@@ -390,7 +392,8 @@ function JourneyShell({
                   disabled={busy}
                 >
                   <ArrowLeft className="mr-1.5 h-4 w-4" />
-                  Back
+                  
+                  Späť
                 </Button>
               ) : null}
               {!isLast ? (
@@ -400,7 +403,8 @@ function JourneyShell({
                   disabled={busy}
                   className="text-sm font-medium text-slate-500 hover:text-slate-700 disabled:opacity-50"
                 >
-                  I&apos;ll finish later
+                  
+                  Skončím neskôr
                 </button>
               ) : null}
             </div>

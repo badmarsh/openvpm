@@ -186,7 +186,8 @@ export function Coachmark({
           <div className="flex items-center gap-2">
             {index > 0 ? (
               <Button variant="ghost" size="sm" onClick={onBack}>
-                Back
+                
+                Späť
               </Button>
             ) : null}
             {/* On do-it steps (advanceOn) the page owns the primary action,
@@ -207,7 +208,8 @@ export function Coachmark({
             onClick={onSkip}
             className="mt-2 text-xs text-muted-foreground hover:underline"
           >
-            Skip tour
+            
+            Preskočiť prehliadku
           </button>
         ) : null}
       </div>

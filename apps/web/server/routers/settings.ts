@@ -282,6 +282,16 @@ interface PracticeSettings {
 }
 
 export const settingsRouter = createRouter({
+  updateLocale: protectedProcedure
+    .input(z.object({ locale: z.enum(["en", "sk"]) }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(users)
+        .set({ locale: input.locale })
+        .where(eq(users.id, ctx.userId));
+      return { success: true };
+    }),
+
   // ── Practice ──────────────────────────────────────────────
 
   getPractice: adminProcedure.query(async ({ ctx }) => {

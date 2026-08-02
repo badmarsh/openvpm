@@ -38,7 +38,7 @@ describe("settings UI states", () => {
   it("checks settings access before rendering admin-only tabs", () => {
     expect(source).toContain("const { data: session, status } = useSession()");
     expect(source).toContain('if (status === "loading")');
-    expect(source).toContain("Checking settings access...");
+    expect(source).toContain('t("common.loading", "Loading...")');
     expect(source).toContain('if (session?.user?.role !== "admin")');
     expect(source).toContain("Only administrators can access practice settings.");
     expect(source.indexOf('if (status === "loading")')).toBeLessThan(

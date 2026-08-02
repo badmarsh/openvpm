@@ -32,25 +32,25 @@ import {
 } from "@/lib/controlled-substances/policy";
 
 const DEA_SCHEDULES = [
-  { label: "Schedule II", value: "II" },
-  { label: "Schedule III", value: "III" },
-  { label: "Schedule IV", value: "IV" },
-  { label: "Schedule V", value: "V" },
+  { label: "Plán II", value: "II" },
+  { label: "Plán III", value: "III" },
+  { label: "Plán IV", value: "IV" },
+  { label: "Rozvrh V", value: "V" },
 ] as const;
 
 const ACTIONS = [
-  { label: "Received", value: "received" },
-  { label: "Administered", value: "administered" },
-  { label: "Wasted", value: "wasted" },
-  { label: "Returned", value: "returned" },
+  { label: "Prijaté", value: "received" },
+  { label: "Spravované", value: "administered" },
+  { label: "Premrhané", value: "wasted" },
+  { label: "Vrátené", value: "returned" },
 ] as const;
 
 const UNITS = [
   { label: "mg", value: "mg" },
   { label: "ml", value: "ml" },
-  { label: "tablet", value: "tablet" },
-  { label: "capsule", value: "capsule" },
-  { label: "vial", value: "vial" },
+  { label: "tableta", value: "tablet" },
+  { label: "kapsula", value: "capsule" },
+  { label: "injekčná liekovka", value: "vial" },
 ] as const;
 
 const ACTION_STYLES: Record<string, string> = {
@@ -99,7 +99,7 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
   const utils = trpc.useUtils();
   const createMutation = trpc.controlledSubstances.create.useMutation({
     onSuccess: () => {
-      toast.success("Log entry recorded");
+      toast.success("Záznam denníka zaznamenaný");
       utils.controlledSubstances.list.invalidate();
       utils.controlledSubstances.summary.invalidate();
       onClose();
@@ -193,11 +193,11 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
       return;
     }
     if (form.action === "administered" && !form.patientId) {
-      toast.error("Patient is required for administered entries");
+      toast.error("Pre administrované vstupy je potrebný pacient");
       return;
     }
     if (form.action === "wasted" && !form.witnessedBy) {
-      toast.error("Witness is required for wasted entries");
+      toast.error("Pre zbytočné záznamy sa vyžaduje svedok");
       return;
     }
     createMutation.mutate({
@@ -218,14 +218,15 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
       onSubmit={handleSubmit}
       className="mt-4 rounded-lg border border-border bg-card p-4 space-y-3"
     >
-      <h3 className="font-medium text-sm">New Log Entry</h3>
+      <h3 className="font-medium text-sm">Nový záznam</h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Drug Name *
+            
+            Názov lieku *
           </label>
           <Input
-            placeholder="Drug name"
+            placeholder="Názov lieku"
             value={form.drugName}
             maxLength={CONTROLLED_SUBSTANCE_DRUG_NAME_MAX_LENGTH}
             onChange={(e) => setForm({ ...form, drugName: e.target.value })}
@@ -234,7 +235,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            DEA Schedule
+            
+            Rozpis DEA
           </label>
           <select
             value={form.deaSchedule}
@@ -250,7 +252,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Action
+            
+            Akcia
           </label>
           <select
             value={form.action}
@@ -267,14 +270,15 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Quantity *
+              
+              Množstvo *
             </label>
             <Input
               type="number"
               step={CONTROLLED_SUBSTANCE_QUANTITY_STEP}
               min={CONTROLLED_SUBSTANCE_QUANTITY_MIN}
               max={CONTROLLED_SUBSTANCE_QUANTITY_MAX}
-              placeholder="Qty"
+              placeholder="Množstvo"
               value={form.quantity}
               onChange={(e) => setForm({ ...form, quantity: e.target.value })}
               required
@@ -282,7 +286,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Unit
+              
+              Jednotka
             </label>
             <select
               value={form.unit}
@@ -301,7 +306,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Patient {form.action === "administered" && "*"}
+            
+            Pacient {form.action === "administered" && "*"}
           </label>
           <select
             value={form.patientId}
@@ -346,7 +352,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Witness {form.action === "wasted" && "*"}
+            
+            Svedok {form.action === "wasted" && "*"}
           </label>
           <select
             value={form.witnessedBy}
@@ -386,10 +393,11 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Lot Number
+            
+            Číslo šarže
           </label>
           <Input
-            placeholder="Lot #"
+            placeholder="Položka #"
             value={form.lotNumber}
             maxLength={CONTROLLED_SUBSTANCE_LOT_NUMBER_MAX_LENGTH}
             onChange={(e) => setForm({ ...form, lotNumber: e.target.value })}
@@ -397,10 +405,11 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Notes
+            
+            Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
           </label>
           <Input
-            placeholder="Optional notes"
+            placeholder="Nepovinné poznámky"
             value={form.notes}
             maxLength={CONTROLLED_SUBSTANCE_NOTES_MAX_LENGTH}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -412,7 +421,8 @@ function LogEntryForm({ onClose }: { onClose: () => void }) {
           {createMutation.isPending ? "Submitting..." : "Submit Entry"}
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={onClose}>
-          Cancel
+          
+          Zrušiť
         </Button>
       </div>
       {createMutation.error && (
@@ -435,7 +445,7 @@ function SummarySection() {
         onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium hover:bg-muted/30 transition-colors"
       >
-        <span>Drug Balance Summary</span>
+        <span>Súhrn drogovej bilancie</span>
         {expanded ? (
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
         ) : (
@@ -452,7 +462,8 @@ function SummarySection() {
           ) : isLoading ? (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Loading summary...
+              
+              Načítava sa súhrn...
             </div>
           ) : data && data.length > 0 ? (
             <TableScroll>
@@ -460,22 +471,28 @@ function SummarySection() {
                 <thead>
                   <tr className="border-b border-border">
                     <th className="py-2 text-left font-medium text-muted-foreground">
-                      Drug
+                      
+                      Droga
                     </th>
                     <th className="py-2 text-right font-medium text-muted-foreground">
-                      Received
+                      
+                      Prijaté
                     </th>
                     <th className="py-2 text-right font-medium text-muted-foreground">
-                      Administered
+                      
+                      Spravované
                     </th>
                     <th className="py-2 text-right font-medium text-muted-foreground">
-                      Wasted
+                      
+                      Premrhané
                     </th>
                     <th className="py-2 text-right font-medium text-muted-foreground">
-                      Returned
+                      
+                      Vrátené
                     </th>
                     <th className="py-2 text-right font-medium text-muted-foreground">
-                      Net Balance
+                      
+                      Čistý zostatok
                     </th>
                   </tr>
                 </thead>
@@ -510,8 +527,8 @@ function SummarySection() {
             <EmptyState
               className="border-0 bg-transparent py-6"
               icon={ShieldAlert}
-              title="No balance data yet"
-              description="Balance totals will appear once controlled-substance entries are logged."
+              title="Zatiaľ žiadne údaje o zostatku"
+              description="Po zaprotokolovaní záznamov kontrolovaných látok sa zobrazia súčty zostatkov."
             />
           )}
         </div>
@@ -529,7 +546,8 @@ export default function ControlledSubstancesPage() {
       <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Checking controlled-substance access...
+          
+          Kontrola prístupu kontrolovanej látky...
         </div>
       </div>
     );
@@ -539,10 +557,10 @@ export default function ControlledSubstancesPage() {
     return (
       <EmptyState
         icon={ShieldAlert}
-        title="Controlled substance log is restricted"
-        description="Only administrators and veterinarians can view or record controlled-substance activity."
+        title="Záznam o kontrolovaných látkach je obmedzený"
+        description="Klientov môžu upravovať iba roly zamestnancov s klientskym prístupom na zápis."
         action={{
-          label: "Back to dashboard",
+          label: "Späť na informačný panel",
           onClick: () => router.push("/"),
         }}
       />
@@ -592,10 +610,12 @@ function ControlledSubstancesLogPage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-heading text-xl font-semibold">
-            Controlled Substance Log
+            
+            Záznam kontrolovaných látok
           </h2>
           <p className="text-sm text-muted-foreground">
-            DEA-required tracking for scheduled drugs
+            
+            DEA-požadované sledovanie pre plánované lieky
           </p>
         </div>
         <Button
@@ -606,7 +626,8 @@ function ControlledSubstancesLogPage() {
           }}
         >
           <Plus className="mr-1 h-4 w-4" />
-          Log Entry
+          
+          Záznam denníka
         </Button>
       </div>
 
@@ -624,7 +645,7 @@ function ControlledSubstancesLogPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Filter by drug name..."
+            placeholder="Filtrovať podľa názvu lieku..."
             value={search}
             maxLength={CONTROLLED_SUBSTANCE_DRUG_NAME_MAX_LENGTH}
             onChange={(e) => {
@@ -644,11 +665,13 @@ function ControlledSubstancesLogPage() {
       ) : isLogLoading ? (
         <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading controlled-substance entries...
+          
+          Načítavajú sa záznamy o kontrolovaných látkach...
         </div>
       ) : !verifiedLogPayload ? (
         <div className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          Unable to load controlled-substance entries. Please retry.
+          
+          Nie je možné načítať položky kontrolovaných látok. Skúste to znova.
         </div>
       ) : verifiedLogPayload.log.items.length > 0 ? (
         <>
@@ -657,31 +680,40 @@ function ControlledSubstancesLogPage() {
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Date/Time
+                    
+                    Dátum/čas
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Drug Name
+                    
+                    Názov lieku
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Schedule
+                    
+                    Rozvrh
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Action
+                    
+                    Akcia
                   </th>
                   <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                    Qty/Unit
+                    
+                    Množstvo/jednotka
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Patient
+                    
+                    Pacient
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Performed By
+                    
+                    Účinkuje
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Witness
+                    
+                    Svedok
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Notes
+                    
+                    Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
                   </th>
                 </tr>
               </thead>
@@ -738,8 +770,9 @@ function ControlledSubstancesLogPage() {
           {/* Pagination */}
           <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
             <p>
-              Showing {offset + 1}&ndash;
-              {Math.min(offset + limit, verifiedLogPayload.log.total)} of{" "}
+              
+              Zobrazuje sa {offset + 1}–
+              {Math.min(offset + limit, verifiedLogPayload.log.total)}  z{" "}
               {verifiedLogPayload.log.total}
             </p>
             <div className="flex gap-2">
@@ -749,7 +782,8 @@ function ControlledSubstancesLogPage() {
                 disabled={offset === 0}
                 onClick={() => setOffset(Math.max(0, offset - limit))}
               >
-                Previous
+                
+                Predchádzajúci
               </Button>
               <Button
                 variant="outline"
@@ -757,7 +791,8 @@ function ControlledSubstancesLogPage() {
                 disabled={offset + limit >= verifiedLogPayload.log.total}
                 onClick={() => setOffset(offset + limit)}
               >
-                Next
+                
+                Ďalej
               </Button>
             </div>
           </div>
@@ -780,7 +815,7 @@ function ControlledSubstancesLogPage() {
             search
               ? undefined
               : {
-                  label: "Log first entry",
+                  label: "Zaznamenať prvý záznam",
                   onClick: () => {
                     if (!canRecordControlledSubstance) return;
                     setShowForm(true);

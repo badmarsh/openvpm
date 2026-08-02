@@ -1,0 +1,323 @@
+{
+  "nav": {
+    "dashboard": "Prehľad",
+    "patients": "Pacienti",
+    "clients": "Klienti",
+    "schedule": "Rozvrh",
+    "appointments": "Termíny",
+    "records": "Záznamy",
+    "billing": "Fakturácia",
+    "invoices": "Faktúry",
+    "estimates": "Cenové ponuky",
+    "inventory": "Sklad",
+    "inbox": "Schránka",
+    "whiteboard": "Prevádzková tabuľa",
+    "agent": "Agent",
+    "controlledSubstances": "Omamné a psychotropné látky",
+    "reports": "Prehľady",
+    "settings": "Nastavenia"
+  },
+  "chrome": {
+    "searchPlaceholder": "Hľadať…",
+    "newAction": "Nový",
+    "guides": "Návody",
+    "newClient": "Nový klient",
+    "newPatient": "Nový pacient",
+    "newAppointment": "Nové stretnutie",
+    "newInvoice": "Nová faktúra"
+  },
+  "roles": {
+    "admin": "Administrátor",
+    "veterinarian": "Veterinárny lekár",
+    "technician": "Veterinárny technik",
+    "front_desk": "Recepcia",
+    "viewer": "Pozorovateľ"
+  },
+  "settings": {
+    "title": "Nastavenia",
+    "subtitle": "Konfigurácia ambulancie a správa personálu",
+    "tabs": {
+      "practiceInfo": "Údaje o ambulancii",
+      "locations": "Pobočky",
+      "staff": "Personál",
+      "appointmentTypes": "Typy termínov",
+      "rooms": "Miestnosti",
+      "data": "Dáta",
+      "templates": "Šablóny",
+      "wellnessPlans": "Preventívne programy",
+      "messaging": "Správy",
+      "planBilling": "Predplatné a fakturácia"
+    },
+    "practiceDetails": {
+      "title": "Údaje o ambulancii",
+      "description": "Názov vašej ambulancie, kontaktné údaje a časové pásmo.",
+      "name": "Názov ambulancie",
+      "address": "Adresa",
+      "phone": "Telefón",
+      "email": "E-mail",
+      "website": "Webová stránka",
+      "timezone": "Časové pásmo"
+    },
+    "regionTax": {
+      "title": "Región a dane",
+      "description": "Určuje menu faktúr, sadzbu dane a formát dátumu. Výberom krajiny sa predvyplnia obvyklé hodnoty — v prípade potreby ich upravte.",
+      "country": "Krajina",
+      "currency": "Mena",
+      "taxRate": "Sadzba dane / DPH (%)"
+    },
+    "locations": {
+      "title": "Pobočky",
+      "description": "Pobočky zabezpečujú nastavenie SMS správ, priraďovanie miestností, pripomienky a billing.",
+      "addLocation": "Pridať pobočku",
+      "newLocation": "Nová pobočka",
+      "primary": "Hlavná"
+    },
+    "staff": {
+      "title": "Personál",
+      "description": "Správa používateľských účtov, licencií a rolí.",
+      "inviteByEmail": "Pozvať e-mailom",
+      "addStaff": "Pridať člena personálu",
+      "headers": {
+        "name": "Meno",
+        "email": "E-mail",
+        "role": "Rola",
+        "phone": "Telefón",
+        "license": "Licencia č.",
+        "actions": "Akcie"
+      }
+    },
+    "data": {
+      "sampleDataTitle": "Ukážkové dáta",
+      "sampleDataDesc": "Ambulancia plná vymyslených klientov a zvierat na vyskúšanie. Pridajte ich kedykoľvek a odstráňte, keď budete pripravení pracovať načisto.",
+      "addSampleData": "Pridať ukážkové dáta",
+      "removeSampleData": "Odstrániť ukážkové dáta"
+    },
+    "messaging": {
+      "title": "Správy",
+      "description": "Odosielajte pripomienky termínov SMS správami z vlastného čísla každej pobočky. Odpovede klientov sa zobrazia v schránke.",
+      "smsThisMonth": "SMS tento mesiac",
+      "included": "v cene",
+      "clientsOptedIn": "Prihlásení klienti",
+      "optedOut": "Odhlásení (STOP)",
+      "primary": "Hlavná pobočka",
+      "notSetUp": "SMS správy zatiaľ nie sú nastavené",
+      "notSetUpDesc": "Spustite sprievodcu nastavením pre túto pobočku. Môžete povoliť SMS na existujúcom čísle alebo si vybrať nové lokálne číslo.",
+      "existingPhone": "Existujúce telefónne číslo:",
+      "setUpTexting": "Nastaviť SMS"
+    }
+  },
+  "patients": {
+    "title": "Pacienti",
+    "subtitle": "Správa pacientov a ich majiteľov.",
+    "new_patient": "Nový pacient",
+    "search_placeholder": "Hľadať pacientov...",
+    "species_all": "Všetky druhy",
+    "species_canine": "Psie",
+    "species_feline": "Mačka",
+    "species_avian": "Vtáčie",
+    "species_rabbit": "Králik",
+    "species_reptile": "Plaz",
+    "species_equine": "Kone",
+    "species_other": "Iné",
+    "column_name": "Meno",
+    "column_breed": "Plemeno",
+    "column_owner": "Majiteľ",
+    "column_sex": "Pohlavie",
+    "column_status": "Stav",
+    "status_active": "aktívny",
+    "status_inactive": "neaktívny",
+    "status_deceased": "uhynutý",
+    "sex_male": "M",
+    "sex_female": "F",
+    "sex_male_neutered": "M/K",
+    "sex_female_spayed": "F/K",
+    "empty_filter_title": "Žiadni pacienti nezodpovedajú vašim filtrom",
+    "empty_filter_desc": "Zrušte vyhľadávanie alebo filter druhov pre rozšírenie zoznamu.",
+    "empty_title": "Zatiaľ žiadni pacienti",
+    "empty_desc": "Vytvorte záznam o pacientovi po pridaní majiteľa.",
+    "empty_action": "Pridajte svojho prvého pacienta",
+    "plural_one": "{count} pacient",
+    "plural_few": "{count} pacienti",
+    "plural_other": "{count} pacientov"
+  },
+  "billing": {
+    "title": "Fakturácia a faktúry",
+    "subtitle": "Faktúry a platby",
+    "new_invoice": "Nová faktúra",
+    "outstanding": "Nevybavené",
+    "overdue": "Po splatnosti",
+    "collected_mtd": "Vybrané (MTD)",
+    "tax_rate": "Sadzba DPH",
+    "total": "Spolu",
+    "subtotal": "Medzisúčet",
+    "amount_due": "K úhrade",
+    "paid": "Uhradené",
+    "status_all": "Všetky",
+    "status_draft": "Návrh",
+    "status_sent": "Odoslané",
+    "status_paid": "Zaplatené",
+    "status_overdue": "Po splatnosti",
+    "status_void": "Neplatné",
+    "status_estimates": "Odhady",
+    "method_cash": "Hotovosť",
+    "method_credit_card": "Kreditná karta",
+    "method_debit_card": "Debetná karta",
+    "method_check": "Šek",
+    "method_online": "Online",
+    "method_other": "Iné",
+    "no_estimates_title": "Zatiaľ žiadne cenové ponuky",
+    "no_estimates_desc": "Vytvorte cenovú ponuku, ak klient vyžaduje schválenie pred poskytnutím služieb.",
+    "no_invoices_status": "Žiadne faktúry s týmto stavom",
+    "no_invoices_title": "Zatiaľ žiadne faktúry",
+    "no_invoices_status_desc": "Vyberte iný stav alebo vytvorte novú faktúru.",
+    "no_invoices_desc": "Vytvárajte faktúry zo služieb, produktov alebo šablón liečby pred zaznamenaním platieb."
+  },
+  "common": {
+    "save": "Uložiť zmeny",
+    "cancel": "Zrušiť",
+    "delete": "Odstrániť",
+    "loading": "Načítavam...",
+    "error_retry": "Nepodarilo sa načítať dáta. Skúste to znova."
+  },
+  "dashboard": {
+    "kpi": {
+      "todayAppointments": {
+        "label": "Dnešné termíny",
+        "description": "Naplánované na dnes"
+      },
+      "patientsSeen": {
+        "label": "Dnes videní pacienti",
+        "description": "Dnes"
+      },
+      "revenueMtd": {
+        "label": "Výnosy (MTD)",
+        "description": "Zaplatené faktúry tento mesiac"
+      },
+      "pendingInvoices": {
+        "label": "Nevybavené faktúry",
+        "description": "Odoslané alebo po splatnosti"
+      }
+    },
+    "upcoming": {
+      "title": "Nadchádzajúce schôdzky",
+      "empty": {
+        "title": "Zatiaľ nie sú zarezervované žiadne návštevy",
+        "description": "Zarezervujte si svoju prvú návštevu a zobrazí sa tu.",
+        "action": "Rezervujte si prvú návštevu"
+      },
+      "error": "Nie je možné načítať nadchádzajúce stretnutia."
+    },
+    "stats": {
+      "error": "Nie je možné načítať metriky informačného panela."
+    },
+    "charts": {
+      "error": "Nie je možné načítať grafy informačného panela.",
+      "empty": {
+        "title": "Vaše tabuľky sa zobrazia po spustení",
+        "description": "Keď si rezervujete návštevy a posielate účty, vaše trendy a súčty sa vyplnia tu."
+      }
+    }
+  },
+  "clients": {
+    "title": "Klienti",
+    "subtitle": "Správa klientskych účtov a pacientov.",
+    "new_client": "Nový klient",
+    "search_placeholder": "Hľadať klientov...",
+    "column_name": "Meno",
+    "column_email": "Email",
+    "column_phone": "Telefón",
+    "column_city": "Mesto",
+    "column_created": "Vytvorené",
+    "empty_search_title": "Žiadni klienti nezodpovedajú vyhľadávaniu",
+    "empty_search_desc": "Skúste iné meno, telefónne číslo alebo emailovú adresu.",
+    "empty_title": "Zatiaľ žiadni klienti",
+    "empty_desc": "Vytvorte záznam o klientovi pred pridaním pacientov alebo faktúr.",
+    "empty_action": "Pridajte svojho prvého klienta",
+    "plural_one": "{count} klient",
+    "plural_few": "{count} klienti",
+    "plural_other": "{count} klientov"
+  },
+  "schedule": {
+    "title": "Rozvrh",
+    "subtitle": "Kalendár termínov",
+    "new_appointment": "Nové stretnutie",
+    "today": "Dnes",
+    "view_day": "Deň",
+    "view_week": "Týždeň",
+    "view_month": "Mesiac",
+    "all_doctors": "Všetci lekári",
+    "no_appointments_day": "Žiadne schôdzky na tento deň",
+    "no_appointments_week": "Tento týždeň žiadne termíny",
+    "no_appointments_month": "Tento mesiac žiadne termíny",
+    "loading": "Načítavajú sa stretnutia...",
+    "modalTitle": "Nové stretnutie",
+    "patient": "Pacient",
+    "searchPatients": "Hľadať pacientov...",
+    "appointmentType": "Typ termínu",
+    "appointmentTypesUnavailable": "Typy termínov nie sú k dispozícii",
+    "loadingAppointmentTypes": "Načítavajú sa typy termínov...",
+    "selectType": "Vyberte typ...",
+    "doctor": "Lekár",
+    "doctorsUnavailable": "Lekári nie sú k dispozícii",
+    "selectDoctor": "Vyberte lekára...",
+    "loadingDoctors": "Načítavajú sa lekári...",
+    "room": "Miestnosť",
+    "roomsUnavailable": "Miestnosti nie sú k dispozícii",
+    "selectRoom": "Vyberte miestnosť...",
+    "loadingRooms": "Načítavajú sa miestnosti...",
+    "date": "Dátum",
+    "startTime": "Čas začiatku",
+    "duration": "Trvanie (minúty)",
+    "repeatAppointment": "Opakovať stretnutie",
+    "notes": "Poznámky",
+    "optionalNotes": "Voliteľné poznámky..."
+  },
+  "inventory": {
+    "title": "Sklad",
+    "subtitle": "Správa zásob a katalóg produktov",
+    "new_item": "Nový produkt",
+    "search_placeholder": "Hľadať v sklade...",
+    "all_categories": "Všetky kategórie",
+    "category_medication": "Lieky",
+    "category_preventive": "Preventívne",
+    "category_supplement": "Doplnok",
+    "category_food": "Krmivo",
+    "category_supply": "Zásobovanie",
+    "status_in_stock": "Na sklade",
+    "status_low_stock": "Nízke zásoby",
+    "status_out_of_stock": "Vypredané",
+    "status_expired": "Platnosť uplynula",
+    "status_expiring_soon": "Čoskoro vyprší"
+  },
+  "records": {
+    "title": "Záznamy",
+    "subtitle": "Klinické poznámky, SOAPE záznamy a história",
+    "new_record": "Nový záznam",
+    "search_placeholder": "Hľadať v záznamoch..."
+  },
+  "inbox": {
+    "title": "Schránka",
+    "subtitle": "Správy a oznámenia",
+    "new_message": "Nová správa"
+  },
+  "whiteboard": {
+    "title": "Prevádzková tabuľa",
+    "subtitle": "Tabuľa a sledovanie stavu pacientov"
+  },
+  "reports": {
+    "title": "Prehľady",
+    "subtitle": "Analytika praxe a prehľady výnosov"
+  },
+  "controlledSubstances": {
+    "title": "Omamné a psychotropné látky",
+    "subtitle": "Kniha omamných látok a sledovanie zhody"
+  },
+  "admin": {
+    "title": "Správa systému",
+    "subtitle": "Konfigurácia systému a denníky"
+  },
+  "agent": {
+    "title": "AI Agent",
+    "subtitle": "Automatizácia asistenta a klinické nástroje"
+  }
+}

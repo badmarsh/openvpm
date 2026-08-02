@@ -30,9 +30,10 @@ export function AllSetStep({
           <PartyPopper className="h-5 w-5" />
         </span>
         <p className="text-sm leading-6 text-slate-600">
-          Your workspace is ready. Everything here is yours, and the AI helper is
-          built in whenever you need it. Want a quick look around before you dive
-          in?
+          
+          Váš pracovný priestor je pripravený. Všetko tu je vaše a pomocník AI je
+          zabudovaný vždy, keď ho potrebujete. Pred ponorením sa chcete rýchlo rozhliadnuť
+          v?
         </p>
       </div>
 
@@ -49,10 +50,12 @@ export function AllSetStep({
         >
           <Compass className="h-5 w-5 text-emerald-700" />
           <p className="mt-2 text-sm font-medium text-slate-900">
-            Take the quick tour
+            
+            Absolvujte rýchlu prehliadku
           </p>
           <p className="mt-1 text-xs text-slate-500">
-            A 60-second walk through the schedule, records, billing, and AI.
+            
+            60-sekundová prechádzka plánom, záznamami, fakturáciou a AI.
           </p>
         </button>
 
@@ -68,10 +71,12 @@ export function AllSetStep({
         >
           <PartyPopper className="h-5 w-5 text-emerald-700" />
           <p className="mt-2 text-sm font-medium text-slate-900">
-            Jump right in
+            
+            Skočte priamo do
           </p>
           <p className="mt-1 text-xs text-slate-500">
-            Head straight to your dashboard. You can take the tour anytime.
+            
+            Zamierte priamo na svoj prístrojový panel. Prehliadku môžete absolvovať kedykoľvek.
           </p>
         </button>
       </div>

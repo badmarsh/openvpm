@@ -101,7 +101,7 @@ describe("REST read route input validation", () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Client id must be a valid UUID" },
+      error: { message: "ID klienta musí byť platné UUID" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalledWith(
       expect.any(Request),
@@ -118,7 +118,7 @@ describe("REST read route input validation", () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Patient id must be a valid UUID" },
+      error: { message: "ID pacienta musí byť platné UUID" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalledWith(
       expect.any(Request),
@@ -138,7 +138,7 @@ describe("REST read route input validation", () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Appointment id must be a valid UUID" },
+      error: { message: "ID stretnutia musí byť platné UUID" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalledWith(
       expect.any(Request),
@@ -155,7 +155,7 @@ describe("REST read route input validation", () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "client_id must be a valid UUID" },
+      error: { message: "client_id musí byť platné UUID" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalledWith(
       expect.any(Request),
@@ -167,29 +167,29 @@ describe("REST read route input validation", () => {
 
   it.each([
     {
-      label: "client list",
+      label: "zoznam klientov",
       call: () => listClients(request("/api/v1/clients")),
     },
     {
-      label: "client detail",
+      label: "detail klienta",
       call: () =>
         getClient(request(`/api/v1/clients/${VALID_ID}`), {
           params: { id: VALID_ID },
         }),
     },
     {
-      label: "patient list",
+      label: "zoznam pacientov",
       call: () => listPatients(request("/api/v1/patients")),
     },
     {
-      label: "patient detail",
+      label: "detail pacienta",
       call: () =>
         getPatient(request(`/api/v1/patients/${VALID_ID}`), {
           params: { id: VALID_ID },
         }),
     },
     {
-      label: "appointment detail",
+      label: "podrobnosti o vymenovaní",
       call: () =>
         getAppointment(request(`/api/v1/appointments/${VALID_ID}`), {
           params: { id: VALID_ID },
@@ -202,7 +202,7 @@ describe("REST read route input validation", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
     expect(mocks.db.select).toHaveBeenCalledTimes(1);
   });

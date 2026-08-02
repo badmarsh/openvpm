@@ -34,7 +34,7 @@ export function VerifyEmailBanner() {
     return (
       <div className="flex items-center gap-3 border-b border-amber-200 bg-amber-50 px-6 py-2.5 text-sm text-amber-900">
         <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
-        <p className="flex-1">Checking email verification status...</p>
+        <p className="flex-1">Kontroluje sa stav overenia e-mailu...</p>
         <button
           type="button"
           onClick={dismiss}
@@ -51,13 +51,14 @@ export function VerifyEmailBanner() {
     return (
       <div className="flex items-center gap-3 border-b border-destructive/30 bg-destructive/5 px-6 py-2.5 text-sm text-destructive">
         <AlertTriangle className="h-4 w-4 shrink-0" />
-        <p className="flex-1">Unable to check email verification status.</p>
+        <p className="flex-1">Nie je možné skontrolovať stav overenia e-mailu.</p>
         <button
           type="button"
           onClick={() => void refetch()}
           className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-background px-2.5 py-1 text-xs font-medium hover:bg-destructive/10"
         >
-          Retry
+          
+          Skúsiť znova
         </button>
         <button
           type="button"
@@ -80,12 +81,13 @@ export function VerifyEmailBanner() {
       <p className="min-w-0 flex-1 basis-48">
         {resend.isSuccess ? (
           <span className="inline-flex items-center gap-1.5">
-            <Check className="h-4 w-4" /> Verification email sent. Check your inbox (and spam).
+            <Check className="h-4 w-4" />  Overovací e-mail bol odoslaný. Skontrolujte si doručenú poštu (a spam).
           </span>
         ) : (
           <>
-            Verify your email{data.email ? ` (${data.email})` : ""} to secure your
-            account and keep reminders deliverable.
+            
+            Overte svoj email{data.email ? ` (${data.email})` : ""}  na zabezpečenie vášho
+            účtovať a udržiavať upomienky doručiteľné.
           </>
         )}
       </p>
@@ -97,7 +99,8 @@ export function VerifyEmailBanner() {
           className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-amber-300 bg-white px-2.5 py-1 text-xs font-medium text-amber-900 hover:bg-amber-100 disabled:opacity-50"
         >
           {resend.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-          Resend email
+          
+          Znova odoslať e-mail
         </button>
       )}
       <button

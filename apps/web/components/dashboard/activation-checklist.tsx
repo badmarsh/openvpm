@@ -113,42 +113,42 @@ export function ActivationChecklist() {
   const milestones: Milestone[] = [
     {
       key: "tour",
-      label: "Take the 60-second tour",
+      label: "Absolvujte 60-sekundovú prehliadku",
       hint: "See the schedule, records, billing, and AI in a minute.",
       done: tourDone,
       onClick: () => start(),
     },
     {
       key: "brand",
-      label: "Make it your brand",
+      label: "Urobte si z toho svoju značku",
       hint: "Add your logo and accent color.",
       done: !!practiceData.logoUrl || !!brandColor,
       href: "/settings?tab=practice",
     },
     {
       key: "team",
-      label: "Invite a teammate",
+      label: "Pozvi spoluhráča",
       hint: "Bring your doctors and front desk in. Staff is unlimited.",
       done: (subscriptionData.billableSeatCount ?? 1) > 1,
       href: "/settings?tab=staff",
     },
     {
       key: "ai",
-      label: "Ask the AI assistant something",
+      label: "Opýtajte sa asistenta AI na niečo",
       hint: "Try “Which pets are overdue for vaccines?”",
       done: (subscriptionData.usage?.aiRuns ?? 0) > 0,
       href: "/agent",
     },
     {
       key: "data",
-      label: "Bring in your real data",
+      label: "Uveďte svoje skutočné údaje",
       hint: "Import clients and pets, then clear the sample data.",
       done: !onboardingData.hasDemoData,
       href: "/settings?tab=data",
     },
     {
       key: "texting",
-      label: "Turn on texting",
+      label: "Zapnúť SMS",
       hint: "Add a number for reminders and two-way texts with clients.",
       done: texting.data?.hasActiveNumber ?? false,
       href: "/settings?tab=messaging&setup=texting",
@@ -157,7 +157,7 @@ export function ActivationChecklist() {
       ? [
           {
             key: "billing",
-            label: "Confirm billing is connected",
+            label: "Potvrdenie pripojenia účtovania",
             hint: "Stripe keeps the trial ready to convert. Cancel anytime.",
             done: !!subscriptionData.hasBillingAccount,
             href: "/settings?tab=billing",
@@ -190,10 +190,11 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-heading text-sm font-semibold">
-              You&apos;re all set 🎉
+              
+              Všetko je pripravené 🎉
             </p>
             <p className="text-xs text-zinc-400">
-              {practiceName} is ready to run.
+              {practiceName}  je pripravený na spustenie.
             </p>
           </div>
           <button
@@ -201,7 +202,8 @@ export function ActivationChecklist() {
             onClick={dontShowAgain}
             className="text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-100"
           >
-            Dismiss
+            
+            Odmietnuť
           </button>
         </div>
       </div>
@@ -217,7 +219,7 @@ export function ActivationChecklist() {
           type="button"
           onClick={snooze}
           aria-label="Hide for now"
-          title="Hide for now"
+          title="Zatiaľ skryť"
           className="absolute right-3 top-3 rounded-md p-1 text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-200"
         >
           <X className="h-4 w-4" />
@@ -229,10 +231,11 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0">
             <p className="truncate font-heading text-sm font-semibold">
-              Get {practiceName} running
+              
+              Získajte {practiceName}  beží
             </p>
             <p className="text-xs text-zinc-400">
-              {doneCount} of {total} done
+              {doneCount}  z {total}  hotovo
             </p>
           </div>
         </div>
@@ -302,7 +305,8 @@ export function ActivationChecklist() {
             onClick={dontShowAgain}
             className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-200"
           >
-            Don&apos;t show this again
+            
+            Toto už nezobrazovať
           </button>
         </div>
       </div>
@@ -328,7 +332,7 @@ function ActivationChecklistError({
       <div className="flex items-start gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 text-zinc-50 shadow-2xl shadow-black/30">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold">Setup checklist could not load</p>
+          <p className="text-sm font-semibold">Kontrolný zoznam nastavenia sa nepodarilo načítať</p>
           <p className="mt-1 text-xs text-zinc-400">{message}</p>
           <Button
             variant="outline"
@@ -336,7 +340,8 @@ function ActivationChecklistError({
             onClick={onRetry}
             className="mt-2 border-zinc-700 bg-transparent text-zinc-100 hover:bg-zinc-800"
           >
-            Retry
+            
+            Skúsiť znova
           </Button>
         </div>
       </div>

@@ -47,6 +47,7 @@ export const practices = pgTable(
       .notNull()
       .default("8.00"),
     vatNumber: varchar("vat_number", { length: 32 }), // shown on invoices where applicable
+    ico: varchar("ico", { length: 20 }), // Slovak business registration number (IČO)
     // Capability token for the read-only ICS schedule feed (null = feed off).
     // Practice-wide by design: one shared clinic calendar, same trust
     // boundary as the whiteboard. Rotating it invalidates the old URL.

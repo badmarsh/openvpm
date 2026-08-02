@@ -72,7 +72,8 @@ export function WelcomeSurface({
         <div className="flex items-center gap-2 text-emerald-700">
           <PawPrint className="h-5 w-5" aria-hidden="true" />
           <span className="text-sm font-semibold uppercase tracking-wide">
-            OpenVPM
+            
+            Agent OpenVPM
           </span>
         </div>
         <h1 className="mt-3 font-heading text-3xl font-bold text-slate-900 sm:text-4xl">

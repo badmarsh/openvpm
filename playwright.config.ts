@@ -1,6 +1,6 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3001";
 const webServerCommand =
   process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? "pnpm dev --filter=@openpims/web";
 

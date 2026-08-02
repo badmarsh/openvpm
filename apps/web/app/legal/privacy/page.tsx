@@ -1,108 +1,117 @@
 export const metadata = {
-  title: "Privacy Policy - OpenVPM",
+  title: "Zásady ochrany osobných údajov - OpenVPM",
 };
 
 export default function PrivacyPage() {
   return (
     <>
-      <h1>Privacy Policy</h1>
-      <p>Last updated: July 7, 2026</p>
+      <h1>Zásady ochrany osobných údajov</h1>
+      <p>Posledná aktualizácia: 7. júla 2026</p>
 
       <p>
-        This policy explains what OpenVPM Cloud collects, why, and the choices
-        you have. In short: your practice&apos;s data belongs to your
-        practice. We use it to run the service, not to sell or advertise.
+        
+        Táto politika vysvetľuje, čo OpenVPM Cloud zhromažďuje, prečo a aké sú možnosti
+        máš. Stručne povedané: údaje o vašej praxi patria vám
+        prax. Používame ho na prevádzkovanie služby, nie na predaj alebo reklamu.
       </p>
 
-      <h2>What we collect</h2>
+      <h2>Čo zbierame</h2>
       <ul>
         <li>
-          <strong>Account data:</strong> names, emails, and roles for your
-          staff accounts, plus your practice&apos;s name and settings.
+          <strong>Údaje o účte:</strong>  mená, e-maily a roly pre vás
+          účty zamestnancov a názov a nastavenia vašej praxe.
         </li>
         <li>
-          <strong>Practice records:</strong> the clients, patients,
-          appointments, medical records, messages, and invoices your team
-          enters. We process this data on your behalf; your practice controls
-          it.
+          <strong>Záznamy z praxe:</strong>  klienti, pacienti,
+          schôdzky, lekárske záznamy, správy a faktúry vášmu tímu
+          vstúpi. Tieto údaje spracovávame vo vašom mene; vaša prax ovláda
+          to.
         </li>
         <li>
-          <strong>Billing data:</strong> subscription status and usage counts.
-          Card details go directly to Stripe; we never see full card numbers.
+          <strong>Fakturačné údaje:</strong>  stav predplatného a počet používania.
+          Podrobnosti o karte idú priamo do Stripe; nikdy nevidíme celé čísla kariet.
         </li>
         <li>
-          <strong>Service logs:</strong> technical logs and error reports that
-          help us keep the service reliable and secure.
+          <strong>Servisné denníky:</strong>  technické denníky a chybové hlásenia
+          pomôžte nám udržať spoľahlivú a bezpečnú službu.
         </li>
         <li>
-          <strong>Optional analytics:</strong> only if you choose &quot;Allow
-          Analytics&quot; in the cookie banner. Essential cookies for secure
-          sign-in are always on; advertising cookies are never used.
+          <strong>Voliteľné analýzy:</strong>  iba ak vyberiete možnosť „Povoliť
+          Analytics" v banneri súboru cookie. Nevyhnutné súbory cookie pre bezpečnosť
+          prihlasovanie je vždy zapnuté; reklamné cookies sa nikdy nepoužívajú.
         </li>
       </ul>
 
-      <h2>How we use data</h2>
+      <h2>Ako používame údaje</h2>
       <ul>
-        <li>To provide, secure, and improve the service.</li>
+        <li>Poskytovať, zabezpečovať a zlepšovať službu.</li>
         <li>
-          To send messages you ask us to send (appointment reminders, client
-          messages, receipts) and account emails.
+          
+          Ak chcete posielať správy, o ktoré nás požiadate (pripomenutia schôdzok, klient
+          správy, potvrdenia) a e-maily účtu.
         </li>
         <li>
-          To power optional AI features. AI requests are processed by our AI
-          provider to answer the request; we do not let providers train their
-          models on your practice data.
+          
+          Na napájanie voliteľných funkcií AI. Žiadosti AI spracováva naša AI
+          poskytovateľ odpovedať na žiadosť; nenechávame poskytovateľov školiť ich
+          modely na vašich praktických údajoch.
         </li>
-        <li>We do not sell personal data. We do not run ads.</li>
+        <li>Osobné údaje nepredávame. Nezobrazujeme reklamy.</li>
       </ul>
 
-      <h2>Who helps us run the service</h2>
+      <h2>Kto nám pomáha prevádzkovať službu</h2>
       <p>
-        We use a small set of service providers to operate OpenVPM: cloud
-        hosting and databases, file storage, Stripe for payments, an email
-        delivery provider, an SMS carrier, and an AI provider for the
-        assistant. Each processes data only to provide their service to us.
+        
+        Na prevádzkovanie OpenVPM využívame malú skupinu poskytovateľov služieb: cloud
+        hosting a databázy, úložisko súborov, Stripe pre platby, e-mail
+        poskytovateľa doručovania, operátora SMS a poskytovateľa AI pre
+        asistent. Každý spracúva údaje len preto, aby nám poskytol svoje služby.
       </p>
 
-      <h2>Retention and deletion</h2>
+      <h2>Zachovanie a vymazanie</h2>
       <ul>
         <li>
-          Practice records stay as long as your account is active. Your
-          practice controls its own retention duties for medical records.
+          
+          Záznamy z praxe zostávajú, kým je váš účet aktívny. Váš
+          prax kontroluje svoje vlastné povinnosti uchovávania zdravotných záznamov.
         </li>
         <li>
-          You can export everything at any time from Settings, and an admin
-          can request account deletion in the product. After closure we keep
-          data exportable for at least 60 days, then delete it from live
-          systems and let backups age out.
+          
+          Všetko môžete kedykoľvek exportovať z Nastavenia a správcu
+          môže požiadať o vymazanie účtu v produkte. Po uzavretí uchovávame
+          údaje exportovateľné po dobu najmenej 60 dní, potom ich vymažte zo živého vysielania
+          systémy a nechať zálohy starnúť.
         </li>
       </ul>
 
-      <h2>Security</h2>
+      <h2>Bezpečnosť</h2>
       <p>
-        Data is encrypted in transit, access is role-based, every practice is
-        isolated at the database layer with row-level security, and hosted
-        data is backed up regularly. No system is perfectly secure, but we
-        treat your records like the medical data they are. If a breach ever
-        affects your data, we will notify you as the law requires.
+        
+        Dáta sú pri prenose šifrované, prístup je založený na rolách, každá prax je taká
+        izolované na databázovej vrstve so zabezpečením na úrovni riadkov a hostované
+        dáta sú pravidelne zálohované. Žiadny systém nie je dokonale bezpečný, ale my
+        zaobchádzajte so svojimi záznamami ako s lekárskymi údajmi, ktorými sú. Ak niekedy dôjde k porušeniu
+        ovplyvní vaše údaje, upozorníme vás na to, ako to vyžaduje zákon.
       </p>
 
-      <h2>Your choices</h2>
+      <h2>Vaše voľby</h2>
       <ul>
-        <li>Export your data at any time.</li>
-        <li>Request deletion of your account and data.</li>
-        <li>Change the analytics cookie choice from the cookie preferences link.</li>
+        <li>Exportujte svoje údaje kedykoľvek.</li>
+        <li>Požiadajte o vymazanie svojho účtu a údajov.</li>
+        <li>Zmeňte výber analytických súborov cookie z odkazu na predvoľby súborov cookie.</li>
         <li>
-          Pet owners: your vet&apos;s practice controls your records. Contact
-          the practice for questions, corrections, or deletion.
+          
+          Majitelia domácich zvierat: vaše záznamy kontroluje prax vášho veterinára. Kontaktovať
+          prax pre otázky, opravy alebo vymazanie.
         </li>
       </ul>
 
-      <h2>Changes and contact</h2>
+      <h2>Zmeny a kontakt</h2>
       <p>
-        If we change this policy in a way that matters, we will tell you by
-        email or in the product first. Questions or requests:
-        hello@openvpm.com.
+        
+        Ak tieto zásady zmeníme spôsobom, na ktorom záleží, oznámime vám to
+        najskôr e-mailom alebo v produkte. Otázky alebo požiadavky:
+        ahoj@openvpm.com.
       </p>
     </>
   );

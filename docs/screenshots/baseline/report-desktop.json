@@ -3,10 +3,7 @@
     "slug": "dashboard",
     "route": "/",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -14,10 +11,7 @@
     "slug": "patients",
     "route": "/patients",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -25,10 +19,7 @@
     "slug": "clients",
     "route": "/clients",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -36,10 +27,7 @@
     "slug": "schedule",
     "route": "/schedule",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -47,10 +35,7 @@
     "slug": "records",
     "route": "/records",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -58,10 +43,7 @@
     "slug": "billing",
     "route": "/billing",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -70,8 +52,7 @@
     "route": "/inventory",
     "status": 200,
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "Failed to fetch RSC payload for http://localhost:3001/billing. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_re"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -80,23 +61,15 @@
     "slug": "inbox",
     "route": "/inbox",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
-    "emptyHits": [
-      "No messages"
-    ],
+    "consoleErrors": [],
+    "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "whiteboard",
     "route": "/whiteboard",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -104,10 +77,7 @@
     "slug": "controlled-substances",
     "route": "/controlled-substances",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -115,10 +85,7 @@
     "slug": "reports",
     "route": "/reports",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -126,10 +93,7 @@
     "slug": "settings",
     "route": "/settings",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -137,10 +101,7 @@
     "slug": "agent",
     "route": "/agent",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -148,10 +109,7 @@
     "slug": "welcome-vignette",
     "route": "/?guides=1&welcomeVariant=vignette",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -159,10 +117,7 @@
     "slug": "welcome-imagery",
     "route": "/?guides=1&welcomeVariant=imagery",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },

@@ -82,7 +82,8 @@ function PayButton({ token, invoiceId }: { token: string; invoiceId: string }) {
 function PaymentUnavailable() {
   return (
     <p className="text-xs text-gray-500">
-      Online payments are not configured for this clinic.
+      
+      Faktúry alebo odhady môžu vytvárať iba správcovia a zamestnanci recepcie.
     </p>
   );
 }
@@ -113,8 +114,8 @@ export default function InvoicesPage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load invoices"
-          description="Please refresh this page or contact your clinic if the portal link has expired."
+          title="Nie je možné načítať faktúry"
+          description="Obnovte túto stránku alebo kontaktujte svoju kliniku, ak platnosť odkazu na portál vypršala."
         />
       </div>
     );
@@ -129,10 +130,11 @@ export default function InvoicesPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to portal
+        
+        Späť na portál
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">Invoices</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-8">Faktúry</h1>
 
       {paymentBanner && (
         <div
@@ -150,8 +152,8 @@ export default function InvoicesPage() {
         <EmptyState
           className="py-12"
           icon={Receipt}
-          title="No invoices yet"
-          description="Invoices and estimates from your clinic will appear here."
+          title="Zatiaľ žiadne faktúry"
+          description="Tu sa zobrazia faktúry a odhady z vašej kliniky."
         />
       ) : (
         <>
@@ -192,26 +194,30 @@ export default function InvoicesPage() {
                     </span>
                   </div>
                   {inv.patientName && (
-                    <p className="text-sm text-gray-500">Patient: {inv.patientName}</p>
+                    <p className="text-sm text-gray-500">Pacient: {inv.patientName}</p>
                   )}
                   <div className="flex justify-between mt-2 text-sm">
                     <span className="text-gray-400">
-                      Paid: {formatCurrency(inv.paidAmount, inv.currency, inv.country)}
+                      
+                      Zaplatené: {formatCurrency(inv.paidAmount, inv.currency, inv.country)}
                     </span>
                     {adjusted > 0 && (
                       <span className="text-gray-400">
-                        Adjusted: {formatCurrency(inv.adjustedAmount, inv.currency, inv.country)}
+                        
+                        Upravené: {formatCurrency(inv.adjustedAmount, inv.currency, inv.country)}
                       </span>
                     )}
                     {balance > 0 && (
                       <span className="font-medium text-red-600">
-                        Balance: {formatCurrency(balance, inv.currency, inv.country)}
+                        
+                        Zostatok: {formatCurrency(balance, inv.currency, inv.country)}
                       </span>
                     )}
                   </div>
                   {inv.dueDate && (
                     <p className="text-xs text-gray-400 mt-1">
-                      Due: {formatDate(inv.dueDate, inv.country, inv.timezone)}
+                      
+                      Splatné: {formatDate(inv.dueDate, inv.country, inv.timezone)}
                     </p>
                   )}
                   {canPay && (
@@ -234,13 +240,13 @@ export default function InvoicesPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 text-left text-gray-500">
-                  <th className="pb-2 pr-4 font-medium">Date</th>
-                  <th className="pb-2 pr-4 font-medium">Patient</th>
-                  <th className="pb-2 pr-4 font-medium text-right">Total</th>
-                  <th className="pb-2 pr-4 font-medium text-right">Paid</th>
-                  <th className="pb-2 font-medium text-right">Balance</th>
-                  <th className="pb-2 pl-6 pr-4 font-medium">Status</th>
-                  <th className="pb-2 pr-4 font-medium">Due Date</th>
+                  <th className="pb-2 pr-4 font-medium">Dátum</th>
+                  <th className="pb-2 pr-4 font-medium">Pacient</th>
+                  <th className="pb-2 pr-4 font-medium text-right">Celkom</th>
+                  <th className="pb-2 pr-4 font-medium text-right">Zaplatené</th>
+                  <th className="pb-2 font-medium text-right">Zostatok</th>
+                  <th className="pb-2 pl-6 pr-4 font-medium">Stav</th>
+                  <th className="pb-2 pr-4 font-medium">Dátum splatnosti</th>
                   <th className="pb-2 font-medium" />
                 </tr>
               </thead>
@@ -273,7 +279,8 @@ export default function InvoicesPage() {
                         {formatCurrency(inv.paidAmount, inv.currency, inv.country)}
                         {adjusted > 0 && (
                           <span className="block text-xs text-gray-400">
-                            Adj {formatCurrency(inv.adjustedAmount, inv.currency, inv.country)}
+                            
+                            Upraviť {formatCurrency(inv.adjustedAmount, inv.currency, inv.country)}
                           </span>
                         )}
                       </td>

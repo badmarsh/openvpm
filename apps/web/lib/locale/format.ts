@@ -10,6 +10,7 @@ const COUNTRY_LOCALE: Record<string, string> = {
   IE: "en-IE",
   CA: "en-CA",
   AU: "en-AU",
+  SK: "sk-SK",
 };
 
 export function localeForCountry(country?: string | null): string {
@@ -40,8 +41,11 @@ export function formatDate(date: Date | string, country?: string | null): string
 }
 
 /** Which controlled-drug / prescribing framework applies (used later, P1). */
-export function regulatoryFramework(country?: string | null): "uk_vmd" | "us_dea" {
-  return (country ?? "US").toUpperCase() === "GB" ? "uk_vmd" : "us_dea";
+export function regulatoryFramework(country?: string | null): "uk_vmd" | "us_dea" | "sk_kvl" {
+  const c = (country ?? "US").toUpperCase();
+  if (c === "GB") return "uk_vmd";
+  if (c === "SK") return "sk_kvl";
+  return "us_dea";
 }
 
 export interface RegionDefaults {
@@ -62,6 +66,8 @@ export function regionDefaults(country?: string | null): RegionDefaults {
       return { currency: "cad", taxRatePercent: "5.00", timezone: "America/Toronto" };
     case "AU":
       return { currency: "aud", taxRatePercent: "10.00", timezone: "Australia/Sydney" };
+    case "SK":
+      return { currency: "eur", taxRatePercent: "23.00", timezone: "Europe/Bratislava" };
     default:
       return { currency: "usd", taxRatePercent: "8.00", timezone: "America/New_York" };
   }

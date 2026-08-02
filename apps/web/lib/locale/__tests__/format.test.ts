@@ -43,15 +43,16 @@ describe("formatDate", () => {
 });
 
 describe("regulatoryFramework", () => {
-  it("returns uk_vmd for GB, us_dea otherwise", () => {
+  it("returns uk_vmd for GB, sk_kvl for SK, us_dea otherwise", () => {
     expect(regulatoryFramework("GB")).toBe("uk_vmd");
+    expect(regulatoryFramework("SK")).toBe("sk_kvl");
     expect(regulatoryFramework("US")).toBe("us_dea");
     expect(regulatoryFramework(null)).toBe("us_dea");
   });
 });
 
 describe("regionDefaults", () => {
-  it("returns USD/8% for US (and unknown), GBP/20% for GB", () => {
+  it("returns USD/8% for US (and unknown), GBP/20% for GB, EUR/23% for SK", () => {
     expect(regionDefaults("US")).toMatchObject({ currency: "usd", taxRatePercent: "8.00" });
     expect(regionDefaults("ZZ")).toMatchObject({ currency: "usd" });
     expect(regionDefaults("GB")).toMatchObject({
@@ -59,12 +60,18 @@ describe("regionDefaults", () => {
       taxRatePercent: "20.00",
       timezone: "Europe/London",
     });
+    expect(regionDefaults("SK")).toMatchObject({
+      currency: "eur",
+      taxRatePercent: "23.00",
+      timezone: "Europe/Bratislava",
+    });
   });
 });
 
 describe("localeForCountry", () => {
   it("maps known countries and falls back to en-US", () => {
     expect(localeForCountry("GB")).toBe("en-GB");
+    expect(localeForCountry("SK")).toBe("sk-SK");
     expect(localeForCountry("xx")).toBe("en-US");
     expect(localeForCountry(null)).toBe("en-US");
   });

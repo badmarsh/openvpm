@@ -60,9 +60,8 @@ export function SetUpTextingStep({
   return (
     <div className="space-y-5">
       <p className="text-sm leading-6 text-slate-600">
-        Text your clients about appointments, reminders, and results, and let them
-        text you back. You can text from your existing number or get a new local
-        one. This is optional, so skip it and set it up later if you like.
+        
+        dakujem. Klinika má váš podpísaný formulár. Túto stránku môžete zatvoriť.
       </p>
 
       <div className="rounded-lg border border-slate-200 bg-slate-50/60 p-4">
@@ -74,7 +73,8 @@ export function SetUpTextingStep({
             {status.isLoading ? (
               <p className="flex items-center gap-2 text-sm text-slate-500">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Checking your texting setup…
+                
+                Kontroluje sa nastavenie odosielania správ…
               </p>
             ) : isConfigured ? (
               <div className="space-y-1">
@@ -90,10 +90,12 @@ export function SetUpTextingStep({
             ) : (
               <div className="space-y-1">
                 <p className="text-sm font-medium text-slate-900">
-                  Texting is not set up yet
+                  
+                  Také ľahké
                 </p>
                 <p className="text-xs text-slate-500">
-                  Set up a number for {location?.name ?? "your clinic"}.
+                  
+                  Nastavte číslo pre {location?.name ?? "your clinic"}.
                 </p>
               </div>
             )}
@@ -108,7 +110,8 @@ export function SetUpTextingStep({
               {isConfigured ? (
                 <>
                   <Check className="mr-1.5 h-4 w-4" />
-                  Manage
+                  
+                  Muž || Muž | weights, and allergies.
                 </>
               ) : (
                 "Set up texting"

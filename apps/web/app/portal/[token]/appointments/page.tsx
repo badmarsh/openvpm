@@ -64,8 +64,8 @@ export default function AppointmentsPage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load appointments"
-          description="Please refresh this page or contact your clinic if the portal link has expired."
+          title="Nie je možné načítať stretnutia"
+          description="Obnovte túto stránku alebo kontaktujte svoju kliniku, ak platnosť odkazu na portál vypršala."
         />
       </div>
     );
@@ -82,11 +82,12 @@ export default function AppointmentsPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to portal
+        
+        Späť na portál
       </Link>
 
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Stretnutia</h1>
         <Link
           href={`/portal/${token}/book`}
           className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 transition-colors"
@@ -94,7 +95,8 @@ export default function AppointmentsPage() {
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
-          Request appointment
+          
+          Požiadať o stretnutie
         </Link>
       </div>
 
@@ -102,15 +104,16 @@ export default function AppointmentsPage() {
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-teal-500" />
-          Upcoming
+          
+          Nadchádzajúce
         </h2>
         {upcoming.length === 0 ? (
           <EmptyState
             className="py-10"
             icon={CalendarClock}
-            title="No upcoming appointments"
+            title="Žiadne nadchádzajúce stretnutia"
             action={{
-              label: "Request appointment",
+              label: "Požiadať o stretnutie",
               onClick: () => router.push(`/portal/${token}/book`),
               icon: CalendarPlus,
             }}
@@ -133,12 +136,13 @@ export default function AppointmentsPage() {
                       )}
                       {appt.patientName || "No patient"}
                       {appt.typeName && (
-                        <span className="text-gray-400"> &middot; {appt.typeName}</span>
+                        <span className="text-gray-400">  · {appt.typeName}</span>
                       )}
                     </p>
                     {appt.doctorName && (
                       <p className="text-sm text-gray-400 mt-0.5">
-                        with {appt.doctorName}
+                        
+                        s {appt.doctorName}
                       </p>
                     )}
                   </div>
@@ -160,13 +164,14 @@ export default function AppointmentsPage() {
       <section>
         <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-gray-400" />
-          Past
+          
+          Minulosť
         </h2>
         {past.length === 0 ? (
           <EmptyState
             className="py-10"
             icon={History}
-            title="No past appointments"
+            title="Žiadne predchádzajúce stretnutia"
           />
         ) : (
           <div className="space-y-3">
@@ -186,12 +191,13 @@ export default function AppointmentsPage() {
                       )}
                       {appt.patientName || "No patient"}
                       {appt.typeName && (
-                        <span className="text-gray-400"> &middot; {appt.typeName}</span>
+                        <span className="text-gray-400">  · {appt.typeName}</span>
                       )}
                     </p>
                     {appt.doctorName && (
                       <p className="text-sm text-gray-400 mt-0.5">
-                        with {appt.doctorName}
+                        
+                        s {appt.doctorName}
                       </p>
                     )}
                   </div>

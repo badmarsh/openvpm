@@ -25,6 +25,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { PawMark } from "@/components/brand/paw-mark";
+import { useTranslations } from "next-intl";
 
 type UserRole = "admin" | "veterinarian" | "technician" | "front_desk" | "viewer";
 
@@ -42,23 +43,23 @@ function isUserRole(role?: string | null): role is UserRole {
 
 const navItems: {
   href: string;
-  label: string;
+  key: string;
   icon: React.ElementType;
   roles: UserRole[];
 }[] = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, roles: allRoles },
-  { href: "/patients", label: "Patients", icon: PawPrint, roles: allRoles },
-  { href: "/clients", label: "Clients", icon: Users, roles: allRoles },
-  { href: "/schedule", label: "Schedule", icon: Calendar, roles: allRoles },
-  { href: "/records", label: "Records", icon: FileText, roles: allRoles },
-  { href: "/billing", label: "Billing", icon: Receipt, roles: allRoles },
-  { href: "/inventory", label: "Inventory", icon: Package, roles: allRoles },
-  { href: "/inbox", label: "Inbox", icon: MessageSquare, roles: allRoles },
-  { href: "/whiteboard", label: "Whiteboard", icon: ClipboardList, roles: allRoles },
-  { href: "/agent", label: "Agent", icon: Bot, roles: ["admin", "veterinarian"] },
-  { href: "/controlled-substances", label: "Controlled Substances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
-  { href: "/reports", label: "Reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
-  { href: "/settings", label: "Settings", icon: Settings, roles: ["admin"] },
+  { href: "/", key: "nav.dashboard", icon: LayoutDashboard, roles: allRoles },
+  { href: "/patients", key: "nav.patients", icon: PawPrint, roles: allRoles },
+  { href: "/clients", key: "nav.clients", icon: Users, roles: allRoles },
+  { href: "/schedule", key: "nav.schedule", icon: Calendar, roles: allRoles },
+  { href: "/records", key: "nav.records", icon: FileText, roles: allRoles },
+  { href: "/billing", key: "nav.billing", icon: Receipt, roles: allRoles },
+  { href: "/inventory", key: "nav.inventory", icon: Package, roles: allRoles },
+  { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
+  { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
+  { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
+  { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
+  { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
+  { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
 ];
 
 type SidebarProps = {
@@ -74,6 +75,7 @@ export function Sidebar({
   onNavigate,
   width = "fixed",
 }: SidebarProps = {}) {
+  const t = useTranslations();
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
@@ -161,7 +163,7 @@ export function Sidebar({
                       />
                     ) : null}
                   </span>
-                  {!isCollapsed && <span className="truncate">{item.label}</span>}
+                  {!isCollapsed && <span className="truncate">{t(item.key)}</span>}
                   {!isCollapsed &&
                   item.href === "/inbox" &&
                   unreadInboxCount > 0 ? (
@@ -195,7 +197,7 @@ export function Sidebar({
                 {session.user.name}
               </p>
               <p className="truncate text-xs text-muted-foreground capitalize">
-                {session.user.role?.replace("_", " ")}
+                {session.user.role ? t(`roles.${session.user.role}`, session.user.role) : ""}
               </p>
             </div>
             <button

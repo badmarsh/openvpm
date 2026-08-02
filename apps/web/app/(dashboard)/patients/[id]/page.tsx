@@ -132,18 +132,18 @@ const speciesEmoji: Record<string, string> = {
 };
 
 function formatSex(sex: string | null): string {
-  if (!sex) return "Unknown";
+  if (!sex) return "Neznáme";
   const labels: Record<string, string> = {
-    male: "Male (Intact)",
-    female: "Female (Intact)",
-    male_neutered: "Male (Neutered)",
-    female_spayed: "Female (Spayed)",
+    male: "Samec (nekastrovaný)",
+    female: "Samica (nekastrovaná)",
+    male_neutered: "Samec (kastrovaný)",
+    female_spayed: "Samica (kastrovaná)",
   };
   return labels[sex] ?? sex;
 }
 
 function calculateAge(dob: string | null): string {
-  if (!dob) return "Unknown";
+  if (!dob) return "Neznámy";
   const birth = new Date(dob);
   const now = new Date();
   const years = now.getFullYear() - birth.getFullYear();
@@ -152,12 +152,12 @@ function calculateAge(dob: string | null): string {
   const adjustedYears = months < 0 ? years - 1 : years;
 
   if (adjustedYears === 0) {
-    return `${adjustedMonths} month${adjustedMonths !== 1 ? "s" : ""}`;
+    return `${adjustedMonths} mes.`;
   }
   if (adjustedMonths === 0) {
-    return `${adjustedYears} year${adjustedYears !== 1 ? "s" : ""}`;
+    return `${adjustedYears} r.`;
   }
-  return `${adjustedYears}y ${adjustedMonths}m`;
+  return `${adjustedYears} r. ${adjustedMonths} mes.`;
 }
 
 type Tab =
@@ -171,14 +171,14 @@ type Tab =
   | "invoices";
 
 const tabs: { id: Tab; label: string }[] = [
-  { id: "overview", label: "Overview" },
-  { id: "records", label: "Medical Records" },
-  { id: "documents", label: "Documents" },
-  { id: "appointments", label: "Appointments" },
-  { id: "weight", label: "Weight History" },
-  { id: "vitals", label: "Vitals" },
-  { id: "vaccinations", label: "Vaccinations" },
-  { id: "invoices", label: "Invoices" },
+  { id: "overview", label: "Prehľad" },
+  { id: "records", label: "Zdravotné záznamy" },
+  { id: "documents", label: "Dokumenty" },
+  { id: "appointments", label: "Stretnutia" },
+  { id: "weight", label: "História hmotnosti" },
+  { id: "vitals", label: "Vitálne funkcie" },
+  { id: "vaccinations", label: "Očkovanie" },
+  { id: "invoices", label: "Faktúry" },
 ];
 
 function canManagePatientDetailRole(role?: string | null): boolean {
@@ -264,7 +264,7 @@ export default function PatientDetailPage() {
 
   const updatePhotoMutation = trpc.patients.update.useMutation({
     onSuccess: () => {
-      toast.success("Patient photo updated");
+      toast.success("Aktualizovaná fotografia pacienta");
       utils.patients.getById.invalidate({ id: params.id });
     },
     onError: (err) => {
@@ -307,7 +307,7 @@ export default function PatientDetailPage() {
       const data = await res.json();
       updatePhotoMutation.mutate({ id: params.id, photoUrl: data.url });
     } catch {
-      toast.error("Failed to upload photo");
+      toast.error("Nepodarilo sa odovzdať fotografiu");
     }
 
     // Reset file input so the same file can be re-selected
@@ -349,7 +349,7 @@ export default function PatientDetailPage() {
   const [weightKg, setWeightKg] = useState("");
   const addWeight = trpc.patients.addWeight.useMutation({
     onSuccess: () => {
-      toast.success("Weight recorded");
+      toast.success("Zaznamenaná hmotnosť");
       utils.patients.getById.invalidate({ id: params.id });
       setWeightKg("");
     },
@@ -378,7 +378,7 @@ export default function PatientDetailPage() {
   const [allergyReaction, setAllergyReaction] = useState("");
   const addAllergy = trpc.patients.addAllergy.useMutation({
     onSuccess: () => {
-      toast.success("Allergy recorded");
+      toast.success("Alergia zaznamenaná");
       utils.patients.getById.invalidate({ id: params.id });
       setAllergyName("");
       setAllergyReaction("");
@@ -389,7 +389,7 @@ export default function PatientDetailPage() {
   });
   const removeAllergy = trpc.patients.removeAllergy.useMutation({
     onSuccess: () => {
-      toast.success("Allergy removed");
+      toast.success("Alergia odstránená");
       utils.patients.getById.invalidate({ id: params.id });
     },
     onError: (err) => toast.error(err.message),
@@ -426,7 +426,7 @@ export default function PatientDetailPage() {
   const isPageLoading = !loadError && (isLoading || recordsSettingsLoading);
 
   if (isPageLoading) {
-    return <PatientDetailLoadingPanel label="Loading patient..." />;
+    return <PatientDetailLoadingPanel label="Načítavam pacienta..." />;
   }
 
   if (
@@ -438,7 +438,7 @@ export default function PatientDetailPage() {
     return (
       <EmptyState
         icon={AlertTriangle}
-        title="Unable to load patient"
+        title="Nepodarilo sa načítať pacienta"
         description={
           loadError?.message ??
           (recordsSettingsMissing || !verifiedRecordsSettings
@@ -446,7 +446,7 @@ export default function PatientDetailPage() {
             : "Choose a patient from the Patients list before opening the detail page.")
         }
         action={{
-          label: "Back to Patients",
+          label: "Späť na Pacienti",
           onClick: () => router.push("/patients"),
           icon: ArrowLeft,
         }}
@@ -569,7 +569,8 @@ export default function PatientDetailPage() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Patients
+        
+        Späť na Pacienti
       </Button>
 
       {/* Patient Header Card */}
@@ -594,7 +595,7 @@ export default function PatientDetailPage() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
-                    title="Upload photo"
+                    title="Nahrať fotku"
                   >
                     <Camera className="h-5 w-5 text-white" />
                   </button>
@@ -632,9 +633,9 @@ export default function PatientDetailPage() {
                 {formatSex(patient.sex)}
               </p>
               <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                {patient.color && <span>Color: {patient.color}</span>}
+                {patient.color && <span>Farba: {patient.color}</span>}
                 {patient.microchipNumber && (
-                  <span>Microchip: {patient.microchipNumber}</span>
+                  <span>Mikročip: {patient.microchipNumber}</span>
                 )}
               </div>
               {patient.clientFirstName && (
@@ -661,7 +662,8 @@ export default function PatientDetailPage() {
               onClick={handleDownloadSummary}
             >
               <FileDown className="mr-2 h-4 w-4" />
-              Download Summary
+              
+              Stiahnuť súhrn
             </Button>
             {canManagePatientDetail && (
               <Button
@@ -669,7 +671,8 @@ export default function PatientDetailPage() {
                 size="sm"
                 onClick={() => router.push(`/patients/${patient.id}/edit`)}
               >
-                Edit
+                
+                Upraviť
               </Button>
             )}
           </div>
@@ -682,7 +685,8 @@ export default function PatientDetailPage() {
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-600 dark:text-red-400" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-red-800 dark:text-red-300">
-              Allergies
+              
+              Alergie
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2">
               {patient.allergies.map((allergy) => (
@@ -701,7 +705,8 @@ export default function PatientDetailPage() {
                   {allergy.allergen}
                   {allergy.severity === "severe" ? (
                     <span className="ml-1 text-[10px] font-semibold uppercase tracking-wide">
-                      severe
+                      
+                      ťažké
                     </span>
                   ) : null}
                   {canManagePatientDetail ? (
@@ -724,7 +729,8 @@ export default function PatientDetailPage() {
                   className="inline-flex items-center gap-1 rounded-full border border-dashed border-red-300 px-2.5 py-0.5 text-xs font-medium text-red-700 transition-colors hover:bg-red-100 dark:border-red-800 dark:text-red-300 dark:hover:bg-red-950"
                 >
                   <Plus className="h-3 w-3" />
-                  Add
+                  
+                  Pridať
                 </button>
               ) : null}
             </div>
@@ -761,14 +767,15 @@ export default function PatientDetailPage() {
             />
           ) : (
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
-              <span>No known allergies recorded.</span>
+              <span>Neboli zaznamenané žiadne známe alergie.</span>
               <button
                 type="button"
                 onClick={() => setShowAllergyForm(true)}
                 className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
                 <Plus className="h-3.5 w-3.5" />
-                Add allergy
+                
+                Pridať alergiu
               </button>
             </div>
           )}
@@ -803,15 +810,16 @@ export default function PatientDetailPage() {
         {activeTab === "overview" && (
           <div className="rounded-lg border border-border bg-card p-6">
             <h3 className="font-heading text-base font-semibold mb-4">
-              Basic Information
+              
+              Základné informácie
             </h3>
             <dl className="grid gap-4 sm:grid-cols-2">
               <div>
-                <dt className="text-sm text-muted-foreground">Name</dt>
+                <dt className="text-sm text-muted-foreground">Meno</dt>
                 <dd className="mt-0.5 text-sm font-medium">{patient.name}</dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Species</dt>
+                <dt className="text-sm text-muted-foreground">Druh</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {patient.species
                     ? patient.species.charAt(0).toUpperCase() +
@@ -820,7 +828,7 @@ export default function PatientDetailPage() {
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Breed</dt>
+                <dt className="text-sm text-muted-foreground">Plemeno</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {patient.breed || "\u2014"}
                 </dd>
@@ -832,39 +840,40 @@ export default function PatientDetailPage() {
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Date of Birth</dt>
+                <dt className="text-sm text-muted-foreground">Dátum narodenia</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {formatClinicalDate(patient.dob, recordsTimeZone, "\u2014")}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Age</dt>
+                <dt className="text-sm text-muted-foreground">Vek</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {calculateAge(patient.dob)}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Color</dt>
+                <dt className="text-sm text-muted-foreground">Farba</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {patient.color || "\u2014"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-muted-foreground">
-                  Microchip Number
+                  
+                  Číslo mikročipu
                 </dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {patient.microchipNumber || "\u2014"}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Status</dt>
+                <dt className="text-sm text-muted-foreground">Stav</dt>
                 <dd className="mt-0.5 text-sm font-medium capitalize">
                   {patient.status ?? "active"}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted-foreground">Owner</dt>
+                <dt className="text-sm text-muted-foreground">Vlastník</dt>
                 <dd className="mt-0.5 text-sm font-medium">
                   {patient.clientFirstName
                     ? `${patient.clientFirstName} ${patient.clientLastName}`
@@ -885,7 +894,8 @@ export default function PatientDetailPage() {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                   <div className="w-full sm:max-w-xs">
                     <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                      Weight (kg)
+                      
+                      Hmotnosť (kg)
                     </label>
                     <input
                       type="number"
@@ -922,13 +932,16 @@ export default function PatientDetailPage() {
                     <thead>
                       <tr className="border-b border-border bg-muted/50">
                         <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                          Date
+                          
+                          Dátum
                         </th>
                         <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                          Weight (kg)
+                          
+                          Hmotnosť (kg)
                         </th>
                         <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                          Recorded By
+                          
+                          Zaznamenal
                         </th>
                       </tr>
                     </thead>
@@ -958,7 +971,7 @@ export default function PatientDetailPage() {
                 </div>
               </>
             ) : (
-              <EmptyState icon={Activity} title="No weight records yet" />
+              <EmptyState icon={Activity} title="Zatiaľ nie sú nakonfigurované žiadne záznamy o hmotnosti" />
             )}
           </div>
         )}
@@ -1018,7 +1031,7 @@ function VitalsTab({
   );
   const record = trpc.vitals.record.useMutation({
     onSuccess: () => {
-      toast.success("Vitals recorded");
+      toast.success("Zaznamenané životné funkcie");
       utils.vitals.listByPatient.invalidate({ patientId });
       setForm(initialVitalsForm());
     },
@@ -1077,7 +1090,8 @@ function VitalsTab({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <div>
               <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                Temp (C)
+                
+                Teplota (C)
               </label>
               <input
                 type="number"
@@ -1126,7 +1140,8 @@ function VitalsTab({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              Weight (kg)
+              
+              Hmotnosť (kg)
             </label>
             <input
               type="number"
@@ -1160,7 +1175,8 @@ function VitalsTab({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              Pain (0-10)
+              
+              Bolesť (0-10)
             </label>
             <input
               type="number"
@@ -1175,7 +1191,8 @@ function VitalsTab({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              CRT (sec)
+              
+              CRT (s)
             </label>
             <input
               type="number"
@@ -1194,14 +1211,15 @@ function VitalsTab({
           </div>
           <div className="col-span-2">
             <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              Mucous Membrane
+              
+              Sliznica
             </label>
             <input
               type="text"
               value={form.mucousMembrane}
               maxLength={VITALS_MUCOUS_MEMBRANE_MAX_LENGTH}
               onChange={set("mucousMembrane")}
-              placeholder="e.g. Pink and moist"
+              placeholder="napr. Ružová a vlhká"
               className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
@@ -1211,7 +1229,7 @@ function VitalsTab({
           value={form.notes ?? ""}
           maxLength={VITALS_NOTES_MAX_LENGTH}
           onChange={set("notes")}
-          placeholder="Notes (optional)"
+          placeholder="Nastavenie čísla začalo"
           className="mt-3 w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
           <div className="mt-3 flex justify-end">
@@ -1229,9 +1247,9 @@ function VitalsTab({
       ) : vitalsMissing ? (
         <PatientDetailErrorPanel message="Unable to load vitals. Please retry." />
       ) : isLoading ? (
-        <PatientDetailLoadingPanel label="Loading vitals..." />
+        <PatientDetailLoadingPanel label="Načítavam vitálne údaje..." />
       ) : !vitals || vitals.length === 0 ? (
-        <EmptyState icon={Activity} title="No vitals recorded yet" />
+        <EmptyState icon={Activity} title="Zatiaľ nie sú zaznamenané žiadne vitálne údaje" />
       ) : (
         <>
           <VitalsTrendChart data={vitalTrend} />
@@ -1239,13 +1257,13 @@ function VitalsTab({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
-                  <th className="px-3 py-2 font-medium">Date</th>
-                  <th className="px-3 py-2 font-medium">Temp</th>
+                  <th className="px-3 py-2 font-medium">Dátum</th>
+                  <th className="px-3 py-2 font-medium">Teplota</th>
                   <th className="px-3 py-2 font-medium">HR</th>
                   <th className="px-3 py-2 font-medium">RR</th>
-                  <th className="px-3 py-2 font-medium">Weight</th>
+                  <th className="px-3 py-2 font-medium">Hmotnosť</th>
                   <th className="px-3 py-2 font-medium">BCS</th>
-                  <th className="px-3 py-2 font-medium">Pain</th>
+                  <th className="px-3 py-2 font-medium">Bolesť</th>
                 </tr>
               </thead>
               <tbody>
@@ -1299,12 +1317,12 @@ function VaccinationsTab({
   }
 
   if (isLoading) {
-    return <PatientDetailLoadingPanel label="Loading vaccinations..." />;
+    return <PatientDetailLoadingPanel label="Načítava sa očkovanie..." />;
   }
 
   if (!vaccinations || vaccinations.length === 0) {
     return (
-      <EmptyState icon={Shield} title="No vaccination records yet" />
+      <EmptyState icon={Shield} title="Zatiaľ žiadne záznamy o očkovaní" />
     );
   }
 
@@ -1314,19 +1332,24 @@ function VaccinationsTab({
         <thead>
           <tr className="border-b border-border bg-muted/50">
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Vaccine Name
+              
+              Názov vakcíny
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Date Given
+              
+              Dátum uvedený
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Next Due
+              
+              Ďalší termín
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Lot Number
+              
+              Číslo šarže
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Administered By
+              
+              Spravuje
             </th>
           </tr>
         </thead>
@@ -1379,14 +1402,14 @@ function MedicalRecordsTab({
     );
   }
   if (isLoading) {
-    return <PatientDetailLoadingPanel label="Loading medical records..." />;
+    return <PatientDetailLoadingPanel label="Načítavam lekárske záznamy..." />;
   }
   if (!notes || notes.length === 0) {
     return (
       <EmptyState
         icon={FileText}
-        title="No medical records yet"
-        description="SOAP notes written in Records will show up here."
+        title="Zatiaľ žiadne lekárske záznamy"
+        description="Tu sa zobrazia poznámky SOAP napísané v záznamoch."
       />
     );
   }
@@ -1407,7 +1430,8 @@ function MedicalRecordsTab({
               </p>
               {note.imported ? (
                 <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-                  Imported
+                  
+                  Dovezené
                 </span>
               ) : null}
             </div>
@@ -1479,14 +1503,14 @@ function AppointmentsTab({
     );
   }
   if (isLoading) {
-    return <PatientDetailLoadingPanel label="Loading appointments..." />;
+    return <PatientDetailLoadingPanel label="Načítavajú sa stretnutia..." />;
   }
   if (!visits || visits.length === 0) {
     return (
       <EmptyState
         icon={CalendarDays}
-        title="No appointments yet"
-        description="Visits booked on the schedule will show up here."
+        title="Zatiaľ žiadne schôdzky"
+        description="Tu sa zobrazia návštevy rezervované v rozvrhu."
       />
     );
   }
@@ -1497,22 +1521,27 @@ function AppointmentsTab({
         <thead>
           <tr className="border-b border-border bg-muted/50">
             <th className="w-10 px-2 py-3">
-              <span className="sr-only">Documents</span>
+              <span className="sr-only">Dokumenty</span>
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              When
+              
+              Kedy
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Type
+              
+              Typ
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Doctor
+              
+              Doktor
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Status
+              
+              Stav
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Notes
+              
+              Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
             </th>
           </tr>
         </thead>
@@ -1676,7 +1705,8 @@ function PatientFileRows({
               className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary hover:underline"
             >
               <ExternalLink className="h-3.5 w-3.5" />
-              View
+              
+              Zobraziť
             </a>
             <a
               href={file.fileUrl}
@@ -1684,7 +1714,8 @@ function PatientFileRows({
               className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary hover:underline"
             >
               <Download className="h-3.5 w-3.5" />
-              Download
+              
+              Stiahnuť
             </a>
           </li>
         );
@@ -1711,14 +1742,16 @@ function VisitDocuments({
     return (
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        Loading documents...
+        
+        Načítavam dokumenty...
       </div>
     );
   }
   if (error || !data) {
     return (
       <p className="text-xs text-destructive">
-        Unable to load documents for this visit.
+        
+        Nepodarilo sa načítať dokumenty pre túto návštevu.
       </p>
     );
   }
@@ -1729,8 +1762,8 @@ function VisitDocuments({
   if (photos.length === 0 && documents.length === 0) {
     return (
       <p className="text-xs text-muted-foreground">
-        Nothing attached to this visit yet. Photos and consents captured
-        during the visit show up here.
+        
+        Cieľ
       </p>
     );
   }
@@ -1765,10 +1798,10 @@ function VisitDocuments({
 }
 
 const documentFilters: { id: PatientFileKind | "all"; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "photo", label: "Photos" },
-  { id: "consent", label: "Consents" },
-  { id: "document", label: "Documents" },
+  { id: "all", label: "Všetky" },
+  { id: "photo", label: "Fotky" },
+  { id: "consent", label: "Súhlasy" },
+  { id: "document", label: "Dokumenty" },
 ];
 
 function DocumentsTab({
@@ -1806,14 +1839,14 @@ function DocumentsTab({
     );
   }
   if (isLoading) {
-    return <PatientDetailLoadingPanel label="Loading documents..." />;
+    return <PatientDetailLoadingPanel label="Načítavam dokumenty..." />;
   }
   if (!data || data.length === 0) {
     return (
       <EmptyState
         icon={Paperclip}
-        title="No documents yet"
-        description="Photos you capture and consents that get signed show up here."
+        title="Zatiaľ žiadne dokumenty"
+        description="Tu sa zobrazia fotografie, ktoré zachytíte, a podpísané súhlasy."
       />
     );
   }
@@ -1848,13 +1881,14 @@ function DocumentsTab({
 
       {visible.length === 0 ? (
         <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
-          Nothing here yet for this filter.
+          
+          Výskyty
         </div>
       ) : (
         <div className="space-y-4">
           {photos.length > 0 && (
             <div className="rounded-lg border border-border bg-card p-4">
-              <h3 className="mb-3 text-sm font-medium">Photos</h3>
+              <h3 className="mb-3 text-sm font-medium">Fotky</h3>
               <PatientPhotoGrid photos={photos} />
             </div>
           )}
@@ -1898,14 +1932,14 @@ function InvoicesTab({ patientId }: { patientId: string }) {
     );
   }
   if (isLoading) {
-    return <PatientDetailLoadingPanel label="Loading invoices..." />;
+    return <PatientDetailLoadingPanel label="Načítavajú sa faktúry..." />;
   }
   if (!data || data.items.length === 0) {
     return (
       <EmptyState
         icon={Receipt}
-        title="No invoices yet"
-        description="Invoices created in Billing for this patient will show up here."
+        title="Zatiaľ žiadne faktúry"
+        description="Tu sa zobrazia faktúry vytvorené vo Fakturácii pre tohto pacienta."
       />
     );
   }
@@ -1916,16 +1950,20 @@ function InvoicesTab({ patientId }: { patientId: string }) {
         <thead>
           <tr className="border-b border-border bg-muted/50">
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Created
+              
+              Vytvorené
             </th>
             <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-              Total
+              
+              Celkom
             </th>
             <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-              Paid
+              
+              Zaplatené
             </th>
             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-              Status
+              
+              Stav
             </th>
             <th className="px-4 py-3" />
           </tr>
@@ -1964,7 +2002,8 @@ function InvoicesTab({ patientId }: { patientId: string }) {
                   href="/billing"
                   className="text-xs font-medium text-primary hover:underline"
                 >
-                  Open in Billing
+                  
+                  Otváracie hodiny sa nepodarilo načítať. Stále môžete zadať preferovaný čas.
                 </Link>
               </td>
             </tr>
@@ -2005,7 +2044,8 @@ function AllergyForm({
           htmlFor="allergy-allergen"
           className="mb-1 block text-xs font-medium text-muted-foreground"
         >
-          Allergen
+          
+          Alergén
         </label>
         <input
           id="allergy-allergen"
@@ -2013,7 +2053,7 @@ function AllergyForm({
           value={allergyName}
           maxLength={255}
           required
-          placeholder="Penicillin"
+          placeholder="Penicilín"
           onChange={(event) => setAllergyName(event.target.value)}
           className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
@@ -2023,7 +2063,8 @@ function AllergyForm({
           htmlFor="allergy-severity"
           className="mb-1 block text-xs font-medium text-muted-foreground"
         >
-          Severity
+          
+          Závažnosť
         </label>
         <select
           id="allergy-severity"
@@ -2035,9 +2076,9 @@ function AllergyForm({
           }
           className="rounded-md border border-border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         >
-          <option value="mild">Mild</option>
-          <option value="moderate">Moderate</option>
-          <option value="severe">Severe</option>
+          <option value="mild">Mierne</option>
+          <option value="moderate">Mierne</option>
+          <option value="severe">Ťažké</option>
         </select>
       </div>
       <div className="w-full sm:w-56">
@@ -2045,14 +2086,15 @@ function AllergyForm({
           htmlFor="allergy-reaction"
           className="mb-1 block text-xs font-medium text-muted-foreground"
         >
-          Reaction (optional)
+          
+          Reakcia (voliteľné)
         </label>
         <input
           id="allergy-reaction"
           type="text"
           value={allergyReaction}
           maxLength={2000}
-          placeholder="Facial swelling"
+          placeholder="Opuch tváre"
           onChange={(event) => setAllergyReaction(event.target.value)}
           className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
@@ -2067,7 +2109,8 @@ function AllergyForm({
           {isPending ? "Saving..." : "Save allergy"}
         </Button>
         <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
-          Cancel
+          
+          Zrušiť
         </Button>
       </div>
     </form>

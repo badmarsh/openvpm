@@ -39,7 +39,7 @@ const TABLES = [
   "practices",
 ];
 
-async function reset() {
+export async function reset() {
   console.log("Truncating all tables...");
   // Single statement — TRUNCATE ... CASCADE handles FK dependencies.
   const tableList = TABLES.join(", ");
@@ -47,9 +47,13 @@ async function reset() {
   console.log(`Truncated ${TABLES.length} tables`);
 }
 
-reset()
-  .then(() => process.exit(0))
-  .catch((err) => {
-    console.error("Reset failed:", err);
-    process.exit(1);
-  });
+const isDirectRun = process.argv[1]?.replace(/\\/g, "/").endsWith("reset.ts") || process.argv[1]?.replace(/\\/g, "/").endsWith("reset.js");
+if (isDirectRun) {
+  reset()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error("Reset failed:", err);
+      process.exit(1);
+    });
+}
+

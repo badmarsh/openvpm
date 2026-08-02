@@ -22,7 +22,8 @@ function ExampleChat() {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4">
       <div className="mb-3 text-xs font-medium uppercase tracking-wide text-slate-500">
-        Example
+        
+        Príklad
       </div>
       <div className="space-y-3">
         <div className="flex justify-end">
@@ -110,7 +111,8 @@ export function TryAgentStep({
               onClick={() => void status.refetch()}
               className="mt-3"
             >
-              Retry
+              
+              Skúsiť znova
             </Button>
           </div>
         </div>
@@ -122,14 +124,16 @@ export function TryAgentStep({
     return (
       <div className="space-y-4">
         <p className="text-sm leading-6 text-slate-600">
-          AI is built right into OpenVPM. It can answer questions about your
-          clinic in plain words.
+          
+          AI je zabudovaná priamo do OpenVPM. Môže odpovedať na vaše otázky
+          klinika jednoduchými slovami.
         </p>
         <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           <Sparkles className="mt-0.5 h-4 w-4 shrink-0" />
           <p>
-            Your AI helper turns on once your AI key is set. You can try it any
-            time from the Agent page.
+            
+            Váš pomocník AI sa zapne po nastavení kľúča AI. Môžete to skúsiť akokoľvek
+            čas zo stránky Agent.
           </p>
         </div>
         <ExampleChat />
@@ -140,8 +144,9 @@ export function TryAgentStep({
   return (
     <div className="space-y-4">
       <p className="text-sm leading-6 text-slate-600">
-        AI is built right in. Ask a question about your clinic and see what comes
-        back.
+        
+        Umelá inteligencia je vstavaná. Položte otázku o svojej klinike a uvidíte, čo príde
+        späť.
       </p>
 
       <ExampleChat />
@@ -155,7 +160,7 @@ export function TryAgentStep({
           }}
           maxLength={AGENT_INSTRUCTION_MAX_LENGTH}
           aria-invalid={questionInvalid || undefined}
-          placeholder="Ask your AI helper something"
+          placeholder="Opýtajte sa svojho pomocníka AI na niečo"
           aria-label="Ask your AI helper"
         />
         <Button type="button" onClick={ask} disabled={!canAsk}>
@@ -164,7 +169,8 @@ export function TryAgentStep({
           ) : (
             <Send className="mr-1.5 h-4 w-4" />
           )}
-          Ask
+          
+          Opýtajte sa
         </Button>
       </div>
 
@@ -178,7 +184,8 @@ export function TryAgentStep({
         <div className="rounded-lg border border-emerald-100 bg-emerald-50/60 p-4">
           <div className="mb-2 flex items-center gap-2 text-xs font-medium text-emerald-700">
             <Bot className="h-3.5 w-3.5" />
-            Your AI helper
+            
+            Váš pomocník AI
           </div>
           <div className="whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
             {run.data.text}

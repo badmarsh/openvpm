@@ -121,7 +121,7 @@ export function BringDataStep({
       if (which === "clients") setClientsFileName(file.name);
       else setPetsFileName(file.name);
     } catch {
-      toast.error("Could not read that file. Try again.");
+      toast.error("Tento súbor sa nepodarilo prečítať. Skúste to znova.");
     }
   }
 
@@ -192,7 +192,7 @@ export function BringDataStep({
               });
             }
           }
-          toast.success("CSV checked. Review the plan before importing.");
+          toast.success("Skontrolovaný súbor CSV. Pred importovaním skontrolujte plán.");
           return false;
         }
 
@@ -256,15 +256,16 @@ export function BringDataStep({
   return (
     <div className="space-y-4">
       <p className="text-sm leading-6 text-slate-600">
-        Bring in your real clients and pets. You own this data and can export it
-        any time.
+        
+        Priveďte svojich skutočných klientov a domácich miláčikov. Tieto údaje vlastníte a môžete ich exportovať
+        kedykoľvek.
       </p>
 
       <div className="grid gap-3">
         <ChoiceCard
           active={choice === "import"}
           icon={<FileSpreadsheet className="h-5 w-5" />}
-          title="Import from a file"
+          title="Importovať zo súboru"
           subtitle="Paste your clients and pets from a spreadsheet."
           onClick={() => {
             setChoice("import");
@@ -274,15 +275,18 @@ export function BringDataStep({
         {choice === "import" ? (
           <div className="space-y-4 rounded-lg border border-slate-200 bg-slate-50/70 p-4">
             <p className="text-xs text-slate-500">
-              Pick a CSV file for each one, or paste the rows below. Continue
-              checks the files first; nothing imports until you review the plan.
+              
+              Pre každý vyberte súbor CSV alebo prilepte riadky nižšie. Pokračovať
+              najprv skontroluje súbory; kým si neskontrolujete plán, nič sa neimportuje.
             </p>
             <div className="space-y-1.5">
               <span className="text-sm font-medium text-slate-700">
-                Clients
+                
+                Klienti
               </span>
               <p className="text-xs text-slate-500">
-                Columns: {CLIENT_COLUMNS}
+                
+                Stĺpce: {CLIENT_COLUMNS}
               </p>
               <input
                 type="file"
@@ -293,7 +297,8 @@ export function BringDataStep({
               />
               {clientsFileName ? (
                 <p className="text-xs text-emerald-700">
-                  Loaded {clientsFileName}
+                  
+                  nahrajte pacienta Načítané {clientsFileName}
                 </p>
               ) : null}
               <textarea
@@ -310,13 +315,14 @@ export function BringDataStep({
               />
               {clientsCsvTooLarge ? (
                 <p id="clients-csv-size-error" className="text-xs text-red-700">
-                  Client CSV must be 5 MB or less.
+                  
+                  Klient CSV musí mať veľkosť 5 MB alebo menej.
                 </p>
               ) : null}
             </div>
             <div className="space-y-1.5">
-              <span className="text-sm font-medium text-slate-700">Pets</span>
-              <p className="text-xs text-slate-500">Columns: {PET_COLUMNS}</p>
+              <span className="text-sm font-medium text-slate-700">Domáce zvieratá</span>
+              <p className="text-xs text-slate-500">Stĺpce: {PET_COLUMNS}</p>
               <input
                 type="file"
                 accept=".csv,text/csv"
@@ -325,7 +331,7 @@ export function BringDataStep({
                 aria-label="Choose a pets CSV file"
               />
               {petsFileName ? (
-                <p className="text-xs text-emerald-700">Loaded {petsFileName}</p>
+                <p className="text-xs text-emerald-700">nahrajte pacienta Načítané {petsFileName}</p>
               ) : null}
               <textarea
                 rows={4}
@@ -341,7 +347,8 @@ export function BringDataStep({
               />
               {petsCsvTooLarge ? (
                 <p id="pets-csv-size-error" className="text-xs text-red-700">
-                  Pet CSV must be 5 MB or less.
+                  
+                  CSV pre domáce zvieratá musí mať veľkosť 5 MB alebo menej.
                 </p>
               ) : null}
             </div>
@@ -349,16 +356,18 @@ export function BringDataStep({
               <div className="space-y-3">
                 <div>
                   <p className="text-sm font-medium text-slate-800">
-                    Dry-run preview
+                    
+                    Náhľad na sucho
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
-                    No data has been imported yet. Review the counts, then
-                    press Continue again to import.
+                    
+                    Zatiaľ neboli importované žiadne údaje. Potom skontrolujte počty
+                    pre import znova stlačte Pokračovať.
                   </p>
                 </div>
                 {clientsPreview ? (
                   <CsvPreviewCard
-                    title="Clients"
+                    title="Klienti"
                     preview={clientsPreview}
                     duplicateLabel="Duplicates"
                     duplicateValue={clientsPreview.duplicates ?? 0}
@@ -366,7 +375,7 @@ export function BringDataStep({
                 ) : null}
                 {petsPreview ? (
                   <CsvPreviewCard
-                    title="Pets"
+                    title="Domáce zvieratá"
                     preview={petsPreview}
                     duplicateLabel="Missing owners"
                     duplicateValue={petsPreview.unmatchedClient ?? 0}
@@ -383,7 +392,8 @@ export function BringDataStep({
             {result ? (
               <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-900">
                 <p className="font-medium">
-                  Added {result.clients} clients and {result.pets} pets.
+                  
+                  Pridané {result.clients}  klientov a {result.pets}  domáce zvieratá.
                 </p>
                 {result.errors.length > 0 ? (
                   <>
@@ -392,13 +402,13 @@ export function BringDataStep({
                         <li key={i}>{e}</li>
                       ))}
                       {result.errors.length > 5 ? (
-                        <li>and {result.errors.length - 5} more</li>
+                        <li>a {result.errors.length - 5}  viac</li>
                       ) : null}
                     </ul>
-                    <p className="mt-2">Press Continue when you are ready.</p>
+                    <p className="mt-2">Keď budete pripravení, stlačte Pokračovať.</p>
                   </>
                 ) : (
-                  <p className="mt-1">Press Continue when you are ready.</p>
+                  <p className="mt-1">Keď budete pripravení, stlačte Pokračovať.</p>
                 )}
               </div>
             ) : null}
@@ -414,7 +424,7 @@ export function BringDataStep({
         <ChoiceCard
           active={choice === "api"}
           icon={<PlugZap className="h-5 w-5" />}
-          title="Connect later by API"
+          title="Pripojte sa neskôr pomocou API"
           subtitle="Move data in from another system whenever you want."
           onClick={() => {
             setChoice("api");
@@ -424,14 +434,16 @@ export function BringDataStep({
         {choice === "api" ? (
           <div className="rounded-lg border border-slate-200 bg-slate-50/70 p-4 text-sm text-slate-600">
             <p>
-              Your data stays yours, and you can connect by API on your own
-              schedule. Find your keys and import tools in settings.
+              
+              Vaše údaje zostanú vaše a môžete sa pripojiť pomocou rozhrania API sami
+              harmonogram. Nájdite svoje kľúče a nástroje na import v nastaveniach.
             </p>
             <Link
               href="/settings?tab=data"
               className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-emerald-700 hover:underline"
             >
-              Open settings
+              
+              OpenVPM
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -440,7 +452,7 @@ export function BringDataStep({
         <ChoiceCard
           active={choice === "keep"}
           icon={<Sparkles className="h-5 w-5" />}
-          title="Keep the sample data for now"
+          title="Vzorové údaje si zatiaľ ponechajte"
           subtitle="Explore with the example pets we set up for you."
           onClick={() => {
             setChoice("keep");
@@ -472,10 +484,10 @@ function CsvPreviewCard({
         </span>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <ImportStat label="Rows" value={preview.total} />
-        <ImportStat label="Will import" value={preview.willInsert} />
+        <ImportStat label="Riadky" value={preview.total} />
+        <ImportStat label="Dovezieme" value={preview.willInsert} />
         <ImportStat label={duplicateLabel} value={duplicateValue} />
-        <ImportStat label="Issues" value={preview.errors.length} />
+        <ImportStat label="Problémy" value={preview.errors.length} />
       </div>
       {preview.errors.length > 0 ? (
         <ul className="mt-3 max-h-24 space-y-0.5 overflow-y-auto text-xs text-amber-800">
@@ -483,7 +495,7 @@ function CsvPreviewCard({
             <li key={index}>{error}</li>
           ))}
           {preview.errors.length > 5 ? (
-            <li>and {preview.errors.length - 5} more</li>
+            <li>a {preview.errors.length - 5}  viac</li>
           ) : null}
         </ul>
       ) : null}

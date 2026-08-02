@@ -40,7 +40,8 @@ export class ErrorBoundary extends Component<Props, State> {
           </div>
           <div className="text-center">
             <h3 className="font-heading text-lg font-semibold">
-              Something went wrong
+              
+              Niečo sa pokazilo
             </h3>
             <p className="mt-1 max-w-md text-sm text-muted-foreground">
               {this.state.error?.message || "An unexpected error occurred."}
@@ -51,7 +52,8 @@ export class ErrorBoundary extends Component<Props, State> {
             onClick={() => this.setState({ hasError: false, error: null })}
           >
             <RotateCcw className="mr-2 h-4 w-4" />
-            Try Again
+            
+            Skús znova
           </Button>
         </div>
       );

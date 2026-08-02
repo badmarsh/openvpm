@@ -72,14 +72,15 @@ export default function PetDetailPage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load pet information"
-          description="Please refresh this page or return to the portal home."
+          title="Nie je možné načítať informácie o zvieratkách"
+          description="Obnovte túto stránku alebo sa vráťte na domovskú stránku portálu."
         />
         <Link
           href={`/portal/${token}`}
           className="mt-4 inline-block text-sm font-medium text-teal-600 hover:text-teal-700"
         >
-          Back to portal
+          
+          Späť na portál
         </Link>
       </div>
     );
@@ -116,27 +117,27 @@ export default function PetDetailPage() {
   }
 
   const tabs: { key: Tab; label: string; count: number }[] = [
-    { key: "vaccinations", label: "Vaccinations", count: data.vaccinations.length },
-    { key: "prescriptions", label: "Prescriptions", count: data.prescriptions.length },
-    { key: "weights", label: "Weight History", count: data.weights.length },
+    { key: "vaccinations", label: "Očkovanie", count: data.vaccinations.length },
+    { key: "prescriptions", label: "Predpisy", count: data.prescriptions.length },
+    { key: "weights", label: "História hmotnosti", count: data.weights.length },
   ];
 
   function vaccinationStatus(nextDue: string | null): {
     label: string;
     className: string;
   } {
-    if (!nextDue) return { label: "No due date", className: "bg-gray-100 text-gray-600" };
+    if (!nextDue) return { label: "Bez dátumu splatnosti", className: "bg-gray-100 text-gray-600" };
     const daysUntil = portalCalendarDayDifference(
       nextDue,
       new Date(),
       practiceTimeZone
     );
     if (daysUntil === null) {
-      return { label: "No due date", className: "bg-gray-100 text-gray-600" };
+      return { label: "Bez dátumu splatnosti", className: "bg-gray-100 text-gray-600" };
     }
-    if (daysUntil < 0) return { label: "Overdue", className: "bg-red-100 text-red-700" };
-    if (daysUntil <= 30) return { label: "Due soon", className: "bg-amber-100 text-amber-700" };
-    return { label: "Up to date", className: "bg-green-100 text-green-700" };
+    if (daysUntil < 0) return { label: "Po splatnosti", className: "bg-red-100 text-red-700" };
+    if (daysUntil <= 30) return { label: "Splatné čoskoro", className: "bg-amber-100 text-amber-700" };
+    return { label: "Aktuálne", className: "bg-green-100 text-green-700" };
   }
 
   return (
@@ -149,7 +150,8 @@ export default function PetDetailPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to all pets
+        
+        Späť na všetky domáce zvieratá
       </Link>
 
       {/* Pet Header */}
@@ -160,7 +162,7 @@ export default function PetDetailPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{data.name}</h1>
           <p className="text-gray-500">
-            {data.breed || data.species} &middot; {data.color || ""} &middot;{" "}
+            {data.breed || data.species}  · {data.color || ""}  ·{" "}
             {calculatePortalAge(data.dob)}
           </p>
           <p className="text-sm text-gray-400 capitalize">
@@ -176,7 +178,8 @@ export default function PetDetailPage() {
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
-            Allergy Alerts
+            
+            Alergické upozornenia
           </h3>
           <ul className="space-y-1">
             {data.allergies.map((a) => (
@@ -231,18 +234,18 @@ export default function PetDetailPage() {
             <EmptyState
               className="py-10"
               icon={Shield}
-              title="No vaccination records yet"
+              title="Zatiaľ žiadne záznamy o očkovaní"
             />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200 text-left text-gray-500">
-                    <th className="pb-2 font-medium">Vaccine</th>
-                    <th className="pb-2 font-medium">Given</th>
-                    <th className="pb-2 font-medium">Next Due</th>
-                    <th className="pb-2 font-medium">Status</th>
-                    <th className="pb-2 font-medium">Certificate</th>
+                    <th className="pb-2 font-medium">Vakcína</th>
+                    <th className="pb-2 font-medium">Dané</th>
+                    <th className="pb-2 font-medium">Ďalší termín</th>
+                    <th className="pb-2 font-medium">Stav</th>
+                    <th className="pb-2 font-medium">Certifikát</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -269,7 +272,8 @@ export default function PetDetailPage() {
                             className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200 px-3 py-1.5 text-xs font-medium text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-50"
                           >
                             <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                            Download
+                            
+                            Stiahnuť
                           </button>
                         </td>
                       </tr>
@@ -289,7 +293,7 @@ export default function PetDetailPage() {
             <EmptyState
               className="py-10"
               icon={Pill}
-              title="No active prescriptions"
+              title="Žiadne aktívne recepty"
             />
           ) : (
             <div className="overflow-x-auto">
@@ -297,10 +301,10 @@ export default function PetDetailPage() {
                 <thead>
                   <tr className="border-b border-gray-200 text-left text-gray-500">
                     <th className="pb-2 font-medium">Medication</th>
-                    <th className="pb-2 font-medium">Dosage</th>
-                    <th className="pb-2 font-medium">Frequency</th>
-                    <th className="pb-2 font-medium">Refills</th>
-                    <th className="pb-2 font-medium">End Date</th>
+                    <th className="pb-2 font-medium">Dávkovanie</th>
+                    <th className="pb-2 font-medium">Frekvencia</th>
+                    <th className="pb-2 font-medium">Náplne</th>
+                    <th className="pb-2 font-medium">Dátum ukončenia</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -341,7 +345,7 @@ export default function PetDetailPage() {
             <EmptyState
               className="py-10"
               icon={Activity}
-              title="No weight records yet"
+              title="Zatiaľ nie sú nakonfigurované žiadne záznamy o hmotnosti"
             />
           ) : (
             <div className="space-y-3">

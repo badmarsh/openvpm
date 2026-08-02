@@ -1,0 +1,323 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "clients": "Clients",
+    "schedule": "Schedule",
+    "appointments": "Appointments",
+    "records": "Records",
+    "billing": "Billing",
+    "invoices": "Invoices",
+    "estimates": "Estimates",
+    "inventory": "Inventory",
+    "inbox": "Inbox",
+    "whiteboard": "Whiteboard",
+    "agent": "Agent",
+    "controlledSubstances": "Controlled Substances",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "chrome": {
+    "searchPlaceholder": "Search...",
+    "newAction": "New",
+    "guides": "Guides",
+    "newClient": "New Client",
+    "newPatient": "New Patient",
+    "newAppointment": "New Appointment",
+    "newInvoice": "New Invoice"
+  },
+  "roles": {
+    "admin": "Admin",
+    "veterinarian": "Veterinarian",
+    "technician": "Technician",
+    "front_desk": "Front Desk",
+    "viewer": "Viewer"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Practice configuration and staff management",
+    "tabs": {
+      "practiceInfo": "Practice Info",
+      "locations": "Locations",
+      "staff": "Staff",
+      "appointmentTypes": "Appointment Types",
+      "rooms": "Rooms",
+      "data": "Data",
+      "templates": "Templates",
+      "wellnessPlans": "Wellness Plans",
+      "messaging": "Messaging",
+      "planBilling": "Plan & Billing"
+    },
+    "practiceDetails": {
+      "title": "Practice details",
+      "description": "Your practice name, contact info, and timezone.",
+      "name": "Practice Name",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "website": "Website",
+      "timezone": "Timezone"
+    },
+    "regionTax": {
+      "title": "Region & Tax",
+      "description": "Controls invoice currency, tax rate, and date formatting. Choosing a country prefills the usual defaults — adjust as needed.",
+      "country": "Country",
+      "currency": "Currency",
+      "taxRate": "Tax / VAT rate (%)"
+    },
+    "locations": {
+      "title": "Practice Locations",
+      "description": "Locations power texting setup, room assignment, reminders, and hosted billing quantity.",
+      "addLocation": "Add Location",
+      "newLocation": "New Location",
+      "primary": "Primary"
+    },
+    "staff": {
+      "title": "Practice Staff",
+      "description": "Manage staff accounts, licenses, and roles.",
+      "inviteByEmail": "Invite by email",
+      "addStaff": "Add Staff",
+      "headers": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "phone": "Phone",
+        "license": "License #",
+        "actions": "Actions"
+      }
+    },
+    "data": {
+      "sampleDataTitle": "Sample data",
+      "sampleDataDesc": "A practice full of made up clients and pets so you can explore. Add it any time, and remove it when you are ready to work for real.",
+      "addSampleData": "Add sample data",
+      "removeSampleData": "Remove sample data"
+    },
+    "messaging": {
+      "title": "Messaging",
+      "description": "Text appointment reminders from each location's own number. Clients who reply land in your inbox; STOP opt-outs are handled automatically.",
+      "smsThisMonth": "SMS this month",
+      "included": "included",
+      "clientsOptedIn": "Clients opted in",
+      "optedOut": "Opted out (STOP)",
+      "primary": "Primary",
+      "notSetUp": "Texting is not set up yet",
+      "notSetUpDesc": "Start a guided setup for this location. You can text-enable an existing number or choose a new local texting number.",
+      "existingPhone": "Existing phone on file:",
+      "setUpTexting": "Set up texting"
+    }
+  },
+  "patients": {
+    "title": "Patients",
+    "subtitle": "Manage patient records and client accounts.",
+    "new_patient": "New Patient",
+    "search_placeholder": "Search patients...",
+    "species_all": "All Species",
+    "species_canine": "Canine",
+    "species_feline": "Feline",
+    "species_avian": "Avian",
+    "species_rabbit": "Rabbit",
+    "species_reptile": "Reptile",
+    "species_equine": "Equine",
+    "species_other": "Other",
+    "column_name": "Name",
+    "column_breed": "Breed",
+    "column_owner": "Owner",
+    "column_sex": "Sex",
+    "column_status": "Status",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "status_deceased": "Deceased",
+    "sex_male": "M",
+    "sex_female": "F",
+    "sex_male_neutered": "M/N",
+    "sex_female_spayed": "F/S",
+    "empty_filter_title": "No patients match your filters",
+    "empty_filter_desc": "Clear your search or species filter to expand the list.",
+    "empty_title": "No patients yet",
+    "empty_desc": "Create a patient record after adding an owner.",
+    "empty_action": "Add your first patient",
+    "plural_one": "{count} patient",
+    "plural_few": "{count} patients",
+    "plural_other": "{count} patients"
+  },
+  "billing": {
+    "title": "Billing & Invoices",
+    "subtitle": "Invoices and payments",
+    "new_invoice": "New Invoice",
+    "outstanding": "Outstanding",
+    "overdue": "Overdue",
+    "collected_mtd": "Collected (MTD)",
+    "tax_rate": "Tax Rate (DPH / VAT)",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "amount_due": "Amount Due",
+    "paid": "Paid",
+    "status_all": "All",
+    "status_draft": "Draft",
+    "status_sent": "Sent",
+    "status_paid": "Paid",
+    "status_overdue": "Overdue",
+    "status_void": "Void",
+    "status_estimates": "Estimates",
+    "method_cash": "Cash",
+    "method_credit_card": "Credit Card",
+    "method_debit_card": "Debit Card",
+    "method_check": "Check",
+    "method_online": "Online",
+    "method_other": "Other",
+    "no_estimates_title": "No estimates yet",
+    "no_estimates_desc": "Create an estimate when a client needs approval before services are performed.",
+    "no_invoices_status": "No invoices with this status",
+    "no_invoices_title": "No invoices yet",
+    "no_invoices_status_desc": "Choose another status tab or create a new invoice.",
+    "no_invoices_desc": "Create invoices from services, products, or treatment templates before recording payments."
+  },
+  "common": {
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "error_retry": "Unable to load data. Please retry."
+  },
+  "dashboard": {
+    "kpi": {
+      "todayAppointments": {
+        "label": "Today's Appointments",
+        "description": "Scheduled for today"
+      },
+      "patientsSeen": {
+        "label": "Patients Seen Today",
+        "description": "Today"
+      },
+      "revenueMtd": {
+        "label": "Revenue (MTD)",
+        "description": "Paid invoices this month"
+      },
+      "pendingInvoices": {
+        "label": "Pending Invoices",
+        "description": "Sent or overdue"
+      }
+    },
+    "upcoming": {
+      "title": "Upcoming Appointments",
+      "empty": {
+        "title": "No visits booked yet",
+        "description": "Book your first visit and it will show up here.",
+        "action": "Book your first visit"
+      },
+      "error": "Could not load upcoming appointments."
+    },
+    "stats": {
+      "error": "Could not load dashboard metrics."
+    },
+    "charts": {
+      "error": "Could not load dashboard charts.",
+      "empty": {
+        "title": "Your charts will appear once active",
+        "description": "As you book visits and post invoices, your trends and totals will populate here."
+      }
+    }
+  },
+  "clients": {
+    "title": "Clients",
+    "subtitle": "Manage client accounts and patient records.",
+    "new_client": "New Client",
+    "search_placeholder": "Search clients...",
+    "column_name": "Name",
+    "column_email": "Email",
+    "column_phone": "Phone",
+    "column_city": "City",
+    "column_created": "Created",
+    "empty_search_title": "No clients match your search",
+    "empty_search_desc": "Try a different name, phone number, or email address.",
+    "empty_title": "No clients yet",
+    "empty_desc": "Create a client record before adding patients, appointments, or invoices.",
+    "empty_action": "Add your first client",
+    "plural_one": "{count} client",
+    "plural_few": "{count} clients",
+    "plural_other": "{count} clients"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "subtitle": "Appointment calendar",
+    "new_appointment": "New Appointment",
+    "today": "Today",
+    "view_day": "Day",
+    "view_week": "Week",
+    "view_month": "Month",
+    "all_doctors": "All Doctors",
+    "no_appointments_day": "No appointments for this day",
+    "no_appointments_week": "No appointments this week",
+    "no_appointments_month": "No appointments this month",
+    "loading": "Loading appointments...",
+    "modalTitle": "New Appointment",
+    "patient": "Patient",
+    "searchPatients": "Search patients...",
+    "appointmentType": "Appointment Type",
+    "appointmentTypesUnavailable": "Appointment types unavailable",
+    "loadingAppointmentTypes": "Loading appointment types...",
+    "selectType": "Select type...",
+    "doctor": "Doctor",
+    "doctorsUnavailable": "Doctors unavailable",
+    "selectDoctor": "Select doctor...",
+    "loadingDoctors": "Loading doctors...",
+    "room": "Room",
+    "roomsUnavailable": "Rooms unavailable",
+    "selectRoom": "Select room...",
+    "loadingRooms": "Loading rooms...",
+    "date": "Date",
+    "startTime": "Start Time",
+    "duration": "Duration (minutes)",
+    "repeatAppointment": "Repeat appointment",
+    "notes": "Notes",
+    "optionalNotes": "Optional notes..."
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Stock management and product catalogue",
+    "new_item": "New Product",
+    "search_placeholder": "Search inventory...",
+    "all_categories": "All Categories",
+    "category_medication": "Medication",
+    "category_preventive": "Preventive",
+    "category_supplement": "Supplement",
+    "category_food": "Food",
+    "category_supply": "Supply",
+    "status_in_stock": "In Stock",
+    "status_low_stock": "Low Stock",
+    "status_out_of_stock": "Out of Stock",
+    "status_expired": "Expired",
+    "status_expiring_soon": "Expiring Soon"
+  },
+  "records": {
+    "title": "Medical Records",
+    "subtitle": "Clinical notes, SOAPE entries, and history",
+    "new_record": "New Record",
+    "search_placeholder": "Search records..."
+  },
+  "inbox": {
+    "title": "Inbox",
+    "subtitle": "Messages and notifications",
+    "new_message": "New Message"
+  },
+  "whiteboard": {
+    "title": "Whiteboard",
+    "subtitle": "Active board & patient status tracking"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Practice analytics and revenue reporting"
+  },
+  "controlledSubstances": {
+    "title": "Controlled Substances",
+    "subtitle": "Substance logbook and compliance tracking"
+  },
+  "admin": {
+    "title": "Admin Console",
+    "subtitle": "System configuration and logs"
+  },
+  "agent": {
+    "title": "AI Agent",
+    "subtitle": "Assistant automation and clinical tools"
+  }
+}

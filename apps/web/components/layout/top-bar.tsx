@@ -12,24 +12,27 @@ import {
   Calendar,
   Receipt,
   Menu,
+  Globe,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { TrialBadge } from "@/components/layout/trial-badge";
+import { useTranslations, useLocale } from "next-intl";
 
-const routeLabels: Record<string, string> = {
-  "/": "Dashboard",
-  "/patients": "Patients",
-  "/clients": "Clients",
-  "/schedule": "Schedule",
-  "/records": "Records",
-  "/billing": "Billing",
-  "/inventory": "Inventory",
-  "/inbox": "Inbox",
-  "/whiteboard": "Whiteboard",
-  "/agent": "Agent",
-  "/controlled-substances": "Controlled Substances",
-  "/reports": "Reports",
-  "/settings": "Settings",
+const routeKeys: Record<string, string> = {
+  "/": "nav.dashboard",
+  "/patients": "nav.patients",
+  "/clients": "nav.clients",
+  "/schedule": "nav.schedule",
+  "/records": "nav.records",
+  "/billing": "nav.billing",
+  "/inventory": "nav.inventory",
+  "/inbox": "nav.inbox",
+  "/whiteboard": "nav.whiteboard",
+  "/agent": "nav.agent",
+  "/controlled-substances": "nav.controlledSubstances",
+  "/reports": "nav.reports",
+  "/settings": "nav.settings",
 };
 
 type UserRole =
@@ -40,7 +43,7 @@ type UserRole =
   | "viewer";
 
 type NewAction = {
-  label: string;
+  key: string;
   href: string;
   Icon: React.ElementType;
   roles: UserRole[];
@@ -48,25 +51,25 @@ type NewAction = {
 
 const NEW_ACTIONS: NewAction[] = [
   {
-    label: "New Client",
+    key: "chrome.newClient",
     href: "/clients/new",
     Icon: Users,
     roles: ["admin", "veterinarian", "technician", "front_desk"],
   },
   {
-    label: "New Patient",
+    key: "chrome.newPatient",
     href: "/patients/new",
     Icon: PawPrint,
     roles: ["admin", "veterinarian", "technician", "front_desk"],
   },
   {
-    label: "New Appointment",
+    key: "chrome.newAppointment",
     href: "/schedule",
     Icon: Calendar,
     roles: ["admin", "veterinarian", "front_desk"],
   },
   {
-    label: "New Invoice",
+    key: "chrome.newInvoice",
     href: "/billing/new",
     Icon: Receipt,
     roles: ["admin", "front_desk"],
@@ -80,14 +83,24 @@ export function TopBar({
   onMenuOpen?: () => void;
   onSearchOpen?: () => void;
 }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const router = useRouter();
   const pathname = usePathname();
   const basePath = "/" + (pathname.split("/")[1] ?? "");
-  const label = routeLabels[basePath] ?? "OpenVPM";
+  const routeKey = routeKeys[basePath];
+  const label = routeKey ? t(routeKey) : "OpenVPM";
   const { data: session } = useSession();
   const role = session?.user?.role as UserRole | undefined;
   const availableNewActions = role
     ? NEW_ACTIONS.filter((action) => action.roles.includes(role))
     : [];
+
+  const toggleLocale = () => {
+    const nextLocale = locale === "en" ? "sk" : "en";
+    document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    router.refresh();
+  };
 
   const [newMenuOpen, setNewMenuOpen] = useState(false);
   const newMenuRef = useRef<HTMLDivElement>(null);
@@ -125,10 +138,22 @@ export function TopBar({
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        {/* Below sm the pill would crush the page title into one character. */}
         <div className="hidden sm:block">
           <TrialBadge />
         </div>
+
+        {/* Locale toggle button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleLocale}
+          className="h-9 px-2.5 text-xs font-semibold gap-1 text-foreground border-border hover:bg-accent"
+          title={locale === "en" ? "Prepne do slovenčiny" : "Switch to English"}
+        >
+          <Globe className="h-3.5 w-3.5 text-muted-foreground" />
+          <span>{locale === "en" ? "EN" : "SK"}</span>
+        </Button>
+
         <button
           type="button"
           onClick={onSearchOpen}
@@ -136,7 +161,7 @@ export function TopBar({
           className="flex h-9 items-center gap-2 rounded-md border border-input bg-background px-2 text-sm text-muted-foreground transition-colors hover:bg-accent sm:w-64 sm:px-3 md:w-80"
         >
           <Search className="h-4 w-4 shrink-0" />
-          <span className="hidden sm:inline">Search...</span>
+          <span className="hidden sm:inline">{t("chrome.searchPlaceholder")}</span>
           <kbd className="ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium md:inline">
             ⌘K
           </kbd>
@@ -152,7 +177,7 @@ export function TopBar({
               aria-expanded={newMenuOpen}
             >
               <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">New</span>
+              <span className="hidden sm:inline">{t("chrome.newAction")}</span>
             </Button>
             {newMenuOpen && (
               <div
@@ -160,7 +185,7 @@ export function TopBar({
                 className="absolute right-0 top-full z-50 mt-1 w-52 overflow-hidden rounded-md border border-border bg-popover shadow-md"
               >
                 {availableNewActions.map(
-                  ({ label: actionLabel, href, Icon }) => (
+                  ({ key: actionKey, href, Icon }) => (
                     <Link
                       key={href}
                       href={href}
@@ -169,7 +194,7 @@ export function TopBar({
                       className="flex items-center gap-2 px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
                       <Icon className="h-4 w-4 text-muted-foreground" />
-                      {actionLabel}
+                      {t(actionKey)}
                     </Link>
                   )
                 )}

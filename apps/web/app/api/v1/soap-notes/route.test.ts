@@ -181,7 +181,7 @@ describe("POST /api/v1/soap-notes", () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "SOAP note must include at least one section." },
+      error: { message: "Poznámka SOAP musí obsahovať aspoň jednu časť." },
     });
     expect(mocks.withTenant).not.toHaveBeenCalled();
     expect(mocks.db.insert).not.toHaveBeenCalled();
@@ -214,7 +214,7 @@ describe("POST /api/v1/soap-notes", () => {
     await expect(response.json()).resolves.toEqual({
       error: {
         message:
-          "author_id is required unless appointment_id has an assigned doctor.",
+          "autor_id je povinný, pokiaľ nemá termín_id prideleného lekára.",
       },
     });
     expect(mocks.withTenant).not.toHaveBeenCalled();
@@ -227,7 +227,7 @@ describe("POST /api/v1/soap-notes", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Patient not found" },
+      error: { message: "Pacient sa nenašiel" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();
@@ -244,7 +244,7 @@ describe("POST /api/v1/soap-notes", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();
@@ -261,7 +261,7 @@ describe("POST /api/v1/soap-notes", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Appointment not found" },
+      error: { message: "Termín sa nenašiel" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();
@@ -291,7 +291,7 @@ describe("POST /api/v1/soap-notes", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Author not found" },
+      error: { message: "Autor sa nenašiel" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();

@@ -24,22 +24,21 @@ export function PaymentReceiptEmail({
   return (
     <EmailLayout
       brand={brand}
-      preview={`Your OpenVPM receipt — ${amount}`}
+      preview={`Vaše potvrdenie OpenVPM — ${amount}`}
     >
-      <Heading>Payment received</Heading>
+      <Heading>Platba bola prijatá</Heading>
       <Paragraph>
-        Thanks, {practiceName}. We&apos;ve received your payment — here are the
-        details for your records.
+        Ďakujeme, {practiceName}. Prijali sme vašu platbu — tu sú podrobnosti pre vaše záznamy.
       </Paragraph>
 
       <InfoCard tone="success">
         <Row>
           <Column>
-            <Label>Amount paid</Label>
+            <Label>Uhradená suma</Label>
             <Stat>{amount}</Stat>
           </Column>
           <Column style={{ textAlign: "right", verticalAlign: "top" }}>
-            <Label>Billing period</Label>
+            <Label>Fakturačné obdobie</Label>
             <Paragraph>{periodLabel}</Paragraph>
           </Column>
         </Row>
@@ -47,13 +46,12 @@ export function PaymentReceiptEmail({
 
       {invoiceUrl ? (
         <Section style={{ margin: "8px 0" }}>
-          <Button href={invoiceUrl}>View invoice</Button>
+          <Button href={invoiceUrl}>Zobraziť faktúru</Button>
         </Section>
       ) : null}
 
       <Paragraph muted>
-        You can review every invoice and update your payment method anytime in
-        billing settings. Questions? Just reply to this email.
+        Všetky faktúry a spôsob platby môžete kedykoľvek skontrolovať v nastaveniach fakturácie. Otázky? Stačí odpovedať na tento e-mail.
       </Paragraph>
     </EmailLayout>
   );

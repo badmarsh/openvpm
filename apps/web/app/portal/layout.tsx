@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { PawMark } from "@/components/brand/paw-mark";
 
 export const metadata: Metadata = {
-  title: "Pet Portal - OpenVPM",
-  description: "View your pet's health information",
+  title: "Portál pre domáce zvieratá - OpenVPM",
+  description: "Zobraziť informácie o zdravotnom stave vášho domáceho maznáčika",
 };
 
 export default function PortalLayout({
@@ -20,8 +20,8 @@ export default function PortalLayout({
               <PawMark className="h-4 w-4 text-white" />
             </div>
             <div>
-              <span className="font-semibold text-gray-900 text-sm">OpenVPM</span>
-              <span className="text-teal-600 text-sm ml-1.5 font-medium">Pet Portal</span>
+              <span className="font-semibold text-gray-900 text-sm">Agent OpenVPM</span>
+              <span className="text-teal-600 text-sm ml-1.5 font-medium">Portál pre domáce zvieratá</span>
             </div>
           </div>
         </div>
@@ -29,7 +29,8 @@ export default function PortalLayout({
       <main className="mx-auto max-w-4xl px-4 py-6">{children}</main>
       <footer className="border-t border-gray-100 mt-12">
         <div className="mx-auto max-w-4xl px-4 py-6 text-center text-sm text-gray-400">
-          Powered by OpenVPM
+          
+          Beží na OpenVPM
           <span className="mx-2" aria-hidden="true">
             ·
           </span>
@@ -37,7 +38,8 @@ export default function PortalLayout({
             href="/legal/privacy"
             className="underline-offset-2 hover:text-gray-600 hover:underline"
           >
-            Privacy
+            
+            Ochrana osobných údajov
           </a>
         </div>
       </footer>

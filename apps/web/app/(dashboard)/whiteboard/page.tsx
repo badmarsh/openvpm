@@ -51,7 +51,7 @@ type WhiteboardAppointment = {
 const COLUMNS = [
   {
     key: "waiting",
-    label: "Waiting",
+    label: "Čakanie",
     statuses: ["confirmed"],
     color: "bg-blue-500",
     headerBg: "bg-blue-500/10",
@@ -59,7 +59,7 @@ const COLUMNS = [
   },
   {
     key: "in_progress",
-    label: "In Progress",
+    label: "Prebieha",
     statuses: ["checked_in", "in_exam"],
     color: "bg-amber-500",
     headerBg: "bg-amber-500/10",
@@ -67,7 +67,7 @@ const COLUMNS = [
   },
   {
     key: "completed",
-    label: "Completed",
+    label: "Dokončené",
     statuses: ["checked_out"],
     color: "bg-green-500",
     headerBg: "bg-green-500/10",
@@ -211,7 +211,8 @@ function LiveIndicator() {
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
       </span>
-      Live
+      
+      Naživo
     </span>
   );
 }
@@ -353,14 +354,14 @@ function AppointmentDetailModal({
   }[] = [];
 
   if (current === "confirmed") {
-    statusActions.push({ label: "Check In", status: "checked_in", variant: "default" });
-    statusActions.push({ label: "No Show", status: "no_show", variant: "outline" });
-    statusActions.push({ label: "Cancel", status: "cancelled", variant: "destructive" });
+    statusActions.push({ label: "Registrácia", status: "checked_in", variant: "default" });
+    statusActions.push({ label: "Žiadne zobrazenie", status: "no_show", variant: "outline" });
+    statusActions.push({ label: "Zrušiť", status: "cancelled", variant: "destructive" });
   } else if (current === "checked_in") {
-    statusActions.push({ label: "Start Exam", status: "in_exam", variant: "default" });
-    statusActions.push({ label: "Check Out", status: "checked_out", variant: "outline" });
+    statusActions.push({ label: "Začať skúšku", status: "in_exam", variant: "default" });
+    statusActions.push({ label: "Odhlásiť", status: "checked_out", variant: "outline" });
   } else if (current === "in_exam") {
-    statusActions.push({ label: "Check Out", status: "checked_out", variant: "default" });
+    statusActions.push({ label: "Odhlásiť", status: "checked_out", variant: "default" });
   }
   const visibleStatusActions = canUpdateStatus ? statusActions : [];
 
@@ -387,9 +388,9 @@ function AppointmentDetailModal({
       }).save(
         `discharge_${(appointment.patientName || "patient").replace(/\s+/g, "_")}.pdf`
       );
-      toast.success("Discharge instructions downloaded");
+      toast.success("Stiahnuté pokyny na vypúšťanie");
     } catch {
-      toast.error("Failed to generate discharge instructions");
+      toast.error("Nepodarilo sa vygenerovať pokyny na vypúšťanie");
     }
   };
 
@@ -437,7 +438,7 @@ function AppointmentDetailModal({
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
               <User className="h-3.5 w-3.5" />
-              <span>Client: {clientName}</span>
+              <span>Klient: {clientName}</span>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <Clock className="h-3.5 w-3.5" />
@@ -501,7 +502,8 @@ function AppointmentDetailModal({
                 onClick={handlePrintDischarge}
               >
                 <FileText className="mr-1.5 h-3 w-3" />
-                Print Discharge
+                
+                Tlačiť absolutórium
               </Button>
             )}
           </div>
@@ -564,7 +566,7 @@ export default function WhiteboardPage() {
   const utils = trpc.useUtils();
   const updateStatus = trpc.whiteboard.updateStatus.useMutation({
     onSuccess: () => {
-      toast.success("Status updated");
+      toast.success("Stav aktualizovaný");
       setSelectedAppointment(null);
       utils.whiteboard.getActive.invalidate();
     },
@@ -617,12 +619,14 @@ export default function WhiteboardPage() {
         <div>
           <div className="flex items-center gap-3">
             <h2 className="font-heading text-xl font-semibold">
-              Practice Whiteboard
+              
+              Cvičná tabuľa
             </h2>
             <LiveIndicator />
           </div>
           <p className="text-sm text-muted-foreground">
-            Live patient status board
+            
+            Živá tabuľa stavu pacienta
           </p>
         </div>
         <div className="text-right">
@@ -648,7 +652,8 @@ export default function WhiteboardPage() {
       ) : isPageLoading ? (
         <div className="mt-12 flex items-center justify-center gap-2 text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading whiteboard...
+          
+          Načítavam tabuľu...
         </div>
       ) : hasWhiteboardPatients ? (
         /* Kanban columns */
@@ -693,7 +698,7 @@ export default function WhiteboardPage() {
               <div className="space-y-3 p-3" style={{ minHeight: 120 }}>
                 {col.items.length === 0 ? (
                   <div className="flex h-20 items-center justify-center">
-                    <p className="text-xs text-muted-foreground">No patients</p>
+                    <p className="text-xs text-muted-foreground">Žiadni pacienti</p>
                   </div>
                 ) : (
                   col.items.map((appt) => (
@@ -712,10 +717,10 @@ export default function WhiteboardPage() {
         <EmptyState
           className="mt-6"
           icon={ClipboardList}
-          title="No patients on the whiteboard"
-          description="Checked-in and in-progress appointments will appear here as the day moves."
+          title="Žiadni pacienti na tabuli"
+          description="Prihlásené a prebiehajúce schôdzky sa tu budú zobrazovať v priebehu dňa."
           action={{
-            label: "Open schedule",
+            label: "Otváracie hodiny na",
             onClick: () => router.push("/schedule"),
             icon: CalendarPlus,
           }}

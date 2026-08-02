@@ -55,33 +55,33 @@ const allRoles: UserRole[] = [
 ];
 
 const navigationItems: CommandItemConfig[] = [
-  { label: "Dashboard", href: "/", Icon: BarChart3, roles: allRoles },
-  { label: "Patients", href: "/patients", Icon: PawPrint, roles: allRoles },
-  { label: "Clients", href: "/clients", Icon: Users, roles: allRoles },
-  { label: "Schedule", href: "/schedule", Icon: Calendar, roles: allRoles },
-  { label: "Whiteboard", href: "/whiteboard", Icon: Clipboard, roles: allRoles },
-  { label: "Records", href: "/records", Icon: FileText, roles: allRoles },
-  { label: "Billing", href: "/billing", Icon: DollarSign, roles: allRoles },
-  { label: "Inventory", href: "/inventory", Icon: Package, roles: allRoles },
-  { label: "Inbox", href: "/inbox", Icon: Mail, roles: allRoles },
-  { label: "Settings", href: "/settings", Icon: Settings, roles: ["admin"] },
+  { label: "Prístrojová doska", href: "/", Icon: BarChart3, roles: allRoles },
+  { label: "Pacienti", href: "/patients", Icon: PawPrint, roles: allRoles },
+  { label: "Klienti", href: "/clients", Icon: Users, roles: allRoles },
+  { label: "Rozvrh", href: "/schedule", Icon: Calendar, roles: allRoles },
+  { label: "Tabuľa", href: "/whiteboard", Icon: Clipboard, roles: allRoles },
+  { label: "Záznamy", href: "/records", Icon: FileText, roles: allRoles },
+  { label: "Fakturácia", href: "/billing", Icon: DollarSign, roles: allRoles },
+  { label: "Inventár", href: "/inventory", Icon: Package, roles: allRoles },
+  { label: "Doručená pošta", href: "/inbox", Icon: Mail, roles: allRoles },
+  { label: "Nastavenia", href: "/settings", Icon: Settings, roles: ["admin"] },
 ];
 
 const quickActionItems: CommandItemConfig[] = [
   {
-    label: "New Client",
+    label: "Nový klient",
     href: "/clients/new",
     Icon: Users,
     roles: ["admin", "veterinarian", "technician", "front_desk"],
   },
   {
-    label: "New Patient",
+    label: "Nový pacient",
     href: "/patients/new",
     Icon: PawPrint,
     roles: ["admin", "veterinarian", "technician", "front_desk"],
   },
   {
-    label: "New Invoice",
+    label: "Nová faktúra",
     href: "/billing/new",
     Icon: DollarSign,
     roles: ["admin", "front_desk"],
@@ -179,7 +179,7 @@ export function CommandSearch({
             <Command.Input
               value={search}
               onValueChange={setSearch}
-              placeholder="Search patients, clients, or navigate..."
+              placeholder="Vyhľadávajte pacientov, klientov alebo navigujte..."
               className="flex h-11 w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground"
             />
             <button
@@ -195,10 +195,12 @@ export function CommandSearch({
               <div className="px-3 py-6 text-center text-sm text-muted-foreground">
                 <AlertCircle className="mx-auto mb-2 h-5 w-5 text-destructive" />
                 <p className="font-medium text-foreground">
-                  Unable to load search results
+                  
+                  Nie je možné načítať výsledky vyhľadávania
                 </p>
                 <p className="mt-1">
-                  Retry before deciding this client or patient is missing.
+                  
+                  Skúste to znova pred rozhodnutím, že tento klient alebo pacient chýba.
                 </p>
                 <button
                   type="button"
@@ -208,7 +210,8 @@ export function CommandSearch({
                   }}
                   className="mt-3 rounded-md border border-input px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent"
                 >
-                  Retry search
+                  
+                  Zopakovať vyhľadávanie
                 </button>
               </div>
             )}
@@ -217,10 +220,12 @@ export function CommandSearch({
               <div className="px-3 py-6 text-center text-sm text-muted-foreground">
                 <AlertCircle className="mx-auto mb-2 h-5 w-5 text-destructive" />
                 <p className="font-medium text-foreground">
-                  Unable to confirm search access
+                  
+                  Nepodarilo sa potvrdiť prístup k vyhľadávaniu
                 </p>
                 <p className="mt-1">
-                  Close and reopen search after your session is ready.
+                  
+                  Keď bude vaša relácia pripravená, zatvorte a znova otvorte vyhľadávanie.
                 </p>
               </div>
             )}
@@ -231,14 +236,15 @@ export function CommandSearch({
               !searchUnavailable &&
               !hasResults && (
                 <Command.Empty className="px-3 py-6 text-center text-sm text-muted-foreground">
-                  No patients or clients found.
+                  
+                  Nenašli sa žiadni pacienti ani klienti.
                 </Command.Empty>
               )}
 
             {/* Live search results */}
             {hasQuery && !searchUnavailable && patientResults.length > 0 && (
               <Command.Group
-                heading="Patients"
+                heading="Pacienti"
                 className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground"
               >
                 {patientResults.map((patient) => (
@@ -265,7 +271,7 @@ export function CommandSearch({
 
             {hasQuery && !searchUnavailable && clientResults.length > 0 && (
               <Command.Group
-                heading="Clients"
+                heading="Klienti"
                 className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground"
               >
                 {clientResults.map((client) => (
@@ -292,7 +298,7 @@ export function CommandSearch({
             {/* Navigation (shown when no search query) */}
             {!hasQuery && visibleNavigationItems.length > 0 && (
               <Command.Group
-                heading="Navigation"
+                heading="Navigácia"
                 className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground"
               >
                 {visibleNavigationItems.map(({ label, href, Icon }) => (
@@ -310,7 +316,7 @@ export function CommandSearch({
 
             {!hasQuery && visibleQuickActionItems.length > 0 && (
               <Command.Group
-                heading="Quick Actions"
+                heading="Rýchle akcie"
                 className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground"
               >
                 {visibleQuickActionItems.map(({ label, href, Icon }) => (

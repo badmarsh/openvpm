@@ -61,10 +61,10 @@ function formatMonthlyCost(cost: string | null): string | null {
 }
 
 const STEPS: { id: Step; title: string }[] = [
-  { id: "choose", title: "Choose a texting number" },
-  { id: "confirm", title: "Confirm the number" },
-  { id: "registration", title: "Carrier registration" },
-  { id: "done", title: "Registration pending" },
+  { id: "choose", title: "Vyberte si číslo pre SMS" },
+  { id: "confirm", title: "Potvrďte číslo" },
+  { id: "registration", title: "Registrácia dopravcu" },
+  { id: "done", title: "Čaká sa na registráciu" },
 ];
 
 export function MessagingWizard({
@@ -111,7 +111,7 @@ export function MessagingWizard({
     onSuccess: (result) => {
       setProvisionedSender(result.senderE164);
       setStep("done");
-      toast.success("Number set up. Carrier registration is now pending.");
+      toast.success("Online");
       onChanged();
     },
     onError: (e) => toast.error(e.message),
@@ -206,7 +206,8 @@ export function MessagingWizard({
             <div>
               <div className="inline-flex items-center gap-2 text-sm font-medium text-emerald-700">
                 <MessageSquare className="h-4 w-4" />
-                Texting setup
+                
+                To je celý váš deň
               </div>
               <h2 className="mt-4 font-heading text-2xl font-bold tracking-tight text-slate-950">
                 {STEPS[currentIndex]?.title}
@@ -281,11 +282,13 @@ export function MessagingWizard({
               disabled={step === "choose" || provision.isPending}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
+              
+              Späť
             </Button>
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-slate-500">
-                Step {currentIndex + 1} of {STEPS.length}
+                
+                Krok {currentIndex + 1}  z {STEPS.length}
               </span>
               <Button
                 type="button"
@@ -320,8 +323,9 @@ function ChooseStep({
   return (
     <div className="space-y-4">
       <p className="text-sm leading-6 text-slate-600">
-        Most clinics start by text-enabling the phone number clients already
-        know. You can also get a new local number for texting only.
+        
+        Väčšina kliník už začína tým, že klientom povolí textové telefónne číslo
+        vedieť. Môžete tiež získať nové miestne číslo iba na odosielanie textových správ.
       </p>
       <button
         type="button"
@@ -339,7 +343,8 @@ function ChooseStep({
           <ShieldCheck className="mt-0.5 h-5 w-5 text-emerald-600" />
           <div>
             <p className="font-medium text-slate-950">
-              Text from your existing number
+              
+              Nastavenie textových správ
             </p>
             <p className="mt-1 text-sm text-slate-600">
               {existingPhone
@@ -363,10 +368,12 @@ function ChooseStep({
           <Phone className="mt-0.5 h-5 w-5 text-emerald-600" />
           <div>
             <p className="font-medium text-slate-950">
-              Get a new local texting number
+              
+              Získajte nové miestne číslo na odosielanie SMS
             </p>
             <p className="mt-1 text-sm text-slate-600">
-              Choose a local number for outbound texts and client replies.
+              
+              Vyberte miestne číslo pre odchádzajúce textové správy a odpovede klientov.
             </p>
           </div>
         </div>
@@ -404,8 +411,9 @@ function ConfirmStep({
     return (
       <div className="space-y-5">
         <p className="text-sm leading-6 text-slate-600">
-          We will check whether {location.existingPhone ?? "this number"} can be
-          text-enabled without porting voice service.
+          
+          Skontrolujeme, či {location.existingPhone ?? "this number"}  môže byť
+          s povoleným textom bez prenosu hlasovej služby.
         </p>
         {eligibility === null ? (
           <Button variant="outline" onClick={checkExisting} disabled={checking}>
@@ -414,22 +422,26 @@ function ConfirmStep({
             ) : (
               <Search className="mr-2 h-4 w-4" />
             )}
-            Check eligibility
+            
+            Skontrolujte oprávnenosť
           </Button>
         ) : eligibility.eligible ? (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
             <p className="flex items-center gap-2 text-sm font-medium text-emerald-800">
               <Check className="h-4 w-4" />
-              Eligible to text-enable
+              
+              Vhodné na povolenie textu
             </p>
             <p className="mt-2 text-sm text-emerald-700">
-              Continue to review the carrier registration step.
+              
+              Pokračujte v kontrole kroku registrácie operátora.
             </p>
           </div>
         ) : (
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
             <p className="text-sm font-medium text-amber-900">
-              This number is not eligible yet.
+              
+              Toto číslo zatiaľ nie je vhodné.
             </p>
             <p className="mt-2 text-sm text-amber-800">
               {eligibility.detail ??
@@ -444,13 +456,15 @@ function ConfirmStep({
   return (
     <div className="space-y-5">
       <p className="text-sm leading-6 text-slate-600">
-        Search for a local number. The selected number will be assigned to this
-        location and carrier registration will begin after setup.
+        
+        Vyhľadajte miestne číslo. Tomu bude priradené vybrané číslo
+        umiestnenie a registrácia operátora sa spustí po nastavení.
       </p>
       <div className="flex flex-wrap items-end gap-2">
         <label className="space-y-1.5">
           <span className="text-xs font-medium text-slate-600">
-            Area code
+            
+            Kód oblasti
           </span>
           <Input
             value={areaCode}
@@ -478,7 +492,8 @@ function ConfirmStep({
           ) : (
             <Search className="mr-2 h-4 w-4" />
           )}
-          Search numbers
+          
+          Hľadať čísla
         </Button>
       </div>
       {numbers.length > 0 ? (
@@ -499,11 +514,11 @@ function ConfirmStep({
               <span className="flex items-center gap-2">
                 {formatMonthlyCost(n.monthlyCost) ? (
                   <span className="text-xs text-slate-500">
-                    {formatMonthlyCost(n.monthlyCost)}/mo
+                    {formatMonthlyCost(n.monthlyCost)}/mes.
                   </span>
                 ) : null}
                 {selectedNumber === n.phoneNumber ? (
-                  <Badge variant="success">Selected</Badge>
+                  <Badge variant="success">Vybrané</Badge>
                 ) : null}
               </span>
             </button>
@@ -536,12 +551,14 @@ function RegistrationStep({
       </div>
       <div className="rounded-xl border border-teal-200 bg-teal-50 p-4">
         <p className="text-sm font-medium text-teal-950">
-          Carrier approval is required before live US texting.
+          
+          Pred odoslaním živých textových správ v USA sa vyžaduje schválenie operátora.
         </p>
         <p className="mt-2 text-sm leading-6 text-teal-800">
-          OpenVPM will set up the number and mark registration as pending.
-          Legal business verification and campaign approval are external
-          carrier steps and are not submitted from this screen yet.
+          
+          OpenVPM nastaví číslo a označí registráciu ako čakajúcu.
+          Právne overenie firmy a schválenie kampane sú externé
+          kroky operátora a ešte nie sú odoslané z tejto obrazovky.
         </p>
       </div>
     </div>
@@ -554,21 +571,24 @@ function DoneStep({ sender }: { sender: string | null }) {
       <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
         <p className="flex items-center gap-2 text-sm font-medium text-emerald-900">
           <Check className="h-4 w-4" />
-          Number setup started
+          
+          Online platby nie sú pre túto kliniku nakonfigurované.
         </p>
         <p className="mt-2 text-sm leading-6 text-emerald-800">
-          {sender ?? "Your number"} is saved and registration is pending. SMS
-          sending stays off until carrier approval is active and an admin turns
-          sending on.
+          {sender ?? "Your number"}  sa uloží a čaká sa na registráciu. SMS
+          odosielanie zostane vypnuté, kým nie je aktívne schválenie operátorom a kým sa neobráti správca
+          posielanie ďalej.
         </p>
       </div>
       <div className="rounded-xl border border-slate-200 p-4">
         <p className="text-sm font-medium text-slate-950">
-          Next: carrier approval
+          
+          Ďalej: schválenie dopravcu
         </p>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          When registration is active, turn sending on from Messaging settings
-          and send a test from the active location card.
+          
+          Keď je registrácia aktívna, zapnite odosielanie v nastaveniach správ
+          a odošlite test z karty aktívnej polohy.
         </p>
       </div>
     </div>

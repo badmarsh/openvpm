@@ -24,6 +24,7 @@ import { EmptyState } from "@/components/common/empty-state";
 import { CalendarSubscribe } from "@/components/schedule/calendar-subscribe";
 import { cn } from "@/lib/utils";
 import { dateInputTimeUtcInstant } from "@/lib/date-input";
+import { useTranslations } from "next-intl";
 import {
   addCalendarDays,
   addCalendarMonths,
@@ -1224,6 +1225,7 @@ function BookingForm({
   defaultTime?: string;
   timeZone?: string | null;
 }) {
+  const t = useTranslations();
   const modalRef = useRef<HTMLDivElement>(null);
   const utils = trpc.useUtils();
 
@@ -1419,7 +1421,7 @@ function BookingForm({
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <h3 className="text-sm font-semibold">New Appointment</h3>
+          <h3 className="text-sm font-semibold">{t("schedule.modalTitle", "New Appointment")}</h3>
           <button
             type="button"
             onClick={onClose}
@@ -1433,7 +1435,7 @@ function BookingForm({
         <div className="px-4 py-3 space-y-4">
           {/* Patient search */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Patient</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.patient", "Patient")}</label>
             {selectedPatient ? (
               <div className="mt-1 flex items-center gap-2 rounded-md border border-input bg-muted/50 px-3 py-2 text-sm">
                 <span className="flex-1">
@@ -1456,7 +1458,7 @@ function BookingForm({
             ) : (
               <div className="relative mt-1">
                 <Input
-                  placeholder="Search patients..."
+                  placeholder={t("schedule.searchPatients", "Search patients...")}
                   value={patientSearch}
                   maxLength={APPOINTMENT_PATIENT_SEARCH_MAX_LENGTH}
                   aria-invalid={!canSearchPatients}
@@ -1521,7 +1523,7 @@ function BookingForm({
 
           {/* Appointment Type */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Appointment Type</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.appointmentType", "Appointment Type")}</label>
             <select
               value={typeId}
               onChange={(e) => setTypeId(e.target.value)}
@@ -1530,8 +1532,8 @@ function BookingForm({
             >
               <option value="">
                 {appointmentTypesUnavailable
-                  ? "Appointment types unavailable"
-                  : "Select type..."}
+                  ? t("schedule.appointmentTypesUnavailable", "Appointment types unavailable")
+                  : t("schedule.selectType", "Select type...")}
               </option>
               {appointmentTypes?.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -1546,14 +1548,14 @@ function BookingForm({
               </p>
             ) : appointmentTypesQuery.isLoading ? (
               <p className="mt-1 text-xs text-muted-foreground">
-                Loading appointment types...
+                {t("schedule.loadingAppointmentTypes", "Loading appointment types...")}
               </p>
             ) : null}
           </div>
 
           {/* Doctor */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Doctor</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.doctor", "Doctor")}</label>
             <select
               value={doctorId}
               onChange={(e) => setDoctorId(e.target.value)}
@@ -1561,7 +1563,7 @@ function BookingForm({
               className="mt-1 h-9 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">
-                {doctorsUnavailable ? "Doctors unavailable" : "Select doctor..."}
+                {doctorsUnavailable ? t("schedule.doctorsUnavailable", "Doctors unavailable") : t("schedule.selectDoctor", "Select doctor...")}
               </option>
               {doctors?.map((doc) => (
                 <option key={doc.id} value={doc.id}>
@@ -1576,14 +1578,14 @@ function BookingForm({
               </p>
             ) : doctorsQuery.isLoading ? (
               <p className="mt-1 text-xs text-muted-foreground">
-                Loading doctors...
+                {t("schedule.loadingDoctors", "Loading doctors...")}
               </p>
             ) : null}
           </div>
 
           {/* Room */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Room</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.room", "Room")}</label>
             <select
               value={roomId}
               onChange={(e) => setRoomId(e.target.value)}
@@ -1591,7 +1593,7 @@ function BookingForm({
               className="mt-1 h-9 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">
-                {roomsUnavailable ? "Rooms unavailable" : "Select room..."}
+                {roomsUnavailable ? t("schedule.roomsUnavailable", "Rooms unavailable") : t("schedule.selectRoom", "Select room...")}
               </option>
               {roomsList?.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -1606,14 +1608,14 @@ function BookingForm({
               </p>
             ) : roomsQuery.isLoading ? (
               <p className="mt-1 text-xs text-muted-foreground">
-                Loading rooms...
+                {t("schedule.loadingRooms", "Loading rooms...")}
               </p>
             ) : null}
           </div>
 
           {/* Date */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Date</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.date", "Date")}</label>
             <Input
               type="date"
               value={date}
@@ -1625,7 +1627,7 @@ function BookingForm({
 
           {/* Start Time */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Start Time</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.startTime", "Start Time")}</label>
             <select
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
@@ -1641,7 +1643,7 @@ function BookingForm({
 
           {/* Duration */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Duration (minutes)</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.duration", "Duration (minutes)")}</label>
             <Input
               type="number"
               min={APPOINTMENT_DURATION_MIN_MINUTES}
@@ -1662,7 +1664,7 @@ function BookingForm({
                 onChange={(e) => setIsRecurring(e.target.checked)}
               />
               <Repeat2 className="h-3.5 w-3.5 text-muted-foreground" />
-              Repeat appointment
+              {t("schedule.repeatAppointment", "Repeat appointment")}
             </label>
             {isRecurring && (
               <div className="mt-3 grid gap-3 sm:grid-cols-3">
@@ -1725,7 +1727,7 @@ function BookingForm({
 
           {/* Notes */}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Notes</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("schedule.notes", "Notes")}</label>
             <textarea
               value={notes}
               maxLength={APPOINTMENT_NOTES_MAX_LENGTH}
@@ -1733,7 +1735,7 @@ function BookingForm({
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-              placeholder="Optional notes..."
+              placeholder={t("schedule.optionalNotes", "Optional notes...")}
             />
           </div>
         </div>
@@ -1763,6 +1765,11 @@ function BookingForm({
 // --- Main Page ---
 
 export default function SchedulePage() {
+  return <SchedulePageInner />;
+}
+
+function SchedulePageInner() {
+  const t = useTranslations();
   const { data: session } = useSession();
   const userRole = session?.user?.role;
   const canCreateAppointments = canCreateAppointmentsRole(userRole);
@@ -1975,10 +1982,10 @@ export default function SchedulePage() {
     verifiedAppointmentsData,
   ]);
 
-  const viewOptions: { id: CalendarView; label: string }[] = [
-    { id: "day", label: "Day" },
-    { id: "week", label: "Week" },
-    { id: "month", label: "Month" },
+  const viewOptions: { id: CalendarView; key: string }[] = [
+    { id: "day", key: "schedule.view_day" },
+    { id: "week", key: "schedule.view_week" },
+    { id: "month", key: "schedule.view_month" },
   ];
 
   // Current time indicator position
@@ -1996,8 +2003,8 @@ export default function SchedulePage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Schedule</h2>
-          <p className="text-sm text-muted-foreground">Appointment calendar</p>
+          <h2 className="font-heading text-xl font-semibold">{t("schedule.title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("schedule.subtitle")}</p>
         </div>
         <CalendarSubscribe />
       </div>
@@ -2014,7 +2021,7 @@ export default function SchedulePage() {
             size="sm"
             onClick={goToday}
           >
-            Today
+            {t("schedule.today")}
           </Button>
           <Button variant="outline" size="icon" onClick={goNext} className="h-9 w-9">
             <ChevronRight className="h-4 w-4" />
@@ -2041,7 +2048,7 @@ export default function SchedulePage() {
                     : "text-muted-foreground hover:bg-muted"
                 )}
               >
-                {option.label}
+                {t(option.key)}
               </button>
             ))}
           </div>
@@ -2054,7 +2061,7 @@ export default function SchedulePage() {
               onChange={(e) => setDoctorFilter(e.target.value)}
               className="h-9 appearance-none rounded-md border border-input bg-background pl-8 pr-8 text-xs focus:outline-none focus:ring-2 focus:ring-ring"
             >
-              <option value="all">All Doctors</option>
+              <option value="all">{t("schedule.all_doctors")}</option>
               {doctors?.map((doc) => (
                 <option key={doc.id} value={doc.id}>
                   Dr. {doc.name}
@@ -2073,7 +2080,7 @@ export default function SchedulePage() {
               }}
             >
               <Plus className="mr-1.5 h-3.5 w-3.5" />
-              New Appointment
+              {t("schedule.new_appointment")}
             </Button>
           )}
         </div>

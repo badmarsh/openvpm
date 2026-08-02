@@ -50,40 +50,40 @@ import {
 } from "@/lib/inventory/policy";
 
 const CATEGORIES = [
-  { label: "All Categories", value: "" },
+  { label: "Všetky kategórie", value: "" },
   { label: "Medication", value: "medication" },
-  { label: "Preventive", value: "preventive" },
-  { label: "Supplement", value: "supplement" },
-  { label: "Food", value: "food" },
-  { label: "Supply", value: "supply" },
+  { label: "Preventívne", value: "preventive" },
+  { label: "Doplnok", value: "supplement" },
+  { label: "Jedlo", value: "food" },
+  { label: "Zásobovanie", value: "supply" },
 ] as const;
 
 const ALERT_FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Needs Attention", value: "attention" },
-  { label: "Low Stock", value: "low_stock" },
-  { label: "Expired", value: "expired" },
-  { label: "Expiring Soon", value: "expiring_soon" },
+  { label: "Všetky", value: "all" },
+  { label: "Vyžaduje si pozornosť", value: "attention" },
+  { label: "Nízke zásoby", value: "low_stock" },
+  { label: "Platnosť uplynula", value: "expired" },
+  { label: "Čoskoro vyprší", value: "expiring_soon" },
 ] as const;
 
 type AlertFilter = (typeof ALERT_FILTERS)[number]["value"];
 
 function stockBadge(status: string) {
   if (status === "out") {
-    return { label: "Out", className: "bg-red-100 text-red-700" };
+    return { label: "Von", className: "bg-red-100 text-red-700" };
   }
   if (status === "low") {
-    return { label: "Low Stock", className: "bg-amber-100 text-amber-700" };
+    return { label: "Nízke zásoby", className: "bg-amber-100 text-amber-700" };
   }
-  return { label: "In Stock", className: "bg-green-100 text-green-700" };
+  return { label: "Na sklade", className: "bg-green-100 text-green-700" };
 }
 
 function expirationBadge(status: string) {
   if (status === "expired") {
-    return { label: "Expired", className: "bg-red-100 text-red-700" };
+    return { label: "Platnosť uplynula", className: "bg-red-100 text-red-700" };
   }
   if (status === "expiring_soon") {
-    return { label: "Expiring Soon", className: "bg-orange-100 text-orange-700" };
+    return { label: "Čoskoro vyprší", className: "bg-orange-100 text-orange-700" };
   }
   return null;
 }
@@ -115,7 +115,7 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
     onSuccess: () => {
       utils.inventory.list.invalidate();
       onClose();
-      toast.success("Product added");
+      toast.success("Produkt bol pridaný");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -178,10 +178,10 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
       onSubmit={handleSubmit}
       className="mt-4 rounded-lg border border-border bg-card p-4 space-y-3"
     >
-      <h3 className="font-medium text-sm">Add Product</h3>
+      <h3 className="font-medium text-sm">Pridať produkt</h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Input
-          placeholder="Name *"
+          placeholder="Meno *"
           value={form.name}
           maxLength={INVENTORY_PRODUCT_NAME_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -198,7 +198,7 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           onChange={(e) => setForm({ ...form, category: e.target.value })}
           className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
         >
-          <option value="">Category</option>
+          <option value="">Kategória</option>
           {CATEGORIES.slice(1).map((c) => (
             <option key={c.value} value={c.value}>
               {c.label}
@@ -210,7 +210,7 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           min={INVENTORY_MONEY_AMOUNT_MIN}
           max={INVENTORY_MONEY_AMOUNT_MAX}
           step="0.01"
-          placeholder="Unit Price *"
+          placeholder="Jednotková cena *"
           value={form.unitPrice}
           onChange={(e) => setForm({ ...form, unitPrice: e.target.value })}
           required
@@ -220,7 +220,7 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           min={INVENTORY_MONEY_AMOUNT_MIN}
           max={INVENTORY_MONEY_AMOUNT_MAX}
           step="0.01"
-          placeholder="Cost Price"
+          placeholder="Cena"
           value={form.costPrice}
           onChange={(e) => setForm({ ...form, costPrice: e.target.value })}
         />
@@ -229,7 +229,7 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           min={INVENTORY_STOCK_QUANTITY_MIN}
           max={INVENTORY_STOCK_QUANTITY_MAX}
           step={1}
-          placeholder="Stock Qty"
+          placeholder="Skladové množstvo"
           value={form.stockQuantity}
           onChange={(e) =>
             setForm({ ...form, stockQuantity: parseInt(e.target.value) || 0 })
@@ -240,21 +240,21 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           min={INVENTORY_STOCK_QUANTITY_MIN}
           max={INVENTORY_STOCK_QUANTITY_MAX}
           step={1}
-          placeholder="Reorder Point"
+          placeholder="Zmena poradia"
           value={form.reorderPoint}
           onChange={(e) =>
             setForm({ ...form, reorderPoint: parseInt(e.target.value) || 0 })
           }
         />
         <Input
-          placeholder="Lot Number"
+          placeholder="Číslo šarže"
           value={form.lotNumber}
           maxLength={INVENTORY_PRODUCT_LOT_NUMBER_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, lotNumber: e.target.value })}
         />
         <Input
           type="date"
-          placeholder="Expiration Date"
+          placeholder="Dátum vypršania platnosti"
           value={form.expirationDate}
           aria-invalid={
             !isInventoryOptionalExpirationDateInputValid(form.expirationDate) ||
@@ -274,7 +274,8 @@ function AddProductForm({ onClose }: { onClose: () => void }) {
           {createMutation.isPending ? "Adding..." : "Add Product"}
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={onClose}>
-          Cancel
+          
+          Zrušiť
         </Button>
       </div>
       {createMutation.error && (
@@ -311,7 +312,7 @@ function EditProductRow({
     onSuccess: () => {
       utils.inventory.list.invalidate();
       onClose();
-      toast.success("Product updated");
+      toast.success("Aktualizovaný produkt");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -443,7 +444,7 @@ function EditProductRow({
             maxLength={INVENTORY_PRODUCT_LOT_NUMBER_MAX_LENGTH}
             onChange={(e) => setForm({ ...form, lotNumber: e.target.value })}
             className="h-8 text-sm"
-            placeholder="Lot"
+            placeholder="Veľa"
           />
           <Input
             type="date"
@@ -504,7 +505,7 @@ function StockAdjustPopover({
     onSuccess: () => {
       utils.inventory.list.invalidate();
       onClose();
-      toast.success("Stock adjusted");
+      toast.success("Upravené zásoby");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -545,7 +546,8 @@ function StockAdjustPopover({
   return (
     <div className="absolute right-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-card p-3 shadow-lg">
       <p className="text-xs font-medium text-muted-foreground mb-2">
-        Adjust stock: {productName}
+        
+        Upraviť zásoby: {productName}
       </p>
       <Input
         type="number"
@@ -565,14 +567,14 @@ function StockAdjustPopover({
           );
         }}
         className="h-8 text-sm mb-2"
-        placeholder="Quantity"
+        placeholder="Množstvo"
       />
       <Input
         value={reason}
         maxLength={INVENTORY_ADJUSTMENT_REASON_MAX_LENGTH}
         onChange={(e) => setReason(e.target.value)}
         className="h-8 text-sm mb-2"
-        placeholder="Reason *"
+        placeholder="Dôvod *"
       />
       <div className="flex gap-2">
         <Button
@@ -582,7 +584,7 @@ function StockAdjustPopover({
           onClick={() => handleAdjust(1)}
           disabled={!canAddStock}
         >
-          <Plus className="h-3 w-3 mr-1" /> Add
+          <Plus className="h-3 w-3 mr-1" />  Pridať
         </Button>
         <Button
           size="sm"
@@ -591,7 +593,7 @@ function StockAdjustPopover({
           onClick={() => handleAdjust(-1)}
           disabled={!canRemoveStock}
         >
-          <Minus className="h-3 w-3 mr-1" /> Remove
+          <Minus className="h-3 w-3 mr-1" />  Odstrániť
         </Button>
       </div>
       <Button
@@ -600,7 +602,8 @@ function StockAdjustPopover({
         className="mt-2 w-full h-7 text-xs"
         onClick={onClose}
       >
-        Cancel
+        
+        Zrušiť
       </Button>
       {adjustMutation.error && (
         <p className="text-xs text-destructive mt-1">
@@ -619,7 +622,7 @@ function AddSupplierForm({ onClose }: { onClose: () => void }) {
     onSuccess: () => {
       utils.inventory.listSuppliers.invalidate();
       onClose();
-      toast.success("Supplier added");
+      toast.success("Dodávateľ pridaný");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -670,10 +673,10 @@ function AddSupplierForm({ onClose }: { onClose: () => void }) {
       onSubmit={handleSubmit}
       className="mt-4 rounded-lg border border-border bg-card p-4 space-y-3"
     >
-      <h3 className="font-medium text-sm">Add Supplier</h3>
+      <h3 className="font-medium text-sm">Pridať dodávateľa</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <Input
-          placeholder="Name *"
+          placeholder="Meno *"
           value={form.name}
           maxLength={INVENTORY_SUPPLIER_NAME_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -687,20 +690,20 @@ function AddSupplierForm({ onClose }: { onClose: () => void }) {
           onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
         />
         <Input
-          placeholder="Phone"
+          placeholder="Telefón"
           value={form.phone}
           maxLength={INVENTORY_SUPPLIER_PHONE_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
         />
         <Input
-          placeholder="Address"
+          placeholder="Adresa"
           value={form.address}
           maxLength={INVENTORY_SUPPLIER_ADDRESS_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, address: e.target.value })}
           className="col-span-2"
         />
         <Input
-          placeholder="Notes"
+          placeholder="Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie."
           value={form.notes}
           maxLength={INVENTORY_SUPPLIER_NOTES_MAX_LENGTH}
           onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -715,7 +718,8 @@ function AddSupplierForm({ onClose }: { onClose: () => void }) {
           {createMutation.isPending ? "Adding..." : "Add Supplier"}
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={onClose}>
-          Cancel
+          
+          Zrušiť
         </Button>
       </div>
       {createMutation.error && (
@@ -748,7 +752,7 @@ function EditSupplierRow({
     onSuccess: () => {
       utils.inventory.listSuppliers.invalidate();
       onClose();
-      toast.success("Supplier updated");
+      toast.success("Dodávateľ aktualizovaný");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -848,7 +852,7 @@ function EditSupplierRow({
             className="h-7 w-7 p-0"
             onClick={handleSave}
             disabled={!canSave || updateMutation.isPending}
-            title="Save supplier"
+            title="Uložiť dodávateľa"
           >
             <Check className="h-4 w-4" />
           </Button>
@@ -857,7 +861,7 @@ function EditSupplierRow({
             variant="ghost"
             className="h-7 w-7 p-0"
             onClick={onClose}
-            title="Cancel"
+            title="Zrušiť"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -920,9 +924,10 @@ export default function InventoryPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Inventory</h2>
+          <h2 className="font-heading text-xl font-semibold">Inventár</h2>
           <p className="text-sm text-muted-foreground">
-            Products, stock management, and suppliers
+            
+            Produkty, skladové hospodárstvo a dodávatelia
           </p>
         </div>
       </div>
@@ -939,7 +944,8 @@ export default function InventoryPage() {
           )}
         >
           <Package className="h-4 w-4" />
-          Products
+          
+          Produkty
         </button>
         <button
           onClick={() => setTab("suppliers")}
@@ -951,7 +957,8 @@ export default function InventoryPage() {
           )}
         >
           <Truck className="h-4 w-4" />
-          Suppliers
+          
+          Dodávatelia
         </button>
       </div>
 
@@ -962,7 +969,7 @@ export default function InventoryPage() {
             <div className="relative w-full min-w-48 flex-1 sm:max-w-sm">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search by name or SKU..."
+                placeholder="Hľadať podľa názvu alebo SKU..."
                 value={search}
                 maxLength={INVENTORY_PRODUCT_SEARCH_MAX_LENGTH}
                 onChange={(e) => setSearch(e.target.value)}
@@ -993,7 +1000,7 @@ export default function InventoryPage() {
             </select>
             {productsQuery.data && (
               <p className="text-sm text-muted-foreground">
-                {productsQuery.data.total} product
+                {productsQuery.data.total}  výrobok
                 {productsQuery.data.total !== 1 ? "s" : ""}
               </p>
             )}
@@ -1003,7 +1010,7 @@ export default function InventoryPage() {
                 onClick={() => setShowAddProduct(true)}
                 className="ml-auto"
               >
-                <Plus className="h-4 w-4 mr-1" /> Add Product
+                <Plus className="h-4 w-4 mr-1" />  Pridať produkt
               </Button>
             )}
           </div>
@@ -1024,7 +1031,8 @@ export default function InventoryPage() {
               >
                 <span className="flex items-center gap-2 text-muted-foreground">
                   <AlertTriangle className="h-4 w-4 text-amber-600" />
-                  Needs attention
+                  
+                  Vyžaduje pozornosť
                 </span>
                 <span className="mt-1 block text-xl font-semibold">
                   {productsQuery.data.alertCounts.attention}
@@ -1038,7 +1046,7 @@ export default function InventoryPage() {
                   alertFilter === "low_stock" && "border-primary bg-primary/5"
                 )}
               >
-                <span className="text-muted-foreground">Low stock</span>
+                <span className="text-muted-foreground">Nízke zásoby</span>
                 <span className="mt-1 block text-xl font-semibold">
                   {productsQuery.data.alertCounts.lowStock}
                 </span>
@@ -1051,7 +1059,7 @@ export default function InventoryPage() {
                   alertFilter === "expired" && "border-primary bg-primary/5"
                 )}
               >
-                <span className="text-muted-foreground">Expired</span>
+                <span className="text-muted-foreground">Platnosť uplynula</span>
                 <span className="mt-1 block text-xl font-semibold">
                   {productsQuery.data.alertCounts.expired}
                 </span>
@@ -1065,7 +1073,7 @@ export default function InventoryPage() {
                     "border-primary bg-primary/5"
                 )}
               >
-                <span className="text-muted-foreground">Expiring soon</span>
+                <span className="text-muted-foreground">Platnosť čoskoro vyprší</span>
                 <span className="mt-1 block text-xl font-semibold">
                   {productsQuery.data.alertCounts.expiringSoon}
                 </span>
@@ -1080,7 +1088,8 @@ export default function InventoryPage() {
             </div>
           ) : productsQuery.isLoading ? (
             <div className="mt-6 text-center text-muted-foreground">
-              Loading...
+              
+              Načítavam...
             </div>
           ) : productsQuery.data && productsQuery.data.items.length > 0 ? (
             <TableScroll className="mt-4 rounded-lg border border-border">
@@ -1088,34 +1097,43 @@ export default function InventoryPage() {
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Name
+                      
+                      Meno
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                       SKU
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Category
+                      
+                      Kategória
                     </th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                      Unit Price
+                      
+                      Jednotková cena
                     </th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                      Cost
+                      
+                      Cena
                     </th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                      Stock
+                      
+                      Sklad
                     </th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                      Reorder Pt
+                      
+                      Zmeniť poradie Pt
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Lot / Expiry
+                      
+                      Lot / Expirácia
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Status
+                      
+                      Stav
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Actions
+                      
+                      Akcie
                     </th>
                   </tr>
                 </thead>
@@ -1206,7 +1224,7 @@ export default function InventoryPage() {
                                 variant="ghost"
                                 className="h-7 w-7 p-0"
                                 onClick={() => setEditingId(product.id)}
-                                title="Edit"
+                                title="Upraviť"
                               >
                                 <Pencil className="h-3.5 w-3.5" />
                               </Button>
@@ -1221,7 +1239,7 @@ export default function InventoryPage() {
                                       : product.id
                                   )
                                 }
-                                title="Adjust Stock"
+                                title="Upraviť zásoby"
                               >
                                 <Plus className="h-3.5 w-3.5" />
                               </Button>
@@ -1236,7 +1254,8 @@ export default function InventoryPage() {
                             </div>
                           ) : (
                             <span className="text-xs text-muted-foreground">
-                              Read-only
+                              
+                              Len na čítanie
                             </span>
                           )}
                         </td>
@@ -1270,7 +1289,7 @@ export default function InventoryPage() {
                 !search &&
                 !category
                   ? {
-                      label: "Add first product",
+                      label: "Pridať prvý produkt",
                       onClick: () => setShowAddProduct(true),
                       icon: Plus,
                     }
@@ -1287,7 +1306,7 @@ export default function InventoryPage() {
           <div className="mt-4 flex items-center justify-between">
             {suppliersQuery.data && (
               <p className="text-sm text-muted-foreground">
-                {suppliersQuery.data.length} supplier
+                {suppliersQuery.data.length}  dodávateľ
                 {suppliersQuery.data.length !== 1 ? "s" : ""}
               </p>
             )}
@@ -1297,7 +1316,7 @@ export default function InventoryPage() {
                 onClick={() => setShowAddSupplier(true)}
                 className="ml-auto"
               >
-                <Plus className="h-4 w-4 mr-1" /> Add Supplier
+                <Plus className="h-4 w-4 mr-1" />  Pridať dodávateľa
               </Button>
             )}
           </div>
@@ -1313,7 +1332,8 @@ export default function InventoryPage() {
             </div>
           ) : suppliersQuery.isLoading ? (
             <div className="mt-6 text-center text-muted-foreground">
-              Loading...
+              
+              Načítavam...
             </div>
           ) : suppliersQuery.data && suppliersQuery.data.length > 0 ? (
             <TableScroll className="mt-4 rounded-lg border border-border">
@@ -1321,22 +1341,27 @@ export default function InventoryPage() {
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Name
+                      
+                      Meno
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                       Email
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Phone
+                      
+                      Telefón
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Address
+                      
+                      Adresa
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Notes
+                      
+                      Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
                     </th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                      Actions
+                      
+                      Akcie
                     </th>
                   </tr>
                 </thead>
@@ -1385,13 +1410,14 @@ export default function InventoryPage() {
                               variant="ghost"
                               className="h-7 w-7 p-0"
                               onClick={() => setEditingSupplierId(supplier.id)}
-                              title="Edit supplier"
+                              title="Upraviť dodávateľa"
                             >
                               <Pencil className="h-3.5 w-3.5" />
                             </Button>
                           ) : (
                             <span className="text-xs text-muted-foreground">
-                              Read-only
+                              
+                              Len na čítanie
                             </span>
                           )}
                         </td>
@@ -1405,12 +1431,12 @@ export default function InventoryPage() {
             <EmptyState
               className="mt-6"
               icon={Truck}
-              title="No suppliers yet"
-              description="Add supplier contact details so reorder workflows have the right vendor information at hand."
+              title="Zatiaľ žiadni dodávatelia"
+              description="Pridajte kontaktné údaje dodávateľa, aby pracovné postupy pri objednávaní mali po ruke tie správne informácie o predajcovi."
               action={
                 canManageInventory
                   ? {
-                      label: "Add first supplier",
+                      label: "Pridať prvého dodávateľa",
                       onClick: () => setShowAddSupplier(true),
                       icon: Plus,
                     }

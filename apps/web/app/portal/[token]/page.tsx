@@ -42,8 +42,8 @@ export default function PortalHomePage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load portal"
-          description="This portal link is invalid or has expired. Please contact your veterinary clinic for a new link."
+          title="Nepodarilo sa načítať portál"
+          description="Tento odkaz na portál je neplatný alebo jeho platnosť vypršala. Ak chcete získať nový odkaz, kontaktujte svoju veterinárnu kliniku."
         />
       </div>
     );
@@ -53,22 +53,24 @@ export default function PortalHomePage() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome, {data.firstName}!
+          
+          Vitajte, {data.firstName}!
         </h1>
         <p className="text-gray-500 mt-1">
-          Here is everything about your pets in one place.
+          
+          Tu je všetko o vašich miláčikoch na jednom mieste.
         </p>
       </div>
 
       {/* Pet Cards */}
       <section className="mb-10">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Your Pets</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Vaše domáce zvieratá</h2>
         {data.patients.length === 0 ? (
           <EmptyState
             className="py-10"
             icon={PawPrint}
-            title="No pets on file yet"
-            description="Your clinic will add pets here when they create patient records."
+            title="Zatiaľ žiadne domáce zvieratá"
+            description="Vaša klinika sem pridá domáce zvieratá, keď vytvoria záznamy o pacientoch."
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -107,13 +109,14 @@ export default function PortalHomePage() {
           className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-teal-300 p-4 font-medium text-teal-700 transition-all hover:border-teal-400 hover:bg-teal-50"
         >
           <CalendarPlus className="h-5 w-5" aria-hidden="true" />
-          Request an Appointment
+          
+          Požiadať o stretnutie
         </Link>
       </section>
 
       {/* Quick Links */}
       <section>
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Links</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Rýchle odkazy</h2>
         <div className="grid gap-3 sm:grid-cols-3">
           <Link
             href={`/portal/${token}/messages`}
@@ -123,8 +126,8 @@ export default function PortalHomePage() {
               <MessageSquare className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="font-medium text-gray-900">Messages</p>
-              <p className="text-sm text-gray-500">Read and reply to your clinic</p>
+              <p className="font-medium text-gray-900">Správy</p>
+              <p className="text-sm text-gray-500">Prečítajte si a odpovedzte na svoju kliniku</p>
             </div>
           </Link>
           <Link
@@ -137,8 +140,8 @@ export default function PortalHomePage() {
               </svg>
             </div>
             <div>
-              <p className="font-medium text-gray-900">Appointments</p>
-              <p className="text-sm text-gray-500">View upcoming and past visits</p>
+              <p className="font-medium text-gray-900">Stretnutia</p>
+              <p className="text-sm text-gray-500">Zobraziť nadchádzajúce a minulé návštevy</p>
             </div>
           </Link>
           <Link
@@ -151,8 +154,8 @@ export default function PortalHomePage() {
               </svg>
             </div>
             <div>
-              <p className="font-medium text-gray-900">Invoices</p>
-              <p className="text-sm text-gray-500">View billing and payments</p>
+              <p className="font-medium text-gray-900">Faktúry</p>
+              <p className="text-sm text-gray-500">Zobraziť fakturáciu a platby</p>
             </div>
           </Link>
         </div>

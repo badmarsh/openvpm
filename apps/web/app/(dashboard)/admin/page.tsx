@@ -73,7 +73,7 @@ export default function AdminPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <ShieldAlert className="h-12 w-12 text-muted-foreground mb-4" />
-        <h2 className="font-heading text-xl font-semibold">Access Denied</h2>
+        <h2 className="font-heading text-xl font-semibold">Prístup odmietnutý</h2>
         <p className="text-sm text-muted-foreground mt-1">
           This area is for OpenVPM platform operators only.
         </p>
@@ -85,9 +85,9 @@ export default function AdminPage() {
     return (
       <EmptyState
         icon={AlertTriangle}
-        title="Unable to load platform admin"
+        title="Nie je možné načítať správcu platformy"
         description={error.message}
-        action={{ label: "Retry", onClick: () => refetch() }}
+        action={{ label: "Skúsiť znova", onClick: () => refetch() }}
         className="border-destructive/30 bg-destructive/5"
       />
     );
@@ -99,28 +99,29 @@ export default function AdminPage() {
     return (
       <EmptyState
         icon={AlertTriangle}
-        title="Unable to load platform admin"
-        description="The admin overview finished without returning data. Try loading it again."
-        action={{ label: "Retry", onClick: () => refetch() }}
+        title="Nie je možné načítať správcu platformy"
+        description="Profil praxe sa pre tento účet nepodarilo nájsť."
+        action={{ label: "Skúsiť znova", onClick: () => refetch() }}
         className="border-destructive/30 bg-destructive/5"
       />
     );
   }
 
   const kpis = [
-    { label: "Practices", value: String(data.totals.practices), icon: Building2 },
-    { label: "Est. MRR", value: formatUsd(data.totals.estimatedMrr), icon: DollarSign },
-    { label: "On trial", value: String(data.totals.trialing), icon: Clock },
-    { label: "Active", value: String(data.totals.active), icon: CheckCircle },
-    { label: "Past due", value: String(data.totals.pastDue), icon: AlertTriangle },
+    { label: "Praktiky", value: String(data.totals.practices), icon: Building2 },
+    { label: "Odhad. MRR", value: formatUsd(data.totals.estimatedMrr), icon: DollarSign },
+    { label: "Správy z praxe môžu zobraziť iba správcovia a veterinári.", value: String(data.totals.trialing), icon: Clock },
+    { label: "Aktívne", value: String(data.totals.active), icon: CheckCircle },
+    { label: "Po splatnosti", value: String(data.totals.pastDue), icon: AlertTriangle },
   ];
 
   return (
     <div>
       <div>
-        <h2 className="font-heading text-xl font-semibold">Platform Admin</h2>
+        <h2 className="font-heading text-xl font-semibold">Správca platformy</h2>
         <p className="text-sm text-muted-foreground">
-          Cross-tenant operations overview
+          
+          Prehľad operácií medzi nájomníkmi
         </p>
       </div>
 
@@ -144,19 +145,19 @@ export default function AdminPage() {
       <div className="mt-6 rounded-lg border border-border bg-card p-5">
         <div className="flex items-center gap-2 text-muted-foreground">
           <TrendingUp className="h-4 w-4" />
-          <span className="text-sm">Trial funnel (30 days)</span>
+          <span className="text-sm">Skúšobný lievik (30 dní)</span>
         </div>
         {funnel ? (
           <>
             <div className="mt-3 grid gap-4 sm:grid-cols-5">
               <div>
-                <p className="text-sm text-muted-foreground">Signups</p>
+                <p className="text-sm text-muted-foreground">Registrácie</p>
                 <p className="mt-1 font-heading text-2xl font-bold tabular-nums">
                   {funnel.totals.signups}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Setup started</p>
+                <p className="text-sm text-muted-foreground">Nastavenie spustené</p>
                 <p className="mt-1 font-heading text-2xl font-bold tabular-nums">
                   {funnel.totals.setupStarted}
                   <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -165,7 +166,7 @@ export default function AdminPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Setup complete</p>
+                <p className="text-sm text-muted-foreground">Nastavenie dokončené</p>
                 <p className="mt-1 font-heading text-2xl font-bold tabular-nums">
                   {funnel.totals.setupCompleted}
                   <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -174,7 +175,7 @@ export default function AdminPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Activated</p>
+                <p className="text-sm text-muted-foreground">Aktivované</p>
                 <p className="mt-1 font-heading text-2xl font-bold tabular-nums">
                   {funnel.totals.activated}
                   <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -183,7 +184,7 @@ export default function AdminPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Subscribed</p>
+                <p className="text-sm text-muted-foreground">Prihlásené</p>
                 <p className="mt-1 font-heading text-2xl font-bold tabular-nums">
                   {funnel.totals.subscribed}
                   <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -193,8 +194,9 @@ export default function AdminPage() {
               </div>
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
-              Setup progress comes from the guided clinic setup. Activated = added a
-              real client and booked a real visit.
+              
+              Postup nastavenia vychádza z nastavenia kliniky so sprievodcom. Aktivované = pridané a
+              skutočného klienta a zarezervovali si skutočnú návštevu.
             </p>
           </>
         ) : (
@@ -207,26 +209,27 @@ export default function AdminPage() {
       {/* Practices table */}
       {extendTrialError && (
         <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-          Could not extend the trial: {extendTrialError}
+          
+          Nepodarilo sa predĺžiť skúšobnú verziu: {extendTrialError}
         </div>
       )}
       <div className="mt-8 overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/30 text-left text-muted-foreground">
-              <th className="px-4 py-2.5 font-medium">Practice</th>
-              <th className="px-4 py-2.5 font-medium">Plan</th>
-              <th className="px-4 py-2.5 font-medium">Status</th>
-              <th className="px-4 py-2.5 font-medium">Source</th>
-              <th className="px-4 py-2.5 font-medium">Setup</th>
-              <th className="px-4 py-2.5 font-medium">Trial ends</th>
-              <th className="px-4 py-2.5 font-medium text-right">Locations</th>
-              <th className="px-4 py-2.5 font-medium text-right">Staff</th>
-              <th className="px-4 py-2.5 font-medium text-right">Base MRR</th>
-              <th className="px-4 py-2.5 font-medium text-right">Clients</th>
-              <th className="px-4 py-2.5 font-medium text-right">Patients</th>
-              <th className="px-4 py-2.5 font-medium">Country</th>
-              <th className="px-4 py-2.5 font-medium">Joined</th>
+              <th className="px-4 py-2.5 font-medium">Cvičenie</th>
+              <th className="px-4 py-2.5 font-medium">Plán</th>
+              <th className="px-4 py-2.5 font-medium">Stav</th>
+              <th className="px-4 py-2.5 font-medium">Zdroj</th>
+              <th className="px-4 py-2.5 font-medium">Nastavenie</th>
+              <th className="px-4 py-2.5 font-medium">Skúška končí</th>
+              <th className="px-4 py-2.5 font-medium text-right">Miesta</th>
+              <th className="px-4 py-2.5 font-medium text-right">Zamestnanci</th>
+              <th className="px-4 py-2.5 font-medium text-right">Základná MRR</th>
+              <th className="px-4 py-2.5 font-medium text-right">Klienti</th>
+              <th className="px-4 py-2.5 font-medium text-right">Pacienti</th>
+              <th className="px-4 py-2.5 font-medium">Krajina</th>
+              <th className="px-4 py-2.5 font-medium">Pripojený</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -255,7 +258,7 @@ export default function AdminPage() {
                     {p.billingStatus === "trialing" && (
                       <button
                         type="button"
-                        title="Give this trial 14 more days"
+                        title="Dajte tejto skúšobnej verzii ešte 14 dní"
                         disabled={extendTrial.isPending}
                         onClick={() =>
                           extendTrial.mutate({ practiceId: p.id, days: 14 })
@@ -281,7 +284,8 @@ export default function AdminPage() {
             {data.practices.length === 0 && (
               <tr>
                 <td colSpan={13} className="px-4 py-8 text-center text-muted-foreground">
-                  No practices yet.
+                  
+                  Zatiaľ žiadne praktiky.
                 </td>
               </tr>
             )}

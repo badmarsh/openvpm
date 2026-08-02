@@ -28,23 +28,25 @@ function ResetPasswordInner() {
     <div className="flex min-h-screen items-center justify-center bg-surface">
       <div className="w-full max-w-sm rounded-lg border border-border bg-card p-8">
         <div className="mb-6 text-center">
-          <h1 className="font-heading text-2xl font-bold text-foreground">OpenVPM</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Choose a new password</p>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Agent OpenVPM</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Zvoľte si nové heslo</p>
         </div>
 
         {done ? (
           <div className="text-center">
-            <p className="text-sm text-foreground">Your password has been reset.</p>
+            <p className="text-sm text-foreground">Vaše heslo bolo obnovené.</p>
             <Link
               href="/login"
               className="mt-6 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              Sign in
+              
+              Prihlásiť sa
             </Link>
           </div>
         ) : !token ? (
           <p className="text-center text-sm text-destructive">
-            This reset link is invalid. Request a new one from the sign-in page.
+            
+            Tento odkaz na obnovenie je neplatný. Požiadajte o nový na prihlasovacej stránke.
           </p>
         ) : (
           <form
@@ -62,7 +64,8 @@ function ResetPasswordInner() {
           >
             <div>
               <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-foreground">
-                New password
+                
+                Nové heslo
               </label>
               <input
                 id="password"

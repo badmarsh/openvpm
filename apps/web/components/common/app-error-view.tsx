@@ -33,16 +33,19 @@ export function AppErrorView({
           id="app-error-title"
           className="font-heading text-2xl font-semibold"
         >
-          Something went wrong
+          
+          Niečo sa pokazilo
         </h1>
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          We logged the error. Try again, or return to the dashboard if it
-          keeps happening.
+          
+          Zaznamenali sme chybu. Skúste to znova alebo sa vráťte na palubnú dosku, ak áno
+          stále sa deje.
         </p>
       </div>
       <Button onClick={reset} className="mt-6 gap-2">
         <RotateCcw className="h-4 w-4" />
-        Try Again
+        
+        Skús znova
       </Button>
     </main>
   );

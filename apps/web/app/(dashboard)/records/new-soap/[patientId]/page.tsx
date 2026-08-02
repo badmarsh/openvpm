@@ -36,7 +36,8 @@ const SoapNoteEditor = dynamic(
     ssr: false,
     loading: () => (
       <div className="min-h-32 rounded-lg border border-border bg-muted/20 p-3 text-sm text-muted-foreground">
-        Loading editor...
+        
+        Načítavam editor...
       </div>
     ),
   }
@@ -91,7 +92,7 @@ export default function NewSoapNotePage() {
 
   const createNote = trpc.records.createSoapNote.useMutation({
     onSuccess: () => {
-      toast.success("SOAP note created");
+      toast.success("Poznámka SOAP vytvorená");
       router.push("/records");
     },
     onError: (err) => {
@@ -110,7 +111,7 @@ export default function NewSoapNotePage() {
       setObjective(draftTextToHtml(draft.objective));
       setAssessment(draftTextToHtml(draft.assessment));
       setPlan(draftTextToHtml(draft.plan));
-      toast.success("Draft ready. Please review and edit before you save.");
+      toast.success("Koncept pripravený. Pred uložením skontrolujte a upravte.");
     },
     onError: (err) => toast.error(err.message),
   });
@@ -128,11 +129,11 @@ export default function NewSoapNotePage() {
 
   function handleSave() {
     if (!params.patientId || !patient) {
-      toast.error("Load the patient before saving a SOAP note");
+      toast.error("Pred uložením poznámky SOAP");
       return;
     }
     if (!canSave) {
-      toast.error("Add at least one SOAP section before saving");
+      toast.error("Pred uložením pridajte aspoň jednu sekciu SOAP");
       return;
     }
     createNote.mutate({
@@ -166,16 +167,18 @@ export default function NewSoapNotePage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <ShieldAlert className="h-12 w-12 text-muted-foreground mb-4" />
-        <h2 className="font-heading text-xl font-semibold">Access Denied</h2>
+        <h2 className="font-heading text-xl font-semibold">Prístup odmietnutý</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Only veterinarians and administrators can create SOAP notes.
+          
+          Otvoriť prúžok
         </p>
         <Button
           variant="outline"
           className="mt-4"
           onClick={() => router.push("/records")}
         >
-          Back to Records
+          
+          Späť na záznamy
         </Button>
       </div>
     );
@@ -185,7 +188,8 @@ export default function NewSoapNotePage() {
     return (
       <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Checking SOAP note access...
+        
+        Kontroluje sa prístup k poznámke SOAP...
       </div>
     );
   }
@@ -194,7 +198,8 @@ export default function NewSoapNotePage() {
     return (
       <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading patient...
+        
+        Načítavam pacienta...
       </div>
     );
   }
@@ -203,13 +208,13 @@ export default function NewSoapNotePage() {
     return (
       <EmptyState
         icon={AlertCircle}
-        title="Unable to load patient"
+        title="Nepodarilo sa načítať pacienta"
         description={
           patientError?.message ??
           "Choose a patient from Records before creating a SOAP note."
         }
         action={{
-          label: "Back to Records",
+          label: "Späť na záznamy",
           onClick: () => router.push("/records"),
           icon: ArrowLeft,
         }}
@@ -226,15 +231,17 @@ export default function NewSoapNotePage() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Records
+        
+        Späť na záznamy
       </Button>
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-heading text-xl font-semibold">New SOAP Note</h2>
+          <h2 className="font-heading text-xl font-semibold">Nová poznámka SOAP</h2>
           {patient && (
             <p className="text-sm text-muted-foreground">
-              Patient: {patient.name}
+              
+              Pacient: {patient.name}
               {patient.species
                 ? ` - ${patient.species.charAt(0).toUpperCase() + patient.species.slice(1)}`
                 : ""}
@@ -261,7 +268,8 @@ export default function NewSoapNotePage() {
           </div>
           {!aiConfigured && !agentStatus.isLoading && (
             <p className="text-xs text-muted-foreground">
-              AI is not set up yet. Ask your admin to add an AI key.
+              
+              AI ešte nie je nastavená. Požiadajte svojho správcu, aby pridal kľúč AI.
             </p>
           )}
         </div>
@@ -272,7 +280,8 @@ export default function NewSoapNotePage() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
             <div className="w-full lg:max-w-sm">
               <label className="mb-1 block text-sm font-medium">
-                SOAP Template
+                
+                Šablóna SOAP
               </label>
               <select
                 value={selectedTemplateId}
@@ -294,7 +303,8 @@ export default function NewSoapNotePage() {
                     setReplaceTemplateContent(event.target.checked)
                   }
                 />
-                Replace existing content
+                
+                Nahradiť existujúci obsah
               </label>
             )}
             <Button
@@ -304,7 +314,8 @@ export default function NewSoapNotePage() {
               disabled={!selectedTemplate}
             >
               <ClipboardList className="mr-2 h-4 w-4" />
-              Apply template
+              
+              Použiť šablónu
             </Button>
           </div>
         </div>
@@ -313,60 +324,68 @@ export default function NewSoapNotePage() {
           {/* Subjective */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Subjective
+              
+              Subjektívne
             </label>
             <p className="text-xs text-muted-foreground mb-2">
-              Owner&apos;s complaint, history, and symptoms reported
+              
+              Hlásená sťažnosť majiteľa, história a symptómy
             </p>
             <SoapNoteEditor
               value={subjective}
               onChange={setSubjective}
-              placeholder="What the owner reports..."
+              placeholder="Čo hlási majiteľ..."
             />
           </div>
 
           {/* Objective */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Objective
+              
+              Agenta OpenVPM môžu spustiť iba správcovia a veterinári.
             </label>
             <p className="text-xs text-muted-foreground mb-2">
-              Physical examination findings, vitals, and test results
+              
+              Nálezy fyzikálneho vyšetrenia, vitálne funkcie a výsledky testov
             </p>
             <SoapNoteEditor
               value={objective}
               onChange={setObjective}
-              placeholder="Physical exam findings, vitals, lab results..."
+              placeholder="Nálezy fyzikálnych vyšetrení, životné funkcie, laboratórne výsledky..."
             />
           </div>
 
           {/* Assessment */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Assessment
+              
+              Hodnotenie
             </label>
             <p className="text-xs text-muted-foreground mb-2">
-              Diagnosis or differential diagnoses
+              
+              Diagnóza alebo diferenciálne diagnózy
             </p>
             <SoapNoteEditor
               value={assessment}
               onChange={setAssessment}
-              placeholder="Diagnosis, differential diagnoses..."
+              placeholder="Diagnóza, diferenciálne diagnózy..."
             />
           </div>
 
           {/* Plan */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Plan
+              
+              Plán
             </label>
             <p className="text-xs text-muted-foreground mb-2">
-              Treatment plan, medications, follow-up instructions
+              
+              Liečebný plán, lieky, následné pokyny
             </p>
             <SoapNoteEditor
               value={plan}
               onChange={setPlan}
-              placeholder="Treatment plan, medications, follow-up..."
+              placeholder="Liečebný plán, lieky, sledovanie..."
             />
           </div>
         </div>
@@ -382,15 +401,18 @@ export default function NewSoapNotePage() {
           </Button>
           {!canSave && (
             <p className="text-sm text-muted-foreground">
-              Add at least one section to save this note.
+              
+              Ak chcete túto poznámku uložiť, pridajte aspoň jednu sekciu.
             </p>
           )}
           <Button variant="outline" onClick={() => router.push("/records")}>
-            Cancel
+            
+            Zrušiť
           </Button>
           {createNote.isError && (
             <p className="text-sm text-destructive">
-              Failed to save: {createNote.error.message}
+              
+              Nepodarilo sa uložiť: {createNote.error.message}
             </p>
           )}
         </div>

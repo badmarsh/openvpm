@@ -55,7 +55,8 @@ export default function AgentPage() {
       <div className="mx-auto max-w-3xl rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Checking agent access...
+          
+          Kontroluje sa prístup agenta...
         </div>
       </div>
     );
@@ -66,10 +67,10 @@ export default function AgentPage() {
       <div className="mx-auto max-w-3xl">
         <EmptyState
           icon={Bot}
-          title="Agent access is restricted"
-          description="Only administrators and veterinarians can run the OpenVPM Agent."
+          title="Prístup agenta je obmedzený"
+          description="Klientov môžu vytvárať iba roly zamestnancov s klientskym prístupom na zápis."
           action={{
-            label: "Back to dashboard",
+            label: "Späť na informačný panel",
             onClick: () => router.push("/"),
           }}
         />
@@ -207,13 +208,14 @@ function AgentRunner() {
   const statusBanner = status.isLoading ? (
     <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
       <Loader2 className="h-4 w-4 animate-spin" />
-      Checking agent configuration…
+      
+      Kontroluje sa konfigurácia agenta…
     </div>
   ) : status.error ? (
     <div className="mb-4 flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
       <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
       <div>
-        <p className="font-medium">Could not check agent status</p>
+        <p className="font-medium">Nepodarilo sa skontrolovať stav agenta</p>
         <p className="mt-1">{status.error.message}</p>
         <Button
           variant="outline"
@@ -221,7 +223,8 @@ function AgentRunner() {
           className="mt-3"
           onClick={() => void status.refetch()}
         >
-          Retry
+          
+          Skúsiť znova
         </Button>
       </div>
     </div>
@@ -229,9 +232,10 @@ function AgentRunner() {
     <div className="mb-4 flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
       <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
       <div>
-        <p className="font-medium">Agent status is unavailable</p>
+        <p className="font-medium">Stav agenta je nedostupný</p>
         <p className="mt-1">
-          We could not confirm the agent is ready. Retry before running.
+          
+          Nepodarilo sa nám potvrdiť, že agent je pripravený. Pred spustením to skúste znova.
         </p>
         <Button
           variant="outline"
@@ -239,7 +243,8 @@ function AgentRunner() {
           className="mt-3"
           onClick={() => void status.refetch()}
         >
-          Retry
+          
+          Skúsiť znova
         </Button>
       </div>
     </div>
@@ -250,16 +255,18 @@ function AgentRunner() {
         // Hosted clinics can't fix a platform key. Keep it human; ops sees
         // the missing config through /api/health checks.
         <p>
-          The agent is not available right now. We are on it. Please check
-          back soon.
+          
+          Cvičný systém, ktorý vlastníte.
         </p>
       ) : (
         <p>
-          Set <code className="break-all font-mono">GOOGLE_API_KEY</code> or{" "}
+          
+          Nastaviť <code className="break-all font-mono">GOOGLE_API_KEY</code>  alebo{" "}
           <code className="break-all font-mono">GOOGLE_GENERATIVE_AI_API_KEY</code>{" "}
-          for Gemini, or{" "}
-          <code className="break-all font-mono">ANTHROPIC_API_KEY</code> for
-          Claude, to enable agent runs.
+          
+          pre Blížencov alebo{" "}
+          <code className="break-all font-mono">ANTHROPIC_API_KEY</code>  pre
+          Claude, aby ste povolili spustenie agenta.
         </p>
       )}
     </div>
@@ -275,8 +282,9 @@ function AgentRunner() {
         <div>
           <h1 className="font-heading text-2xl font-semibold">OpenVPM Agent</h1>
           <p className="text-sm text-muted-foreground">
-            Ask about your clinic. It can look things up and, with your okay, do
-            the work.
+            
+            Opýtajte sa na svoju kliniku. Môže veci vyhľadať a s vaším súhlasom urobiť
+            práce.
           </p>
         </div>
       </div>
@@ -291,11 +299,13 @@ function AgentRunner() {
               <Sparkles className="h-6 w-6" />
             </div>
             <h2 className="mt-4 font-heading text-xl font-semibold">
-              What can I help you with?
+              
+              S čím vám môžem pomôcť?
             </h2>
             <p className="mt-1 max-w-md text-sm text-muted-foreground">
-              AI is built into OpenVPM. Ask a question in plain words, or start
-              with one of these.
+              
+              AI je zabudovaná do OpenVPM. Položte otázku jednoduchými slovami alebo začnite
+              s jedným z týchto.
             </p>
             <div className="mt-6 grid w-full max-w-xl gap-2 sm:grid-cols-2">
               {SUGGESTIONS.map((s) => (
@@ -369,7 +379,8 @@ function AgentRunner() {
                 disabled={!canRun || run.isPending}
                 className="h-3.5 w-3.5 rounded border-border"
               />
-              Allow writes: appointments, vitals, and SOAP notes
+              
+              Povoliť zápisy: schôdzky, vitálne údaje a poznámky SOAP
             </label>
             <Button
               type="button"
@@ -391,8 +402,9 @@ function AgentRunner() {
           <div className="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
             <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
             <p>
-              Write mode can create appointments, record vitals, or save SOAP
-              notes. It turns off automatically after this run.
+              
+              Režim zápisu môže vytvárať stretnutia, zaznamenávať vitálne údaje alebo ukladať SOAP
+              poznámky. Po tomto spustení sa automaticky vypne.
             </p>
           </div>
         ) : null}
@@ -432,7 +444,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
                 <ChevronRight className="h-3.5 w-3.5" />
               )}
               <Wrench className="h-3.5 w-3.5" />
-              {message.toolCalls.length} tool call
+              {message.toolCalls.length}  volanie nástroja
               {message.toolCalls.length === 1 ? "" : "s"}
             </button>
             {traceOpen ? (

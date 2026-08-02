@@ -78,7 +78,7 @@ export function SoapNoteEditor({
             size="sm"
             variant={editor.isActive("bold") ? "default" : "outline"}
             onClick={toggleBold}
-            title="Bold (Ctrl+B)"
+            title="Tučné (Ctrl+B)"
             className="h-8 w-8 p-0"
           >
             <Bold className="h-4 w-4" />
@@ -88,7 +88,7 @@ export function SoapNoteEditor({
             size="sm"
             variant={editor.isActive("italic") ? "default" : "outline"}
             onClick={toggleItalic}
-            title="Italic (Ctrl+I)"
+            title="Kurzíva (Ctrl+I)"
             className="h-8 w-8 p-0"
           >
             <Italic className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function SoapNoteEditor({
             size="sm"
             variant={editor.isActive("underline") ? "default" : "outline"}
             onClick={toggleUnderline}
-            title="Underline (Ctrl+U)"
+            title="Podčiarknuť (Ctrl+U)"
             className="h-8 w-8 p-0"
           >
             <u className="text-sm font-bold">U</u>
@@ -113,20 +113,22 @@ export function SoapNoteEditor({
             size="sm"
             variant="outline"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            title="Bullet List"
+            title="Zoznam odrážok"
             className="h-8 px-2 text-xs"
           >
-            • List
+            
+            • Zoznam
           </Button>
           <Button
             type="button"
             size="sm"
             variant="outline"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            title="Ordered List"
+            title="Objednaný zoznam"
             className="h-8 px-2 text-xs"
           >
-            1. List
+            
+            1. Zoznam
           </Button>
         </div>
 
@@ -137,7 +139,7 @@ export function SoapNoteEditor({
           size="sm"
           variant="outline"
           onClick={clearFormatting}
-          title="Clear Formatting"
+          title="Vymazať formátovanie"
           className="h-8 w-8 p-0"
         >
           <Trash2 className="h-4 w-4" />

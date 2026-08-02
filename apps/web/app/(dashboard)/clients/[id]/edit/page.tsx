@@ -26,7 +26,8 @@ function EditClientLoadingPanel() {
   return (
     <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
       <Loader2 className="h-4 w-4 animate-spin" />
-      Loading client...
+      
+      Načítavam klienta...
     </div>
   );
 }
@@ -40,7 +41,8 @@ export default function EditClientPage() {
     return (
       <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Checking client access...
+        
+        Prebieha kontrola prístupu klienta...
       </div>
     );
   }
@@ -55,14 +57,15 @@ export default function EditClientPage() {
           className="mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Client
+          
+          Späť na klienta
         </Button>
         <EmptyState
           icon={AlertCircle}
-          title="Client actions are read-only"
-          description="Only staff roles with client write access can edit clients."
+          title="Akcie klienta sú len na čítanie"
+          description="Začiatok:"
           action={{
-            label: "Back to Client",
+            label: "Späť na klienta",
             onClick: () => router.push(`/clients/${params.id}`),
           }}
         />
@@ -125,7 +128,7 @@ function EditClientForm() {
 
   const updateClient = trpc.clients.update.useMutation({
     onSuccess: () => {
-      toast.success("Client updated");
+      toast.success("Klient bol aktualizovaný");
       router.push(`/clients/${params.id}`);
     },
     onError: (err) => {
@@ -183,13 +186,13 @@ function EditClientForm() {
     return (
       <EmptyState
         icon={AlertCircle}
-        title="Unable to load client"
+        title="Nepodarilo sa načítať klienta"
         description={
           loadError?.message ??
           "Choose a client from the Clients list before editing."
         }
         action={{
-          label: "Back to Clients",
+          label: "Späť na klientov",
           onClick: () => router.push("/clients"),
           icon: ArrowLeft,
         }}
@@ -206,12 +209,14 @@ function EditClientForm() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Client
+        
+        Späť na klienta
       </Button>
 
-      <h2 className="font-heading text-xl font-semibold">Edit Client</h2>
+      <h2 className="font-heading text-xl font-semibold">Upraviť klienta</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Update client information
+        
+        Aktualizovať informácie o klientovi
       </p>
 
       {error && (
@@ -224,13 +229,14 @@ function EditClientForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="firstName">
-              First Name *
+              
+              Krstné meno *
             </label>
             <Input
               id="firstName"
               value={form.firstName}
               onChange={(e) => updateField("firstName", e.target.value)}
-              placeholder="First name"
+              placeholder="Krstné meno"
               className="mt-1"
               maxLength={CLIENT_NAME_MAX_LENGTH}
               required
@@ -238,13 +244,14 @@ function EditClientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="lastName">
-              Last Name *
+              
+              Priezvisko *
             </label>
             <Input
               id="lastName"
               value={form.lastName}
               onChange={(e) => updateField("lastName", e.target.value)}
-              placeholder="Last name"
+              placeholder="Priezvisko"
               className="mt-1"
               maxLength={CLIENT_NAME_MAX_LENGTH}
               required
@@ -269,7 +276,8 @@ function EditClientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="phone">
-              Phone
+              
+              Telefón
             </label>
             <Input
               id="phone"
@@ -290,24 +298,27 @@ function EditClientForm() {
           />
           <span>
             <span className="font-medium">
-              Client agrees to receive text messages
+              
+              Klient súhlasí s prijímaním textových správ
             </span>
             <span className="block text-xs text-muted-foreground">
-              Appointment and care reminders by SMS. They can reply STOP to opt out
-              anytime.
+              
+              Pripomenutie termínu a starostlivosti prostredníctvom SMS. Ak sa chcete odhlásiť, môžu odpovedať STOP
+              kedykoľvek.
             </span>
           </span>
         </label>
 
         <div>
           <label className="text-sm font-medium" htmlFor="address">
-            Address
+            
+            Adresa
           </label>
           <Input
             id="address"
             value={form.address}
             onChange={(e) => updateField("address", e.target.value)}
-            placeholder="Street address"
+            placeholder="Adresa"
             className="mt-1"
             maxLength={CLIENT_ADDRESS_MAX_LENGTH}
           />
@@ -316,39 +327,42 @@ function EditClientForm() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <label className="text-sm font-medium" htmlFor="city">
-              City
+              
+              Mesto
             </label>
             <Input
               id="city"
               value={form.city}
               onChange={(e) => updateField("city", e.target.value)}
-              placeholder="City"
+              placeholder="Mesto"
               className="mt-1"
               maxLength={CLIENT_CITY_MAX_LENGTH}
             />
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="state">
-              State
+              
+              Štát
             </label>
             <Input
               id="state"
               value={form.state}
               onChange={(e) => updateField("state", e.target.value)}
-              placeholder="State"
+              placeholder="Štát"
               className="mt-1"
               maxLength={CLIENT_STATE_MAX_LENGTH}
             />
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="zip">
-              Zip
+              
+              Zips
             </label>
             <Input
               id="zip"
               value={form.zip}
               onChange={(e) => updateField("zip", e.target.value)}
-              placeholder="Zip code"
+              placeholder="PSČ"
               className="mt-1"
               maxLength={CLIENT_ZIP_MAX_LENGTH}
             />
@@ -364,7 +378,8 @@ function EditClientForm() {
             variant="outline"
             onClick={() => router.push(`/clients/${params.id}`)}
           >
-            Cancel
+            
+            Zrušiť
           </Button>
         </div>
       </form>

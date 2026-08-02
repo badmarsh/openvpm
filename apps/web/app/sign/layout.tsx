@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { PawMark } from "@/components/brand/paw-mark";
 
 export const metadata: Metadata = {
-  title: "Sign Consent - OpenVPM",
-  description: "Review and sign a consent form",
+  title: "Podpísať súhlas - OpenVPM",
+  description: "Skontrolujte a podpíšte formulár súhlasu",
 };
 
 /**
@@ -26,10 +26,12 @@ export default function SignLayout({
             </div>
             <div>
               <span className="font-semibold text-gray-900 text-sm">
-                OpenVPM
+                
+                Agent OpenVPM
               </span>
               <span className="text-teal-600 text-sm ml-1.5 font-medium">
-                Consent Form
+                
+                Formulár súhlasu
               </span>
             </div>
           </div>
@@ -38,7 +40,8 @@ export default function SignLayout({
       <main className="mx-auto max-w-lg px-4 py-6">{children}</main>
       <footer className="border-t border-gray-100 mt-12">
         <div className="mx-auto max-w-lg px-4 py-6 text-center text-sm text-gray-400">
-          Powered by OpenVPM
+          
+          Beží na OpenVPM
         </div>
       </footer>
     </div>

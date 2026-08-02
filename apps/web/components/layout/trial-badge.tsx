@@ -33,7 +33,7 @@ export function TrialBadge() {
         window.location.href = result.url;
         return;
       }
-      toast.error("Billing checkout is unavailable. Please try again.");
+      toast.error("Pokladňa pri fakturácii nie je k dispozícii. Skúste to znova.");
     },
     onError: (mutationError) => toast.error(mutationError.message),
   });
@@ -47,7 +47,8 @@ export function TrialBadge() {
         className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
       >
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        Billing
+        
+        Fakturácia
       </span>
     );
   }
@@ -59,7 +60,8 @@ export function TrialBadge() {
         className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive transition-colors hover:bg-destructive/20"
       >
         <AlertTriangle className="h-3.5 w-3.5" />
-        Billing status unavailable
+        
+        Stav fakturácie nie je k dispozícii
       </Link>
     );
   }
@@ -92,7 +94,7 @@ export function TrialBadge() {
           <Clock className="h-3.5 w-3.5" />
         )}
         {days === 0 ? "Trial ends today" : `${days} day${days === 1 ? "" : "s"} left in trial`}
-        <span className="font-semibold">· Subscribe</span>
+        <span className="font-semibold">· Odoberať</span>
       </button>
     );
   }
@@ -105,7 +107,8 @@ export function TrialBadge() {
         className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive transition-colors hover:bg-destructive/20"
       >
         <Clock className="h-3.5 w-3.5" />
-        Trial ended, read only · Turn it back on
+        
+        Skúšobná verzia skončila, iba na čítanie · Zapnite ju znova
       </Link>
     );
   }

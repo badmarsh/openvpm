@@ -32,7 +32,7 @@ describe("reportClientError", () => {
     const body = await (payload as Blob).text();
     expect(JSON.parse(body)).toMatchObject({
       source: "app-error",
-      message: "boom",
+      message: "bum",
       digest: "digest-1",
       path: "/patients",
     });

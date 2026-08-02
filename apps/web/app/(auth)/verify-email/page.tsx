@@ -38,32 +38,37 @@ function ConfirmToken({ token }: { token: string }) {
       {status === "verifying" && (
         <p className="mt-3 flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Verifying your email…
+          
+          Overuje sa váš e-mail…
         </p>
       )}
       {status === "ok" && (
         <>
           <p className="mt-3 text-sm text-foreground">
-            Your email is verified. Your OpenVPM trial is ready.
+            
+            Váš email je overený. Vaša skúšobná verzia OpenVPM je pripravená.
           </p>
           <Link
             href="/"
             className="mt-6 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
-            Open OpenVPM
+            
+            Otvorený slot
           </Link>
         </>
       )}
       {status === "error" && (
         <>
           <p className="mt-3 text-sm text-destructive">
-            This verification link is invalid or has expired.
+            
+            Tento overovací odkaz je neplatný alebo jeho platnosť vypršala.
           </p>
           <Link
             href="/verify-email"
             className="mt-6 inline-block text-sm text-primary hover:underline"
           >
-            Send a new link
+            
+            Odoslať nový odkaz
           </Link>
         </>
       )}
@@ -85,26 +90,30 @@ function PendingVerification({ email }: { email: string }) {
         </span>
       </div>
       <h2 className="mt-4 font-heading text-lg font-semibold text-foreground">
-        Check your inbox
+        
+        Skontrolujte si doručenú poštu
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">
         {email ? (
           <>
-            We sent a verification link to{" "}
-            <span className="font-medium text-foreground">{email}</span>. Click it
-            to confirm your address. Your trial is already active.
+            
+            Overovací odkaz sme odoslali na adresu{" "}
+            <span className="font-medium text-foreground">{email}</span>. Kliknite naň
+            na potvrdenie vašej adresy. Vaša skúšobná verzia je už aktívna.
           </>
         ) : (
           <>
-            We sent a verification link to your email. Click it to confirm your
-            address. Your trial is already active.
+            
+            Na váš e-mail sme poslali overovací odkaz. Kliknutím naň potvrdíte svoje
+            adresu. Vaša skúšobná verzia je už aktívna.
           </>
         )}
       </p>
 
       {sent ? (
         <p className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-3 text-sm text-primary">
-          Sent. If it&apos;s not in your inbox, check spam.
+          
+          Odoslané. Ak ho nemáte v doručenej pošte, skontrolujte spam.
         </p>
       ) : (
         <button
@@ -116,20 +125,25 @@ function PendingVerification({ email }: { email: string }) {
           {resend.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : null}
-          Resend verification email
+          
+          Znova odoslať overovací e-mail
         </button>
       )}
 
       <p className="mt-6 text-xs text-muted-foreground">
-        Wrong address?{" "}
+        
+        Nesprávna adresa?{" "}
         <Link href="/register" className="text-primary hover:underline">
-          Use a different email
+          
+          Použiť iný e-mail
         </Link>
       </p>
       <p className="mt-2 text-xs text-muted-foreground">
-        Already verified?{" "}
+        
+        Už overené?{" "}
         <Link href="/login" className="text-primary hover:underline">
-          Sign in
+          
+          Prihlásiť sa
         </Link>
       </p>
     </Shell>
@@ -140,7 +154,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface p-4">
       <div className="w-full max-w-sm rounded-lg border border-border bg-card p-8 text-center">
-        <h1 className="font-heading text-2xl font-bold text-foreground">OpenVPM</h1>
+        <h1 className="font-heading text-2xl font-bold text-foreground">Agent OpenVPM</h1>
         {children}
       </div>
     </div>

@@ -65,7 +65,7 @@ function RegisterPageInner() {
     onSuccess: async (data) => {
       if (data.checkoutUrl) {
         if (!isSafeCheckoutRedirectUrl(data.checkoutUrl)) {
-          toast.error("Hosted checkout is unavailable. Please try again.");
+          toast.error("Hostená pokladňa nie je k dispozícii. Skúste to znova.");
           setLoading(false);
           return;
         }
@@ -88,7 +88,7 @@ function RegisterPageInner() {
         // accounts to the login page right after signup.
         window.location.assign("/");
       } else {
-        toast.success("Account created. Please sign in.");
+        toast.success("Účet vytvorený. Prosím prihláste sa.");
         router.push("/login");
       }
     },
@@ -154,15 +154,18 @@ function RegisterPageInner() {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <PawMark className="h-4 w-4" />
             </span>
-            OpenVPM {cloudIntent ? "Cloud" : ""}
+            
+            Agent OpenVPM {cloudIntent ? "Cloud" : ""}
           </Link>
 
           <h1 className="mt-8 font-heading text-3xl font-bold tracking-tight text-slate-950">
-            Create your workspace
+            
+            Vytvorte si svoj pracovný priestor
           </h1>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Start using OpenVPM in about a minute. You own your data, and smart
-            AI tools are built in.
+            
+            Začnite používať OpenVPM približne za minútu. Vlastníte svoje údaje a ste inteligentní
+            Nástroje AI sú vstavané.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 grid gap-4">
@@ -172,19 +175,19 @@ function RegisterPageInner() {
               </div>
             ) : null}
 
-            <FormField label="Practice name" htmlFor="practiceName">
+            <FormField label="Názov cvičenia" htmlFor="practiceName">
               <Input
                 id="practiceName"
                 value={practiceName}
                 onChange={(e) => setPracticeName(e.target.value)}
-                placeholder="Neighborhood Veterinary"
+                placeholder="Susedská veterinárna"
                 autoFocus
                 maxLength={AUTH_PRACTICE_NAME_MAX_LENGTH}
                 required
               />
             </FormField>
 
-            <FormField label="Work email" htmlFor="email">
+            <FormField label="Pracovný email" htmlFor="email">
               <Input
                 id="email"
                 type="email"
@@ -206,7 +209,7 @@ function RegisterPageInner() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a password"
+                placeholder="Vytvoriť heslo"
                 minLength={AUTH_PASSWORD_MIN_LENGTH}
                 maxLength={AUTH_PASSWORD_MAX_LENGTH}
                 required
@@ -221,11 +224,13 @@ function RegisterPageInner() {
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating your workspace
+                  
+                  Vytváranie pracovného priestoru
                 </>
               ) : (
                 <>
-                  Create workspace
+                  
+                  Vytvoriť pracovný priestor
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
@@ -233,32 +238,39 @@ function RegisterPageInner() {
 
             <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-              Free for 14 days. No credit card required.
+              
+              Zadarmo na 14 dní. Nevyžaduje sa žiadna kreditná karta.
             </p>
 
             <p className="text-center text-xs text-slate-400">
-              By creating a workspace you agree to the{" "}
+              
+              Vytvorením pracovného priestoru súhlasíte s{" "}
               <Link
                 href="/legal/terms"
                 className="underline underline-offset-2 hover:text-slate-600"
               >
-                Terms of Service
+                
+                Podmienky poskytovania služby
               </Link>{" "}
-              and{" "}
+              
+              a{" "}
               <Link
                 href="/legal/privacy"
                 className="underline underline-offset-2 hover:text-slate-600"
               >
-                Privacy Policy
+                
+                Zásady ochrany osobných údajov
               </Link>
               .
             </p>
           </form>
 
           <p className="mt-8 text-center text-sm text-slate-500">
-            Already have an account?{" "}
+            
+            Už máte účet?{" "}
             <Link href="/login" className="font-medium text-primary hover:underline">
-              Sign in
+              
+              Prihlásiť sa
             </Link>
           </p>
         </div>
@@ -268,11 +280,13 @@ function RegisterPageInner() {
       <div className="relative hidden overflow-hidden bg-[linear-gradient(135deg,#fff7ed_0%,#fdf2f8_45%,#ecfdf5_100%)] lg:block">
         <div className="relative z-10 px-12 pt-16">
           <h2 className="max-w-md font-heading text-3xl font-bold tracking-tight text-slate-950">
-            The practice system you own.
+            
+            Zvolený rozvrh je jasný na tento týždeň.
           </h2>
           <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">
-            Run your day, keep clean records, and send bills. Smart AI tools are
-            built in, and your data stays yours to export any time.
+            
+            Urobte si svoj deň, veďte čisté záznamy a posielajte účty. Inteligentné nástroje AI sú
+            vstavané a vaše údaje zostanú vaše a môžete ich kedykoľvek exportovať.
           </p>
         </div>
 
@@ -285,26 +299,26 @@ function RegisterPageInner() {
 }
 
 const NAV = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Patients", icon: PawPrint },
-  { label: "Schedule", icon: Calendar },
-  { label: "Records", icon: FileText },
-  { label: "Billing", icon: Receipt },
-  { label: "Inventory", icon: Package },
+  { label: "Prístrojová doska", icon: LayoutDashboard },
+  { label: "Pacienti", icon: PawPrint },
+  { label: "Rozvrh", icon: Calendar },
+  { label: "Záznamy", icon: FileText },
+  { label: "Fakturácia", icon: Receipt },
+  { label: "Inventár", icon: Package },
 ];
 
 const KPIS = [
-  { label: "Today's visits", value: "8", icon: Calendar },
-  { label: "New patients", value: "3", icon: PawPrint },
-  { label: "Revenue", value: "$1,240", icon: Receipt },
+  { label: "Dnešné návštevy", value: "8", icon: Calendar },
+  { label: "Noví pacienti", value: "3", icon: PawPrint },
+  { label: "Výnosy", value: "$1,240", icon: Receipt },
 ];
 
 // Appointment colors mirror the real schedule.
 const APPTS = [
-  { time: "9:00", title: "Wellness exam", pet: "Biscuit", color: "#0d9488" },
-  { time: "10:30", title: "Vaccination", pet: "Luna", color: "#2563eb" },
-  { time: "1:15", title: "Dental cleaning", pet: "Mango", color: "#0891b2" },
-  { time: "3:00", title: "Sick visit", pet: "Olive", color: "#dc2626" },
+  { time: "9:00", title: "Wellness skúška", pet: "Biscuit", color: "#0d9488" },
+  { time: "10:30", title: "Očkovanie", pet: "Luna", color: "#2563eb" },
+  { time: "1:15", title: "Čistenie zubov", pet: "Mango", color: "#0891b2" },
+  { time: "3:00", title: "Chorá návšteva", pet: "Olive", color: "#dc2626" },
 ];
 
 /**
@@ -353,10 +367,12 @@ function PlatformPreview({ practiceName }: { practiceName: string }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
             <p className="font-heading text-sm font-semibold text-slate-900">
-              Dashboard
+              
+              Prístrojová doska
             </p>
             <span className="rounded-md bg-primary px-2.5 py-1 text-[11px] font-medium text-primary-foreground">
-              New
+              
+              Nové
             </span>
           </div>
 
@@ -384,7 +400,8 @@ function PlatformPreview({ practiceName }: { practiceName: string }) {
             {/* Today's schedule with appointment colors */}
             <div className="rounded-lg border border-slate-100 p-3">
               <p className="text-xs font-semibold text-slate-900">
-                Today's schedule
+                
+                Dnešný program
               </p>
               <div className="mt-2 space-y-1.5">
                 {APPTS.map((a) => (
@@ -417,14 +434,16 @@ function PlatformPreview({ practiceName }: { practiceName: string }) {
                 <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <Bot className="h-3.5 w-3.5" />
                 </span>
-                <p className="text-xs font-semibold text-slate-900">Ask AI</p>
+                <p className="text-xs font-semibold text-slate-900">Opýtajte sa AI</p>
               </div>
               <div className="mt-2 flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2">
                 <span className="truncate text-[11px] text-slate-500">
-                  Which pets are due for vaccines?
+                  
+                  Ktoré domáce zvieratá majú byť očkované?
                 </span>
                 <span className="ml-auto rounded bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
-                  Ask
+                  
+                  Opýtajte sa
                 </span>
               </div>
             </div>

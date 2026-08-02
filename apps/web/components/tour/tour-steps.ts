@@ -50,14 +50,14 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
     {
       id: "welcome",
       route: "/",
-      title: "Welcome to OpenVPM",
+      title: "Vitajte v OpenVPM",
       body: "This is your practice. We added a few sample pets so it feels real while you look around.",
     },
     {
       id: "schedule",
       route: "/schedule",
       anchor: "schedule-calendar",
-      title: "Your day, at a glance",
+      title: "Váš deň v skratke",
       body: patientName
         ? `Every visit lives here. ${patientName} is already booked, so you can see a real day. Click any open slot to book a visit.`
         : "Book visits and check pets in from one simple calendar. Click any open slot to book a visit.",
@@ -68,7 +68,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
     steps.push({
       id: "patient-chart",
       route: `/patients/${ctx.demoPatientId}`,
-      title: "Every pet's full story",
+      title: "Celý príbeh každého domáceho maznáčika",
       body: `This is ${patientName ?? "a sample pet"}'s chart. Notes, shots, meds, and labs all live on one page. The tabs go deeper when you need them.`,
     });
   } else {
@@ -76,7 +76,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
       id: "records",
       route: "/records",
       anchor: "nav-/records",
-      title: "Every pet's full story",
+      title: "Celý príbeh každého domáceho maznáčika",
       body: "Notes, shots, meds, and labs all live in one place.",
     });
   }
@@ -86,7 +86,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
       id: "invoice",
       route: `/billing?expand=${ctx.demoInvoiceId}`,
       anchor: "invoice-detail",
-      title: "Bill in one click",
+      title: "Vyúčtovanie jedným kliknutím",
       body: "Here is a real bill, already itemized. A visit becomes a bill in one click, and clients can pay online.",
     });
   } else {
@@ -94,7 +94,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
       id: "billing",
       route: "/billing",
       anchor: "nav-/billing",
-      title: "Bill in one click",
+      title: "Vyúčtovanie jedným kliknutím",
       body: "Turn a visit into a bill and take payment online.",
     });
   }
@@ -103,7 +103,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
     id: "inbox",
     route: "/inbox",
     anchor: "inbox-list",
-    title: "Talk to clients, all in one place",
+    title: "Rozprávajte sa s klientmi na jednom mieste",
     body: "Text clients from your own number, or send and receive email, right here. We added a few messages so you can see how it feels.",
   });
 
@@ -111,7 +111,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
     id: "agent",
     route: `/agent?ask=${encodeURIComponent(AGENT_TOUR_QUESTION)}`,
     anchor: "agent-input",
-    title: "Now meet your AI helper",
+    title: "Na skúšku",
     body: agentReady
       ? "We typed a real question for you. Press send and watch it check every chart in seconds."
       : "Ask about your pets and your data in plain words, right here. Your AI helper turns on once your workspace key is set.",
@@ -126,7 +126,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
       id: "agent-reply",
       anchor: "agent-reply",
       requiresAnchor: true,
-      title: "There is your answer",
+      title: "Táto oblasť je určená len pre operátorov platformy OpenVPM.",
       body: "The AI read your charts and answered in plain words. Take a moment and read it. You can ask anything like this, any time.",
     });
   }
@@ -134,7 +134,7 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
   steps.push({
     id: "finish",
     route: "/",
-    title: "You're all set",
+    title: "Všetko je pripravené",
     body: "That was your clinic: the day sheet, the charts, the bills, and your AI helper. Your data is always yours. Export it any time.",
   });
 

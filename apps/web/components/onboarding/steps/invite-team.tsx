@@ -16,10 +16,10 @@ import type { StepHandle } from "../journey-types";
 type Role = "admin" | "veterinarian" | "technician" | "front_desk" | "viewer";
 
 const ROLES: { value: Role; label: string }[] = [
-  { value: "front_desk", label: "Front desk" },
+  { value: "front_desk", label: "Recepcia" },
   { value: "veterinarian", label: "Veterinarian" },
   { value: "technician", label: "Technician" },
-  { value: "viewer", label: "Viewer (read only)" },
+  { value: "viewer", label: "Prehliadač (iba na čítanie)" },
   { value: "admin", label: "Admin" },
 ];
 
@@ -70,7 +70,7 @@ export function InviteTeamStep({
       async onContinue() {
         const invalidRows = rows.filter((r) => getInviteEmailError(r.email));
         if (invalidRows.length > 0) {
-          toast.error("Fix invalid teammate emails before continuing.");
+          toast.error("Pred pokračovaním opravte neplatné e-maily spoluhráčov.");
           return false;
         }
 
@@ -121,8 +121,9 @@ export function InviteTeamStep({
   return (
     <div className="space-y-5">
       <p className="text-sm leading-6 text-slate-600">
-        Add the people you work with. We will email them a link to set up their
-        own login. You only pay for staff who actually use it.
+        
+        Pridajte ľudí, s ktorými pracujete. Pošleme im e-mailom odkaz na nastavenie
+        vlastné prihlásenie. Platíte len za personál, ktorý ho skutočne využíva.
       </p>
 
       <div className="space-y-3">
@@ -137,7 +138,7 @@ export function InviteTeamStep({
                   value={row.name}
                   maxLength={STAFF_NAME_MAX_LENGTH}
                   onChange={(e) => update(i, { name: e.target.value })}
-                  placeholder="Name"
+                  placeholder="Meno"
                   aria-label={`Teammate name ${i + 1}`}
                 />
                 <Input
@@ -185,7 +186,8 @@ export function InviteTeamStep({
       {rows.length < MAX_ROWS ? (
         <Button type="button" variant="outline" size="sm" onClick={addRow}>
           <Plus className="mr-1.5 h-4 w-4" />
-          Add another
+          
+          Pridať ďalšie
         </Button>
       ) : null}
     </div>

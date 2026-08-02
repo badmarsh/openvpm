@@ -70,7 +70,7 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
       if (!res.ok) throw new Error(json.error ?? "Upload failed");
       setLogoUrl(json.url);
       await updatePractice.mutateAsync({ logoUrl: json.url });
-      toast.success("Logo saved");
+      toast.success("Logo uložené");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
@@ -81,15 +81,16 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
   function pickColor(color: string) {
     updatePractice.mutate(
       { brandColor: color },
-      { onSuccess: () => toast.success("Color saved") }
+      { onSuccess: () => toast.success("Farba uložená") }
     );
   }
 
   return (
     <div className="space-y-6">
       <p className="text-sm leading-6 text-slate-600">
-        Add your logo and pick a color. This is just for looks, so feel free to
-        skip it and come back later.
+        
+        Pridajte svoje logo a vyberte si farbu. Toto je len pre vzhľad, takže neváhajte
+        preskočte a vráťte sa neskôr.
       </p>
 
       {practiceError ? (
@@ -98,7 +99,8 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
             <div>
               <p className="font-medium text-destructive">
-                Saved branding could not load
+                
+                Uložené značky sa nepodarilo načítať
               </p>
               <p className="mt-1 text-slate-600">{practiceError.message}</p>
               <Button
@@ -108,7 +110,8 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
                 onClick={() => void refetchPractice()}
                 className="mt-3"
               >
-                Retry
+                
+                Skúsiť znova
               </Button>
             </div>
           </div>
@@ -117,13 +120,13 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
 
       {/* Logo */}
       <div className="space-y-2">
-        <span className="text-sm font-medium text-slate-700">Your logo</span>
+        <span className="text-sm font-medium text-slate-700">Vaše logo</span>
         <div className="flex items-center gap-4">
           {currentLogo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={currentLogo}
-              alt="Practice logo"
+              alt="Logo praxe"
               className="h-16 w-16 rounded-lg border border-slate-200 object-cover"
             />
           ) : (
@@ -158,7 +161,8 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
               {currentLogo ? "Replace logo" : "Upload logo"}
             </Button>
             <p className="mt-1.5 text-xs text-slate-500">
-              PNG, JPG, or WebP. Square images look best.
+              
+              PNG, JPG alebo WebP. Najlepšie vyzerajú štvorcové obrázky.
             </p>
           </div>
         </div>
@@ -166,7 +170,7 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
 
       {/* Accent color */}
       <div className="space-y-2">
-        <span className="text-sm font-medium text-slate-700">Accent color</span>
+        <span className="text-sm font-medium text-slate-700">Farba zvýraznenia</span>
         <AccentColorPicker
           value={savedColor ?? SUGGESTED_ACCENT}
           onChange={pickColor}
@@ -174,7 +178,8 @@ export function BrandingStep({ register }: { register: (h: StepHandle) => void }
         />
         {!savedColor ? (
           <p className="text-xs text-slate-500">
-            We picked a color to start. Tap another if you like.
+            
+            Na začiatok sme si vybrali farbu. Ak chcete, klepnite na iné.
           </p>
         ) : null}
       </div>

@@ -88,7 +88,8 @@ function ClientDetailLoadingPanel() {
   return (
     <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
       <Loader2 className="h-4 w-4 animate-spin" />
-      Loading client...
+      
+      Načítavam klienta...
     </div>
   );
 }
@@ -114,7 +115,7 @@ export default function ClientDetailPage() {
     onSuccess: () => {
       utils.clients.getById.invalidate({ id: params.id });
       setConfirmRotatePortal(false);
-      toast.success("Portal link updated");
+      toast.success("Odkaz na portál bol aktualizovaný");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -129,13 +130,13 @@ export default function ClientDetailPage() {
     return (
       <EmptyState
         icon={AlertCircle}
-        title="Unable to load client"
+        title="Nepodarilo sa načítať klienta"
         description={
           error?.message ??
           "Choose a client from the Clients list before opening the detail page."
         }
         action={{
-          label: "Back to Clients",
+          label: "Späť na klientov",
           onClick: () => router.push("/clients"),
           icon: ArrowLeft,
         }}
@@ -156,10 +157,10 @@ export default function ClientDetailPage() {
       await navigator.clipboard.writeText(
         `${window.location.origin}${portalPath}`
       );
-      toast.success("Portal link copied");
+      toast.success("Odkaz na portál bol skopírovaný");
       emitGuideSignal(GUIDE_SIGNALS.portalLinkCopied);
     } catch {
-      toast.error("Could not copy portal link");
+      toast.error("Nepodarilo sa skopírovať odkaz na portál");
     }
   };
 
@@ -181,7 +182,8 @@ export default function ClientDetailPage() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Clients
+        
+        Späť na klientov
       </Button>
 
       <div className="rounded-lg border border-border bg-card p-6">
@@ -217,7 +219,8 @@ export default function ClientDetailPage() {
               size="sm"
               onClick={() => router.push(`/clients/${client.id}/edit`)}
             >
-              Edit
+              
+              Upraviť
             </Button>
           )}
         </div>
@@ -230,15 +233,18 @@ export default function ClientDetailPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <h3 className="font-heading text-lg font-semibold">
-              Client Portal
+              
+              Klientsky portál
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Share this private link so the client can view pets, request
-              appointments, and pay invoices online.
+              
+              Zdieľajte tento súkromný odkaz, aby si klient mohol prezrieť domáce zvieratá, požiadajte
+              schôdzky a platiť faktúry online.
             </p>
             {!canManageClientDetails ? (
               <p className="mt-3 text-sm text-muted-foreground">
-                Portal links are available to staff with client write access.
+                
+                Odkazy na portál sú dostupné zamestnancom s klientskym prístupom na zápis.
               </p>
             ) : portalPath ? (
               <div className="mt-3 break-all rounded-md border border-border bg-muted px-3 py-2 text-sm">
@@ -246,13 +252,15 @@ export default function ClientDetailPage() {
               </div>
             ) : (
               <p className="mt-3 text-sm text-muted-foreground">
-                No portal link has been issued for this client yet.
+                
+                Pre tohto klienta ešte nebol vydaný žiadny odkaz na portál.
               </p>
             )}
             {confirmRotatePortal ? (
               <p className="mt-2 text-xs text-amber-700">
-                Rotating this link will immediately invalidate the previous
-                portal URL.
+                
+                Otočenie tohto odkazu okamžite zruší platnosť predchádzajúceho
+                URL portálu.
               </p>
             ) : null}
           </div>
@@ -266,7 +274,8 @@ export default function ClientDetailPage() {
                   className="gap-2"
                 >
                   <Copy className="h-4 w-4" />
-                  Copy
+                  
+                  Kopírovať
                 </Button>
                 <Button
                   variant="outline"
@@ -276,7 +285,8 @@ export default function ClientDetailPage() {
                 >
                   <a href={portalPath} target="_blank" rel="noreferrer">
                     <ExternalLink className="h-4 w-4" />
-                    Open
+                    
+                    Otvoriť nastavenia
                   </a>
                 </Button>
               </>
@@ -305,7 +315,8 @@ export default function ClientDetailPage() {
                 size="sm"
                 onClick={() => setConfirmRotatePortal(false)}
               >
-                Cancel
+                
+                Zrušiť
               </Button>
             ) : null}
           </div>
@@ -321,7 +332,8 @@ export default function ClientDetailPage() {
 
       <div className="mt-6">
         <h3 className="font-heading text-lg font-semibold mb-4">
-          Patients ({client.patients.length})
+          
+          Pacienti ({client.patients.length})
         </h3>
         {client.patients.length > 0 ? (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -362,11 +374,11 @@ export default function ClientDetailPage() {
         ) : (
           <EmptyState
             icon={PawPrint}
-            title="No patients for this client yet"
+            title="Pre tohto klienta zatiaľ žiadni pacienti"
             action={
               canManageClientDetails
                 ? {
-                    label: "Add patient",
+                    label: "Pridať pacienta",
                     onClick: () => router.push("/patients/new"),
                     icon: Plus,
                   }
@@ -411,10 +423,12 @@ function CommunicationLogPanel({ clientId }: { clientId: string }) {
     <div className="mt-6 rounded-lg border border-border bg-card p-6">
       <div>
         <h3 className="font-heading text-lg font-semibold">
-          Communication Log
+          
+          Komunikačný denník
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Calls, texts, emails, and portal requests linked to this client.
+          
+          Hovory, textové správy, e-maily a žiadosti portálu spojené s týmto klientom.
         </p>
       </div>
 
@@ -426,7 +440,8 @@ function CommunicationLogPanel({ clientId }: { clientId: string }) {
       ) : isCommunicationLogLoading ? (
         <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading communication log...
+          
+          Načítavam komunikačný protokol...
         </div>
       ) : verifiedCommunicationSettings &&
         communications &&
@@ -478,8 +493,8 @@ function CommunicationLogPanel({ clientId }: { clientId: string }) {
         <EmptyState
           className="mt-4"
           icon={MessageSquare}
-          title="No communication log yet"
-          description="Messages, calls, and portal requests linked to this client will appear here."
+          title="Zatiaľ žiadny komunikačný protokol"
+          description="Tu sa zobrazia správy, hovory a žiadosti portálu prepojené s týmto klientom."
         />
       )}
     </div>
@@ -536,7 +551,7 @@ function WellnessEnrollmentPanel({
   );
   const enroll = trpc.wellness.enroll.useMutation({
     onSuccess: () => {
-      toast.success("Wellness enrollment created");
+      toast.success("Wellness prihláška vytvorená");
       utils.wellness.listEnrollments.invalidate({
         clientId: client.id,
         status: "active",
@@ -550,7 +565,7 @@ function WellnessEnrollmentPanel({
   });
   const cancelEnrollment = trpc.wellness.cancel.useMutation({
     onSuccess: () => {
-      toast.success("Wellness enrollment cancelled");
+      toast.success("Zápis do wellness zrušený");
       utils.wellness.listEnrollments.invalidate({
         clientId: client.id,
         status: "active",
@@ -580,9 +595,10 @@ function WellnessEnrollmentPanel({
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="font-heading text-lg font-semibold">
-                Wellness Membership
+                
+                Wellness členstvo
               </h3>
-              <Badge variant="secondary">Invoice schedule</Badge>
+              <Badge variant="secondary">Rozpis faktúr</Badge>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
               {isLoading
@@ -596,8 +612,9 @@ function WellnessEnrollmentPanel({
                 : `${activePlans.length} active plan${activePlans.length === 1 ? "" : "s"}`}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Enrollment creates scheduled invoices; saved cards are not
-              auto-charged.
+              
+              Registrácia vytvára plánované faktúry; uložené karty nie sú
+              automaticky nabité.
             </p>
           </div>
         </div>
@@ -610,7 +627,7 @@ function WellnessEnrollmentPanel({
               onChange={(e) => setSelectedPlanId(e.target.value)}
               disabled={enroll.isPending || !enrollmentsReady}
             >
-              <option value="">Select plan</option>
+              <option value="">Vybrať plán</option>
               {activePlans.map((plan) => (
                 <option key={plan.id} value={plan.id}>
                   {plan.name}
@@ -623,7 +640,7 @@ function WellnessEnrollmentPanel({
               onChange={(e) => setSelectedPatientId(e.target.value)}
               disabled={enroll.isPending || !enrollmentsReady}
             >
-              <option value="">Client account</option>
+              <option value="">Klientsky účet</option>
               {activePatients.map((patient) => (
                 <option key={patient.id} value={patient.id}>
                   {patient.name}
@@ -646,7 +663,8 @@ function WellnessEnrollmentPanel({
               ) : (
                 <HeartPulse className="mr-2 h-4 w-4" />
               )}
-              Enroll
+              
+              Zaregistrovať sa
             </Button>
           </div>
         )}
@@ -657,24 +675,27 @@ function WellnessEnrollmentPanel({
         </div>
       ) : enrollmentsMissing ? (
         <div className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          Unable to load wellness memberships. Please retry.
+          
+          Nepodarilo sa načítať wellness členstvá. Skúste to znova.
         </div>
       ) : enrollmentsQuery.isLoading ? (
         <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading memberships...
+          
+          Načítavam členstvá...
         </div>
       ) : activeEnrollments.length > 0 ? (
         <div className="mt-4 overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Plan</th>
-                <th className="px-4 py-3 text-left font-medium">Patient</th>
+                <th className="px-4 py-3 text-left font-medium">Plán</th>
+                <th className="px-4 py-3 text-left font-medium">Pacient</th>
                 <th className="px-4 py-3 text-left font-medium">
-                  Next Invoice
+                  
+                  Ďalšia faktúra
                 </th>
-                <th className="px-4 py-3 text-right font-medium">Price</th>
+                <th className="px-4 py-3 text-right font-medium">Cena</th>
                 <th className="px-4 py-3 text-right font-medium">
                   {canManageWellnessMemberships ? "Actions" : "Access"}
                 </th>
@@ -711,7 +732,7 @@ function WellnessEnrollmentPanel({
                         onClick={() =>
                           handleCancelEnrollment(enrollment.enrollmentId)
                         }
-                        title="Cancel enrollment"
+                        title="Zrušiť prihlášku"
                       >
                         {cancelEnrollment.isPending ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -721,7 +742,8 @@ function WellnessEnrollmentPanel({
                       </Button>
                     ) : (
                       <span className="text-xs text-muted-foreground">
-                        Read-only
+                        
+                        Len na čítanie
                       </span>
                     )}
                   </td>

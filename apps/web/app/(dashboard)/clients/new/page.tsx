@@ -39,7 +39,8 @@ export default function NewClientPage() {
     return (
       <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Checking client access...
+        
+        Prebieha kontrola prístupu klienta...
       </div>
     );
   }
@@ -54,14 +55,15 @@ export default function NewClientPage() {
           className="mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Clients
+          
+          Späť na klientov
         </Button>
         <EmptyState
           icon={AlertCircle}
-          title="Client actions are read-only"
-          description="Only staff roles with client write access can create clients."
+          title="Akcie klienta sú len na čítanie"
+          description="Dátum nástupu"
           action={{
-            label: "Back to Clients",
+            label: "Späť na klientov",
             onClick: () => router.push("/clients"),
           }}
         />
@@ -89,7 +91,7 @@ function NewClientForm() {
 
   const createClient = trpc.clients.create.useMutation({
     onSuccess: () => {
-      toast.success("Client created");
+      toast.success("Klient vytvoril");
       router.push("/clients");
     },
     onError: (err) => {
@@ -143,12 +145,14 @@ function NewClientForm() {
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Clients
+        
+        Späť na klientov
       </Button>
 
-      <h2 className="font-heading text-xl font-semibold">New Client</h2>
+      <h2 className="font-heading text-xl font-semibold">Nový klient</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Add a new client to your practice
+        
+        Pridajte do svojej praxe nového klienta
       </p>
 
       {error && (
@@ -161,13 +165,14 @@ function NewClientForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="firstName">
-              First Name *
+              
+              Krstné meno *
             </label>
             <Input
               id="firstName"
               value={form.firstName}
               onChange={(e) => updateField("firstName", e.target.value)}
-              placeholder="First name"
+              placeholder="Krstné meno"
               className="mt-1"
               maxLength={CLIENT_NAME_MAX_LENGTH}
               required
@@ -175,13 +180,14 @@ function NewClientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="lastName">
-              Last Name *
+              
+              Priezvisko *
             </label>
             <Input
               id="lastName"
               value={form.lastName}
               onChange={(e) => updateField("lastName", e.target.value)}
-              placeholder="Last name"
+              placeholder="Priezvisko"
               className="mt-1"
               maxLength={CLIENT_NAME_MAX_LENGTH}
               required
@@ -206,7 +212,8 @@ function NewClientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="phone">
-              Phone
+              
+              Telefón
             </label>
             <Input
               id="phone"
@@ -227,24 +234,27 @@ function NewClientForm() {
           />
           <span>
             <span className="font-medium">
-              Client agrees to receive text messages
+              
+              Klient súhlasí s prijímaním textových správ
             </span>
             <span className="block text-xs text-muted-foreground">
-              Appointment and care reminders by SMS. They can reply STOP to opt out
-              anytime.
+              
+              Pripomenutie termínu a starostlivosti prostredníctvom SMS. Ak sa chcete odhlásiť, môžu odpovedať STOP
+              kedykoľvek.
             </span>
           </span>
         </label>
 
         <div>
           <label className="text-sm font-medium" htmlFor="address">
-            Address
+            
+            Adresa
           </label>
           <Input
             id="address"
             value={form.address}
             onChange={(e) => updateField("address", e.target.value)}
-            placeholder="Street address"
+            placeholder="Adresa"
             className="mt-1"
             maxLength={CLIENT_ADDRESS_MAX_LENGTH}
           />
@@ -253,39 +263,42 @@ function NewClientForm() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <label className="text-sm font-medium" htmlFor="city">
-              City
+              
+              Mesto
             </label>
             <Input
               id="city"
               value={form.city}
               onChange={(e) => updateField("city", e.target.value)}
-              placeholder="City"
+              placeholder="Mesto"
               className="mt-1"
               maxLength={CLIENT_CITY_MAX_LENGTH}
             />
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="state">
-              State
+              
+              Štát
             </label>
             <Input
               id="state"
               value={form.state}
               onChange={(e) => updateField("state", e.target.value)}
-              placeholder="State"
+              placeholder="Štát"
               className="mt-1"
               maxLength={CLIENT_STATE_MAX_LENGTH}
             />
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="zip">
-              Zip
+              
+              Zips
             </label>
             <Input
               id="zip"
               value={form.zip}
               onChange={(e) => updateField("zip", e.target.value)}
-              placeholder="Zip code"
+              placeholder="PSČ"
               className="mt-1"
               maxLength={CLIENT_ZIP_MAX_LENGTH}
             />
@@ -301,7 +314,8 @@ function NewClientForm() {
             variant="outline"
             onClick={() => router.push("/clients")}
           >
-            Cancel
+            
+            Zrušiť
           </Button>
         </div>
       </form>

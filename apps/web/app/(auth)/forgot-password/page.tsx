@@ -24,14 +24,15 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-surface">
       <div className="w-full max-w-sm rounded-lg border border-border bg-card p-8">
         <div className="mb-6 text-center">
-          <h1 className="font-heading text-2xl font-bold text-foreground">OpenVPM</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Reset your password</p>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Agent OpenVPM</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Obnovte svoje heslo</p>
         </div>
 
         {sent ? (
           <p className="text-center text-sm text-muted-foreground">
-            If an account exists for <strong>{email}</strong>, we&apos;ve sent a reset link.
-            Check your inbox.
+            
+            Ak existuje účet pre <strong>{email}</strong>, odoslali sme odkaz na obnovenie.
+            Skontrolujte si doručenú poštu.
           </p>
         ) : (
           <form
@@ -69,7 +70,8 @@ export default function ForgotPasswordPage() {
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
           <Link href="/login" className="text-primary hover:underline">
-            Back to sign in
+            
+            Späť na prihlásenie
           </Link>
         </p>
       </div>

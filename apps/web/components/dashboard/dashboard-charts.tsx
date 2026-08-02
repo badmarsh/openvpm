@@ -114,7 +114,8 @@ export function DashboardCharts({
       <div className="grid gap-4 md:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-6">
           <h2 className="mb-4 font-heading text-lg font-semibold">
-            Appointments This Week
+            
+            Termíny tento týždeň
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={appointmentsByDay}>
@@ -165,7 +166,8 @@ export function DashboardCharts({
 
         <div className="rounded-lg border border-border bg-card p-6">
           <h2 className="mb-4 font-heading text-lg font-semibold">
-            Species Distribution
+            
+            Rozšírenie druhov
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -200,7 +202,8 @@ export function DashboardCharts({
       <div className="grid gap-4 md:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-6">
           <h2 className="mb-4 font-heading text-lg font-semibold">
-            Revenue (Last 30 Days)
+            
+            Výnosy (posledných 30 dní)
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={revenueByDay}>

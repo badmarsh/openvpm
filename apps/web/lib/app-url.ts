@@ -5,7 +5,7 @@
 
 import { envFlagEnabled } from "@/lib/env-bool";
 
-const LOCAL_APP_BASE_URL = "http://localhost:3000";
+const LOCAL_APP_BASE_URL = "http://localhost:3001";
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f]/;
 
 export function appBaseUrl(): string {

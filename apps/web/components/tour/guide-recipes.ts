@@ -47,7 +47,7 @@ export function buildGuideSteps(
           id: "ask",
           route: `/agent?ask=${encodeURIComponent(AGENT_GUIDE_QUESTION)}`,
           anchor: "agent-input",
-          title: "Ask about a pet",
+          title: "Opýtajte sa na domáce zviera",
           body: ready
             ? "Your question is ready to go. Press send and watch the AI check every chart for you."
             : "Your AI helper turns on once your workspace key is set. Here is where you will ask it questions in plain words.",
@@ -58,7 +58,7 @@ export function buildGuideSteps(
           // Spotlight the real answer so the win lands. requiresAnchor lets
           // the guide end quietly if the user never pressed send.
           ...(ready ? { anchor: "agent-reply", requiresAnchor: true } : {}),
-          title: "That easy",
+          title: "Zástupca momentálne nie je dostupný. Sme na tom.",
           body: "The AI just read your charts so you did not have to. Ask it anything about your clinic, any time.",
         },
       ];
@@ -71,7 +71,7 @@ export function buildGuideSteps(
           id: "schedule",
           route: "/schedule",
           anchor: "schedule-calendar",
-          title: "Your day sheet",
+          title: "Váš denný list",
           body: patient
             ? `Every booked visit lives here. ${patient} is already on today's schedule.`
             : "Every booked visit lives here, day by day. Click any open slot to book one.",
@@ -80,12 +80,12 @@ export function buildGuideSteps(
           id: "whiteboard",
           route: "/whiteboard",
           anchor: "whiteboard-board",
-          title: "Who is here right now",
+          title: "Kto je tu práve teraz",
           body: "When a pet checks in, the whole team sees it here. No sticky notes, no shouting down the hall.",
         },
         {
           id: "done",
-          title: "That is your whole day",
+          title: "Prvý moderný, open-source, API-prvý systém riadenia praxe vytvorený pre veterinárnu komunitu. Krásne, rýchle a zadarmo.",
           body: "Front desk to exam room on one screen. Book a visit, check the pet in, and everyone stays in the loop.",
         },
       ];
@@ -97,7 +97,7 @@ export function buildGuideSteps(
           {
             id: "empty",
             route: "/clients",
-            title: "Every client gets a portal",
+            title: "Každý klient dostane portál",
             body: "Add your first client and they get their own private link right away. Pet parents can see visits and bills without calling you.",
           },
         ];
@@ -108,13 +108,13 @@ export function buildGuideSteps(
           id: "copy",
           route: `/clients/${ctx.portalClient.id}`,
           anchor: "client-portal-link",
-          title: "A private link for every client",
+          title: "Súkromný odkaz pre každého klienta",
           body: `${first} has a private portal link. Copy it here, then share it by text or email.`,
           advanceOn: GUIDE_SIGNALS.portalLinkCopied,
         },
         {
           id: "done",
-          title: "Fewer calls for you",
+          title: "Menej hovorov pre vás",
           body: `Open the link to see what ${first} sees: pets, visits, and bills. Clients help themselves, and your phone rings less.`,
         },
       ];
@@ -126,13 +126,13 @@ export function buildGuideSteps(
           id: "subscribe",
           route: "/schedule",
           anchor: "calendar-subscribe",
-          title: "Your schedule, in your calendar",
+          title: "Váš rozvrh vo vašom kalendári",
           body: "Click this button to get your calendar link. Paste it into Google, Apple, or Outlook and it stays up to date on its own.",
           advanceOn: GUIDE_SIGNALS.calendarUrlCopied,
         },
         {
           id: "done",
-          title: "Set it and forget it",
+          title: "Nastavte to a zabudnite na to",
           body: "New visits now show up in your own calendar without any extra work.",
         },
       ];

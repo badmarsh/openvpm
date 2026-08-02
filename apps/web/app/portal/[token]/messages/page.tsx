@@ -23,7 +23,7 @@ export default function PortalMessagesPage() {
   const sendMessage = trpc.portal.createMessage.useMutation({
     onSuccess: () => {
       setContent("");
-      toast.success("Message sent");
+      toast.success("Správa odoslaná");
       utils.portal.getMessages.invalidate({ token });
     },
     onError: (err) => {
@@ -92,8 +92,8 @@ export default function PortalMessagesPage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load messages"
-          description="Please refresh this page or contact your clinic if the portal link has expired."
+          title="Nie je možné načítať správy"
+          description="Obnovte túto stránku alebo kontaktujte svoju kliniku, ak platnosť odkazu na portál vypršala."
         />
       </div>
     );
@@ -106,13 +106,15 @@ export default function PortalMessagesPage() {
         className="mb-6 inline-flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        Back to portal
+        
+        Späť na portál
       </Link>
 
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Správy</h1>
         <p className="mt-1 text-gray-500">
-          Send questions and follow-ups directly to your clinic.
+          
+          Pošlite otázky a pripomienky priamo na vašu kliniku.
         </p>
       </div>
 
@@ -122,8 +124,8 @@ export default function PortalMessagesPage() {
             <EmptyState
               className="border-0 py-10"
               icon={MessageSquare}
-              title="No portal messages yet"
-              description="Messages from your clinic and your replies will appear here."
+              title="Zatiaľ žiadne správy portálu"
+              description="Tu sa zobrazia správy z vašej kliniky a vaše odpovede."
             />
           ) : (
             messages.map((message) => {
@@ -177,7 +179,7 @@ export default function PortalMessagesPage() {
             onChange={(event) => setContent(event.target.value)}
             maxLength={COMMUNICATION_CONTENT_MAX_LENGTH}
             rows={3}
-            placeholder="Type your message..."
+            placeholder="Napíšte svoju správu..."
             className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
           />
           <div className="mt-3 flex items-center justify-between gap-3">

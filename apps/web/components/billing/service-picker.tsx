@@ -141,7 +141,7 @@ export function ServicePicker({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={onKeyDown}
-              placeholder="Type a service name..."
+              placeholder="Zadajte názov služby..."
               aria-label="Search services"
               className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
@@ -149,7 +149,8 @@ export function ServicePicker({
           <div ref={listRef} role="listbox" className="max-h-64 overflow-y-auto p-1">
             {results.length === 0 ? (
               <p className="px-3 py-6 text-center text-sm text-muted-foreground">
-                No services match &quot;{query}&quot;.
+                
+                Žiadne služby sa nezhodujú "{query}".
               </p>
             ) : (
               results.map((service, index) => (

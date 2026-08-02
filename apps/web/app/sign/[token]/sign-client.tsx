@@ -115,14 +115,15 @@ function SignaturePad({
         onPointerCancel={handleUp}
       />
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-xs text-gray-500">Sign above with your finger.</p>
+        <p className="text-xs text-gray-500">Podpíšte sa hore prstom.</p>
         <button
           type="button"
           onClick={handleClear}
           className="inline-flex items-center gap-1 text-xs font-medium text-teal-700"
         >
           <Eraser className="h-3.5 w-3.5" />
-          Clear
+          
+          Jasné
         </button>
       </div>
     </div>
@@ -148,7 +149,7 @@ export function SignClient({ token }: { token: string }) {
         if (!res.ok) {
           setState({
             kind: "error",
-            message: "Something went wrong. Please try again.",
+            message: "Niečo sa pokazilo. Skúste to znova.",
           });
           return;
         }
@@ -159,7 +160,7 @@ export function SignClient({ token }: { token: string }) {
         if (!cancelled) {
           setState({
             kind: "error",
-            message: "Something went wrong. Please try again.",
+            message: "Niečo sa pokazilo. Skúste to znova.",
           });
         }
       });
@@ -208,7 +209,7 @@ export function SignClient({ token }: { token: string }) {
     return (
       <div className="flex flex-col items-center gap-3 py-16 text-gray-500">
         <Loader2 className="h-6 w-6 animate-spin" />
-        <p className="text-sm">Loading the form…</p>
+        <p className="text-sm">Načítava sa formulár…</p>
       </div>
     );
   }
@@ -235,9 +236,10 @@ export function SignClient({ token }: { token: string }) {
     return (
       <div className="flex flex-col items-center gap-3 py-16 text-center">
         <CheckCircle2 className="h-10 w-10 text-teal-600" />
-        <h1 className="text-lg font-semibold text-gray-900">All signed</h1>
+        <h1 className="text-lg font-semibold text-gray-900">Všetky podpísané</h1>
         <p className="text-sm text-gray-600">
-          Thank you. The clinic has your signed form. You can close this page.
+          
+          Prehľad správcu skončil bez vrátenia údajov. Skúste to znova načítať.
         </p>
       </div>
     );
@@ -251,7 +253,7 @@ export function SignClient({ token }: { token: string }) {
       <div>
         <h1 className="text-lg font-semibold text-gray-900">{consent.title}</h1>
         <p className="mt-1 text-sm text-gray-500">
-          {consent.practiceName} · For {consent.patientName}
+          {consent.practiceName}  · Pre {consent.patientName}
         </p>
       </div>
 
@@ -264,7 +266,8 @@ export function SignClient({ token }: { token: string }) {
           htmlFor="signer-name"
           className="mb-1 block text-sm font-medium text-gray-700"
         >
-          Your full name
+          
+          Vaše celé meno
         </label>
         <input
           id="signer-name"
@@ -274,7 +277,7 @@ export function SignClient({ token }: { token: string }) {
           value={signerName}
           onChange={(e) => setSignerName(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
-          placeholder="First and last name"
+          placeholder="Meno a priezvisko"
         />
       </div>
 
@@ -296,7 +299,8 @@ export function SignClient({ token }: { token: string }) {
         {submitting ? (
           <span className="inline-flex items-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Signing…
+            
+            Podpisovanie…
           </span>
         ) : (
           "Agree and sign"
@@ -304,7 +308,8 @@ export function SignClient({ token }: { token: string }) {
       </button>
 
       <p className="text-center text-xs text-gray-400">
-        Signing here has the same effect as signing on paper.
+        
+        Podpis tu má rovnaký účinok ako podpis na papieri.
       </p>
     </div>
   );

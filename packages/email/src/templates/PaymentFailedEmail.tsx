@@ -24,32 +24,28 @@ export function PaymentFailedEmail({
   return (
     <EmailLayout
       brand={brand}
-      preview="Your OpenVPM payment didn't go through — update your billing"
+      preview="Vaša platba OpenVPM neprebehla — aktualizujte svoje fakturačné údaje"
     >
-      <Heading>Your payment didn&apos;t go through</Heading>
+      <Heading>Vaša platba neprebehla</Heading>
       <Paragraph>
-        Hi {practiceName}, we couldn&apos;t process your latest OpenVPM payment
-        of <strong>{amount}</strong>. This usually means a card expired or was
-        replaced — it&apos;s a quick fix.
+        Dobrý deň {practiceName}, nepodarilo sa nám spracovať vašu poslednú platbu OpenVPM vo výške <strong>{amount}</strong>. Obvykle to znamená, že platobná karta expirovala alebo bola vymenená — ide o rýchlu opravu.
       </Paragraph>
 
       <InfoCard tone="danger">
-        <Label>What happens next</Label>
+        <Label>Čo bude nasledovať</Label>
         <Paragraph>
           {nextRetryDate
-            ? `We'll automatically try again on ${nextRetryDate}. Update your card before then to avoid any interruption.`
-            : "Update your card to keep your workspace active and avoid any interruption."}
+            ? `Automaticky sa pokúsime znova ${nextRetryDate}. Aktualizujte kartu dovtedy, aby ste predišli prerušeniu.`
+            : "Aktualizujte svoju kartu, aby váš pracovný priestor zostal aktívny a predišli ste prerušeniu."}
         </Paragraph>
       </InfoCard>
 
       <Section style={{ margin: "8px 0" }}>
-        <Button href={billingUrl}>Update billing</Button>
+        <Button href={billingUrl}>Aktualizovať fakturáciu</Button>
       </Section>
 
       <Paragraph muted>
-        Your data is safe. If a payment ultimately doesn&apos;t clear, your
-        workspace becomes read-only — nothing is deleted, and reactivating takes
-        one click. Need a hand? Just reply to this email.
+        Vaše údaje sú v bezpečí. Ak sa platba nakoniec nespracuje, váš pracovný priestor sa prepne do režimu len na čítanie — nič sa nevymaže a opätovná aktivácia je na jedno kliknutie. Potrebujete pomoc? Stačí odpovedať na tento e-mail.
       </Paragraph>
     </EmailLayout>
   );

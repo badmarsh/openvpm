@@ -304,7 +304,7 @@ export default function InboxPage() {
 
   const createMutation = trpc.communications.create.useMutation({
     onSuccess: () => {
-      toast.success("Message sent");
+      toast.success("Správa odoslaná");
       utils.communications.listConversations.invalidate();
       if (selectedClientId) {
         utils.communications.getByClient.invalidate({
@@ -529,7 +529,7 @@ export default function InboxPage() {
       },
       {
         onSuccess: () => {
-          toast.success("Message linked to client");
+          toast.success("Správa prepojená s klientom");
           setSelectedUnmatched(null);
           setSelectedClientId(client.id);
           setSelectedClientName(clientName);
@@ -540,9 +540,9 @@ export default function InboxPage() {
   }
 
   const filterTabs: { key: FilterTab; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "unread", label: "Unread" },
-    { key: "sent", label: "Sent" },
+    { key: "all", label: "Všetky" },
+    { key: "unread", label: "Neprečítané" },
+    { key: "sent", label: "Odoslané" },
   ];
 
   return (
@@ -550,15 +550,17 @@ export default function InboxPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Inbox</h2>
+          <h2 className="font-heading text-xl font-semibold">Doručená pošta</h2>
           <p className="text-sm text-muted-foreground">
-            Client communications
+            
+            Komunikácia s klientom
           </p>
         </div>
         {canMutateInbox ? (
           <Button onClick={handleNewMessage} className="gap-2">
             <Plus className="h-4 w-4" />
-            New Message
+            
+            Nová správa
           </Button>
         ) : null}
       </div>
@@ -572,12 +574,14 @@ export default function InboxPage() {
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="font-heading text-base font-semibold text-destructive">
-                  Unable to check texting setup
+                  
+                  Nie je možné skontrolovať nastavenie odosielania správ
                 </h3>
-                <Badge variant="destructive">SMS status unavailable</Badge>
+                <Badge variant="destructive">Stav SMS je nedostupný</Badge>
               </div>
               <p className="mt-1 text-sm text-destructive/80">
-                Retry before staff send SMS conversations from the shared inbox.
+                
+                Skúste to znova, kým zamestnanci odošlú SMS konverzácie zo zdieľanej doručenej pošty.
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <Button
@@ -585,7 +589,8 @@ export default function InboxPage() {
                   variant="outline"
                   onClick={() => void refetchMessagingStatus()}
                 >
-                  Retry
+                  
+                  Skúsiť znova
                 </Button>
               </div>
             </div>
@@ -626,7 +631,8 @@ export default function InboxPage() {
                   </Button>
                 ) : (
                   <p className="text-xs font-medium text-muted-foreground">
-                    Ask an administrator to manage texting.
+                    
+                    Požiadajte správcu o správu textových správ.
                   </p>
                 )}
               </div>
@@ -684,13 +690,14 @@ export default function InboxPage() {
             ) : inboxListLoading ? (
               <div className="flex items-center justify-center gap-2 p-4 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Loading messages...
+                
+                Načítavam správy...
               </div>
             ) : conversationGroups.length === 0 ? (
               <EmptyState
                 className="border-0 bg-transparent p-8"
                 icon={InboxIcon}
-                title="No messages yet"
+                title="Zatiaľ žiadne správy"
               />
             ) : (
               conversationGroups.map((group) => {
@@ -763,7 +770,8 @@ export default function InboxPage() {
                         </p>
                         {group.kind === "unmatched" ? (
                           <p className="mt-1 text-[11px] font-medium text-amber-700">
-                            Needs client match
+                            
+                            Vyžaduje zoznam klientov
                           </p>
                         ) : group.latest.assignedTo ? (
                           <p className="mt-1 text-[11px] font-medium text-muted-foreground">
@@ -803,18 +811,19 @@ export default function InboxPage() {
               className="flex items-center gap-1.5 border-b border-border px-4 py-2 text-sm text-muted-foreground hover:text-foreground md:hidden"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to conversations
+              
+              Späť na konverzácie
             </button>
           )}
           {newMessageMode && canMutateInbox ? (
             /* New message - client search */
             <div className="flex-1 flex flex-col">
               <div className="p-4 border-b border-border">
-                <h3 className="font-medium text-sm mb-2">New Message</h3>
+                <h3 className="font-medium text-sm mb-2">Nová správa</h3>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search clients..."
+                    placeholder="Hľadať klientov..."
                     value={newClientSearch}
                     maxLength={CLIENT_SEARCH_MAX_LENGTH}
                     onChange={(e) => setNewClientSearch(e.target.value)}
@@ -831,7 +840,8 @@ export default function InboxPage() {
                 ) : searchLoading ? (
                   <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Searching clients...
+                    
+                    Hľadajú sa klienti...
                   </div>
                 ) : searchResults && searchResults.length > 0 ? (
                   searchResults.map((client) => (
@@ -857,13 +867,13 @@ export default function InboxPage() {
                   <EmptyState
                     className="border-0 bg-transparent py-8"
                     icon={Search}
-                    title="No clients found"
+                    title="Nenašli sa žiadni klienti"
                   />
                 ) : (
                   <EmptyState
                     className="border-0 bg-transparent py-8"
                     icon={Search}
-                    title="Type to search for a client"
+                    title="Napíšte a vyhľadajte klienta"
                   />
                 )}
               </div>
@@ -883,10 +893,12 @@ export default function InboxPage() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="truncate font-medium text-sm">
-                      Unmatched inbound message
+                      
+                      Nezodpovedaná prichádzajúca správa
                     </h3>
                     <Badge variant="secondary" className="mt-1">
-                      Needs client
+                      
+                      Potrebuje klienta
                     </Badge>
                   </div>
                 </div>
@@ -934,9 +946,10 @@ export default function InboxPage() {
               <div className="border-t border-border p-4 space-y-3">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <h4 className="text-sm font-medium">Link to client</h4>
+                    <h4 className="text-sm font-medium">Odkaz na klienta</h4>
                     <p className="text-xs text-muted-foreground">
-                      Search by name, email, or phone.
+                      
+                      Hľadajte podľa mena, e-mailu alebo telefónu.
                     </p>
                   </div>
                 </div>
@@ -946,7 +959,7 @@ export default function InboxPage() {
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Search clients..."
+                        placeholder="Hľadať klientov..."
                         value={linkClientSearch}
                         maxLength={CLIENT_SEARCH_MAX_LENGTH}
                         onChange={(e) => setLinkClientSearch(e.target.value)}
@@ -963,7 +976,8 @@ export default function InboxPage() {
                       ) : linkClientLoading ? (
                         <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          Searching clients...
+                          
+                          Hľadajú sa klienti...
                         </div>
                       ) : linkClientResults && linkClientResults.length > 0 ? (
                         linkClientResults.map((client) => (
@@ -988,20 +1002,21 @@ export default function InboxPage() {
                         <EmptyState
                           className="border-0 bg-transparent py-6"
                           icon={Search}
-                          title="No clients found"
+                          title="Nenašli sa žiadni klienti"
                         />
                       ) : (
                         <EmptyState
                           className="border-0 bg-transparent py-6"
                           icon={Search}
-                          title="Type to search for a client"
+                          title="Napíšte a vyhľadajte klienta"
                         />
                       )}
                     </div>
                   </>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Viewer access cannot link inbox messages.
+                    
+                    Divácky prístup nemôže prepojiť doručené správy.
                   </p>
                 )}
               </div>
@@ -1058,7 +1073,8 @@ export default function InboxPage() {
                 ) : timelineDisplayLoading ? (
                   <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Loading messages...
+                    
+                    Načítavam správy...
                   </div>
                 ) : timeline && timeline.length > 0 ? (
                   [...timeline].reverse().map((msg) => {
@@ -1145,7 +1161,7 @@ export default function InboxPage() {
                   <EmptyState
                     className="border-0 bg-transparent py-8"
                     icon={MessageSquare}
-                    title="No messages with this client yet"
+                    title="Zatiaľ žiadne správy s týmto klientom"
                   />
                 )}
               </div>
@@ -1162,12 +1178,12 @@ export default function InboxPage() {
                   >
                     <option value="sms">SMS</option>
                     <option value="email">Email</option>
-                    <option value="portal">Portal</option>
+                    <option value="portal">Portál</option>
                   </select>
 
                   {composeChannel === "email" && (
                     <Input
-                      placeholder="Subject"
+                      placeholder="Predmet"
                       value={composeSubject}
                       onChange={(e) => setComposeSubject(e.target.value)}
                       maxLength={COMMUNICATION_SUBJECT_MAX_LENGTH}
@@ -1179,7 +1195,7 @@ export default function InboxPage() {
 
                 <div className="flex gap-2">
                   <textarea
-                    placeholder="Type a message..."
+                    placeholder="Napíšte správu..."
                     value={composeContent}
                     onChange={(e) => setComposeContent(e.target.value)}
                     maxLength={composeContentMaxLength}
@@ -1194,24 +1210,28 @@ export default function InboxPage() {
                     className="self-end gap-1"
                   >
                     <Send className="h-3.5 w-3.5" />
-                    Send
+                    
+                    Odoslať
                   </Button>
                 </div>
                 {smsStatusUnavailable ? (
                   <p className="text-xs text-muted-foreground">
-                    Unable to check texting setup. Retry from the inbox banner
-                    before sending SMS.
+                    
+                    Nie je možné skontrolovať nastavenie odosielania správ. Skúste to znova z bannera doručenej pošty
+                    pred odoslaním SMS.
                   </p>
                 ) : composeChannel === "email" ? (
                   <p className="text-xs text-muted-foreground">
-                    Outbound email is logged here. Replies go to the practice
-                    email when configured, but inbound email replies are not
-                    imported into OpenVPM yet.
+                    
+                    Odchádzajúci e-mail sa zaznamenáva tu. Odpovede smerujú do praxe
+                    e-mail, keď je nakonfigurovaný, ale prichádzajúce e-mailové odpovede nie
+                    ešte importované do OpenVPM.
                   </p>
                 ) : composeChannel === "portal" ? (
                   <p className="text-xs text-muted-foreground">
-                    Portal messages are visible to the client in their portal
-                    message thread and replies return to this inbox.
+                    
+                    Správy portálu sú viditeľné pre klienta na jeho portáli
+                    vlákno správ a odpovede sa vrátia do tejto doručenej pošty.
                   </p>
                 ) : smsComposeBlocked && smsSummary ? (
                   <p className="text-xs text-muted-foreground">
@@ -1219,7 +1239,8 @@ export default function InboxPage() {
                   </p>
                 ) : smsComposeBlocked ? (
                   <p className="text-xs text-muted-foreground">
-                    Checking texting setup before SMS can be sent.
+                    
+                    Kontrola nastavenia textových správ pred odoslaním SMS.
                   </p>
                 ) : null}
               </div>
@@ -1230,8 +1251,8 @@ export default function InboxPage() {
               <EmptyState
                 className="border-0 bg-transparent"
                 icon={MessageSquare}
-                title="Select a conversation"
-                description="Pick a conversation from the list to read and reply."
+                title="Vyberte konverzáciu"
+                description="Vyberte konverzáciu zo zoznamu, ktorú chcete prečítať a odpovedať."
               />
             </div>
           ) : (
@@ -1240,7 +1261,7 @@ export default function InboxPage() {
               <EmptyState
                 className="border-0 bg-transparent"
                 icon={InboxIcon}
-                title="No messages yet"
+                title="Zatiaľ žiadne správy"
                 description={
                   canMutateInbox
                     ? "Send your first message to a client."
@@ -1249,7 +1270,7 @@ export default function InboxPage() {
                 action={
                   canMutateInbox
                     ? {
-                        label: "New message",
+                        label: "Nová správa",
                         onClick: handleNewMessage,
                         icon: Plus,
                       }

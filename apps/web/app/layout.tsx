@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, DM_Sans } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "@/lib/providers";
 import "@/styles/globals.css";
 
@@ -14,21 +16,24 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OpenVPM: Open-Source Veterinary Practice Management",
+  title: "OpenVPM: Riadenie veterinárnej praxe s otvoreným zdrojom",
   description:
-    "The first modern, open-source, API-first practice management system built for the veterinary community. Beautiful, fast, and free.",
+    "Požiadavka na prehľad bola dokončená bez vrátenia údajov. Skúste to znova načítať.",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${inter.variable} ${dmSans.variable} font-sans antialiased`}
       >
@@ -36,9 +41,12 @@ export default function RootLayout({
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
         >
-          Skip to main content
+          
+          Preskočiť na hlavný obsah
         </a>
-        <Providers>{children}</Providers>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

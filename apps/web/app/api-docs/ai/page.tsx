@@ -7,49 +7,54 @@ export default function AIIntegrationDocs() {
         {/* Header */}
         <div className="mb-12">
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-teal-600">
-            Developer Documentation
+            
+            Dokumentácia pre vývojárov
           </p>
           <h1 className="mb-4 text-4xl font-bold text-gray-900">
-            AI Integration Guide
+            
+            Sprievodca integráciou AI
           </h1>
           <p className="text-lg text-gray-600">
-            Connect AI tools to OpenVPM for automated clinical workflows,
-            intelligent queries, and real-time event processing.
+            
+            Pripojte nástroje AI k OpenVPM pre automatizované klinické pracovné postupy,
+            inteligentné dotazy a spracovanie udalostí v reálnom čase.
           </p>
         </div>
 
         {/* Overview */}
-        <Section id="overview" title="Overview">
+        <Section id="overview" title="Prehľad">
           <p className="mb-4 text-gray-700">
-            OpenVPM is designed to be <strong>AI-first</strong>. Every clinical
-            action &mdash; creating SOAP notes, querying patient records,
-            tracking vaccinations &mdash; is available via a structured API. This
-            means AI scribes, voice agents, and dashboard assistants can
-            integrate directly with your practice management system.
+            
+            OpenVPM je navrhnutý tak, aby bol <strong>AI-prvá</strong>. Každý klinický
+            akcia — vytváranie poznámok SOAP, dotazovanie záznamov pacientov,
+            sledovanie očkovania – je dostupné prostredníctvom štruktúrovaného API. Toto
+            znamená, že môžu zapisovatelia AI, hlasoví agenti a asistenti palubnej dosky
+            integrovať priamo do vášho systému riadenia praxe.
           </p>
           <p className="text-gray-700">
-            Dashboard workflows use <strong>tRPC</strong> over HTTP with the
-            signed-in user&apos;s session. External integrations can use API keys
-            for <strong>/api/v1</strong> endpoints, including the agent endpoint
-            with the <strong>agent:run</strong> scope. Write-enabled agent runs
-            also require <strong>agent:write</strong> plus each write
-            tool&apos;s underlying resource scope. All requests are scoped to the
-            authenticated practice; clinical record writes such as SOAP note
-            creation require <strong>records:write</strong>.
+            
+            Pracovné postupy palubnej dosky používajú <strong>tRPC</strong>  cez HTTP s
+            relácia prihláseného používateľa. Externé integrácie môžu používať kľúče API
+            pre <strong>/api/v1</strong>  koncové body vrátane koncového bodu agenta
+            s <strong>agent:run</strong>  rozsah. Agent s povoleným zápisom beží
+            tiež vyžadujú <strong>agent:napíš</strong>  plus každý písať
+            rozsah základného zdroja nástroja. Všetky žiadosti sa vzťahujú na
+            overená prax; zapisuje klinický záznam, napríklad poznámku SOAP
+            vytvorenie vyžaduje <strong>záznamy:písať</strong>.
           </p>
         </Section>
 
         {/* API Key Agent Endpoint */}
-        <Section id="api-key-agent" title="API Key Agent Endpoint">
+        <Section id="api-key-agent" title="Koncový bod kľúčového agenta API">
           <p className="mb-4 text-gray-700">
-            For server-to-server automations, create an API key in Settings with
-            the <strong>agent:run</strong> scope and call the REST agent
-            endpoint. Use <code>allow_writes: false</code> for read-only
-            summaries. To set <code>allow_writes: true</code>, grant
-            <strong>agent:write</strong> as well as the resource scopes the
-            trusted workflow may mutate, such as
-            <strong>appointments:write</strong> or
-            <strong>records:write</strong>.
+            
+            Pre automatizáciu server-to-server vytvorte kľúč API v Nastaveniach s <strong>agent:run</strong>  rozsah a zavolajte agenta REST
+            koncový bod. Použiť <code>allow_writes: false</code>  len na čítanie
+            súhrny. Na nastavenie <code>allow_writes: true</code>, udeliť
+            <strong>agent:napíš</strong>  ako aj rozsah zdrojov
+            dôveryhodný pracovný tok môže mutovať, ako napríklad
+            <strong>termíny:napíšte</strong>  alebo
+            <strong>záznamy:písať</strong>.
           </p>
 
           <CodeBlock>
@@ -64,18 +69,20 @@ export default function AIIntegrationDocs() {
         </Section>
 
         {/* SOAP Note Integration */}
-        <Section id="soap-notes" title="SOAP Note Integration">
+        <Section id="soap-notes" title="Integrácia SOAP Note">
           <p className="mb-4 text-gray-700">
-            Connect an AI scribe &mdash; such as{" "}
-            <strong>Scribenote</strong>, <strong>VetRec</strong>, or{" "}
-            <strong>HappyDoc</strong> &mdash; to automatically populate SOAP
-            notes after each appointment. The AI listens to the consultation,
-            generates structured clinical notes, and posts them directly to
+            
+            Pripojte zapisovateľa AI – napríklad{" "}
+            <strong>Scribenote</strong>, <strong>VetRec</strong>alebo{" "}
+            <strong>HappyDoc</strong>  — na automatické vyplnenie SOAP
+            poznámky po každom stretnutí. AI počúva konzultácie,
+            generuje štruktúrované klinické poznámky a posiela ich priamo do
             OpenVPM.
           </p>
 
           <h3 className="mb-2 mt-6 text-sm font-semibold uppercase tracking-wider text-gray-500">
-            Endpoint
+            
+            Koncový bod
           </h3>
           <CodeBlock>
             {`POST /api/v1/soap-notes
@@ -85,7 +92,8 @@ Content-Type: application/json`}
           </CodeBlock>
 
           <h3 className="mb-2 mt-6 text-sm font-semibold uppercase tracking-wider text-gray-500">
-            Input Schema
+            
+            Vstupná schéma
           </h3>
           <CodeBlock>
             {`{
@@ -100,13 +108,15 @@ Content-Type: application/json`}
 }`}
           </CodeBlock>
           <p className="mt-3 text-sm text-gray-500">
-            Create the key with the <strong>records:write</strong> scope.
-            OpenVPM validates the patient, optional appointment, and author
-            against the authenticated practice before inserting the note.
+            
+            Vytvorte kľúč pomocou <strong>záznamy:písať</strong>  rozsah.
+            OpenVPM overí pacienta, voliteľné stretnutie a autora
+            proti overenej praxi pred vložením poznámky.
           </p>
 
           <h3 className="mb-2 mt-6 text-sm font-semibold uppercase tracking-wider text-gray-500">
-            Example (cURL)
+            
+            Príklad (cURL)
           </h3>
           <CodeBlock>
             {`curl -X POST https://your-practice.openvpm.com/api/v1/soap-notes \\
@@ -125,18 +135,18 @@ Content-Type: application/json`}
         </Section>
 
         {/* Dashboard Query Helpers */}
-        <Section id="dashboard-query-helpers" title="Dashboard Query Helpers">
+        <Section id="dashboard-query-helpers" title="Pomocníci dotazov na informačnom paneli">
           <p className="mb-6 text-gray-700">
-            Signed-in dashboard experiences can use these tRPC procedures for
-            actionable clinical insights. They require a session cookie and are
-            not API-key REST endpoints; server-to-server integrations should use
-            the <strong>/api/v1</strong> REST surface and signed webhooks.
+            
+            Tieto postupy tRPC môžu používať prihlásení dashboardy
+            použiteľné klinické poznatky. Vyžadujú súbor cookie relácie a sú
+            nie koncové body REST s kľúčom API; by sa mali používať integrácie server-to-server <strong>/api/v1</strong>  Povrch REST a podpísané webhooky.
           </p>
 
           <QueryCard
             name="Overdue Vaccinations"
             endpoint="tRPC: ai.patientsOverdueVaccinations (session cookie)"
-            description="Returns patients whose vaccinations are past due. Useful for automated reminder campaigns or AI-powered outreach."
+            description="Vráti pacientov, ktorých očkovanie je po termíne. Užitočné pre kampane s automatickými pripomienkami alebo pre dosah AI."
             response={`[
   {
     "patientId": "uuid",
@@ -153,7 +163,7 @@ Content-Type: application/json`}
           <QueryCard
             name="Patients Needing Follow-Up"
             endpoint="tRPC: ai.patientsNeedingFollowUp (session cookie)"
-            description="Identifies patients seen in the last 7 days (checked out) who do not have a future appointment scheduled. Ideal for proactive care workflows."
+            description="Identifikuje pacientov navštívených za posledných 7 dní (odhlásení), ktorí nemajú naplánované budúce stretnutie. Ideálne pre pracovné postupy proaktívnej starostlivosti."
             response={`[
   {
     "appointmentId": "uuid",
@@ -169,7 +179,7 @@ Content-Type: application/json`}
           <QueryCard
             name="Daily Practice Summary"
             endpoint="tRPC: ai.dailySummary (session cookie)"
-            description="Returns an aggregate view of today's practice activity. Perfect for AI dashboard widgets, morning briefings, or end-of-day reports."
+            description="Vráti súhrnný pohľad na dnešnú cvičnú aktivitu. Ideálne pre miniaplikácie dashboardu AI, ranné brífingy alebo správy na konci dňa."
             response={`{
   "date": "2026-03-17",
   "appointments": {
@@ -191,16 +201,18 @@ Content-Type: application/json`}
         </Section>
 
         {/* Webhook Events */}
-        <Section id="webhooks" title="Webhook Events">
+        <Section id="webhooks" title="Webhook Udalosti">
           <p className="mb-4 text-gray-700">
-            Subscribe to real-time events for reactive AI workflows. When
-            something happens in OpenVPM, your AI system gets notified
-            instantly.
+            
+            Prihláste sa na odber udalostí v reálnom čase pre reaktívne pracovné postupy AI. Kedy
+            niečo sa stane v OpenVPM, váš systém AI dostane upozornenie
+            okamžite.
           </p>
 
           <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500">
-              Available Events
+              
+              Dostupné akcie
             </h3>
             <div className="space-y-3">
               {WEBHOOK_EVENT_DEFINITIONS.map((definition) => (
@@ -229,17 +241,18 @@ Content-Type: application/json`}
           </CodeBlock>
 
           <p className="mt-4 text-sm text-gray-500">
-            Admins can create webhook subscriptions in Settings or through the
-            <code>webhooks.create</code> API. The signing secret is returned once
-            at creation time.
+            
+            Správcovia môžu vytvárať odbery webhooku v Nastaveniach alebo cez
+            <code>webhooks.create</code>  API. Podpisové tajomstvo sa raz vráti
+            v čase stvorenia.
           </p>
         </Section>
 
         {/* Footer */}
         <div className="mt-16 border-t border-gray-200 pt-8 text-center text-sm text-gray-500">
           <p>
-            OpenVPM AI Integration API &mdash; Built for the next generation of
-            veterinary care.
+            
+            Cloud OpenVPM
           </p>
         </div>
       </div>
@@ -293,7 +306,8 @@ function QueryCard({
       <code className="mb-3 block text-sm text-teal-600">{endpoint}</code>
       <p className="mb-4 text-sm text-gray-600">{description}</p>
       <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
-        Response
+        
+        Odpoveď
       </p>
       <CodeBlock>{response}</CodeBlock>
     </div>

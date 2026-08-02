@@ -3,10 +3,7 @@
     "slug": "dashboard",
     "route": "/",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -14,10 +11,7 @@
     "slug": "patients",
     "route": "/patients",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -25,10 +19,7 @@
     "slug": "clients",
     "route": "/clients",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -37,8 +28,7 @@
     "route": "/schedule",
     "status": 200,
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "Failed to fetch RSC payload for http://localhost:3001/clients. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_re"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -48,8 +38,7 @@
     "route": "/records",
     "status": 200,
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "Failed to fetch RSC payload for http://localhost:3001/schedule. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_r"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -58,20 +47,27 @@
     "slug": "billing",
     "route": "/billing",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "inventory",
     "route": "/inventory",
-    "status": 200,
+    "status": 500,
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "Loading plugin data from 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJzdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg==' violates the following Content Security Policy",
+      "Loading plugin data from 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJzdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg==' violates the following Content Security Policy",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Failed to fetch RSC payload for http://localhost:3001/billing. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_re",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -79,23 +75,32 @@
   {
     "slug": "inbox",
     "route": "/inbox",
-    "status": 200,
+    "status": "nav-failed",
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "navigation error: page.goto: net::ERR_ABORTED at http://localhost:3001/inbox\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/inbox\", waiting until \"networkidle\"\u001b[22m\n",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
     ],
-    "emptyHits": [
-      "No messages"
-    ],
+    "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "whiteboard",
     "route": "/whiteboard",
-    "status": 200,
+    "status": "nav-failed",
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -103,10 +108,13 @@
   {
     "slug": "controlled-substances",
     "route": "/controlled-substances",
-    "status": 200,
+    "status": "nav-failed",
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "navigation error: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/controlled-substances\", waiting until \"networkidle\"\u001b[22m\n",
+      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -114,10 +122,9 @@
   {
     "slug": "reports",
     "route": "/reports",
-    "status": 200,
+    "status": "nav-failed",
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "navigation error: page.goto: net::ERR_ABORTED at http://localhost:3001/reports\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/reports\", waiting until \"networkidle\"\u001b[22m\n"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -127,8 +134,7 @@
     "route": "/settings",
     "status": 200,
     "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+      "[next-auth][error][CLIENT_FETCH_ERROR] \nhttps://next-auth.js.org/errors#client_fetch_error Failed to fetch {error: Object, url: /api/auth/session, message: Failed to fetch}"
     ],
     "emptyHits": [],
     "horizontalOverflow": false
@@ -137,10 +143,7 @@
     "slug": "agent",
     "route": "/agent",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -148,10 +151,7 @@
     "slug": "welcome-vignette",
     "route": "/?guides=1&welcomeVariant=vignette",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -159,10 +159,7 @@
     "slug": "welcome-imagery",
     "route": "/?guides=1&welcomeVariant=imagery",
     "status": 200,
-    "consoleErrors": [
-      "Loading the script 'https://vercel.live/_next-live/feedback/feedback.js' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action ",
-      "Refused to execute script from 'https://beta.openvpm.com/5691167a7e0cfa40/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -178,7 +175,10 @@
     "slug": "client-detail",
     "route": "/clients/[id]",
     "status": 200,
-    "consoleErrors": [],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ],
     "emptyHits": [],
     "horizontalOverflow": false
   }

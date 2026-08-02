@@ -119,11 +119,13 @@ export function CaptureClient({ token }: { token: string }) {
     <div className="space-y-4">
       <div className="text-center">
         <h1 className="text-lg font-semibold text-gray-900">
-          Add photos to the visit record
+          
+          Pridať fotografie do záznamu návštev
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Take a photo or pick one from your phone. It goes straight to the
-          clinic.
+          
+          Urobte fotku alebo si ju vyberte z telefónu. Ide priamo do
+          klinika.
         </p>
       </div>
 
@@ -202,12 +204,13 @@ export function CaptureClient({ token }: { token: string }) {
         <div className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
           <div>
-            <p className="text-sm font-medium text-emerald-800">All set.</p>
+            <p className="text-sm font-medium text-emerald-800">Všetko nastavené.</p>
             <p className="text-sm text-emerald-700">
               {doneCount === 1
                 ? "Your photo was added to the visit record."
                 : `Your ${doneCount} photos were added to the visit record.`}{" "}
-              You can close this page or add more.
+              
+              Túto stránku môžete zavrieť alebo pridať ďalšie.
             </p>
           </div>
         </div>

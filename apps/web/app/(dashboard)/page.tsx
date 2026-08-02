@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { formatCurrency } from "@/lib/locale/format";
 import { formatDateInputForTimeZone } from "@/lib/date-input";
+import { useTranslations } from "next-intl";
 
 function DashboardChartsChunkLoading() {
   return (
@@ -85,32 +86,32 @@ function addDateInputDays(dateInput: string, days: number): string {
   )}-${String(date.getUTCDate()).padStart(2, "0")}`;
 }
 
-const kpiConfig = [
+const kpiConfigKeys = [
   {
     key: "todayAppointments" as const,
-    label: "Today's Appointments",
-    description: "Scheduled for today",
+    labelKey: "dashboard.kpi.todayAppointments.label",
+    descKey: "dashboard.kpi.todayAppointments.description",
     icon: Calendar,
     isCurrency: false,
   },
   {
     key: "patientsSeen" as const,
-    label: "Patients Seen Today",
-    description: "Checked out today",
+    labelKey: "dashboard.kpi.patientsSeen.label",
+    descKey: "dashboard.kpi.patientsSeen.description",
     icon: PawPrint,
     isCurrency: false,
   },
   {
     key: "revenueMtd" as const,
-    label: "Revenue (MTD)",
-    description: "Paid invoices this month",
+    labelKey: "dashboard.kpi.revenueMtd.label",
+    descKey: "dashboard.kpi.revenueMtd.description",
     icon: DollarSign,
     isCurrency: true,
   },
   {
     key: "pendingInvoices" as const,
-    label: "Pending Invoices",
-    description: "Sent or overdue",
+    labelKey: "dashboard.kpi.pendingInvoices.label",
+    descKey: "dashboard.kpi.pendingInvoices.description",
     icon: FileText,
     isCurrency: false,
   },
@@ -151,6 +152,7 @@ function AppointmentRowSkeleton() {
 }
 
 export default function DashboardPage() {
+  const t = useTranslations();
   const router = useRouter();
   const stats = trpc.dashboard.getStats.useQuery();
   const charts = trpc.dashboard.getCharts.useQuery();
@@ -230,8 +232,6 @@ export default function DashboardPage() {
     )
     .slice(0, 5);
 
-  // A brand-new practice has no real activity yet. Hide the charts until there
-  // is something to show so the page feels calm instead of abandoned.
   const chartData =
     chartsError || isChartsLoading || chartsDisplayMissing
       ? null
@@ -251,8 +251,8 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       {statsError || statsDisplayMissing ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          Unable to load dashboard metrics.
-          {statsError ? ` ${statsError.message}` : " Please retry."}
+          {t("dashboard.stats.error")}
+          {statsError ? ` ${statsError.message}` : ""}
         </div>
       ) : isStatsLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -262,7 +262,7 @@ export default function DashboardPage() {
         </div>
       ) : dashboardStats ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {kpiConfig.map((kpi) => {
+          {kpiConfigKeys.map((kpi) => {
             const Icon = kpi.icon;
             const value = dashboardStats[kpi.key] ?? 0;
             return (
@@ -276,7 +276,7 @@ export default function DashboardPage() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">
-                      {kpi.label}
+                      {t(kpi.labelKey)}
                     </p>
                     <p className="font-heading text-2xl font-bold">
                       {kpi.isCurrency ? fmtMoney(value) : String(value)}
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  {kpi.description}
+                  {t(kpi.descKey)}
                 </p>
               </div>
             );
@@ -296,14 +296,14 @@ export default function DashboardPage() {
       <div className="rounded-lg border border-border bg-card">
         <div className="border-b border-border px-6 py-4">
           <h2 className="font-heading text-lg font-semibold">
-            Upcoming Appointments
+            {t("dashboard.upcoming.title")}
           </h2>
         </div>
         <div className="space-y-2 p-4">
           {upcomingError || isUpcomingMissing ? (
             <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-              Unable to load upcoming appointments.
-              {upcomingError ? ` ${upcomingError.message}` : " Please retry."}
+              {t("dashboard.upcoming.error")}
+              {upcomingError ? ` ${upcomingError.message}` : ""}
             </div>
           ) : isUpcomingLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
@@ -313,10 +313,10 @@ export default function DashboardPage() {
             <EmptyState
               className="border-0 bg-transparent py-8"
               icon={Calendar}
-              title="No visits booked yet"
-              description="Book your first visit and it shows up here."
+              title={t("dashboard.upcoming.empty.title")}
+              description={t("dashboard.upcoming.empty.description")}
               action={{
-                label: "Book your first visit",
+                label: t("dashboard.upcoming.empty.action"),
                 onClick: () => router.push("/schedule"),
                 icon: CalendarPlus,
               }}
@@ -370,8 +370,8 @@ export default function DashboardPage() {
       {/* Charts */}
       {chartsError || chartsDisplayMissing ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
-          Unable to load dashboard charts.
-          {chartsError ? ` ${chartsError.message}` : " Please retry."}
+          {t("dashboard.charts.error")}
+          {chartsError ? ` ${chartsError.message}` : ""}
         </div>
       ) : isChartsLoading ? (
         <>
@@ -387,8 +387,8 @@ export default function DashboardPage() {
       ) : chartData && !hasChartData ? (
         <EmptyState
           icon={TrendingUp}
-          title="Your charts show up once you start"
-          description="As you book visits and send bills, your trends and totals fill in here."
+          title={t("dashboard.charts.empty.title")}
+          description={t("dashboard.charts.empty.description")}
         />
       ) : chartData ? (
         <DashboardCharts

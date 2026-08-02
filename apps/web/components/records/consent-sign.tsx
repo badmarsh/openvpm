@@ -101,7 +101,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
     <>
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
         <FileSignature className="mr-2 h-4 w-4" />
-        Get signature
+        
+        Získať podpis
       </Button>
 
       {open && (
@@ -116,7 +117,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-heading text-base font-semibold">
-                    Get signature
+                    
+                    Získať podpis
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {request
@@ -141,12 +143,14 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                       htmlFor="consent-form"
                       className="mb-1 block text-sm font-medium"
                     >
-                      Form
+                      
+                      Formulár
                     </label>
                     {forms.isLoading || !forms.data ? (
                       <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-sm text-muted-foreground">
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        Loading forms...
+                        
+                        Načítavajú sa formuláre...
                       </div>
                     ) : (
                       <select
@@ -163,8 +167,9 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                       </select>
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Starter templates. Have your attorney look them over,
-                      and fill in any blanks before you send.
+                      
+                      Štartovacie šablóny. Nechajte svojho právneho zástupcu, aby si ich prezrel,
+                      a pred odoslaním vyplňte všetky prázdne miesta.
                     </p>
                   </div>
                   <div>
@@ -172,7 +177,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                       htmlFor="consent-title"
                       className="mb-1 block text-sm font-medium"
                     >
-                      Title
+                      
+                      Názov
                     </label>
                     <input
                       id="consent-title"
@@ -188,7 +194,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                       htmlFor="consent-body"
                       className="mb-1 block text-sm font-medium"
                     >
-                      Consent text
+                      
+                      Text súhlasu
                     </label>
                     <textarea
                       id="consent-body"
@@ -222,7 +229,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                       ) : (
                         <FileSignature className="mr-2 h-4 w-4" />
                       )}
-                      Make the code
+                      
+                      Uveďte kód
                     </Button>
                   </div>
                   {createRequest.isError && (
@@ -241,7 +249,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                         }
                       >
                         <RefreshCw className="mr-2 h-4 w-4" />
-                        Try again
+                        
+                        Skúste to znova
                       </Button>
                     </div>
                   )}
@@ -252,7 +261,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                     <div className="flex w-full flex-col items-center gap-3 rounded-lg border border-border bg-muted/30 p-6 text-center">
                       <CheckCircle2 className="h-10 w-10 text-primary" />
                       <p className="text-sm font-medium">
-                        Signed by {activeConsent?.signerName}
+                        
+                        Podpísané {activeConsent?.signerName}
                       </p>
                       {activeConsent?.fileUrl && (
                         <a
@@ -261,11 +271,14 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                           rel="noreferrer"
                           className="text-sm font-medium text-primary underline underline-offset-4"
                         >
-                          Open the signed PDF
+                          
+                          OpenVPM AI Integration API – vytvorené pre novú generáciu
+            veterinárna starostlivosť.
                         </a>
                       )}
                       <p className="text-xs text-muted-foreground">
-                        Saved on this patient under Documents.
+                        
+                        Uložené u tohto pacienta v časti Dokumenty.
                       </p>
                     </div>
                   ) : (
@@ -274,7 +287,7 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={qrDataUrl}
-                          alt="QR code for the consent signing link"
+                          alt="QR kód odkazu na podpis súhlasu"
                           className="h-60 w-60 rounded-lg border border-border bg-white p-2"
                         />
                       ) : (
@@ -286,7 +299,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
                         {request.url}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Waiting for a signature…
+                        
+                        Čaká sa na podpis…
                       </p>
                     </>
                   )}
@@ -295,7 +309,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
 
               <div className="mt-5 flex justify-end">
                 <Button variant="outline" size="sm" onClick={handleClose}>
-                  Done
+                  
+                  Hotovo
                 </Button>
               </div>
             </div>

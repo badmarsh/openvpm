@@ -7,12 +7,12 @@ import fs from "fs";
  * with a per-route report (HTTP status, console errors, empty-state signals).
  *
  * Run against a locally seeded instance:
- *   BASELINE_URL=http://localhost:3000 \
+ *   BASELINE_URL=http://localhost:3001 \
  *   BASELINE_PORTAL_TOKEN=<clients.access_token from the demo practice> \
  *   pnpm playwright test e2e/baseline-screenshots.spec.ts
  */
 
-const BASE = process.env.BASELINE_URL ?? "http://localhost:3000";
+const BASE = process.env.BASELINE_URL ?? "http://localhost:3001";
 const OUT = path.resolve(__dirname, "../docs/screenshots/baseline");
 const PORTAL_TOKEN = process.env.BASELINE_PORTAL_TOKEN;
 const ADMIN_EMAIL =

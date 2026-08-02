@@ -109,6 +109,8 @@ import {
   isSupportedPracticeTimezone,
 } from "@/lib/settings-policy";
 
+import { useTranslations, useLocale } from "next-intl";
+
 // ── Types ───────────────────────────────────────────────────
 type Tab =
   | "practice"
@@ -122,17 +124,17 @@ type Tab =
   | "messaging"
   | "billing";
 
-const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "practice", label: "Practice Info", icon: Settings },
-  { id: "locations", label: "Locations", icon: MapPin },
-  { id: "staff", label: "Staff", icon: Users },
-  { id: "appointmentTypes", label: "Appointment Types", icon: Calendar },
-  { id: "rooms", label: "Rooms", icon: DoorOpen },
-  { id: "data", label: "Data", icon: Database },
-  { id: "templates", label: "Templates", icon: Layers },
-  { id: "wellness", label: "Wellness Plans", icon: HeartPulse },
-  { id: "messaging", label: "Messaging", icon: MessageSquare },
-  { id: "billing", label: "Plan & Billing", icon: CreditCard },
+const TAB_CONFIG: { id: Tab; key: string; icon: React.ElementType }[] = [
+  { id: "practice", key: "settings.tabs.practiceInfo", icon: Settings },
+  { id: "locations", key: "settings.tabs.locations", icon: MapPin },
+  { id: "staff", key: "settings.tabs.staff", icon: Users },
+  { id: "appointmentTypes", key: "settings.tabs.appointmentTypes", icon: Calendar },
+  { id: "rooms", key: "settings.tabs.rooms", icon: DoorOpen },
+  { id: "data", key: "settings.tabs.data", icon: Database },
+  { id: "templates", key: "settings.tabs.templates", icon: Layers },
+  { id: "wellness", key: "settings.tabs.wellnessPlans", icon: HeartPulse },
+  { id: "messaging", key: "settings.tabs.messaging", icon: MessageSquare },
+  { id: "billing", key: "settings.tabs.planBilling", icon: CreditCard },
 ];
 
 const TIMEZONES = [
@@ -300,19 +302,20 @@ export default function SettingsPage() {
 }
 
 function SettingsPageInner() {
+  const t = useTranslations();
   const { data: session, status } = useSession();
   const { openWelcome } = useWelcome();
   const searchParams = useSearchParams();
   const initialTab = (searchParams.get("tab") as Tab) || "practice";
   const [activeTab, setActiveTab] = useState<Tab>(
-    tabs.some((t) => t.id === initialTab) ? initialTab : "practice",
+    TAB_CONFIG.some((t) => t.id === initialTab) ? initialTab : "practice",
   );
 
   if (status === "loading") {
     return (
       <div className="flex items-center justify-center gap-2 py-24 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Checking settings access...
+        {t("common.loading", "Loading...")}
       </div>
     );
   }
@@ -333,9 +336,9 @@ function SettingsPageInner() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-xl font-semibold">Settings</h2>
+          <h2 className="font-heading text-xl font-semibold">{t("settings.title")}</h2>
           <p className="text-sm text-muted-foreground">
-            Practice configuration and staff management
+            {t("settings.subtitle")}
           </p>
         </div>
         <Button
@@ -345,7 +348,7 @@ function SettingsPageInner() {
           onClick={openWelcome}
         >
           <Compass className="mr-2 h-4 w-4" />
-          Guides
+          {t("chrome.guides")}
         </Button>
       </div>
 
@@ -353,7 +356,7 @@ function SettingsPageInner() {
         {/* Section nav: horizontal scroll on small screens, vertical on lg+ */}
         <nav className="lg:w-56 lg:shrink-0" aria-label="Settings sections">
           <div className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
-            {tabs.map((tab) => {
+            {TAB_CONFIG.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
@@ -367,7 +370,7 @@ function SettingsPageInner() {
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
-                  {tab.label}
+                  {t(tab.key)}
                 </button>
               );
             })}
@@ -394,6 +397,7 @@ function SettingsPageInner() {
 
 // ── Practice Info ───────────────────────────────────────────
 function PracticeInfoTab() {
+  const t = useTranslations();
   const utils = trpc.useUtils();
   const {
     data: practice,
@@ -485,7 +489,7 @@ function PracticeInfoTab() {
       <EmptyState
         icon={Settings}
         title="Practice settings unavailable"
-        description="The practice profile could not be found for this account."
+        description="Select a valid schedule to manage settings."
       />
     );
   }
@@ -532,14 +536,14 @@ function PracticeInfoTab() {
         {/* ── Practice details ── */}
         <div className="space-y-6 rounded-lg border border-border bg-card p-6">
           <div className="space-y-1">
-            <h3 className="text-sm font-semibold">Practice details</h3>
+            <h3 className="text-sm font-semibold">{t("settings.practiceDetails.title")}</h3>
             <p className="text-xs text-muted-foreground">
-              Your practice name, contact info, and timezone.
+              {t("settings.practiceDetails.description")}
             </p>
           </div>
           <div className="grid gap-4">
             <label className="space-y-1.5">
-              <span className="text-sm font-medium">Practice Name</span>
+              <span className="text-sm font-medium">{t("settings.practiceDetails.name")}</span>
               <Input
                 maxLength={PRACTICE_NAME_MAX_LENGTH}
                 value={current.name}
@@ -547,7 +551,7 @@ function PracticeInfoTab() {
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-sm font-medium">Address</span>
+              <span className="text-sm font-medium">{t("settings.practiceDetails.address")}</span>
               <Input
                 maxLength={SETTINGS_ADDRESS_MAX_LENGTH}
                 value={current.address}
@@ -556,7 +560,7 @@ function PracticeInfoTab() {
             </label>
             <div className="grid grid-cols-2 gap-4">
               <label className="space-y-1.5">
-                <span className="text-sm font-medium">Phone</span>
+                <span className="text-sm font-medium">{t("settings.practiceDetails.phone")}</span>
                 <Input
                   maxLength={SETTINGS_PHONE_MAX_LENGTH}
                   value={current.phone}
@@ -564,7 +568,7 @@ function PracticeInfoTab() {
                 />
               </label>
               <label className="space-y-1.5">
-                <span className="text-sm font-medium">Email</span>
+                <span className="text-sm font-medium">{t("settings.practiceDetails.email")}</span>
                 <Input
                   type="email"
                   maxLength={SETTINGS_EMAIL_MAX_LENGTH}
@@ -574,7 +578,7 @@ function PracticeInfoTab() {
               </label>
             </div>
             <label className="space-y-1.5">
-              <span className="text-sm font-medium">Website</span>
+              <span className="text-sm font-medium">{t("settings.practiceDetails.website")}</span>
               <Input
                 maxLength={SETTINGS_WEBSITE_MAX_LENGTH}
                 value={current.website}
@@ -582,7 +586,7 @@ function PracticeInfoTab() {
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-sm font-medium">Timezone</span>
+              <span className="text-sm font-medium">{t("settings.practiceDetails.timezone")}</span>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 value={current.timezone}
@@ -601,16 +605,15 @@ function PracticeInfoTab() {
         {/* ── Region & Tax ── */}
         <div className="space-y-6 rounded-lg border border-border bg-card p-6">
           <div className="space-y-1">
-            <h3 className="text-sm font-semibold">Region &amp; Tax</h3>
+            <h3 className="text-sm font-semibold">{t("settings.regionTax.title")}</h3>
             <p className="text-xs text-muted-foreground">
-              Controls invoice currency, tax rate, and date formatting. Choosing
-              a country prefills the usual defaults — adjust as needed.
+              {t("settings.regionTax.description")}
             </p>
           </div>
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
               <label className="space-y-1.5">
-                <span className="text-sm font-medium">Country</span>
+                <span className="text-sm font-medium">{t("settings.regionTax.country")}</span>
                 <select
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   value={current.country}
@@ -624,7 +627,7 @@ function PracticeInfoTab() {
                 </select>
               </label>
               <label className="space-y-1.5">
-                <span className="text-sm font-medium">Currency</span>
+                <span className="text-sm font-medium">{t("settings.regionTax.currency")}</span>
                 <select
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   value={current.currency}
@@ -640,7 +643,7 @@ function PracticeInfoTab() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <label className="space-y-1.5">
-                <span className="text-sm font-medium">Tax / VAT rate (%)</span>
+                <span className="text-sm font-medium">{t("settings.regionTax.taxRate")}</span>
                 <Input
                   type="number"
                   step="0.01"
@@ -892,10 +895,9 @@ function LocationsTab() {
     <div className="max-w-4xl space-y-4">
       <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-sm font-semibold">Practice Locations</h3>
+          <h3 className="text-sm font-semibold">{t("settings.locations.title", "Practice Locations")}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Locations power texting setup, room assignment, reminders, and
-            hosted billing quantity.
+            {t("settings.locations.description", "Locations power texting setup, room assignment, reminders, and hosted billing quantity.")}
           </p>
         </div>
         <Button
@@ -908,13 +910,13 @@ function LocationsTab() {
           className="gap-2"
         >
           <Plus className="h-4 w-4" />
-          Add Location
+          {t("settings.locations.addLocation", "Add Location")}
         </Button>
       </div>
 
       {showAdd ? (
         <div className="rounded-lg border border-border bg-card p-4">
-          <h3 className="text-sm font-semibold">New Location</h3>
+          <h3 className="text-sm font-semibold">{t("settings.locations.newLocation", "New Location")}</h3>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Input
               placeholder="Location name"
@@ -1947,7 +1949,7 @@ function StaffTab() {
           variant="outline"
         >
           <Mail className="mr-2 h-4 w-4" />
-          Invite by email
+          {t("settings.staff.inviteByEmail", "Invite by email")}
         </Button>
         <Button
           onClick={() => {
@@ -1958,7 +1960,7 @@ function StaffTab() {
           size="sm"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Staff
+          {t("settings.staff.addStaff", "Add Staff")}
         </Button>
       </div>
 
@@ -2157,12 +2159,12 @@ function StaffTab() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">Name</th>
-              <th className="px-4 py-3 text-left font-medium">Email</th>
-              <th className="px-4 py-3 text-left font-medium">Role</th>
-              <th className="px-4 py-3 text-left font-medium">Phone</th>
-              <th className="px-4 py-3 text-left font-medium">License #</th>
-              <th className="px-4 py-3 text-right font-medium">Actions</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.name", "Name")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.email", "Email")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.role", "Role")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.phone", "Phone")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.license", "License #")}</th>
+              <th className="px-4 py-3 text-right font-medium">{t("settings.staff.headers.actions", "Actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -3315,10 +3317,9 @@ function DataTab() {
     <div className="space-y-8">
       {/* Sample data */}
       <div>
-        <h3 className="text-sm font-semibold mb-1">Sample data</h3>
+        <h3 className="text-sm font-semibold mb-1">{t("settings.data.sampleDataTitle", "Sample data")}</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          A practice full of made up clients and pets so you can explore. Add it
-          any time, and remove it when you are ready to work for real.
+          {t("settings.data.sampleDataDesc", "A practice full of made up clients and pets so you can explore. Add it any time, and remove it when you are ready to work for real.")}
         </p>
         <Button
           variant="outline"
@@ -3339,7 +3340,7 @@ function DataTab() {
             reseedDemo.isPending
           }
         >
-          {hasDemo ? "Remove sample data" : "Add sample data"}
+          {hasDemo ? t("settings.data.removeSampleData", "Remove sample data") : t("settings.data.addSampleData", "Add sample data")}
         </Button>
         {onboarding.error || onboardingMissing ? (
           <p className="mt-2 text-xs text-destructive">

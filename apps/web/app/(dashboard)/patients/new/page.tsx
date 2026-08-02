@@ -33,10 +33,10 @@ const speciesOptions = [
 ] as const;
 
 const sexOptions = [
-  { value: "male", label: "Male (Intact)" },
-  { value: "female", label: "Female (Intact)" },
-  { value: "male_neutered", label: "Male (Neutered)" },
-  { value: "female_spayed", label: "Female (Spayed)" },
+  { value: "male", label: "Samec (nekastrovaný)" },
+  { value: "female", label: "Samica (nekastrovaná)" },
+  { value: "male_neutered", label: "Samec (kastrovaný)" },
+  { value: "female_spayed", label: "Samica (kastrovaná)" },
 ] as const;
 
 export default function NewPatientPage() {

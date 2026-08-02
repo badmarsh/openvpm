@@ -16,10 +16,8 @@ RUN pnpm install --frozen-lockfile
 # --- Build ---
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
 COPY . .
+RUN pnpm install --frozen-lockfile
 
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build --filter=@openpims/web

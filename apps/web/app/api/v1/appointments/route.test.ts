@@ -273,7 +273,7 @@ describe("/api/v1/appointments", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
     expect(mocks.db.select).toHaveBeenCalledTimes(1);
 
@@ -288,7 +288,7 @@ describe("/api/v1/appointments", () => {
     );
     expect(badClient.status).toBe(400);
     await expect(badClient.json()).resolves.toEqual({
-      error: { message: "client_id must be a valid UUID" },
+      error: { message: "client_id musí byť platné UUID" },
     });
 
     const badPatient = await GET(
@@ -296,14 +296,14 @@ describe("/api/v1/appointments", () => {
     );
     expect(badPatient.status).toBe(400);
     await expect(badPatient.json()).resolves.toEqual({
-      error: { message: "patient_id must be a valid UUID" },
+      error: { message: "Pacient_id musí byť platný UUID" },
     });
 
     const badDate = await GET(getRequest("/api/v1/appointments?from=nope"));
     expect(badDate.status).toBe(400);
     await expect(badDate.json()).resolves.toEqual({
       error: {
-        message: "from must be a valid ISO date or timezone-qualified timestamp",
+        message: "z musí byť platná časová pečiatka ISO podľa dátumu alebo časového pásma",
       },
     });
 
@@ -313,7 +313,7 @@ describe("/api/v1/appointments", () => {
     expect(impossibleDate.status).toBe(400);
     await expect(impossibleDate.json()).resolves.toEqual({
       error: {
-        message: "from must be a valid ISO date or timezone-qualified timestamp",
+        message: "z musí byť platná časová pečiatka ISO podľa dátumu alebo časového pásma",
       },
     });
 
@@ -323,7 +323,7 @@ describe("/api/v1/appointments", () => {
     expect(localTimestamp.status).toBe(400);
     await expect(localTimestamp.json()).resolves.toEqual({
       error: {
-        message: "to must be a valid ISO date or timezone-qualified timestamp",
+        message: "to musí byť platná časová pečiatka ISO podľa dátumu alebo časového pásma",
       },
     });
 
@@ -334,7 +334,7 @@ describe("/api/v1/appointments", () => {
     );
     expect(badRange.status).toBe(400);
     await expect(badRange.json()).resolves.toEqual({
-      error: { message: "from must be before or equal to to" },
+      error: { message: "od musí byť pred alebo rovné ako" },
     });
 
     const badStatus = await GET(
@@ -344,7 +344,7 @@ describe("/api/v1/appointments", () => {
     await expect(badStatus.json()).resolves.toEqual({
       error: {
         message:
-          "status must be one of: scheduled, confirmed, checked_in, in_exam, checked_out, no_show, cancelled",
+          "stav musí byť jeden z: naplánované, potvrdené, prihlásené, na skúške, odhlásené, nezobrazené, zrušené",
       },
     });
 
@@ -357,7 +357,7 @@ describe("/api/v1/appointments", () => {
 
     expect(response.status).toBe(413);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Request body too large" },
+      error: { message: "Telo požiadavky je príliš veľké" },
     });
     expect(mocks.authenticateApiKey).toHaveBeenCalled();
     expect(mocks.withTenant).not.toHaveBeenCalled();
@@ -421,7 +421,7 @@ describe("/api/v1/appointments", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Client not found" },
+      error: { message: "Klient sa nenašiel" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();
@@ -438,7 +438,7 @@ describe("/api/v1/appointments", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Practice not found" },
+      error: { message: "Cvičenie nenájdené" },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();
     expect(mocks.dispatchWebhookEvent).not.toHaveBeenCalled();
@@ -453,7 +453,7 @@ describe("/api/v1/appointments", () => {
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({
-      error: { message: "Patient not found" },
+      error: { message: "Pacient sa nenašiel" },
     });
     expect(mocks.db.select).toHaveBeenCalledTimes(2);
     expect(mocks.db.insert).not.toHaveBeenCalled();
@@ -485,7 +485,7 @@ describe("/api/v1/appointments", () => {
     expect(response.status).toBe(409);
     await expect(response.json()).resolves.toEqual({
       error: {
-        message: "This time conflicts with another appointment for this doctor.",
+        message: "Tento čas je v rozpore s iným termínom pre tohto lekára.",
       },
     });
     expect(mocks.db.insert).not.toHaveBeenCalled();

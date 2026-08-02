@@ -55,8 +55,8 @@ export function PracticeBasicsStep({
   const updatePractice = trpc.settings.updatePractice.useMutation();
 
   const [name, setName] = useState("");
-  const [country, setCountry] = useState("US");
-  const [timezone, setTimezone] = useState("America/New_York");
+  const [country, setCountry] = useState("SK");
+  const [timezone, setTimezone] = useState("Europe/Bratislava");
   const [filled, setFilled] = useState(false);
   const trimmedName = name.trim();
   const practiceNameInvalid =
@@ -66,8 +66,8 @@ export function PracticeBasicsStep({
   useEffect(() => {
     if (filled || !practice) return;
     setName(practice.name ?? "");
-    setCountry(practice.country ?? "US");
-    setTimezone(practice.timezone ?? "America/New_York");
+    setCountry(practice.country ?? "SK");
+    setTimezone(practice.timezone ?? "Europe/Bratislava");
     setFilled(true);
   }, [practice, filled]);
 

@@ -1,12 +1,12 @@
 export const metadata = {
-  title: "Terms of Service - OpenVPM",
+  title: "Podmienky služby - OpenVPM",
 };
 
 export default function TermsPage() {
   return (
     <>
-      <h1>Terms of Service</h1>
-      <p>Last updated: July 7, 2026</p>
+      <h1>Podmienky poskytovania služby</h1>
+      <p>Posledná aktualizácia: 7. júla 2026</p>
 
       <p>
         These terms cover OpenVPM Cloud, the hosted veterinary practice
@@ -16,106 +16,115 @@ export default function TermsPage() {
         the software license in the code repository.
       </p>
 
-      <h2>What OpenVPM is</h2>
+      <h2>Čo je OpenVPM</h2>
       <p>
-        OpenVPM is practice management software for veterinary clinics. It
-        stores your practice&apos;s records, helps you schedule and bill, and
-        sends messages to your clients. OpenVPM is a tool for your team. It is
-        not a veterinarian and it does not give medical advice. Your team is
-        responsible for all clinical decisions and for meeting the
-        record-keeping rules that apply to your practice.
+        
+        OpenVPM je softvér na správu praxe pre veterinárne kliniky. to
+        ukladá záznamy o vašej praxi, pomáha vám plánovať a účtovať a
+        posiela správy vašim klientom. OpenVPM je nástroj pre váš tím. je to tak
+        nie je veterinárny lekár a neposkytuje lekárske rady. Váš tím je
+        zodpovedný za všetky klinické rozhodnutia a za plnenie
+        pravidlá vedenia záznamov, ktoré sa vzťahujú na vašu prax.
       </p>
 
-      <h2>Your account</h2>
+      <h2>Váš účet</h2>
       <ul>
-        <li>You must give accurate information when you sign up.</li>
+        <li>Pri registrácii musíte poskytnúť presné informácie.</li>
         <li>
-          You are responsible for what happens under your practice&apos;s
-          accounts. Keep passwords private and remove staff access when people
-          leave.
+          
+          Ste zodpovedný za to, čo sa stane v rámci vašej praxe
+          účtov. Udržujte heslá v súkromí a odstráňte prístup personálu, keď ľudia
+          odísť.
         </li>
-        <li>You must be authorized to act for the practice you register.</li>
+        <li>Musíte mať oprávnenie konať pre prax, ktorú zaregistrujete.</li>
       </ul>
 
-      <h2>Your data belongs to you</h2>
+      <h2>Vaše údaje patria vám</h2>
       <p>
-        Your practice&apos;s records are yours. You can export your full data
-        at any time from Settings. If you close your account, you can take
-        your data with you. We do not sell your data and we do not use your
-        clients&apos; information for advertising.
+        
+        Záznamy z vašej praxe sú vaše. Môžete exportovať celé údaje
+        kedykoľvek z Nastavenia. Ak zatvoríte svoj účet, môžete si vziať
+        vaše údaje so sebou. Vaše údaje nepredávame a nepoužívame
+        informácie o klientoch pre reklamu.
       </p>
 
-      <h2>Fees and trials</h2>
+      <h2>Poplatky a pokusy</h2>
       <ul>
         <li>
-          New practices get a free trial. We tell you the length and terms
-          when you sign up. Trials that end without a subscription lose access
-          to paid features, but you can still export your data.
+          
+          Nové postupy majú bezplatnú skúšobnú verziu. Povieme vám dĺžku a podmienky
+          keď sa prihlásite. Skúšobné verzie, ktoré sa skončia bez predplatného, stratia prístup
+          k plateným funkciám, no stále môžete svoje údaje exportovať.
         </li>
         <li>
-          Paid plans are billed through Stripe at the prices shown when you
-          subscribe, per active location, plus any usage charges we describe
-          in the product.
+          
+          Platené programy sa účtujú prostredníctvom služby Stripe za ceny, ktoré sa vám zobrazia
+          predplatné, za aktívne miesto, plus akékoľvek poplatky za používanie, ktoré popíšeme
+          v produkte.
         </li>
         <li>
-          Payments your clients make to your practice go to your own Stripe
-          account. OpenVPM may charge a small platform fee on those payments,
-          shown in the product.
+          
+          Platby, ktoré vaši klienti zaplatia za vašu prax, idú na váš vlastný Stripe
+          účtu. OpenVPM môže za tieto platby účtovať malý poplatok za platformu,
+          zobrazené v produkte.
         </li>
       </ul>
 
-      <h2>Acceptable use</h2>
+      <h2>Prijateľné použitie</h2>
       <ul>
-        <li>Follow the laws that apply to you, including messaging-consent rules for texts and emails.</li>
-        <li>Do not try to break, overload, or probe the service.</li>
-        <li>Do not use the service to store or send unlawful content.</li>
+        <li>Dodržiavajte zákony, ktoré sa na vás vzťahujú, vrátane pravidiel pre zasielanie správ a súhlasu pre textové správy a e-maily.</li>
+        <li>Nepokúšajte sa prerušiť, preťažiť alebo preskúšať službu.</li>
+        <li>Nepoužívajte službu na ukladanie alebo odosielanie nezákonného obsahu.</li>
       </ul>
 
-      <h2>Messaging</h2>
+      <h2>Správy</h2>
       <p>
-        OpenVPM sends texts and emails on your behalf. You are the sender: you
-        must have consent from your clients, honor opt-outs, and follow rules
-        like the TCPA. OpenVPM enforces opt-outs automatically and blocks
-        sends to suppressed contacts, but responsibility for lawful messaging
-        stays with your practice.
+        
+        OpenVPM posiela texty a e-maily vo vašom mene. Vy ste odosielateľ: vy
+        musíte mať súhlas od svojich klientov, rešpektovať výnimku a dodržiavať pravidlá
+        ako TCPA. OpenVPM automaticky vynucuje odhlásenie a blokuje
+        posiela na potlačené kontakty, ale zodpovednosť za legálne posielanie správ
+        zostane pri svojej praxi.
       </p>
 
-      <h2>Availability and support</h2>
+      <h2>Dostupnosť a podpora</h2>
       <p>
-        We work hard to keep OpenVPM available and back up hosted data
-        regularly. Like any online service, we cannot promise zero downtime.
-        We announce planned maintenance ahead of time when we can.
+        
+        Usilovne pracujeme na tom, aby bol OpenVPM dostupný a aby sme zálohovali hostované dáta
+        pravidelne. Ako každá online služba nemôžeme sľúbiť nulové prestoje.
+        Plánovanú údržbu oznamujeme v predstihu, keď to bude možné.
       </p>
 
-      <h2>Ending service</h2>
+      <h2>Ukončenie služby</h2>
       <p>
-        You can cancel at any time. After cancellation or trial expiry, we
-        keep your data available to export for at least 60 days, then we may
-        delete it. We can suspend or end accounts that break these terms or
-        do not pay, with notice when reasonable.
+        
+        Môžete to kedykoľvek zrušiť. Po zrušení alebo uplynutí skúšobnej doby sme
+        uchovávať vaše údaje k dispozícii na export po dobu najmenej 60 dní, potom môžeme
+        vymazať to. Môžeme pozastaviť alebo ukončiť účty, ktoré porušujú tieto podmienky, resp
+        neplaťte s výpovednou lehotou, keď je to primerané.
       </p>
 
-      <h2>Disclaimers and liability</h2>
+      <h2>Vylúčenie zodpovednosti a zodpovednosť</h2>
       <p>
-        The service is provided &quot;as is.&quot; To the extent the law
-        allows, OpenVPM is not liable for indirect damages, and our total
-        liability for any claim is limited to the fees you paid us in the 12
-        months before the claim. Nothing in these terms limits liability that
-        cannot be limited by law.
+        
+        Dostanú e-mail na nastavenie vlastného hesla a aktiváciu
+            ich účet.
       </p>
 
-      <h2>Changes</h2>
+      <h2>Zmeny</h2>
       <p>
-        We may update these terms. If a change matters, we will tell you by
-        email or in the product before it takes effect. Continuing to use the
-        service after a change means you accept it.
+        
+        Tieto podmienky môžeme aktualizovať. Ak na zmene záleží, dáme vám vedieť
+        e-mailom alebo v produkte skôr, ako nadobudne účinnosť. Pokračovanie v používaní
+        služba po zmene znamená, že ju akceptujete.
       </p>
 
-      <h2>Contact and governing law</h2>
+      <h2>Kontaktné a rozhodné právo</h2>
       <p>
-        Questions? Email hello@openvpm.com. These terms are governed by the
-        laws of the State of Delaware, USA, without regard to conflict-of-law
-        rules.
+        
+        otázky? E-mail hello@openvpm.com. Tieto podmienky sa riadia
+        zákonov štátu Delaware, USA, bez ohľadu na kolíziu zákonov
+        pravidlá.
       </p>
     </>
   );

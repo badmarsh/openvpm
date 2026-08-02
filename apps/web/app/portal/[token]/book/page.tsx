@@ -79,8 +79,8 @@ export default function BookAppointmentPage() {
         <EmptyState
           className="py-12"
           icon={AlertCircle}
-          title="Unable to load booking form"
-          description="This portal link is invalid or has expired. Please contact your veterinary clinic for a new link."
+          title="Nedá sa načítať rezervačný formulár"
+          description="Tento odkaz na portál je neplatný alebo jeho platnosť vypršala. Ak chcete získať nový odkaz, kontaktujte svoju veterinárnu kliniku."
         />
       </div>
     );
@@ -119,13 +119,14 @@ export default function BookAppointmentPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h1 className="text-xl font-bold text-gray-900 mb-2">Request sent!</h1>
+        <h1 className="text-xl font-bold text-gray-900 mb-2">Žiadosť odoslaná!</h1>
         <p className="text-gray-600 max-w-sm mx-auto mb-6">{request.data.message}</p>
         <Link
           href={`/portal/${token}/appointments`}
           className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
         >
-          View your appointments
+          
+          Zobraziť vaše stretnutia
         </Link>
       </div>
     );
@@ -140,26 +141,29 @@ export default function BookAppointmentPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to appointments
+        
+        Späť na schôdzky
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Request an appointment</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">Požiadať o stretnutie</h1>
       <p className="text-gray-500 text-sm mb-8">
-        Pick a time that works for you. The clinic will confirm the final time.
+        
+        Vyberte si čas, ktorý vám vyhovuje. Konečný čas potvrdí klinika.
       </p>
 
       {pets.length === 0 ? (
         <EmptyState
           className="py-10"
           icon={PawPrint}
-          title="No pets on file yet"
-          description="Your clinic will add pets here when they create patient records."
+          title="Zatiaľ žiadne domáce zvieratá"
+          description="Vaša klinika sem pridá domáce zvieratá, keď vytvoria záznamy o pacientoch."
         />
       ) : (
         <form onSubmit={submit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Pet
+              
+              Domáce zvieratko
             </label>
             <select
               value={patientId}
@@ -167,7 +171,7 @@ export default function BookAppointmentPage() {
               required
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
             >
-              <option value="">Select a pet…</option>
+              <option value="">Vyberte si zvieratko…</option>
               {pets.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
@@ -178,7 +182,8 @@ export default function BookAppointmentPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Reason for visit
+              
+              Dôvod návštevy
             </label>
             <select
               value={typeId}
@@ -188,7 +193,7 @@ export default function BookAppointmentPage() {
               }}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
             >
-              <option value="">General visit</option>
+              <option value="">Všeobecná návšteva</option>
               {appointmentTypes.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
@@ -197,7 +202,8 @@ export default function BookAppointmentPage() {
             </select>
             {appointmentTypesUnavailable && (
               <p className="mt-1.5 text-xs text-red-600">
-                Appointment types could not be verified. You can still request a general visit.
+                
+                Typy stretnutí nebolo možné overiť. Stále môžete požiadať o všeobecnú návštevu.
               </p>
             )}
           </div>
@@ -205,7 +211,8 @@ export default function BookAppointmentPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Preferred date
+                
+                Preferovaný dátum
               </label>
               <input
                 type="date"
@@ -221,7 +228,8 @@ export default function BookAppointmentPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Preferred time
+                
+                Preferovaný čas
               </label>
               <input
                 type="time"
@@ -251,12 +259,13 @@ export default function BookAppointmentPage() {
           </div>
 
           {preferredDate && slots.isLoading && (
-            <p className="text-xs text-gray-500">Checking open times…</p>
+            <p className="text-xs text-gray-500">Kontrola otváracích hodín…</p>
           )}
 
           {slotsUnavailable && (
             <p className="text-xs text-red-600">
-              Open times could not be loaded. You can still enter a preferred time.
+              
+              OpenVPM API
             </p>
           )}
 
@@ -266,7 +275,8 @@ export default function BookAppointmentPage() {
             slots.data &&
             slots.data.length === 0 && (
               <p className="text-xs text-gray-500">
-                No suggested open times are available for this date.
+                
+                Pre tento dátum nie sú k dispozícii žiadne navrhované otváracie časy.
               </p>
             )}
 
@@ -277,7 +287,8 @@ export default function BookAppointmentPage() {
             slots.data.length > 0 && (
               <div>
                 <p className="text-xs font-medium text-gray-500 mb-2">
-                  Open times on {preferredDate} (tap to pick)
+                  
+                  Referencia rozhrania OpenVPM API {preferredDate}  (klepnutím vyberiete)
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {slots.data.map((s) => (
@@ -300,7 +311,8 @@ export default function BookAppointmentPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Anything we should know?
+              
+              Niečo, čo by sme mali vedieť?
             </label>
             <textarea
               value={reason}
@@ -309,7 +321,7 @@ export default function BookAppointmentPage() {
               rows={3}
               maxLength={PORTAL_BOOKING_REASON_MAX_LENGTH}
               aria-invalid={reason.length > 0 && !hasValidReason}
-              placeholder="Briefly describe the reason for the visit"
+              placeholder="Stručne opíšte dôvod návštevy"
               className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
             />
           </div>

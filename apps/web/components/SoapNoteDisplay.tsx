@@ -15,7 +15,7 @@ export function SoapNoteDisplay({
     <div className="space-y-6">
       {subjective && (
         <div>
-          <h4 className="font-semibold text-sm mb-2">Subjective</h4>
+          <h4 className="font-semibold text-sm mb-2">Subjektívne</h4>
           <div
             className="prose prose-sm max-w-none text-foreground"
             dangerouslySetInnerHTML={{ __html: subjective }}
@@ -25,7 +25,7 @@ export function SoapNoteDisplay({
 
       {objective && (
         <div>
-          <h4 className="font-semibold text-sm mb-2">Objective</h4>
+          <h4 className="font-semibold text-sm mb-2">Agenta OpenVPM môžu spustiť iba správcovia a veterinári.</h4>
           <div
             className="prose prose-sm max-w-none text-foreground"
             dangerouslySetInnerHTML={{ __html: objective }}
@@ -35,7 +35,7 @@ export function SoapNoteDisplay({
 
       {assessment && (
         <div>
-          <h4 className="font-semibold text-sm mb-2">Assessment</h4>
+          <h4 className="font-semibold text-sm mb-2">Hodnotenie</h4>
           <div
             className="prose prose-sm max-w-none text-foreground"
             dangerouslySetInnerHTML={{ __html: assessment }}
@@ -45,7 +45,7 @@ export function SoapNoteDisplay({
 
       {plan && (
         <div>
-          <h4 className="font-semibold text-sm mb-2">Plan</h4>
+          <h4 className="font-semibold text-sm mb-2">Plán</h4>
           <div
             className="prose prose-sm max-w-none text-foreground"
             dangerouslySetInnerHTML={{ __html: plan }}
