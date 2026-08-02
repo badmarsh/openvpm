@@ -20,6 +20,7 @@ import {
   Settings,
   ShieldAlert,
   Bot,
+  Palette,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -46,6 +47,7 @@ const navItems: {
   key: string;
   icon: React.ElementType;
   roles: UserRole[];
+  badge?: string;
 }[] = [
   { href: "/", key: "nav.dashboard", icon: LayoutDashboard, roles: allRoles },
   { href: "/patients", key: "nav.patients", icon: PawPrint, roles: allRoles },
@@ -57,6 +59,7 @@ const navItems: {
   { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
   { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
   { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
+  { href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" },
   { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
   { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
   { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
@@ -172,6 +175,12 @@ export function Sidebar({
                       className="ml-auto rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground"
                     >
                       {unreadInboxLabel}
+                    </span>
+                  ) : null}
+                  {/* Beta badge pre nové funkcie ako Marketing Studio */}
+                  {!isCollapsed && item.badge ? (
+                    <span className="ml-auto rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-wide text-primary">
+                      {item.badge}
                     </span>
                   ) : null}
                 </Link>

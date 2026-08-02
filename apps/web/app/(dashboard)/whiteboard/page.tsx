@@ -266,7 +266,7 @@ function WhiteboardCard({
         {appointment.doctorName && (
           <span className="inline-flex items-center gap-1">
             <User className="h-3 w-3" />
-            Dr. {appointment.doctorName}
+            {appointment.doctorName}
           </span>
         )}
         {appointment.roomName && (
@@ -450,7 +450,7 @@ function AppointmentDetailModal({
             {appointment.doctorName && (
               <div className="flex items-center gap-2 text-muted-foreground">
                 <User className="h-3.5 w-3.5" />
-                <span>Dr. {appointment.doctorName}</span>
+                <span>{appointment.doctorName}</span>
               </div>
             )}
             {appointment.typeName && (

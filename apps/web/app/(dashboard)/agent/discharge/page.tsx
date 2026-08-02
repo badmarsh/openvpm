@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { FileText, Loader2, Bot, Send } from "lucide-react";
-import { generateDischargeReport } from "@/actions/ai-actions";
+import { aiService } from "@/lib/ai-service";
+import { aiConfigManager } from "@/lib/ai-config";
 import { cn } from "@/lib/utils";
 
 export default function DischargePage() {
@@ -23,8 +24,27 @@ export default function DischargePage() {
     
     setIsProcessing(true);
     try {
-      const res = await generateDischargeReport({ petName, species, diagnosis, treatment, followUp });
-      setResult(res.text);
+      const activeModel = await aiConfigManager.getActiveModel();
+      if (!activeModel) {
+        alert("Please select and configure an active AI model in AI Settings first.");
+        setIsProcessing(false);
+        return;
+      }
+      
+      const prompt = `Pet Name: ${petName}\nSpecies/Breed: ${species}\nDiagnosis: ${diagnosis}\nTreatment/Medications Given: ${treatment}\nFollow-up Instructions: ${followUp}`;
+      
+      const res = await aiService.generateChatResponse({
+        prompt: `You are a veterinary assistant writing a discharge report for a pet owner.
+Translate the clinical diagnosis, treatment, and follow-up instructions into clear, empathetic, and easily understandable language for a non-medical pet owner.
+Structure the report nicely with greetings, clear sections (Diagnosis, Treatment, Home Care, Follow-up), and a professional closing.\n\n${prompt}`,
+        modelId: activeModel.id
+      });
+      
+      if (res.success) {
+        setResult(res.content || "No report generated.");
+      } else {
+        alert("Generation failed: " + res.error);
+      }
     } catch (error) {
       console.error("Generation failed:", error);
       alert("Failed to generate discharge report.");

@@ -15,7 +15,8 @@
     "agent": "Agent",
     "controlledSubstances": "Controlled Substances",
     "reports": "Reports",
-    "settings": "Settings"
+    "settings": "Settings",
+    "marketingStudio": "Jaaz"
   },
   "chrome": {
     "searchPlaceholder": "Search...",

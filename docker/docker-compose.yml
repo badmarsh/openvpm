@@ -58,12 +58,66 @@ services:
       S3_SECRET_KEY: "openpims123"
       S3_BUCKET: "openpims"
       S3_REGION: "us-east-1"
+      # Jaaz Marketing Studio — interná URL (server-side, nie exponovaná klientovi)
+      JAAZ_SERVER_URL: "http://jaaz-server:5174"
+      # Feature flag — nastaviť na "true" keď je jaaz-server spustený
+      NEXT_PUBLIC_JAAZ_ENABLED: "true"
     depends_on:
       postgres:
         condition: service_healthy
       minio-bootstrap:
         condition: service_completed_successfully
 
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Jaaz Marketing Studio — AI generátor obrázkov/videí pre social media assets
+  # Spustiť s: docker compose --profile jaaz up
+  # Jaaz NEMÁ exponovaný port — dostupný len cez Next.js proxy (/tools/jaaz/*)
+  # ─────────────────────────────────────────────────────────────────────────────
+  jaaz-server:
+    profiles:
+      - jaaz
+    build:
+      context: ../jaaz
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # Exponujeme port 5174 na hostiteľa, aby ho Next.js bežiaci mimo Dockeru mohol proxy-ovať
+    ports:
+      - "5174:5174"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - JAAZ_DATA_DIR=/app/data
+      # Voliteľné cloud API kľúče — pridať do .env ak potrebné:
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - MIDJOURNEY_API_KEY=${MIDJOURNEY_API_KEY}
+    volumes:
+      - jaaz_data:/app/data
+    networks:
+      - default
+    depends_on:
+      - ollama
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5174/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Ollama — lokálny AI model runtime (privacy-first, dáta ostávajú lokálne)
+  # Spustiť s: docker compose --profile jaaz up
+  ollama:
+    profiles:
+      - jaaz
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    # Port 11434 nie je exponovaný — prístupný len z jaaz-server kontajnera
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - default
+
 volumes:
   postgres_data:
   minio_data:
+  # Jaaz volumes — persistentné dáta pre generované assets a Ollama modely
+  jaaz_data:
+  ollama_data:

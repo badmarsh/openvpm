@@ -1,9 +1,24 @@
+// Jaaz Marketing Studio — conditional CSP additions.
+// Jaaz frontend beží cez Next.js proxy (same-origin), takže potrebujeme:
+//   frame-src 'self'      — povolenie same-origin iframe pre /tools/jaaz page
+//   connect-src ws://...  — WebSocket pre real-time generovanie (ak Jaaz ho používa)
+// Všetky Jaaz CSP pridania sú podmienené existenciou JAAZ_SERVER_URL.
+const jaazCspExtras = process.env.NEXT_PUBLIC_JAAZ_ENABLED !== "false"
+  ? {
+      // Same-origin iframe pre Jaaz UI komponent
+      frameSrc: "'self'",
+      // WebSocket pre live updates (Jaaz generovanie asynchrónne)
+      connectSrcExtra: "ws://localhost:5174 wss://localhost:5174 ws://jaaz-server:5174 wss://jaaz-server:5174",
+    }
+  : { frameSrc: null, connectSrcExtra: null };
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
+  jaazCspExtras.frameSrc ? `frame-src ${jaazCspExtras.frameSrc}` : null,
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -14,12 +29,18 @@ const contentSecurityPolicy = [
   ]
     .filter(Boolean)
     .join(" "),
-  "connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+  [
+    "connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+    jaazCspExtras.connectSrcExtra,
+  ]
+    .filter(Boolean)
+    .join(" "),
   "worker-src 'self' blob:",
   process.env.NODE_ENV === "production" ? "upgrade-insecure-requests" : null,
 ]
   .filter(Boolean)
   .join("; ");
+
 
 const securityHeaders = [
   {

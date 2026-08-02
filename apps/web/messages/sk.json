@@ -15,7 +15,8 @@
     "agent": "Agent",
     "controlledSubstances": "Omamné a psychotropné látky",
     "reports": "Prehľady",
-    "settings": "Nastavenia"
+    "settings": "Nastavenia",
+    "marketingStudio": "Jaaz"
   },
   "chrome": {
     "searchPlaceholder": "Hľadať…",

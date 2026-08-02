@@ -490,6 +490,10 @@ Base your analysis on medical imaging best practices and current clinical guidel
     return Math.ceil(text.length / 4);
   }
 
+  async generateChatResponse(request: AIRequest): Promise<AIResponse> {
+    return this.generateText(request);
+  }
+
   async testModelConnection(modelId: string): Promise<boolean> {
     try {
       const response = await this.generateText({

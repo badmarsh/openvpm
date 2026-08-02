@@ -1003,7 +1003,7 @@ function AppointmentDetailPopover({
             {appointment.doctorName && (
               <div className="flex items-center gap-2 text-muted-foreground">
                 <User className="h-3.5 w-3.5" />
-                <span>Dr. {appointment.doctorName}</span>
+                <span>{appointment.doctorName}</span>
               </div>
             )}
             {appointment.typeName && (
@@ -1567,7 +1567,7 @@ function BookingForm({
               </option>
               {doctors?.map((doc) => (
                 <option key={doc.id} value={doc.id}>
-                  Dr. {doc.name}
+                  {doc.name}
                 </option>
               ))}
             </select>
@@ -2064,7 +2064,7 @@ function SchedulePageInner() {
               <option value="all">{t("schedule.all_doctors")}</option>
               {doctors?.map((doc) => (
                 <option key={doc.id} value={doc.id}>
-                  Dr. {doc.name}
+                  {doc.name}
                 </option>
               ))}
             </select>

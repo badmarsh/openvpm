@@ -2550,15 +2550,24 @@ function AppointmentTypesTab() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">Name</th>
-              <th className="px-4 py-3 text-left font-medium">Duration</th>
-              <th className="px-4 py-3 text-left font-medium">Color</th>
-              <th className="px-4 py-3 text-left font-medium">Room Type</th>
-              <th className="px-4 py-3 text-right font-medium">Actions</th>
+              <th className="px-4 py-3 text-left font-medium">Názov</th>
+              <th className="px-4 py-3 text-left font-medium">Trvanie</th>
+              <th className="px-4 py-3 text-left font-medium">Farba</th>
+              <th className="px-4 py-3 text-left font-medium">Typ miestnosti</th>
+              <th className="px-4 py-3 text-right font-medium">Akcie</th>
             </tr>
           </thead>
           <tbody>
-            {types?.map((type) => (
+            {types?.map((type) => {
+              const typeTranslations: Record<string, string> = {
+                exam: 'vyšetrovňa',
+                surgery: 'chirurgia',
+                treatment: 'ošetrovňa',
+                boarding: 'hospitalizácia'
+              };
+              const translatedType = type.defaultRoomType ? typeTranslations[type.defaultRoomType] || type.defaultRoomType : null;
+              
+              return (
               <tr
                 key={type.id}
                 className="border-b border-border last:border-0"
@@ -2623,7 +2632,7 @@ function AppointmentTypesTab() {
                       >
                         {ROOM_TYPES.map((t) => (
                           <option key={t} value={t}>
-                            {t.charAt(0).toUpperCase() + t.slice(1)}
+                            {typeTranslations[t] ? typeTranslations[t].charAt(0).toUpperCase() + typeTranslations[t].slice(1) : t.charAt(0).toUpperCase() + t.slice(1)}
                           </option>
                         ))}
                       </select>
@@ -2670,7 +2679,7 @@ function AppointmentTypesTab() {
                       />
                     </td>
                     <td className="px-4 py-3 text-muted-foreground capitalize">
-                      {type.defaultRoomType ?? "-"}
+                      {translatedType ?? "-"}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-1">
@@ -2702,7 +2711,8 @@ function AppointmentTypesTab() {
                   </>
                 )}
               </tr>
-            ))}
+            );
+            })}
             {types?.length === 0 && (
               <tr>
                 <td colSpan={5} className="p-0">
@@ -4091,20 +4101,29 @@ function RoomsTab() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">Name</th>
-              <th className="px-4 py-3 text-left font-medium">Type</th>
-              <th className="px-4 py-3 text-right font-medium">Actions</th>
+              <th className="px-4 py-3 text-left font-medium">Názov</th>
+              <th className="px-4 py-3 text-left font-medium">Typ</th>
+              <th className="px-4 py-3 text-right font-medium">Akcie</th>
             </tr>
           </thead>
           <tbody>
-            {roomList?.map((room) => (
+            {roomList?.map((room) => {
+              const typeTranslations: Record<string, string> = {
+                exam: 'vyšetrovňa',
+                surgery: 'chirurgia',
+                treatment: 'ošetrovňa',
+                boarding: 'hospitalizácia'
+              };
+              const translatedType = typeTranslations[room.type] || room.type;
+              
+              return (
               <tr
                 key={room.id}
                 className="border-b border-border last:border-0"
               >
                 <td className="px-4 py-3 font-medium">{room.name}</td>
                 <td className="px-4 py-3 text-muted-foreground capitalize">
-                  {room.type}
+                  {translatedType}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <Button
@@ -4116,7 +4135,8 @@ function RoomsTab() {
                   </Button>
                 </td>
               </tr>
-            ))}
+            );
+            })}
             {roomList?.length === 0 && (
               <tr>
                 <td colSpan={3} className="p-0">

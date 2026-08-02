@@ -343,28 +343,28 @@ export default function BillingPage() {
                 <tr className="border-b border-border bg-muted/50">
                   <th className="w-8 px-2 py-3" />
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Client
+                    Klient
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Patient
+                    Pacient
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Status
+                    Stav
                   </th>
                   <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                    Total
+                    Spolu
                   </th>
                   <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                    Paid
+                    Zaplatené
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Due Date
+                    Dátum splatnosti
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Created
+                    Vytvorené
                   </th>
                   <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                    Actions
+                    Akcie
                   </th>
                 </tr>
               </thead>

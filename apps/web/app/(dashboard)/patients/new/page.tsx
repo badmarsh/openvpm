@@ -23,13 +23,13 @@ import {
 } from "@/lib/patients/policy";
 
 const speciesOptions = [
-  { value: "canine", label: "Canine" },
-  { value: "feline", label: "Feline" },
-  { value: "avian", label: "Avian" },
-  { value: "rabbit", label: "Rabbit" },
-  { value: "reptile", label: "Reptile" },
-  { value: "equine", label: "Equine" },
-  { value: "other", label: "Other" },
+  { value: "canine", label: "Pes" },
+  { value: "feline", label: "Mačka" },
+  { value: "avian", label: "Vták" },
+  { value: "rabbit", label: "Králik" },
+  { value: "reptile", label: "Plaz" },
+  { value: "equine", label: "Kôň" },
+  { value: "other", label: "Iné" },
 ] as const;
 
 const sexOptions = [
@@ -200,9 +200,9 @@ function NewPatientForm() {
         Back to Patients
       </Button>
 
-      <h2 className="font-heading text-xl font-semibold">New Patient</h2>
+      <h2 className="font-heading text-xl font-semibold">Nový pacient</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Add a new patient record
+        Pridať záznam nového pacienta
       </p>
 
       {error && (
@@ -214,7 +214,7 @@ function NewPatientForm() {
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         {/* Client Search */}
         <div>
-          <label className="text-sm font-medium">Owner (Client) *</label>
+          <label className="text-sm font-medium">Majiteľ (Klient) *</label>
           {selectedClientName ? (
             <div className="mt-1 flex items-center gap-2">
               <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/50 px-3 text-sm">
@@ -236,7 +236,7 @@ function NewPatientForm() {
           ) : (
             <div className="relative mt-1">
               <Input
-                placeholder="Search clients by name or email..."
+                placeholder="Hľadať klientov podľa mena alebo emailu..."
                 value={clientSearch}
                 maxLength={CLIENT_SEARCH_MAX_LENGTH}
                 onChange={(e) => {
@@ -291,13 +291,13 @@ function NewPatientForm() {
 
         <div>
           <label className="text-sm font-medium" htmlFor="name">
-            Patient Name *
+            Meno pacienta *
           </label>
           <Input
             id="name"
             value={form.name}
             onChange={(e) => updateField("name", e.target.value)}
-            placeholder="Patient name"
+            placeholder="Meno pacienta"
             className="mt-1"
             maxLength={PATIENT_NAME_MAX_LENGTH}
             required
@@ -307,7 +307,7 @@ function NewPatientForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="species">
-              Species *
+              Druh *
             </label>
             <select
               id="species"
@@ -324,13 +324,13 @@ function NewPatientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="breed">
-              Breed
+              Plemeno
             </label>
             <Input
               id="breed"
               value={form.breed}
               onChange={(e) => updateField("breed", e.target.value)}
-              placeholder="Breed"
+              placeholder="Plemeno"
               className="mt-1"
               maxLength={PATIENT_BREED_MAX_LENGTH}
             />
@@ -340,7 +340,7 @@ function NewPatientForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="sex">
-              Sex
+              Pohlavie
             </label>
             <select
               id="sex"
@@ -348,7 +348,7 @@ function NewPatientForm() {
               onChange={(e) => updateField("sex", e.target.value)}
               className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <option value="">Select sex...</option>
+              <option value="">Vybrať pohlavie...</option>
               {sexOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
@@ -358,7 +358,7 @@ function NewPatientForm() {
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="dob">
-              Date of Birth
+              Dátum narodenia
             </label>
             <Input
               id="dob"
@@ -373,26 +373,26 @@ function NewPatientForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="color">
-              Color/Markings
+              Farba/Znaky
             </label>
             <Input
               id="color"
               value={form.color}
               onChange={(e) => updateField("color", e.target.value)}
-              placeholder="e.g., Black and white"
+              placeholder="napr., Čierno-biely"
               className="mt-1"
               maxLength={PATIENT_COLOR_MAX_LENGTH}
             />
           </div>
           <div>
             <label className="text-sm font-medium" htmlFor="microchipNumber">
-              Microchip Number
+              Číslo čipu
             </label>
             <Input
               id="microchipNumber"
               value={form.microchipNumber}
               onChange={(e) => updateField("microchipNumber", e.target.value)}
-              placeholder="Microchip ID"
+              placeholder="ID čipu"
               className="mt-1"
               maxLength={PATIENT_MICROCHIP_NUMBER_MAX_LENGTH}
             />
@@ -401,14 +401,14 @@ function NewPatientForm() {
 
         <div className="flex gap-3 pt-4">
           <Button type="submit" disabled={!canSubmit || createPatient.isPending}>
-            {createPatient.isPending ? "Creating..." : "Create Patient"}
+            {createPatient.isPending ? "Vytvára sa..." : "Vytvoriť pacienta"}
           </Button>
           <Button
             type="button"
             variant="outline"
             onClick={() => router.push("/patients")}
           >
-            Cancel
+            Zrušiť
           </Button>
         </div>
       </form>

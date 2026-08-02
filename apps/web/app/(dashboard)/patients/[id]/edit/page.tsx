@@ -28,13 +28,13 @@ function EditPatientLoadingPanel() {
 }
 
 const speciesOptions = [
-  { value: "canine", label: "Canine" },
-  { value: "feline", label: "Feline" },
-  { value: "avian", label: "Avian" },
-  { value: "rabbit", label: "Rabbit" },
-  { value: "reptile", label: "Reptile" },
-  { value: "equine", label: "Equine" },
-  { value: "other", label: "Other" },
+  { value: "canine", label: "Pes" },
+  { value: "feline", label: "Mačka" },
+  { value: "avian", label: "Vták" },
+  { value: "rabbit", label: "Králik" },
+  { value: "reptile", label: "Plaz" },
+  { value: "equine", label: "Kôň" },
+  { value: "other", label: "Iné" },
 ] as const;
 
 const sexOptions = [
