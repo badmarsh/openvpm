@@ -49,7 +49,7 @@ describe("app base URL helpers", () => {
     vi.stubEnv("NODE_ENV", "test");
     const { appBaseUrl } = await importAppUrl();
 
-    expect(appBaseUrl()).toBe("http://localhost:3000");
+    expect(appBaseUrl()).toBe("http://localhost:3001");
   });
 
   it("fails closed for invalid configured app URLs in production", async () => {

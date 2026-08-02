@@ -61,7 +61,8 @@ describe("appointments calendar feed procedures", () => {
 
     const on = createDb({ selectRows: [{ token: TOKEN }] });
     const result = await callerWithRole(on.db, "front_desk").calendarFeed();
-    expect(result.url).toBe(`http://localhost:3000/api/calendar/${TOKEN}.ics`);
+    const { appBaseUrl } = await import("../../lib/app-url");
+    expect(result.url).toBe(`${appBaseUrl()}/api/calendar/${TOKEN}.ics`);
   });
 
   it("enableCalendarFeed is idempotent via COALESCE and returns the winning token", async () => {

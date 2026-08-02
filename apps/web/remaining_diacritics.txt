@@ -1,0 +1,63 @@
+389: Kontrola bezpečnosti predpisovania
+408: Nenašli sa žiadne upozornenia na alergie alebo aktívne lieky.
+432: Bezpečnostné upozornenia na predpis
+903: Klinická dokumentácia a anamnéza pacienta
+914: Nová poznámka SOAP
+952: Hľadáme pacientov...
+957: Nenašli sa žiadni pacienti
+1042: Zmeniť pacienta
+1133: Dovezené
+1164: Subjektívne
+1173: Agenta OpenVPM môžu spustiť iba správcovia a veterinári.
+1191: Plán
+1239: Pridať očkovanie
+1266: Vakcína *
+1285: Ďalší termín
+1307: Číslo šarže
+1359: Zrušiť
+1382: Vakcína
+1386: Dátum podania
+1390: Ďalší termín
+1485: Nový predpis
+1555: Položka zásob
+1610: Dávkovanie *
+1646: Množstvo
+1666: Náplne
+1685: Dátum začiatku *
+1702: Dátum ukončenia
+1782: Uložiť predpis
+1796: Zrušiť
+1822: Dávkovanie
+1830: Inventár
+1838: Náplne
+1934: Vytlačiť štítok
+1965: Pridať problém
+1988: Problém *
+2030: Otvoriť v časti Fakturácia
+2068: Zrušiť
+2142: Znovu otvoriť
+2159: Chronická
+2176: Vyriešiť
+2207: Objednávanie referenčného laboratória je zakázané, kým IDEXX, Antech,
+2208: alebo poverenia poskytovateľa Zoetis a skutočný adaptér sú
+2209: pripojený.
+2223: Pridať výsledok manuálneho laboratória
+2250: Text z vášho existujúceho čísla
+2269: Hodnota výsledku
+2305: Ref. Nízky rozsah
+2331: Ref. Vysoký rozsah
+2377: Zrušiť
+2404: Pripomenutie názvu každého miesta || Testovacia správa od odoslaná || Číslo testu * || klientov
+2405: ktorí odpovedajú, pristanú vo vašej doručenej pošte; STOP opt-outs sú spracované automaticky.
+2409: Výsledok
+2417: Referenčný rozsah
+2425: Zoradené podľa
+2429: Dátum
+2542: Pridať postup
+2592: Trvanie (minúty)
+2636: Použitá anestézia
+2654: Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
+2688: Zrušiť
+2715: Účinkuje
+2723: Anestézia
+2727: Dátum

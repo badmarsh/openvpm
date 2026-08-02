@@ -8,6 +8,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    setupFiles: ["./vitest.setup.ts"],
     // Unit tests only — pure logic (mappers, auth helpers). The Playwright
     // e2e suite lives under /e2e and is run separately via `pnpm test:e2e`.
     include: ["**/*.test.ts"],

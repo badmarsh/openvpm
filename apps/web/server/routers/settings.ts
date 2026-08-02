@@ -288,7 +288,7 @@ export const settingsRouter = createRouter({
       await ctx.db
         .update(users)
         .set({ locale: input.locale })
-        .where(eq(users.id, ctx.userId));
+        .where(eq(users.id, ctx.user.id));
       return { success: true };
     }),
 

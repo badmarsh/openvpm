@@ -105,17 +105,17 @@ export function MessagingTab() {
     <div className="max-w-3xl space-y-6">
       <div className="space-y-1">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
-          <MessageSquare className="h-5 w-5" /> {t("settings.messaging.title", "Messaging")}
+          <MessageSquare className="h-5 w-5" /> {t("settings.messaging.title")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {t("settings.messaging.description", "Text appointment reminders from each location's own number. Clients who reply land in your inbox; STOP opt-outs are handled automatically.")}
+          {t("settings.messaging.description")}
         </p>
       </div>
 
       {/* Usage + consent summary */}
       <div className="grid gap-4 sm:grid-cols-3">
         <SummaryStat
-          label={t("settings.messaging.smsThisMonth", "SMS this month")}
+          label={t("settings.messaging.smsThisMonth")}
           value={
             usage
               ? usage.includedSms != null
@@ -123,10 +123,10 @@ export function MessagingTab() {
                 : String(usage.smsUsed)
               : "—"
           }
-          hint={usage?.includedSms != null ? t("settings.messaging.included", "included") : undefined}
+          hint={usage?.includedSms != null ? t("settings.messaging.included") : undefined}
         />
-        <SummaryStat label={t("settings.messaging.clientsOptedIn", "Clients opted in")} value={String(consent?.optedIn ?? 0)} />
-        <SummaryStat label={t("settings.messaging.optedOut", "Opted out (STOP)")} value={String(consent?.suppressed ?? 0)} />
+        <SummaryStat label={t("settings.messaging.clientsOptedIn")} value={String(consent?.optedIn ?? 0)} />
+        <SummaryStat label={t("settings.messaging.optedOut")} value={String(consent?.suppressed ?? 0)} />
       </div>
 
       {/* Per-location setup */}
@@ -335,18 +335,18 @@ function UnconfiguredLocation({
     <div className="mt-4 rounded-xl border border-dashed border-border bg-muted/20 p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <p className="text-sm font-medium">{t("settings.messaging.notSetUp", "Texting is not set up yet")}</p>
+          <p className="text-sm font-medium">{t("settings.messaging.notSetUp")}</p>
           <p className="text-sm text-muted-foreground">
-            {t("settings.messaging.notSetUpDesc", "Start a guided setup for this location. You can text-enable an existing number or choose a new local texting number.")}
+            {t("settings.messaging.notSetUpDesc")}
           </p>
           {loc.existingPhone ? (
             <p className="text-xs text-muted-foreground">
-              {t("settings.messaging.existingPhone", "Existing phone on file:")} {loc.existingPhone}
+              {t("settings.messaging.existingPhone")} {loc.existingPhone}
             </p>
           ) : null}
         </div>
         <Button onClick={onStartSetup} className="shrink-0">
-          {t("settings.messaging.setUpTexting", "Set up texting")}
+          {t("settings.messaging.setUpTexting")}
         </Button>
       </div>
     </div>

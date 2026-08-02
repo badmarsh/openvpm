@@ -197,7 +197,7 @@ export function Sidebar({
                 {session.user.name}
               </p>
               <p className="truncate text-xs text-muted-foreground capitalize">
-                {session.user.role ? t(`roles.${session.user.role}`, session.user.role) : ""}
+                {session.user.role ? t(`roles.${session.user.role}`) : ""}
               </p>
             </div>
             <button

@@ -769,6 +769,7 @@ type LocationForm = {
 };
 
 function LocationsTab() {
+  const t = useTranslations();
   const utils = trpc.useUtils();
   const {
     data: locationList,
@@ -895,9 +896,9 @@ function LocationsTab() {
     <div className="max-w-4xl space-y-4">
       <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-sm font-semibold">{t("settings.locations.title", "Practice Locations")}</h3>
+          <h3 className="text-sm font-semibold">{t("settings.locations.title")}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {t("settings.locations.description", "Locations power texting setup, room assignment, reminders, and hosted billing quantity.")}
+            {t("settings.locations.description")}
           </p>
         </div>
         <Button
@@ -910,13 +911,13 @@ function LocationsTab() {
           className="gap-2"
         >
           <Plus className="h-4 w-4" />
-          {t("settings.locations.addLocation", "Add Location")}
+          {t("settings.locations.addLocation")}
         </Button>
       </div>
 
       {showAdd ? (
         <div className="rounded-lg border border-border bg-card p-4">
-          <h3 className="text-sm font-semibold">{t("settings.locations.newLocation", "New Location")}</h3>
+          <h3 className="text-sm font-semibold">{t("settings.locations.newLocation")}</h3>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Input
               placeholder="Location name"
@@ -1792,6 +1793,7 @@ function PlanGrid({
 
 // ── Staff ───────────────────────────────────────────────────
 function StaffTab() {
+  const t = useTranslations();
   const utils = trpc.useUtils();
   const {
     data: staffList,
@@ -1949,7 +1951,7 @@ function StaffTab() {
           variant="outline"
         >
           <Mail className="mr-2 h-4 w-4" />
-          {t("settings.staff.inviteByEmail", "Invite by email")}
+          {t("settings.staff.inviteByEmail")}
         </Button>
         <Button
           onClick={() => {
@@ -1960,7 +1962,7 @@ function StaffTab() {
           size="sm"
         >
           <Plus className="mr-2 h-4 w-4" />
-          {t("settings.staff.addStaff", "Add Staff")}
+          {t("settings.staff.addStaff")}
         </Button>
       </div>
 
@@ -2159,12 +2161,12 @@ function StaffTab() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.name", "Name")}</th>
-              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.email", "Email")}</th>
-              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.role", "Role")}</th>
-              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.phone", "Phone")}</th>
-              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.license", "License #")}</th>
-              <th className="px-4 py-3 text-right font-medium">{t("settings.staff.headers.actions", "Actions")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.name")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.email")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.role")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.phone")}</th>
+              <th className="px-4 py-3 text-left font-medium">{t("settings.staff.headers.license")}</th>
+              <th className="px-4 py-3 text-right font-medium">{t("settings.staff.headers.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -2780,6 +2782,7 @@ const IMPORT_COLUMN_HINTS: Record<ImportMode, string> = {
 
 // ── Data Tab ─────────────────────────────────────────────────
 function DataTab() {
+  const t = useTranslations();
   const [exportingType, setExportingType] = useState<string | null>(null);
   const [importMode, setImportMode] = useState<ImportMode | null>(null);
   const [migrationSource, setMigrationSource] = useState<
@@ -3317,9 +3320,9 @@ function DataTab() {
     <div className="space-y-8">
       {/* Sample data */}
       <div>
-        <h3 className="text-sm font-semibold mb-1">{t("settings.data.sampleDataTitle", "Sample data")}</h3>
+        <h3 className="text-sm font-semibold mb-1">{t("settings.data.sampleDataTitle")}</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          {t("settings.data.sampleDataDesc", "A practice full of made up clients and pets so you can explore. Add it any time, and remove it when you are ready to work for real.")}
+          {t("settings.data.sampleDataDesc")}
         </p>
         <Button
           variant="outline"
@@ -3340,7 +3343,7 @@ function DataTab() {
             reseedDemo.isPending
           }
         >
-          {hasDemo ? t("settings.data.removeSampleData", "Remove sample data") : t("settings.data.addSampleData", "Add sample data")}
+          {hasDemo ? t("settings.data.removeSampleData") : t("settings.data.addSampleData")}
         </Button>
         {onboarding.error || onboardingMissing ? (
           <p className="mt-2 text-xs text-destructive">

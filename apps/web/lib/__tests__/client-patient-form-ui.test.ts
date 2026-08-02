@@ -110,14 +110,14 @@ describe("client and patient form UI states", () => {
 
     expect(newClient).toContain("function canManageClientFormRole");
     expect(newClient).toContain("if (!canManageClientFormRole(session?.user?.role))");
-    expect(newClient).toContain("Checking client access...");
-    expect(newClient).toContain("Client actions are read-only");
+    expect(newClient).toContain("Prebieha kontrola prístupu klienta...");
+    expect(newClient).toContain("Akcie klienta sú len na čítanie");
     expect(newClient).toContain("return <NewClientForm />");
 
     expect(editClient).toContain("function canManageClientFormRole");
     expect(editClient).toContain("if (!canManageClientFormRole(session?.user?.role))");
-    expect(editClient).toContain("Checking client access...");
-    expect(editClient).toContain("Client actions are read-only");
+    expect(editClient).toContain("Prebieha kontrola prístupu klienta...");
+    expect(editClient).toContain("Akcie klienta sú len na čítanie");
     expect(editClient).toContain("return <EditClientForm />");
 
     expect(newPatient).toContain("function canManagePatientFormRole");
@@ -183,8 +183,8 @@ describe("client and patient form UI states", () => {
     expect(clientEdit).toContain("return <EditClientLoadingPanel />");
     expect(clientEdit).toContain("error: loadError");
     expect(clientEdit).toContain("if (loadError || !client)");
-    expect(clientEdit).toContain('title="Unable to load client"');
-    expect(clientEdit).toContain('label: "Back to Clients"');
+    expect(clientEdit).toContain('title="Nepodarilo sa načítať klienta"');
+    expect(clientEdit).toContain('label: "Späť na klientov"');
     expect(clientEdit).toContain("router.push(\"/clients\")");
     expect(clientEdit).toContain("Load the client before saving changes.");
     expect(clientEdit).not.toContain(

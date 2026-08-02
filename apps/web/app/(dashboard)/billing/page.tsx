@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import {
   FileText,
   ChevronDown,
@@ -142,6 +143,7 @@ function getDisplayStatus(invoice: {
 }
 
 export default function BillingPage() {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const formatCurrency = useCurrencyFormatter();
@@ -246,16 +248,16 @@ export default function BillingPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-heading text-xl font-semibold">{t("billing.title", "Fakturácia a faktúry")}</h2>
+          <h2 className="font-heading text-xl font-semibold">{t("billing.title")}</h2>
           <p className="text-sm text-muted-foreground">
-            {t("billing.subtitle", "Faktúry a platby")}
+            {t("billing.subtitle")}
           </p>
         </div>
         {canManageBilling && (
           <Button asChild>
             <Link href="/billing/new">
               <Plus className="mr-1 h-4 w-4" />
-              {t("billing.new_invoice", "Nová faktúra")}
+              {t("billing.new_invoice")}
             </Link>
           </Button>
         )}

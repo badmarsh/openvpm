@@ -506,8 +506,8 @@ describe("auth router input validation", () => {
         practiceId: "practice-1",
         customerEmail: "owner@example.com",
         trialPeriodDays: 14,
-        successUrl: "http://localhost:3000/login?checkout=success",
-        cancelUrl: "http://localhost:3000/login?checkout=cancelled",
+        successUrl: "http://localhost:3001/login?checkout=success",
+        cancelUrl: "http://localhost:3001/login?checkout=cancelled",
       })
     );
   });

@@ -1,0 +1,112 @@
+94: { id: "soap", label: "Poznámky SOAP", icon: FileText },
+95: { id: "vaccinations", label: "Očkovanie", icon: Syringe },
+97: { id: "problems", label: "Problémy", icon: ClipboardList },
+98: { id: "labResults", label: "Laboratórne výsledky", icon: FlaskConical },
+198: label: "Termín čoskoro",
+203: label: "Aktuálne",
+388: Kontrola bezpečnosti predpisovania
+397: <span>Nie je možné skontrolovať bezpečnosť predpisovania. {errorMessage}</span>
+407: Nenašli sa žiadne upozornenia na alergie alebo aktívne lieky.
+431: Bezpečnostné upozornenia na predpis
+445: <Badge variant="outline">Vyžaduje sa prepísanie</Badge>
+728: toast.success("Očkovanie zaznamenané");
+739: toast.success("Problém pridaný");
+750: toast.success("Stav problému bol aktualizovaný");
+759: toast.success("Výsledok laboratória vytvorený");
+771: toast.success("Stav výsledkov laboratória bol aktualizovaný");
+780: toast.success("Zaznamenaný postup");
+791: toast.success("Predpis vytvorený");
+901: Klinická dokumentácia a anamnéza pacienta
+912: Nová poznámka SOAP
+922: placeholder="Hľadať pacientov podľa mena..."
+950: Hľadáme pacientov...
+955: Nenašli sa žiadni pacienti
+990: Vlastník: {patient.clientFirstName}{" "}
+1016: Vlastník: {selectedPatient.clientFirstName}{" "}
+1040: Zmeniť pacienta
+1085: <RecordsLoadingPanel label="Načítavajú sa nastavenia záznamov..." />
+1100: <RecordsLoadingPanel label="Načítavam poznámky SOAP..." />
+1131: Dovezené
+1162: Subjektívne
+1171: Agenta OpenVPM môžu spustiť iba správcovia a veterinári.
+1189: Plán
+1202: title="Zatiaľ žiadne poznámky SOAP"
+1206: label: "Vytvoriť prvú poznámku",
+1237: Pridať očkovanie
+1264: Vakcína *
+1283: Ďalší termín
+1305: Číslo šarže
+1357: Zrušiť
+1372: <RecordsLoadingPanel label="Načítava sa očkovanie..." />
+1380: Vakcína
+1384: Dátum podania
+1388: Ďalší termín
+1452: title="Zatiaľ žiadne záznamy o očkovaní"
+1483: Nový predpis
+1502: "Pred uložením si vezmite na vedomie bezpečnostné upozornenia na predpis."
+1553: Položka zásob
+1576: <option value="">. Poznámky</option>
+1578: <option disabled>Načítavam inventár...</option>
+1581: <option disabled>Inventár nie je k dispozícii</option>
+1601: Zásoby budú odpočítané podľa vydaného množstva.
+1608: Dávkovanie *
+1638: placeholder="napr. Každých 12 hodín"
+1644: Množstvo
+1664: Náplne
+1683: Dátum začiatku *
+1700: Dátum ukončenia
+1728: placeholder="Podávajte s jedlom"
+1763: Lekár skontroloval a akceptuje tieto predpisy
+1764: bezpečnostné upozornenia.
+1780: Uložiť predpis
+1794: Zrušiť
+1809: <RecordsLoadingPanel label="Načítavam recepty..." />
+1820: Dávkovanie
+1828: Inventár
+1836: Náplne
+1864: Vydané {rx.quantity}
+1889: title="Vytlačiť štítok"
+1932: Vytlačiť štítok
+1941: <EmptyState icon={Pill} title="Zatiaľ žiadne recepty" />
+1963: Pridať problém
+1986: Problém *
+1999: placeholder="napr. Chronický zápal stredného ucha"
+2028: Otvoriť v časti Fakturácia
+2066: Zrušiť
+2081: <RecordsLoadingPanel label="Problémy s načítaním..." />
+2103: Otvorený rozvrh{" "}
+2140: Znovu otvoriť
+2157: Chronická
+2174: Vyriešiť
+2186: title="Žiadne zaznamenané problémy"
+2205: Objednávanie referenčného laboratória je zakázané, kým IDEXX, Antech,
+2206: alebo poverenia poskytovateľa Zoetis a skutočný adaptér sú
+2207: pripojený.
+2221: Pridať výsledok manuálneho laboratória
+2248: Text z vášho existujúceho čísla
+2267: Hodnota výsledku
+2303: Ref. Nízky rozsah
+2329: Ref. Vysoký rozsah
+2375: Zrušiť
+2390: <RecordsLoadingPanel label="Načítavajú sa laboratórne výsledky..." />
+2402: Pripomenutie názvu každého miesta || Testovacia správa od odoslaná || Číslo testu * || klientov
+2403: ktorí odpovedajú, pristanú vo vašej doručenej pošte; STOP opt-outs sú spracované automaticky.
+2407: Výsledok
+2415: Referenčný rozsah
+2423: Zoradené podľa
+2427: Dátum
+2519: <EmptyState icon={FlaskConical} title="Zatiaľ žiadne laboratórne výsledky" />
+2540: Pridať postup
+2584: placeholder="napr. Zubná profylaxia"
+2590: Trvanie (minúty)
+2628: placeholder="Stručný opis postupu"
+2634: Použitá anestézia
+2652: Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
+2664: placeholder="Doplňujúce poznámky"
+2686: Zrušiť
+2701: <RecordsLoadingPanel label="Postupy načítania..." />
+2713: Účinkuje
+2721: Anestézia
+2725: Dátum
+2768: <EmptyState icon={Scissors} title="Neboli zaznamenané žiadne postupy" />
+2783: title="Vyhľadajte pacienta vyššie a pozrite si jeho lekárske záznamy"

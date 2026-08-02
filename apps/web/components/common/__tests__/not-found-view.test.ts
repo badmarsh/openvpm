@@ -8,10 +8,10 @@ describe("NotFoundView", () => {
     const markup = renderToStaticMarkup(createElement(NotFoundView));
 
     expect(markup).toContain("404");
-    expect(markup).toContain("Page not found");
-    expect(markup).toContain("This page may have moved");
+    expect(markup).toContain("Stránka sa nenašla");
+    expect(markup).toContain("Táto stránka sa mohla premiestniť");
     expect(markup).toContain('href="/"');
-    expect(markup).toContain("Go to Dashboard");
+    expect(markup).toContain("Prejsť na informačný panel");
     expect(markup).toContain('id="main-content"');
   });
 });

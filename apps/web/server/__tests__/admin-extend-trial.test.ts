@@ -13,6 +13,13 @@ const mocks = vi.hoisted(() => {
     };
     return builder;
   });
+  const insertValues = vi.fn();
+  const insert = vi.fn(() => ({
+    values: vi.fn(async (values: unknown) => {
+      insertValues(values);
+      return [];
+    }),
+  }));
   const updateSet = vi.fn();
   const update = vi.fn(() => ({
     set: vi.fn((values: unknown) => {
@@ -20,7 +27,7 @@ const mocks = vi.hoisted(() => {
       return { where: vi.fn(async () => undefined) };
     }),
   }));
-  const db = { select, update };
+  const db = { select, update, insert };
 
   return {
     db,

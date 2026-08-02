@@ -29,8 +29,8 @@ describe("responsive dashboard shell", () => {
   it("keeps top bar labels and quick-create actions aligned with app roles", () => {
     const source = readFileSync("components/layout/top-bar.tsx", "utf8");
 
-    expect(source).toContain('"/agent": "Agent"');
-    expect(source).toContain('"/controlled-substances": "Controlled Substances"');
+    expect(source).toContain('"/agent": "nav.agent"');
+    expect(source).toContain('"/controlled-substances": "nav.controlledSubstances"');
     expect(source).toContain("useSession()");
     expect(source).toContain("availableNewActions");
     expect(source).toContain(

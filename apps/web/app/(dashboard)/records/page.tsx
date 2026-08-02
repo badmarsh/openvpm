@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import {
   Search,
   FileText,
@@ -91,11 +92,11 @@ import {
 type Tab = "soap" | "vaccinations" | "prescriptions" | "problems" | "labResults" | "procedures";
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "soap", label: "Poznámky SOAP", icon: FileText },
-  { id: "vaccinations", label: "Očkovanie", icon: Syringe },
+  { id: "soap", label: t("records.notes", "SOAP Notes"), icon: FileText },
+  { id: "vaccinations", label: t("records.vaccinations", "Vaccinations"), icon: Syringe },
   { id: "prescriptions", label: "Predpisy", icon: Pill },
-  { id: "problems", label: "Problémy", icon: ClipboardList },
-  { id: "labResults", label: "Laboratórne výsledky", icon: FlaskConical },
+  { id: "problems", label: t("records.problems", "Problems"), icon: ClipboardList },
+  { id: "labResults", label: t("records.labResults", "Lab Results"), icon: FlaskConical },
   { id: "procedures", label: "Postupy", icon: Scissors },
 ];
 
@@ -195,12 +196,12 @@ function getVaccineDueStatus(
     };
   if (daysUntilDue <= 30)
     return {
-      label: "Termín čoskoro",
+      label: t("records.dueSoon", "Due soon"),
       className:
         "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
     };
   return {
-    label: "Aktuálne",
+    label: t("records.upToDate", "Up to date"),
     className:
       "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
   };
@@ -385,7 +386,7 @@ function PrescriptionSafetyPanel({
       <div className="flex items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
         
-        Kontrola bezpečnosti predpisovania
+        {t("records.rxSafetyCheck", "Prescription safety check")}
       </div>
     );
   }
@@ -394,7 +395,7 @@ function PrescriptionSafetyPanel({
     return (
       <div className="flex items-start gap-2 rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-        <span>Nie je možné skontrolovať bezpečnosť predpisovania. {errorMessage}</span>
+        <span>{t("records.rxSafetyError", "Unable to check prescription safety. ")}{errorMessage}</span>
       </div>
     );
   }
@@ -404,7 +405,7 @@ function PrescriptionSafetyPanel({
       <div className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
         <CheckCircle2 className="h-4 w-4" />
         
-        Nenašli sa žiadne upozornenia na alergie alebo aktívne lieky.
+        {t("records.noAllergyWarnings", "No allergy or active medication warnings found.")}
       </div>
     );
   }
@@ -428,7 +429,7 @@ function PrescriptionSafetyPanel({
           )}
         />
         
-        Bezpečnostné upozornenia na predpis
+        {t("records.rxSafetyWarnings", "Prescription safety warnings")}
       </div>
       <div className="space-y-2">
         {warnings.map((warning, index) => (
@@ -442,7 +443,7 @@ function PrescriptionSafetyPanel({
                 {warning.severity}
               </Badge>
               {warning.requiresOverride && (
-                <Badge variant="outline">Vyžaduje sa prepísanie</Badge>
+                <Badge variant="outline">{t("records.overrideRequired", "Override required")}</Badge>
               )}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -484,6 +485,7 @@ function RecordsLoadingPanel({ label }: { label: string }) {
 }
 
 export default function RecordsPage() {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const userRole = session?.user?.role;
@@ -725,7 +727,7 @@ export default function RecordsPage() {
 
   const createVaccination = trpc.records.createVaccination.useMutation({
     onSuccess: () => {
-      toast.success("Očkovanie zaznamenané");
+      toast.success(t("records.vaccineRecorded", "Vaccination recorded"));
       refetchVaccinations();
       setShowVaccinationForm(false);
       setVaccinationForm(initialVaccinationForm());
@@ -736,7 +738,7 @@ export default function RecordsPage() {
   });
   const createProblem = trpc.records.createProblem.useMutation({
     onSuccess: () => {
-      toast.success("Problém pridaný");
+      toast.success(t("records.problemAdded", "Problem added"));
       refetchProblems();
       setShowProblemForm(false);
       setProblemForm(initialProblemForm());
@@ -747,7 +749,7 @@ export default function RecordsPage() {
   });
   const updateProblemStatus = trpc.records.updateProblemStatus.useMutation({
     onSuccess: () => {
-      toast.success("Stav problému bol aktualizovaný");
+      toast.success(t("records.problemStatusUpdated", "Problem status updated"));
       refetchProblems();
     },
     onError: (err) => {
@@ -756,7 +758,7 @@ export default function RecordsPage() {
   });
   const createLabResult = trpc.records.createLabResult.useMutation({
     onSuccess: () => {
-      toast.success("Výsledok laboratória vytvorený");
+      toast.success(t("records.labResultCreated", "Lab result created"));
       refetchLabResults();
       setShowLabForm(false);
       setLabForm(initialLabResultForm());
@@ -768,7 +770,7 @@ export default function RecordsPage() {
   const updateLabResultStatus =
     trpc.records.updateLabResultStatus.useMutation({
       onSuccess: () => {
-        toast.success("Stav výsledkov laboratória bol aktualizovaný");
+        toast.success(t("records.labStatusUpdated", "Lab result status updated"));
         refetchLabResults();
       },
       onError: (err) => {
@@ -777,7 +779,7 @@ export default function RecordsPage() {
     });
   const createProcedure = trpc.records.createProcedure.useMutation({
     onSuccess: () => {
-      toast.success("Zaznamenaný postup");
+      toast.success(t("records.procedureRecorded", "Procedure recorded"));
       refetchProcedures();
       setShowProcedureForm(false);
       setProcedureForm(initialProcedureForm());
@@ -788,7 +790,7 @@ export default function RecordsPage() {
   });
   const createPrescription = trpc.records.createPrescription.useMutation({
     onSuccess: () => {
-      toast.success("Predpis vytvorený");
+      toast.success(t("records.rxCreated", "Prescription created"));
       refetchPrescriptions();
       setShowPrescriptionForm(false);
       setPrescriptionForm(initialPrescriptionForm(recordsTimeZone));
@@ -898,7 +900,7 @@ export default function RecordsPage() {
           </h2>
           <p className="text-sm text-muted-foreground">
             
-            Klinická dokumentácia a anamnéza pacienta
+            {t("records.clinicalDocsAndHistory", "Clinical documentation and patient history")}
           </p>
         </div>
         {selectedPatient && canCreateSoapNotes && (
@@ -909,7 +911,7 @@ export default function RecordsPage() {
           >
             <Plus className="mr-2 h-4 w-4" />
             
-            Nová poznámka SOAP
+            {t("records.newSoapNote", "New SOAP Note")}
           </Button>
         )}
       </div>
@@ -919,7 +921,7 @@ export default function RecordsPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Hľadať pacientov podľa mena..."
+            placeholder=t("records.searchPatients", "Search patients by name...")
             value={searchQuery}
             maxLength={PATIENT_SEARCH_MAX_LENGTH}
             onChange={(e) => {
@@ -947,12 +949,12 @@ export default function RecordsPage() {
               <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 
-                Hľadáme pacientov...
+                {t("records.searchingPatients", "Searching for patients...")}
               </div>
             ) : searchResults && searchResults.length === 0 ? (
               <div className="px-4 py-3 text-sm text-muted-foreground">
                 
-                Nenašli sa žiadni pacienti
+                {t("records.noPatientsFound", "No patients found")}
               </div>
             ) : (
               searchResults?.map((patient) => (
@@ -987,7 +989,7 @@ export default function RecordsPage() {
                   {patient.clientFirstName && (
                     <span className="text-xs text-muted-foreground">
                       
-                      Vlastník: {patient.clientFirstName}{" "}
+                      {t("records.owner", "Owner: ")}{patient.clientFirstName}{" "}
                       {patient.clientLastName}
                     </span>
                   )}
@@ -1013,7 +1015,7 @@ export default function RecordsPage() {
             {selectedPatient.clientFirstName && (
               <span className="ml-3 text-muted-foreground">
                 
-                Vlastník: {selectedPatient.clientFirstName}{" "}
+                {t("records.owner", "Owner: ")}{selectedPatient.clientFirstName}{" "}
                 {selectedPatient.clientLastName}
               </span>
             )}
@@ -1037,7 +1039,7 @@ export default function RecordsPage() {
             }}
           >
             
-            Zmeniť pacienta
+            {t("records.changePatient", "Change patient")}
           </Button>
         </div>
       )}
@@ -1082,7 +1084,7 @@ export default function RecordsPage() {
                 }
               />
             ) : recordsSettingsLoading ? (
-              <RecordsLoadingPanel label="Načítavajú sa nastavenia záznamov..." />
+              <RecordsLoadingPanel label=t("records.loadingSettings", "Loading records settings...") />
             ) : (
               <>
             {/* SOAP Notes Tab */}
@@ -1097,7 +1099,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingSoapNotes ? (
-                  <RecordsLoadingPanel label="Načítavam poznámky SOAP..." />
+                  <RecordsLoadingPanel label=t("records.loadingNotes", "Loading SOAP notes...") />
                 ) : soapNotes && soapNotes.length > 0 ? (
                   <div className="space-y-3">
                     {soapNotes.map((note) => {
@@ -1128,7 +1130,7 @@ export default function RecordsPage() {
                                   {note.imported ? (
                                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
                                       
-                                      Dovezené
+                                      {t("records.imported", "Imported")}
                                     </span>
                                   ) : null}
                                 </div>
@@ -1159,7 +1161,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  Subjektívne
+                                  {t("records.subjective", "Subjective")}
                                 </h4>
                                 <p className="text-sm">
                                   {note.subjective || "--"}
@@ -1168,7 +1170,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  Agenta OpenVPM môžu spustiť iba správcovia a veterinári.
+                                  {t("records.agentAdminOnly", "OpenVPM Agent can only be run by admins and veterinarians.")}
                                 </h4>
                                 <p className="text-sm">
                                   {note.objective || "--"}
@@ -1186,7 +1188,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  Plán
+                                  {t("records.plan", "Plan")}
                                 </h4>
                                 <p className="text-sm">{note.plan || "--"}</p>
                               </div>
@@ -1199,11 +1201,11 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={FileText}
-                    title="Zatiaľ žiadne poznámky SOAP"
+                    title=t("records.noSoapYet", "No SOAP notes yet")
                     action={
                       canCreateSoapNotes
                         ? {
-                            label: "Vytvoriť prvú poznámku",
+                            label: t("records.createFirstNote", "Create first note"),
                             onClick: () =>
                               router.push(
                                 `/records/new-soap/${selectedPatient.id}`
@@ -1234,7 +1236,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      Pridať očkovanie
+                      {t("records.addVaccination", "Add vaccination")}
                     </Button>
                   </div>
                 )}
@@ -1261,7 +1263,7 @@ export default function RecordsPage() {
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Vakcína *
+                          {t("records.vaccineRequired", "Vaccine *")}
                         </label>
                         <Input
                           name="vaccineName"
@@ -1280,7 +1282,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Ďalší termín
+                          {t("records.nextDueDate", "Next due date")}
                         </label>
                         <Input
                           name="nextDueDate"
@@ -1302,7 +1304,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Číslo šarže
+                          {t("records.lotNumber", "Lot number")}
                         </label>
                         <Input
                           name="lotNumber"
@@ -1354,7 +1356,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        Zrušiť
+                        {t("records.cancel", "Cancel")}
                       </Button>
                     </div>
                   </form>
@@ -1369,7 +1371,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingVaccinations ? (
-                  <RecordsLoadingPanel label="Načítava sa očkovanie..." />
+                  <RecordsLoadingPanel label=t("records.loadingVaccinations", "Loading vaccinations...") />
                 ) : vaccinations && vaccinations.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1377,15 +1379,15 @@ export default function RecordsPage() {
                         <tr className="border-b border-border bg-muted/50">
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Vakcína
+                            {t("records.vaccine", "Vaccine")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Dátum podania
+                            {t("records.dateAdministered", "Date administered")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Ďalší termín
+                            {t("records.nextDueDate", "Next due date")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1449,7 +1451,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={Syringe}
-                    title="Zatiaľ žiadne záznamy o očkovaní"
+                    title=t("records.noVaccinesYet", "No vaccination records yet")
                   />
                 )}
               </div>
@@ -1480,7 +1482,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      Nový predpis
+                      {t("records.newRx", "New prescription")}
                     </Button>
                   </div>
                 )}
@@ -1499,7 +1501,7 @@ export default function RecordsPage() {
                         !prescriptionForm.acknowledgeSafetyWarnings
                       ) {
                         toast.error(
-                          "Pred uložením si vezmite na vedomie bezpečnostné upozornenia na predpis."
+                          t("records.noteRxWarnings", "Please note prescription safety warnings before saving.")
                         );
                         return;
                       }
@@ -1550,7 +1552,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Položka zásob
+                          {t("records.inventoryItem", "Inventory item")}
                         </label>
                         <select
                           value={prescriptionForm.productId}
@@ -1573,12 +1575,12 @@ export default function RecordsPage() {
                           }}
                           className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         >
-                          <option value="">. Poznámky</option>
+                          <option value="">{t("records.dotNotes", ". Notes")}</option>
                           {inventoryProducts.isLoading ? (
-                            <option disabled>Načítavam inventár...</option>
+                            <option disabled>{t("records.loadingInventory", "Loading inventory...")}</option>
                           ) : null}
                           {inventoryProducts.error || inventoryProductsMissing ? (
-                            <option disabled>Inventár nie je k dispozícii</option>
+                            <option disabled>{t("records.inventoryUnavailable", "Inventory unavailable")}</option>
                           ) : null}
                           {verifiedInventoryProducts
                             ? verifiedInventoryProducts.items.map((product) => (
@@ -1598,14 +1600,14 @@ export default function RecordsPage() {
                           selectedPrescriptionProduct ? (
                           <p className="mt-1 text-xs text-muted-foreground">
                             
-                            Zásoby budú odpočítané podľa vydaného množstva.
+{t("records.inventoryDeducted", "Inventory will be deducted based on dispensed quantity.")}
                           </p>
                         ) : null}
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Dávkovanie *
+                          {t("records.dosageRequired", "Dosage *")}
                         </label>
                         <Input
                           required
@@ -1635,13 +1637,13 @@ export default function RecordsPage() {
                               frequency: e.target.value,
                             }))
                           }
-                          placeholder="napr. Každých 12 hodín"
+                          placeholder=t("records.egEvery12", "e.g. Every 12 hours")
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Množstvo
+                          {t("records.quantity", "Quantity")}
                         </label>
                         <Input
                           type="number"
@@ -1661,7 +1663,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Náplne
+                          {t("records.refills", "Refills")}
                         </label>
                         <Input
                           type="number"
@@ -1680,7 +1682,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Dátum začiatku *
+                          {t("records.startDateRequired", "Start date *")}
                         </label>
                         <Input
                           type="date"
@@ -1697,7 +1699,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Dátum ukončenia
+                          {t("records.endDate", "End date")}
                         </label>
                         <Input
                           type="date"
@@ -1725,7 +1727,7 @@ export default function RecordsPage() {
                               instructions: e.target.value,
                             }))
                           }
-                          placeholder="Podávajte s jedlom"
+                          placeholder=t("records.withFood", "Administer with food")
                         />
                       </div>
                     </div>
@@ -1760,8 +1762,8 @@ export default function RecordsPage() {
                           />
                           <span>
                             
-                            Lekár skontroloval a akceptuje tieto predpisy
-                            bezpečnostné upozornenia.
+{t("records.doctorReviewed", "The doctor reviewed and accepts these prescriptions")}
+{t("records.safetyWarnings", "safety warnings.")}
                           </span>
                         </label>
                       )}
@@ -1777,7 +1779,7 @@ export default function RecordsPage() {
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         ) : null}
                         
-                        Uložiť predpis
+                        {t("records.saveRx", "Save prescription")}
                       </Button>
                       <Button
                         type="button"
@@ -1791,7 +1793,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        Zrušiť
+                        {t("records.cancel", "Cancel")}
                       </Button>
                     </div>
                   </form>
@@ -1806,7 +1808,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingPrescriptions ? (
-                  <RecordsLoadingPanel label="Načítavam recepty..." />
+                  <RecordsLoadingPanel label=t("records.loadingRxs", "Loading prescriptions...") />
                 ) : prescriptionsList && prescriptionsList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1817,7 +1819,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Dávkovanie
+                            {t("records.dosage", "Dosage")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1825,7 +1827,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Inventár
+                            {t("records.inventory", "Inventory")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1833,7 +1835,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Náplne
+                            {t("records.refills", "Refills")}
                           </th>
                           <th className="px-4 py-3 text-right font-medium text-muted-foreground">
                             
@@ -1861,7 +1863,7 @@ export default function RecordsPage() {
                                   {rx.quantity != null ? (
                                     <span className="block text-xs">
                                       
-                                      Vydané {rx.quantity}
+                                      {t("records.dispensed", "Dispensed ")}{rx.quantity}
                                     </span>
                                   ) : null}
                                 </span>
@@ -1886,7 +1888,7 @@ export default function RecordsPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                title="Vytlačiť štítok"
+                                title=t("records.printLabel", "Print label")
                                 onClick={async () => {
                                   const clientName = [
                                     selectedPatient?.clientFirstName,
@@ -1929,7 +1931,7 @@ export default function RecordsPage() {
                               >
                                 <Tag className="mr-1 h-3.5 w-3.5" />
                                 
-                                Vytlačiť štítok
+                                {t("records.printLabel", "Print label")}
                               </Button>
                             </td>
                           </tr>
@@ -1938,7 +1940,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Pill} title="Zatiaľ žiadne recepty" />
+                  <EmptyState icon={Pill} title=t("records.noRxYet", "No prescriptions yet") />
                 )}
               </div>
             )}
@@ -1960,7 +1962,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      Pridať problém
+                      {t("records.addProblem", "Add problem")}
                     </Button>
                   </div>
                 )}
@@ -1983,7 +1985,7 @@ export default function RecordsPage() {
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Problém *
+                          {t("records.problemRequired", "Problem *")}
                         </label>
                         <Input
                           name="description"
@@ -1996,7 +1998,7 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder="napr. Chronický zápal stredného ucha"
+                          placeholder=t("records.egChronicOtitis", "e.g. Chronic otitis media")
                         />
                       </div>
                       <div>
@@ -2025,7 +2027,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Otvoriť v časti Fakturácia
+                          {t("records.openInBilling", "Open in Billing")}
                         </label>
                         <Input
                           name="onsetDate"
@@ -2063,7 +2065,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        Zrušiť
+                        {t("records.cancel", "Cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2078,7 +2080,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProblems ? (
-                  <RecordsLoadingPanel label="Problémy s načítaním..." />
+                  <RecordsLoadingPanel label=t("records.loadingProblems", "Loading problems...") />
                 ) : problems && problems.length > 0 ? (
                   <div className="space-y-2">
                     {problems.map((problem) => (
@@ -2100,7 +2102,7 @@ export default function RecordsPage() {
                           {problem.onsetDate && (
                             <p className="text-xs text-muted-foreground mt-0.5">
                               
-                              Otvorený rozvrh{" "}
+                              {t("records.openSchedule", "Open schedule ")}{" "}
                               {formatClinicalDate(
                                 problem.onsetDate,
                                 recordsTimeZone
@@ -2137,7 +2139,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  Znovu otvoriť
+                                  {t("records.reopen", "Reopen")}
                                 </Button>
                               )}
                               {problem.status !== "chronic" && (
@@ -2154,7 +2156,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  Chronická
+                                  {t("records.chronic", "Chronic")}
                                 </Button>
                               )}
                               {problem.status !== "resolved" && (
@@ -2171,7 +2173,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  Vyriešiť
+                                  {t("records.resolve", "Resolve")}
                                 </Button>
                               )}
                             </div>
@@ -2183,7 +2185,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={ClipboardList}
-                    title="Žiadne zaznamenané problémy"
+                    title=t("records.noProblemsRecorded", "No recorded problems")
                   />
                 )}
               </div>
@@ -2202,9 +2204,9 @@ export default function RecordsPage() {
                       </p>
                       <p className="mt-1 text-xs leading-5 text-amber-900 dark:text-amber-200">
                         
-                        Objednávanie referenčného laboratória je zakázané, kým IDEXX, Antech,
-                        alebo poverenia poskytovateľa Zoetis a skutočný adaptér sú
-                        pripojený.
+                        {t("records.refLabDisabled1", "Reference lab ordering is disabled until IDEXX, Antech,")}
+                          {t("records.refLabDisabled2", "or Zoetis provider credentials and actual adapter are")}
+                          {t("records.refLabDisabled3", "connected.")}
                       </p>
                     </div>
                   </div>
@@ -2218,7 +2220,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      Pridať výsledok manuálneho laboratória
+                      {t("records.addManualLab", "Add manual lab result")}
                     </Button>
                   )}
                 </div>
@@ -2245,7 +2247,7 @@ export default function RecordsPage() {
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Text z vášho existujúceho čísla
+                          {t("records.textFromExisting", "Text from your existing number")}
                         </label>
                         <Input
                           name="testName"
@@ -2264,7 +2266,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Hodnota výsledku
+                          {t("records.resultValue", "Result value")}
                         </label>
                         <Input
                           name="resultValue"
@@ -2300,7 +2302,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Ref. Nízky rozsah
+                          {t("records.refLow", "Ref. Low range")}
                         </label>
                         <Input
                           name="referenceRangeLow"
@@ -2326,7 +2328,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Ref. Vysoký rozsah
+                          {t("records.refHigh", "Ref. High range")}
                         </label>
                         <Input
                           name="referenceRangeHigh"
@@ -2372,7 +2374,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        Zrušiť
+                        {t("records.cancel", "Cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2387,7 +2389,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingLabResults ? (
-                  <RecordsLoadingPanel label="Načítavajú sa laboratórne výsledky..." />
+                  <RecordsLoadingPanel label=t("records.loadingLabs", "Loading lab results...") />
                 ) : labResultsList && labResultsList.length > 0 ? (
                   <div className="space-y-4">
                     {labTrendGroups.length > 0 && (
@@ -2399,12 +2401,12 @@ export default function RecordsPage() {
                           <tr className="border-b border-border bg-muted/50">
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              Pripomenutie názvu každého miesta || Testovacia správa od odoslaná || Číslo testu * || klientov
-          ktorí odpovedajú, pristanú vo vašej doručenej pošte; STOP opt-outs sú spracované automaticky.
+                              {t("records.locationReminder1", "Location name reminder || Test message sent from || Test number * || clients")}
+                    {t("records.locationReminder2", "replying will land in your inbox; STOP opt-outs are processed automatically.")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              Výsledok
+                              {t("records.result", "Result")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2412,7 +2414,7 @@ export default function RecordsPage() {
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              Referenčný rozsah
+                              {t("records.refRange", "Reference range")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2420,11 +2422,11 @@ export default function RecordsPage() {
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              Zoradené podľa
+                              {t("records.sortedBy", "Sorted by")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              Dátum
+                              {t("records.date", "Date")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2516,7 +2518,7 @@ export default function RecordsPage() {
                     </div>
                   </div>
                 ) : (
-                  <EmptyState icon={FlaskConical} title="Zatiaľ žiadne laboratórne výsledky" />
+                  <EmptyState icon={FlaskConical} title=t("records.noLabsYet", "No lab results yet") />
                 )}
               </div>
             )}
@@ -2537,7 +2539,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      Pridať postup
+                      {t("records.addProcedure", "Add procedure")}
                     </Button>
                   </div>
                 )}
@@ -2581,13 +2583,13 @@ export default function RecordsPage() {
                               name: e.target.value,
                             }))
                           }
-                          placeholder="napr. Zubná profylaxia"
+                          placeholder=t("records.egDental", "e.g. Dental prophylaxis")
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Trvanie (minúty)
+                          {t("records.durationMins", "Duration (minutes)")}
                         </label>
                         <Input
                           name="durationMinutes"
@@ -2625,13 +2627,13 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder="Stručný opis postupu"
+                          placeholder=t("records.briefDesc", "Brief description of procedure")
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Použitá anestézia
+                          {t("records.anesthesiaUsed", "Anesthesia used")}
                         </label>
                         <Input
                           name="anesthesiaUsed"
@@ -2649,7 +2651,7 @@ export default function RecordsPage() {
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          Číslo je nastavené. Registrácia operátora teraz čaká na spracovanie.
+                          {t("records.operatorPending", "Number is set. Operator registration is now pending.")}
                         </label>
                         <Input
                           name="notes"
@@ -2661,7 +2663,7 @@ export default function RecordsPage() {
                               notes: e.target.value,
                             }))
                           }
-                          placeholder="Doplňujúce poznámky"
+                          placeholder=t("records.additionalNotes", "Additional notes")
                         />
                       </div>
                     </div>
@@ -2683,7 +2685,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        Zrušiť
+                        {t("records.cancel", "Cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2698,7 +2700,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProcedures ? (
-                  <RecordsLoadingPanel label="Postupy načítania..." />
+                  <RecordsLoadingPanel label=t("records.loadingProcedures", "Loading procedures...") />
                 ) : proceduresList && proceduresList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -2710,7 +2712,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Účinkuje
+                            {t("records.performedBy", "Performed by")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -2718,11 +2720,11 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Anestézia
+                            {t("records.anesthesia", "Anesthesia")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            Dátum
+                            {t("records.date", "Date")}
                           </th>
                         </tr>
                       </thead>
@@ -2765,7 +2767,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Scissors} title="Neboli zaznamenané žiadne postupy" />
+                  <EmptyState icon={Scissors} title=t("records.noProceduresRecorded", "No procedures recorded") />
                 )}
               </div>
             )}
@@ -2780,7 +2782,7 @@ export default function RecordsPage() {
         <EmptyState
           className="mt-6"
           icon={Search}
-          title="Vyhľadajte pacienta vyššie a pozrite si jeho lekárske záznamy"
+          title=t("records.searchPatientTop", "Search for a patient above to view their medical records")
         />
       )}
     </div>
