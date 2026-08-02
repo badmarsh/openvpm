@@ -177,7 +177,8 @@ export default function NewSoapNotePage() {
         <Button
           variant="outline"
           className="mt-4"
-          onClick={() =>
+          onClick={() => router.push("/records")}
+        >
           {t("newSoap.backToRecords", "Back to Records")}
         </Button>
       </div>

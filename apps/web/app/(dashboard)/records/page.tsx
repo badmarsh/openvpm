@@ -921,7 +921,7 @@ export default function RecordsPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder=t("records.searchPatients", "Search patients by name...")
+            placeholder={t("records.searchPatients", "Search patients by name...")}
             value={searchQuery}
             maxLength={PATIENT_SEARCH_MAX_LENGTH}
             onChange={(e) => {
@@ -1084,7 +1084,7 @@ export default function RecordsPage() {
                 }
               />
             ) : recordsSettingsLoading ? (
-              <RecordsLoadingPanel label=t("records.loadingSettings", "Loading records settings...") />
+              <RecordsLoadingPanel label={t("records.loadingSettings", "Loading records settings...")} />
             ) : (
               <>
             {/* SOAP Notes Tab */}
@@ -1099,7 +1099,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingSoapNotes ? (
-                  <RecordsLoadingPanel label=t("records.loadingNotes", "Loading SOAP notes...") />
+                  <RecordsLoadingPanel label={t("records.loadingNotes", "Loading SOAP notes...")} />
                 ) : soapNotes && soapNotes.length > 0 ? (
                   <div className="space-y-3">
                     {soapNotes.map((note) => {
@@ -1201,7 +1201,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={FileText}
-                    title=t("records.noSoapYet", "No SOAP notes yet")
+                    title={t("records.noSoapYet", "No SOAP notes yet")}
                     action={
                       canCreateSoapNotes
                         ? {
@@ -1371,7 +1371,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingVaccinations ? (
-                  <RecordsLoadingPanel label=t("records.loadingVaccinations", "Loading vaccinations...") />
+                  <RecordsLoadingPanel label={t("records.loadingVaccinations", "Loading vaccinations...")} />
                 ) : vaccinations && vaccinations.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1451,7 +1451,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={Syringe}
-                    title=t("records.noVaccinesYet", "No vaccination records yet")
+                    title={t("records.noVaccinesYet", "No vaccination records yet")}
                   />
                 )}
               </div>
@@ -1637,7 +1637,7 @@ export default function RecordsPage() {
                               frequency: e.target.value,
                             }))
                           }
-                          placeholder=t("records.egEvery12", "e.g. Every 12 hours")
+                          placeholder={t("records.egEvery12", "e.g. Every 12 hours")}
                         />
                       </div>
                       <div>
@@ -1727,7 +1727,7 @@ export default function RecordsPage() {
                               instructions: e.target.value,
                             }))
                           }
-                          placeholder=t("records.withFood", "Administer with food")
+                          placeholder={t("records.withFood", "Administer with food")}
                         />
                       </div>
                     </div>
@@ -1808,7 +1808,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingPrescriptions ? (
-                  <RecordsLoadingPanel label=t("records.loadingRxs", "Loading prescriptions...") />
+                  <RecordsLoadingPanel label={t("records.loadingRxs", "Loading prescriptions...")} />
                 ) : prescriptionsList && prescriptionsList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1888,7 +1888,7 @@ export default function RecordsPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                title=t("records.printLabel", "Print label")
+                                title={t("records.printLabel", "Print label")}
                                 onClick={async () => {
                                   const clientName = [
                                     selectedPatient?.clientFirstName,
@@ -1940,7 +1940,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Pill} title=t("records.noRxYet", "No prescriptions yet") />
+                  <EmptyState icon={Pill} title={t("records.noRxYet", "No prescriptions yet")} />
                 )}
               </div>
             )}
@@ -1998,7 +1998,7 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder=t("records.egChronicOtitis", "e.g. Chronic otitis media")
+                          placeholder={t("records.egChronicOtitis", "e.g. Chronic otitis media")}
                         />
                       </div>
                       <div>
@@ -2080,7 +2080,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProblems ? (
-                  <RecordsLoadingPanel label=t("records.loadingProblems", "Loading problems...") />
+                  <RecordsLoadingPanel label={t("records.loadingProblems", "Loading problems...")} />
                 ) : problems && problems.length > 0 ? (
                   <div className="space-y-2">
                     {problems.map((problem) => (
@@ -2185,7 +2185,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={ClipboardList}
-                    title=t("records.noProblemsRecorded", "No recorded problems")
+                    title={t("records.noProblemsRecorded", "No recorded problems")}
                   />
                 )}
               </div>
@@ -2389,7 +2389,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingLabResults ? (
-                  <RecordsLoadingPanel label=t("records.loadingLabs", "Loading lab results...") />
+                  <RecordsLoadingPanel label={t("records.loadingLabs", "Loading lab results...")} />
                 ) : labResultsList && labResultsList.length > 0 ? (
                   <div className="space-y-4">
                     {labTrendGroups.length > 0 && (
@@ -2518,7 +2518,7 @@ export default function RecordsPage() {
                     </div>
                   </div>
                 ) : (
-                  <EmptyState icon={FlaskConical} title=t("records.noLabsYet", "No lab results yet") />
+                  <EmptyState icon={FlaskConical} title={t("records.noLabsYet", "No lab results yet")} />
                 )}
               </div>
             )}
@@ -2583,7 +2583,7 @@ export default function RecordsPage() {
                               name: e.target.value,
                             }))
                           }
-                          placeholder=t("records.egDental", "e.g. Dental prophylaxis")
+                          placeholder={t("records.egDental", "e.g. Dental prophylaxis")}
                         />
                       </div>
                       <div>
@@ -2627,7 +2627,7 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder=t("records.briefDesc", "Brief description of procedure")
+                          placeholder={t("records.briefDesc", "Brief description of procedure")}
                         />
                       </div>
                       <div>
@@ -2663,7 +2663,7 @@ export default function RecordsPage() {
                               notes: e.target.value,
                             }))
                           }
-                          placeholder=t("records.additionalNotes", "Additional notes")
+                          placeholder={t("records.additionalNotes", "Additional notes")}
                         />
                       </div>
                     </div>
@@ -2700,7 +2700,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProcedures ? (
-                  <RecordsLoadingPanel label=t("records.loadingProcedures", "Loading procedures...") />
+                  <RecordsLoadingPanel label={t("records.loadingProcedures", "Loading procedures...")} />
                 ) : proceduresList && proceduresList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -2767,7 +2767,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Scissors} title=t("records.noProceduresRecorded", "No procedures recorded") />
+                  <EmptyState icon={Scissors} title={t("records.noProceduresRecorded", "No procedures recorded")} />
                 )}
               </div>
             )}
@@ -2782,7 +2782,7 @@ export default function RecordsPage() {
         <EmptyState
           className="mt-6"
           icon={Search}
-          title=t("records.searchPatientTop", "Search for a patient above to view their medical records")
+          title={t("records.searchPatientTop", "Search for a patient above to view their medical records")}
         />
       )}
     </div>
