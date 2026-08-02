@@ -6,7 +6,7 @@ describe("whiteboard appointment workflow UI", () => {
     const source = readFileSync("app/(dashboard)/whiteboard/page.tsx", "utf8");
 
     expect(source).toContain('current === "checked_out"');
-    expect(source).toContain("Tlačiť absolutórium");
+    expect(source).toContain("Print Discharge");
     expect(source).not.toContain("Back to Exam");
     expect(source).not.toContain(
       'statusActions.push({ label: "Back to Exam", status: "in_exam"'

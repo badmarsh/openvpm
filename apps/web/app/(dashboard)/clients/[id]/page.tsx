@@ -88,8 +88,7 @@ function ClientDetailLoadingPanel() {
   return (
     <div className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
       <Loader2 className="h-4 w-4 animate-spin" />
-      
-      Načítavam klienta...
+      Loading client...
     </div>
   );
 }
@@ -374,11 +373,11 @@ export default function ClientDetailPage() {
         ) : (
           <EmptyState
             icon={PawPrint}
-            title="Pre tohto klienta zatiaľ žiadni pacienti"
+            title="No patients for this client yet"
             action={
               canManageClientDetails
                 ? {
-                    label: "Pridať pacienta",
+                    label: "Add patient",
                     onClick: () => router.push("/patients/new"),
                     icon: Plus,
                   }

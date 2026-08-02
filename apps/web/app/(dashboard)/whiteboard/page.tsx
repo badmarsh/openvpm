@@ -502,8 +502,7 @@ function AppointmentDetailModal({
                 onClick={handlePrintDischarge}
               >
                 <FileText className="mr-1.5 h-3 w-3" />
-                
-                Tlačiť absolutórium
+                Print Discharge
               </Button>
             )}
           </div>
