@@ -241,7 +241,7 @@ export const procedureData = [
     { name: "Ošetrenie tržnej rany", description: "Toaleta rany a primárne uzavretie 4 cm tržnej rany na ľavej hrudnej končatine", anesthesiaUsed: "Sedácia (Dexdomitor) + lokálny lidokaín", durationMinutes: 30 },
     { name: "Odstránenie cudzieho telesa", description: "Endoskopické odstránenie kusu ponožky zo žalúdka", anesthesiaUsed: "Celková izofluránová anestézia", durationMinutes: 90 },
     { name: "Kastrácia (Ovariohysterektómia)", description: "Rutinná ovariohysterektómia z prístupu v strednej línii", anesthesiaUsed: "Izoflurán + úvod propofolom + meloxikam", durationMinutes: 45 },
-    { name: "Kastrácia (Orchiektómia)", description: "Rutinná kastrácia, preskrotálny prístup, uzavretá technika", anesthesiaUsed: "Isoflurane + Propofol induction", durationMinutes: 25 },
+    { name: "Kastrácia (Orchiektómia)", description: "Rutinná kastrácia, preskrotálny prístup, uzavretá technika", anesthesiaUsed: "Izoflurán + úvod propofolom", durationMinutes: 25 },
     { name: "Cystotómia", description: "Chirurgické odstránenie močových kameňov pomocou ventrálnej cystotómie", anesthesiaUsed: "Celková izofluránová anestézia + epidurál", durationMinutes: 75 },
   ];
 
@@ -460,7 +460,7 @@ export const getTemplatesData = (practiceId: string): Array<TemplateRow & { item
       practiceId,
       name: "Zubná profylaxia — Štandard",
       description: "Rutinné čistenie zubov v anestézii. Zahrňuje predoperačné vyšetrenie krvi, odstránenie zubného kameňa a leštenie.",
-      category: "Dental",
+      category: "Zubné",
       isActive: true,
       items: [
         { description: "Predoperačný krvný panel", defaultQuantity: 1, defaultUnitPrice: "95.00" },
@@ -473,7 +473,7 @@ export const getTemplatesData = (practiceId: string): Array<TemplateRow & { item
       practiceId,
       name: "Kastrácia fenky — Do 18 kg",
       description: "Rutinná ovariohysterektómia pre malé/stredné fenky. Zahrňuje anestéziu, chirurgický zákrok a lieky od bolesti na 3 dni.",
-      category: "Surgery",
+      category: "Chirurgia",
       isActive: true,
       items: [
         { description: "Predoperačné vyšetrenie a krvný obraz", defaultQuantity: 1, defaultUnitPrice: "135.00" },
