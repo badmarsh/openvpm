@@ -1,7 +1,6 @@
 "use client";
 
 import { AppErrorView } from "@/components/common/app-error-view";
-import "@/styles/globals.css";
 
 export default function GlobalError({
   error,
