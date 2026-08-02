@@ -180,18 +180,18 @@ afterEach(() => {
 
 describe("portal checkout route", () => {
   it.each([
-    { payload: {}, label: "chýbajúce polia" },
+    { payload: {}, label: "missing fields" },
     {
       payload: { token: "portal-token", invoiceId: "not-a-uuid" },
-      label: "neplatné ID faktúry",
+      label: "invalid invoice id",
     },
     {
       payload: { token: "   ", invoiceId: INVOICE_ID },
-      label: "prázdny token",
+      label: "blank token",
     },
     {
       payload: { token: "a".repeat(65), invoiceId: INVOICE_ID },
-      label: "nadrozmerný token",
+      label: "oversized token",
     },
   ])("rejects $label before entering system context", async ({ payload }) => {
     const response = await POST(portalRequest(payload));
@@ -472,7 +472,7 @@ describe("portal checkout route", () => {
         amount: 6500,
         clientEmail: "jane@example.com",
         clientName: "Jane Client",
-        description: "Platba faktúry za sušienky",
+        description: "Invoice payment for Biscuit",
         currency: "cad",
         successUrl:
           `https://portal.example.com/portal/portal-token/invoices?payment=success&invoice=${INVOICE_ID}`,
@@ -541,12 +541,12 @@ describe("portal checkout route", () => {
   });
 
   it.each([
-    { url: null, label: "chýba" },
+    { url: null, label: "missing" },
     { url: "http://checkout.stripe.com/c/pay_123", label: "non-HTTPS" },
-    { url: "javascript:alert(1)", label: "skript" },
+    { url: "javascript:alert(1)", label: "script" },
     {
       url: "https://user:pass@checkout.stripe.com/c/pay_123",
-      label: "poverený",
+      label: "credentialed",
     },
   ])(
     "fails closed when Stripe returns a $label portal checkout URL",

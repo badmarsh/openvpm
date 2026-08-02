@@ -217,7 +217,7 @@ describe("Resend webhook", () => {
         subject: "Follow up",
         created_at: "2026-06-29T12:00:00Z",
         bounce: {
-          message: "Poštová schránka nie je k dispozícii",
+          message: "Mailbox unavailable",
           subType: "General",
           type: "Permanent",
         },

@@ -210,7 +210,7 @@ async function logInboundSmsCommunication(opts: {
         clientId: opts.clientId ?? undefined,
         channel: "sms",
         direction: "inbound",
-        subject: opts.subject ?? `SMS od ${opts.fromPhone}`,
+        subject: opts.subject ?? `SMS from ${opts.fromPhone}`,
         content: opts.text,
         status: "delivered",
         providerMessageId: opts.providerMessageId ?? undefined,
@@ -268,7 +268,7 @@ export async function handleInboundSmsReply(opts: {
       fromPhone,
       text,
       providerMessageId: opts.providerMessageId,
-      subject: `SMS odhlásenie od ${fromPhone}`,
+      subject: `SMS opt-out from ${fromPhone}`,
     });
     return { ok: true, action: "suppressed" };
   }
@@ -283,7 +283,7 @@ export async function handleInboundSmsReply(opts: {
       fromPhone,
       text,
       providerMessageId: opts.providerMessageId,
-      subject: `SMS prihlásenie od ${fromPhone}`,
+      subject: `SMS opt-in from ${fromPhone}`,
     });
     return { ok: true, action: "unsuppressed" };
   }

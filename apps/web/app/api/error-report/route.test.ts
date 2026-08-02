@@ -59,7 +59,7 @@ describe("POST /api/error-report", () => {
   it("rejects oversized reports before rate limits or capture", async () => {
     const response = await POST(
       request(
-        { source: "app-error", message: "bum" },
+        { source: "app-error", message: "boom" },
         { "content-length": String(JSON_REQUEST_BODY_MAX_BYTES + 1) }
       )
     );
@@ -75,7 +75,7 @@ describe("POST /api/error-report", () => {
       request(
         {
           source: "app-error",
-          message: "bum",
+          message: "boom",
           stack: "stack",
           digest: "digest",
           path: "/settings",
@@ -93,7 +93,7 @@ describe("POST /api/error-report", () => {
     });
     expect(mocks.captureException).toHaveBeenCalledWith({
       source: "app-error",
-      message: "bum",
+      message: "boom",
       stack: "stack",
       digest: "digest",
       path: "/settings",
@@ -110,7 +110,7 @@ describe("POST /api/error-report", () => {
     });
 
     const response = await POST(
-      request({ source: "app-error", message: "bum" })
+      request({ source: "app-error", message: "boom" })
     );
 
     expect(response.status).toBe(429);
@@ -131,7 +131,7 @@ describe("POST /api/error-report", () => {
 
     try {
       const response = await POST(
-        request({ source: "global-error", message: "bum" })
+        request({ source: "global-error", message: "boom" })
       );
 
       expect(response.status).toBe(429);
