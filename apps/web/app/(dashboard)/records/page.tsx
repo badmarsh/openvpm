@@ -92,11 +92,11 @@ import {
 type Tab = "soap" | "vaccinations" | "prescriptions" | "problems" | "labResults" | "procedures";
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "soap", label: t("records.notes", "SOAP Notes"), icon: FileText },
-  { id: "vaccinations", label: t("records.vaccinations", "Vaccinations"), icon: Syringe },
+  { id: "soap", label: t("records.notes"), icon: FileText },
+  { id: "vaccinations", label: t("records.vaccinations"), icon: Syringe },
   { id: "prescriptions", label: "Predpisy", icon: Pill },
-  { id: "problems", label: t("records.problems", "Problems"), icon: ClipboardList },
-  { id: "labResults", label: t("records.labResults", "Lab Results"), icon: FlaskConical },
+  { id: "problems", label: t("records.problems"), icon: ClipboardList },
+  { id: "labResults", label: t("records.labResults"), icon: FlaskConical },
   { id: "procedures", label: "Postupy", icon: Scissors },
 ];
 
@@ -196,12 +196,12 @@ function getVaccineDueStatus(
     };
   if (daysUntilDue <= 30)
     return {
-      label: t("records.dueSoon", "Due soon"),
+      label: t("records.dueSoon"),
       className:
         "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
     };
   return {
-    label: t("records.upToDate", "Up to date"),
+    label: t("records.upToDate"),
     className:
       "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
   };
@@ -386,7 +386,7 @@ function PrescriptionSafetyPanel({
       <div className="flex items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
         
-        {t("records.rxSafetyCheck", "Prescription safety check")}
+        {t("records.rxSafetyCheck")}
       </div>
     );
   }
@@ -395,7 +395,7 @@ function PrescriptionSafetyPanel({
     return (
       <div className="flex items-start gap-2 rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-        <span>{t("records.rxSafetyError", "Unable to check prescription safety. ")}{errorMessage}</span>
+        <span>{t("records.rxSafetyError")}{errorMessage}</span>
       </div>
     );
   }
@@ -405,7 +405,7 @@ function PrescriptionSafetyPanel({
       <div className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
         <CheckCircle2 className="h-4 w-4" />
         
-        {t("records.noAllergyWarnings", "No allergy or active medication warnings found.")}
+        {t("records.noAllergyWarnings")}
       </div>
     );
   }
@@ -429,7 +429,7 @@ function PrescriptionSafetyPanel({
           )}
         />
         
-        {t("records.rxSafetyWarnings", "Prescription safety warnings")}
+        {t("records.rxSafetyWarnings")}
       </div>
       <div className="space-y-2">
         {warnings.map((warning, index) => (
@@ -443,7 +443,7 @@ function PrescriptionSafetyPanel({
                 {warning.severity}
               </Badge>
               {warning.requiresOverride && (
-                <Badge variant="outline">{t("records.overrideRequired", "Override required")}</Badge>
+                <Badge variant="outline">{t("records.overrideRequired")}</Badge>
               )}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -727,7 +727,7 @@ export default function RecordsPage() {
 
   const createVaccination = trpc.records.createVaccination.useMutation({
     onSuccess: () => {
-      toast.success(t("records.vaccineRecorded", "Vaccination recorded"));
+      toast.success(t("records.vaccineRecorded"));
       refetchVaccinations();
       setShowVaccinationForm(false);
       setVaccinationForm(initialVaccinationForm());
@@ -738,7 +738,7 @@ export default function RecordsPage() {
   });
   const createProblem = trpc.records.createProblem.useMutation({
     onSuccess: () => {
-      toast.success(t("records.problemAdded", "Problem added"));
+      toast.success(t("records.problemAdded"));
       refetchProblems();
       setShowProblemForm(false);
       setProblemForm(initialProblemForm());
@@ -749,7 +749,7 @@ export default function RecordsPage() {
   });
   const updateProblemStatus = trpc.records.updateProblemStatus.useMutation({
     onSuccess: () => {
-      toast.success(t("records.problemStatusUpdated", "Problem status updated"));
+      toast.success(t("records.problemStatusUpdated"));
       refetchProblems();
     },
     onError: (err) => {
@@ -758,7 +758,7 @@ export default function RecordsPage() {
   });
   const createLabResult = trpc.records.createLabResult.useMutation({
     onSuccess: () => {
-      toast.success(t("records.labResultCreated", "Lab result created"));
+      toast.success(t("records.labResultCreated"));
       refetchLabResults();
       setShowLabForm(false);
       setLabForm(initialLabResultForm());
@@ -770,7 +770,7 @@ export default function RecordsPage() {
   const updateLabResultStatus =
     trpc.records.updateLabResultStatus.useMutation({
       onSuccess: () => {
-        toast.success(t("records.labStatusUpdated", "Lab result status updated"));
+        toast.success(t("records.labStatusUpdated"));
         refetchLabResults();
       },
       onError: (err) => {
@@ -779,7 +779,7 @@ export default function RecordsPage() {
     });
   const createProcedure = trpc.records.createProcedure.useMutation({
     onSuccess: () => {
-      toast.success(t("records.procedureRecorded", "Procedure recorded"));
+      toast.success(t("records.procedureRecorded"));
       refetchProcedures();
       setShowProcedureForm(false);
       setProcedureForm(initialProcedureForm());
@@ -790,7 +790,7 @@ export default function RecordsPage() {
   });
   const createPrescription = trpc.records.createPrescription.useMutation({
     onSuccess: () => {
-      toast.success(t("records.rxCreated", "Prescription created"));
+      toast.success(t("records.rxCreated"));
       refetchPrescriptions();
       setShowPrescriptionForm(false);
       setPrescriptionForm(initialPrescriptionForm(recordsTimeZone));
@@ -900,7 +900,7 @@ export default function RecordsPage() {
           </h2>
           <p className="text-sm text-muted-foreground">
             
-            {t("records.clinicalDocsAndHistory", "Clinical documentation and patient history")}
+            {t("records.clinicalDocsAndHistory")}
           </p>
         </div>
         {selectedPatient && canCreateSoapNotes && (
@@ -911,7 +911,7 @@ export default function RecordsPage() {
           >
             <Plus className="mr-2 h-4 w-4" />
             
-            {t("records.newSoapNote", "New SOAP Note")}
+            {t("records.newSoapNote")}
           </Button>
         )}
       </div>
@@ -921,7 +921,7 @@ export default function RecordsPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={t("records.searchPatients", "Search patients by name...")}
+            placeholder={t("records.searchPatients")}
             value={searchQuery}
             maxLength={PATIENT_SEARCH_MAX_LENGTH}
             onChange={(e) => {
@@ -949,12 +949,12 @@ export default function RecordsPage() {
               <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 
-                {t("records.searchingPatients", "Searching for patients...")}
+                {t("records.searchingPatients")}
               </div>
             ) : searchResults && searchResults.length === 0 ? (
               <div className="px-4 py-3 text-sm text-muted-foreground">
                 
-                {t("records.noPatientsFound", "No patients found")}
+                {t("records.noPatientsFound")}
               </div>
             ) : (
               searchResults?.map((patient) => (
@@ -989,7 +989,7 @@ export default function RecordsPage() {
                   {patient.clientFirstName && (
                     <span className="text-xs text-muted-foreground">
                       
-                      {t("records.owner", "Owner: ")}{patient.clientFirstName}{" "}
+                      {t("records.owner")}{patient.clientFirstName}{" "}
                       {patient.clientLastName}
                     </span>
                   )}
@@ -1015,7 +1015,7 @@ export default function RecordsPage() {
             {selectedPatient.clientFirstName && (
               <span className="ml-3 text-muted-foreground">
                 
-                {t("records.owner", "Owner: ")}{selectedPatient.clientFirstName}{" "}
+                {t("records.owner")}{selectedPatient.clientFirstName}{" "}
                 {selectedPatient.clientLastName}
               </span>
             )}
@@ -1039,7 +1039,7 @@ export default function RecordsPage() {
             }}
           >
             
-            {t("records.changePatient", "Change patient")}
+            {t("records.changePatient")}
           </Button>
         </div>
       )}
@@ -1084,7 +1084,7 @@ export default function RecordsPage() {
                 }
               />
             ) : recordsSettingsLoading ? (
-              <RecordsLoadingPanel label={t("records.loadingSettings", "Loading records settings...")} />
+              <RecordsLoadingPanel label={t("records.loadingSettings")} />
             ) : (
               <>
             {/* SOAP Notes Tab */}
@@ -1099,7 +1099,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingSoapNotes ? (
-                  <RecordsLoadingPanel label={t("records.loadingNotes", "Loading SOAP notes...")} />
+                  <RecordsLoadingPanel label={t("records.loadingNotes")} />
                 ) : soapNotes && soapNotes.length > 0 ? (
                   <div className="space-y-3">
                     {soapNotes.map((note) => {
@@ -1130,7 +1130,7 @@ export default function RecordsPage() {
                                   {note.imported ? (
                                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
                                       
-                                      {t("records.imported", "Imported")}
+                                      {t("records.imported")}
                                     </span>
                                   ) : null}
                                 </div>
@@ -1161,7 +1161,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  {t("records.subjective", "Subjective")}
+                                  {t("records.subjective")}
                                 </h4>
                                 <p className="text-sm">
                                   {note.subjective || "--"}
@@ -1170,7 +1170,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  {t("records.agentAdminOnly", "OpenVPM Agent can only be run by admins and veterinarians.")}
+                                  {t("records.agentAdminOnly")}
                                 </h4>
                                 <p className="text-sm">
                                   {note.objective || "--"}
@@ -1188,7 +1188,7 @@ export default function RecordsPage() {
                               <div>
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
                                   
-                                  {t("records.plan", "Plan")}
+                                  {t("records.plan")}
                                 </h4>
                                 <p className="text-sm">{note.plan || "--"}</p>
                               </div>
@@ -1201,11 +1201,11 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={FileText}
-                    title={t("records.noSoapYet", "No SOAP notes yet")}
+                    title={t("records.noSoapYet")}
                     action={
                       canCreateSoapNotes
                         ? {
-                            label: t("records.createFirstNote", "Create first note"),
+                            label: t("records.createFirstNote"),
                             onClick: () =>
                               router.push(
                                 `/records/new-soap/${selectedPatient.id}`
@@ -1236,7 +1236,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      {t("records.addVaccination", "Add vaccination")}
+                      {t("records.addVaccination")}
                     </Button>
                   </div>
                 )}
@@ -1263,7 +1263,7 @@ export default function RecordsPage() {
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.vaccineRequired", "Vaccine *")}
+                          {t("records.vaccineRequired")}
                         </label>
                         <Input
                           name="vaccineName"
@@ -1282,7 +1282,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.nextDueDate", "Next due date")}
+                          {t("records.nextDueDate")}
                         </label>
                         <Input
                           name="nextDueDate"
@@ -1304,7 +1304,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.lotNumber", "Lot number")}
+                          {t("records.lotNumber")}
                         </label>
                         <Input
                           name="lotNumber"
@@ -1356,7 +1356,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        {t("records.cancel", "Cancel")}
+                        {t("records.cancel")}
                       </Button>
                     </div>
                   </form>
@@ -1371,7 +1371,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingVaccinations ? (
-                  <RecordsLoadingPanel label={t("records.loadingVaccinations", "Loading vaccinations...")} />
+                  <RecordsLoadingPanel label={t("records.loadingVaccinations")} />
                 ) : vaccinations && vaccinations.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1379,15 +1379,15 @@ export default function RecordsPage() {
                         <tr className="border-b border-border bg-muted/50">
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.vaccine", "Vaccine")}
+                            {t("records.vaccine")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.dateAdministered", "Date administered")}
+                            {t("records.dateAdministered")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.nextDueDate", "Next due date")}
+                            {t("records.nextDueDate")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1451,7 +1451,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={Syringe}
-                    title={t("records.noVaccinesYet", "No vaccination records yet")}
+                    title={t("records.noVaccinesYet")}
                   />
                 )}
               </div>
@@ -1482,7 +1482,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      {t("records.newRx", "New prescription")}
+                      {t("records.newRx")}
                     </Button>
                   </div>
                 )}
@@ -1501,7 +1501,7 @@ export default function RecordsPage() {
                         !prescriptionForm.acknowledgeSafetyWarnings
                       ) {
                         toast.error(
-                          t("records.noteRxWarnings", "Please note prescription safety warnings before saving.")
+                          t("records.noteRxWarnings")
                         );
                         return;
                       }
@@ -1552,7 +1552,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.inventoryItem", "Inventory item")}
+                          {t("records.inventoryItem")}
                         </label>
                         <select
                           value={prescriptionForm.productId}
@@ -1575,12 +1575,12 @@ export default function RecordsPage() {
                           }}
                           className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         >
-                          <option value="">{t("records.dotNotes", ". Notes")}</option>
+                          <option value="">{t("records.dotNotes")}</option>
                           {inventoryProducts.isLoading ? (
-                            <option disabled>{t("records.loadingInventory", "Loading inventory...")}</option>
+                            <option disabled>{t("records.loadingInventory")}</option>
                           ) : null}
                           {inventoryProducts.error || inventoryProductsMissing ? (
-                            <option disabled>{t("records.inventoryUnavailable", "Inventory unavailable")}</option>
+                            <option disabled>{t("records.inventoryUnavailable")}</option>
                           ) : null}
                           {verifiedInventoryProducts
                             ? verifiedInventoryProducts.items.map((product) => (
@@ -1600,14 +1600,14 @@ export default function RecordsPage() {
                           selectedPrescriptionProduct ? (
                           <p className="mt-1 text-xs text-muted-foreground">
                             
-{t("records.inventoryDeducted", "Inventory will be deducted based on dispensed quantity.")}
+{t("records.inventoryDeducted")}
                           </p>
                         ) : null}
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.dosageRequired", "Dosage *")}
+                          {t("records.dosageRequired")}
                         </label>
                         <Input
                           required
@@ -1637,13 +1637,13 @@ export default function RecordsPage() {
                               frequency: e.target.value,
                             }))
                           }
-                          placeholder={t("records.egEvery12", "e.g. Every 12 hours")}
+                          placeholder={t("records.egEvery12")}
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.quantity", "Quantity")}
+                          {t("records.quantity")}
                         </label>
                         <Input
                           type="number"
@@ -1663,7 +1663,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.refills", "Refills")}
+                          {t("records.refills")}
                         </label>
                         <Input
                           type="number"
@@ -1682,7 +1682,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.startDateRequired", "Start date *")}
+                          {t("records.startDateRequired")}
                         </label>
                         <Input
                           type="date"
@@ -1699,7 +1699,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.endDate", "End date")}
+                          {t("records.endDate")}
                         </label>
                         <Input
                           type="date"
@@ -1727,7 +1727,7 @@ export default function RecordsPage() {
                               instructions: e.target.value,
                             }))
                           }
-                          placeholder={t("records.withFood", "Administer with food")}
+                          placeholder={t("records.withFood")}
                         />
                       </div>
                     </div>
@@ -1762,8 +1762,8 @@ export default function RecordsPage() {
                           />
                           <span>
                             
-{t("records.doctorReviewed", "The doctor reviewed and accepts these prescriptions")}
-{t("records.safetyWarnings", "safety warnings.")}
+{t("records.doctorReviewed")}
+{t("records.safetyWarnings")}
                           </span>
                         </label>
                       )}
@@ -1779,7 +1779,7 @@ export default function RecordsPage() {
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         ) : null}
                         
-                        {t("records.saveRx", "Save prescription")}
+                        {t("records.saveRx")}
                       </Button>
                       <Button
                         type="button"
@@ -1793,7 +1793,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        {t("records.cancel", "Cancel")}
+                        {t("records.cancel")}
                       </Button>
                     </div>
                   </form>
@@ -1808,7 +1808,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingPrescriptions ? (
-                  <RecordsLoadingPanel label={t("records.loadingRxs", "Loading prescriptions...")} />
+                  <RecordsLoadingPanel label={t("records.loadingRxs")} />
                 ) : prescriptionsList && prescriptionsList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -1819,7 +1819,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.dosage", "Dosage")}
+                            {t("records.dosage")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1827,7 +1827,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.inventory", "Inventory")}
+                            {t("records.inventory")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -1835,7 +1835,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.refills", "Refills")}
+                            {t("records.refills")}
                           </th>
                           <th className="px-4 py-3 text-right font-medium text-muted-foreground">
                             
@@ -1863,7 +1863,7 @@ export default function RecordsPage() {
                                   {rx.quantity != null ? (
                                     <span className="block text-xs">
                                       
-                                      {t("records.dispensed", "Dispensed ")}{rx.quantity}
+                                      {t("records.dispensed")}{rx.quantity}
                                     </span>
                                   ) : null}
                                 </span>
@@ -1888,7 +1888,7 @@ export default function RecordsPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                title={t("records.printLabel", "Print label")}
+                                title={t("records.printLabel")}
                                 onClick={async () => {
                                   const clientName = [
                                     selectedPatient?.clientFirstName,
@@ -1931,7 +1931,7 @@ export default function RecordsPage() {
                               >
                                 <Tag className="mr-1 h-3.5 w-3.5" />
                                 
-                                {t("records.printLabel", "Print label")}
+                                {t("records.printLabel")}
                               </Button>
                             </td>
                           </tr>
@@ -1940,7 +1940,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Pill} title={t("records.noRxYet", "No prescriptions yet")} />
+                  <EmptyState icon={Pill} title={t("records.noRxYet")} />
                 )}
               </div>
             )}
@@ -1962,7 +1962,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      {t("records.addProblem", "Add problem")}
+                      {t("records.addProblem")}
                     </Button>
                   </div>
                 )}
@@ -1985,7 +1985,7 @@ export default function RecordsPage() {
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.problemRequired", "Problem *")}
+                          {t("records.problemRequired")}
                         </label>
                         <Input
                           name="description"
@@ -1998,7 +1998,7 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder={t("records.egChronicOtitis", "e.g. Chronic otitis media")}
+                          placeholder={t("records.egChronicOtitis")}
                         />
                       </div>
                       <div>
@@ -2027,7 +2027,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.openInBilling", "Open in Billing")}
+                          {t("records.openInBilling")}
                         </label>
                         <Input
                           name="onsetDate"
@@ -2065,7 +2065,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        {t("records.cancel", "Cancel")}
+                        {t("records.cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2080,7 +2080,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProblems ? (
-                  <RecordsLoadingPanel label={t("records.loadingProblems", "Loading problems...")} />
+                  <RecordsLoadingPanel label={t("records.loadingProblems")} />
                 ) : problems && problems.length > 0 ? (
                   <div className="space-y-2">
                     {problems.map((problem) => (
@@ -2102,7 +2102,7 @@ export default function RecordsPage() {
                           {problem.onsetDate && (
                             <p className="text-xs text-muted-foreground mt-0.5">
                               
-                              {t("records.openSchedule", "Open schedule ")}{" "}
+                              {t("records.openSchedule")}{" "}
                               {formatClinicalDate(
                                 problem.onsetDate,
                                 recordsTimeZone
@@ -2139,7 +2139,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  {t("records.reopen", "Reopen")}
+                                  {t("records.reopen")}
                                 </Button>
                               )}
                               {problem.status !== "chronic" && (
@@ -2156,7 +2156,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  {t("records.chronic", "Chronic")}
+                                  {t("records.chronic")}
                                 </Button>
                               )}
                               {problem.status !== "resolved" && (
@@ -2173,7 +2173,7 @@ export default function RecordsPage() {
                                   }
                                 >
                                   
-                                  {t("records.resolve", "Resolve")}
+                                  {t("records.resolve")}
                                 </Button>
                               )}
                             </div>
@@ -2185,7 +2185,7 @@ export default function RecordsPage() {
                 ) : (
                   <EmptyState
                     icon={ClipboardList}
-                    title={t("records.noProblemsRecorded", "No recorded problems")}
+                    title={t("records.noProblemsRecorded")}
                   />
                 )}
               </div>
@@ -2204,9 +2204,9 @@ export default function RecordsPage() {
                       </p>
                       <p className="mt-1 text-xs leading-5 text-amber-900 dark:text-amber-200">
                         
-                        {t("records.refLabDisabled1", "Reference lab ordering is disabled until IDEXX, Antech,")}
-                          {t("records.refLabDisabled2", "or Zoetis provider credentials and actual adapter are")}
-                          {t("records.refLabDisabled3", "connected.")}
+                        {t("records.refLabDisabled1")}
+                          {t("records.refLabDisabled2")}
+                          {t("records.refLabDisabled3")}
                       </p>
                     </div>
                   </div>
@@ -2220,7 +2220,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      {t("records.addManualLab", "Add manual lab result")}
+                      {t("records.addManualLab")}
                     </Button>
                   )}
                 </div>
@@ -2247,7 +2247,7 @@ export default function RecordsPage() {
                       <div className="col-span-2 sm:col-span-1">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.textFromExisting", "Text from your existing number")}
+                          {t("records.textFromExisting")}
                         </label>
                         <Input
                           name="testName"
@@ -2266,7 +2266,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.resultValue", "Result value")}
+                          {t("records.resultValue")}
                         </label>
                         <Input
                           name="resultValue"
@@ -2302,7 +2302,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.refLow", "Ref. Low range")}
+                          {t("records.refLow")}
                         </label>
                         <Input
                           name="referenceRangeLow"
@@ -2328,7 +2328,7 @@ export default function RecordsPage() {
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.refHigh", "Ref. High range")}
+                          {t("records.refHigh")}
                         </label>
                         <Input
                           name="referenceRangeHigh"
@@ -2374,7 +2374,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        {t("records.cancel", "Cancel")}
+                        {t("records.cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2389,7 +2389,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingLabResults ? (
-                  <RecordsLoadingPanel label={t("records.loadingLabs", "Loading lab results...")} />
+                  <RecordsLoadingPanel label={t("records.loadingLabs")} />
                 ) : labResultsList && labResultsList.length > 0 ? (
                   <div className="space-y-4">
                     {labTrendGroups.length > 0 && (
@@ -2401,12 +2401,12 @@ export default function RecordsPage() {
                           <tr className="border-b border-border bg-muted/50">
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              {t("records.locationReminder1", "Location name reminder || Test message sent from || Test number * || clients")}
-                    {t("records.locationReminder2", "replying will land in your inbox; STOP opt-outs are processed automatically.")}
+                              {t("records.locationReminder1")}
+                    {t("records.locationReminder2")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              {t("records.result", "Result")}
+                              {t("records.result")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2414,7 +2414,7 @@ export default function RecordsPage() {
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              {t("records.refRange", "Reference range")}
+                              {t("records.refRange")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2422,11 +2422,11 @@ export default function RecordsPage() {
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              {t("records.sortedBy", "Sorted by")}
+                              {t("records.sortedBy")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
-                              {t("records.date", "Date")}
+                              {t("records.date")}
                             </th>
                             <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                               
@@ -2518,7 +2518,7 @@ export default function RecordsPage() {
                     </div>
                   </div>
                 ) : (
-                  <EmptyState icon={FlaskConical} title={t("records.noLabsYet", "No lab results yet")} />
+                  <EmptyState icon={FlaskConical} title={t("records.noLabsYet")} />
                 )}
               </div>
             )}
@@ -2539,7 +2539,7 @@ export default function RecordsPage() {
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       
-                      {t("records.addProcedure", "Add procedure")}
+                      {t("records.addProcedure")}
                     </Button>
                   </div>
                 )}
@@ -2583,13 +2583,13 @@ export default function RecordsPage() {
                               name: e.target.value,
                             }))
                           }
-                          placeholder={t("records.egDental", "e.g. Dental prophylaxis")}
+                          placeholder={t("records.egDental")}
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.durationMins", "Duration (minutes)")}
+                          {t("records.durationMins")}
                         </label>
                         <Input
                           name="durationMinutes"
@@ -2627,13 +2627,13 @@ export default function RecordsPage() {
                               description: e.target.value,
                             }))
                           }
-                          placeholder={t("records.briefDesc", "Brief description of procedure")}
+                          placeholder={t("records.briefDesc")}
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.anesthesiaUsed", "Anesthesia used")}
+                          {t("records.anesthesiaUsed")}
                         </label>
                         <Input
                           name="anesthesiaUsed"
@@ -2651,7 +2651,7 @@ export default function RecordsPage() {
                       <div className="col-span-2">
                         <label className="block text-xs font-medium text-muted-foreground mb-1">
                           
-                          {t("records.operatorPending", "Number is set. Operator registration is now pending.")}
+                          {t("records.operatorPending")}
                         </label>
                         <Input
                           name="notes"
@@ -2663,7 +2663,7 @@ export default function RecordsPage() {
                               notes: e.target.value,
                             }))
                           }
-                          placeholder={t("records.additionalNotes", "Additional notes")}
+                          placeholder={t("records.additionalNotes")}
                         />
                       </div>
                     </div>
@@ -2685,7 +2685,7 @@ export default function RecordsPage() {
                         }}
                       >
                         
-                        {t("records.cancel", "Cancel")}
+                        {t("records.cancel")}
                       </Button>
                     </div>
                   </form>
@@ -2700,7 +2700,7 @@ export default function RecordsPage() {
                     }
                   />
                 ) : isLoadingProcedures ? (
-                  <RecordsLoadingPanel label={t("records.loadingProcedures", "Loading procedures...")} />
+                  <RecordsLoadingPanel label={t("records.loadingProcedures")} />
                 ) : proceduresList && proceduresList.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-sm">
@@ -2712,7 +2712,7 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.performedBy", "Performed by")}
+                            {t("records.performedBy")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
@@ -2720,11 +2720,11 @@ export default function RecordsPage() {
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.anesthesia", "Anesthesia")}
+                            {t("records.anesthesia")}
                           </th>
                           <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                             
-                            {t("records.date", "Date")}
+                            {t("records.date")}
                           </th>
                         </tr>
                       </thead>
@@ -2767,7 +2767,7 @@ export default function RecordsPage() {
                     </table>
                   </div>
                 ) : (
-                  <EmptyState icon={Scissors} title={t("records.noProceduresRecorded", "No procedures recorded")} />
+                  <EmptyState icon={Scissors} title={t("records.noProceduresRecorded")} />
                 )}
               </div>
             )}
@@ -2782,7 +2782,7 @@ export default function RecordsPage() {
         <EmptyState
           className="mt-6"
           icon={Search}
-          title={t("records.searchPatientTop", "Search for a patient above to view their medical records")}
+          title={t("records.searchPatientTop")}
         />
       )}
     </div>
