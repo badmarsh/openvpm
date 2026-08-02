@@ -18,31 +18,42 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    // Jaaz Marketing Studio — proxy /jaaz-proxy/* na interný Docker service.
-    // JAAZ_SERVER_URL je server-side env variable (bez NEXT_PUBLIC_), takže
-    // URL Jaaz servera nie je nikdy odhalená klientovi (browseru).
-    // Keď nie je nastavená, rewrite sa nevykoná a /jaaz-proxy/* vráti 404.
-    console.log("JAAZ_SERVER_URL in next.config.js is:", process.env.JAAZ_SERVER_URL);
+    // Jaaz Marketing Studio — proxy na interný Docker service.
+    // JAAZ_SERVER_URL je server-side env variable (bez NEXT_PUBLIC_).
     const jaazUrl = process.env.JAAZ_SERVER_URL || "http://jaaz-server:5174";
 
-    return [
-      {
-        source: "/jaaz-proxy/:path*",
-        destination: `${jaazUrl}/:path*`,
-      },
-      {
-        source: "/assets/:path*",
-        destination: `${jaazUrl}/assets/:path*`,
-      },
-      {
-        source: "/static/:path*",
-        destination: `${jaazUrl}/static/:path*`,
-      },
-      {
-        source: "/socket.io/:path*",
-        destination: `${jaazUrl}/socket.io/:path*`,
-      },
-    ];
+    return {
+      afterFiles: [
+        {
+          source: "/jaaz-proxy/:path*",
+          destination: `${jaazUrl}/:path*`,
+        },
+        {
+          source: "/jaaz-proxy",
+          destination: `${jaazUrl}/`,
+        },
+        {
+          source: "/assets/:path*",
+          destination: `${jaazUrl}/assets/:path*`,
+        },
+        {
+          source: "/static/:path*",
+          destination: `${jaazUrl}/static/:path*`,
+        },
+        {
+          source: "/socket.io/:path*",
+          destination: `${jaazUrl}/socket.io/:path*`,
+        },
+      ],
+      fallback: [
+        {
+          // Chytí všetky /api/... requesty, ktoré neboli spracované OpenVPM API routami
+          // a presmeruje ich na Jaaz server (vyžadované pre hardcoded /api cesty v Jaaz SPA).
+          source: "/api/:path*",
+          destination: `${jaazUrl}/api/:path*`,
+        }
+      ]
+    };
   },
 };
 

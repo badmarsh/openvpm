@@ -5,9 +5,9 @@ services:
     ports:
       - "5434:5432"
     environment:
-      POSTGRES_USER: openpims
-      POSTGRES_PASSWORD: openpims
-      POSTGRES_DB: openpims
+      POSTGRES_USER: ${POSTGRES_USER:-openpims}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-openpims}
+      POSTGRES_DB: ${POSTGRES_DB:-openpims}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -23,17 +23,22 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: openpims
-      MINIO_ROOT_PASSWORD: openpims123
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-openpims}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-openpims123}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   minio-bootstrap:
     image: minio/mc:latest
     depends_on:
       minio:
-        condition: service_started
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
       until mc alias set local http://minio:9000 openpims openpims123; do
@@ -53,12 +58,12 @@ services:
     ports:
       - "3001:3000"
     environment:
-      DATABASE_URL: "postgresql://openpims:openpims@postgres:5432/openpims"
-      NEXTAUTH_SECRET: "docker-dev-secret-change-in-production"
+      DATABASE_URL: ${DATABASE_URL:-postgresql://openpims:openpims@postgres:5432/openpims}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-docker-dev-secret-change-in-production}
       NEXTAUTH_URL: "http://localhost:3001"
       S3_ENDPOINT: "http://minio:9000"
-      S3_ACCESS_KEY: "openpims"
-      S3_SECRET_KEY: "openpims123"
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-openpims}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-openpims123}
       S3_BUCKET: "openpims"
       S3_REGION: "us-east-1"
       # Jaaz Marketing Studio — interná URL (server-side, nie exponovaná klientovi)
@@ -94,8 +99,6 @@ services:
       # - MIDJOURNEY_API_KEY=${MIDJOURNEY_API_KEY}
     volumes:
       - jaaz_data:/app/data
-    networks:
-      - default
     depends_on:
       - ollama
     healthcheck:
@@ -115,8 +118,23 @@ services:
     # Port 11434 nie je exponovaný — prístupný len z jaaz-server kontajnera
     volumes:
       - ollama_data:/root/.ollama
-    networks:
-      - default
+
+  ollama-bootstrap:
+    profiles:
+      - jaaz
+    image: curlimages/curl:latest
+    depends_on:
+      - ollama
+    command: >
+      sh -c "
+      echo 'Waiting for Ollama to start...';
+      until curl -s -f http://ollama:11434/api/version > /dev/null; do
+        sleep 2;
+      done;
+      echo 'Ollama is running. Pulling llama3 model...';
+      curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3\"}';
+      echo 'Model pulled successfully.';
+      "
 
 volumes:
   postgres_data:
