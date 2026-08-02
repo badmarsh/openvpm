@@ -19,6 +19,8 @@ WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile
 
+ARG JAAZ_SERVER_URL=http://jaaz-server:5174
+ENV JAAZ_SERVER_URL=${JAAZ_SERVER_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build --filter=@openpims/web
 
@@ -27,6 +29,8 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG JAAZ_SERVER_URL=http://jaaz-server:5174
+ENV JAAZ_SERVER_URL=${JAAZ_SERVER_URL}
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs

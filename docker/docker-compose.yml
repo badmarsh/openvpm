@@ -46,6 +46,9 @@ services:
     build:
       context: ..
       dockerfile: apps/web/Dockerfile
+      args:
+        JAAZ_SERVER_URL: "http://jaaz-server:5174"
+        NEXT_PUBLIC_JAAZ_ENABLED: "true"
     restart: unless-stopped
     ports:
       - "3001:3000"

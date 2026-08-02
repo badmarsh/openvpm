@@ -8,14 +8,18 @@ const PUBLIC_PATH_PREFIXES = [
   "/accept-invite",
   "/api",
   "/api-docs",
+  "/assets",
   "/capture",
   "/forgot-password",
+  "/jaaz-proxy",
   "/legal",
   "/login",
   "/portal",
   "/register",
   "/reset-password",
   "/sign",
+  "/socket.io",
+  "/static",
   "/verify-email",
 ];
 

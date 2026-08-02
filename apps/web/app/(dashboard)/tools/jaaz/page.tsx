@@ -117,12 +117,11 @@ export default function MarketingStudioPage() {
             Nie je to externý iframe — X-Frame-Options/CSP frame-ancestors zostávajú. */}
         <iframe
           key={key}
-          src="/jaaz-proxy/"
+          src="/jaaz-proxy"
           title="Marketing Studio — Jaaz AI"
           className="h-full w-full border-0"
           onLoad={handleLoad}
           onError={handleError}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
           aria-label="Marketing Studio — AI nástroj pre tvorbu grafík"
         />
       </div>

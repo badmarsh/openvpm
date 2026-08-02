@@ -5,21 +5,25 @@
 // Všetky Jaaz CSP pridania sú podmienené existenciou JAAZ_SERVER_URL.
 const jaazCspExtras = process.env.NEXT_PUBLIC_JAAZ_ENABLED !== "false"
   ? {
-      // Same-origin iframe pre Jaaz UI komponent
-      frameSrc: "'self'",
+      // Same-origin & Jaaz server iframe pre Jaaz UI komponent
+      frameSrc: "'self' http://localhost:5174 http://jaaz-server:5174",
       // WebSocket pre live updates (Jaaz generovanie asynchrónne)
       connectSrcExtra: "ws://localhost:5174 wss://localhost:5174 ws://jaaz-server:5174 wss://jaaz-server:5174",
     }
-  : { frameSrc: null, connectSrcExtra: null };
+  : { frameSrc: "'self'", connectSrcExtra: null };
+
+const isHttps =
+  process.env.NEXTAUTH_URL?.startsWith("https://") ||
+  process.env.NEXT_PUBLIC_APP_URL?.startsWith("https://");
 
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "frame-ancestors 'none'",
+  "frame-ancestors 'self'",
   "form-action 'self'",
-  jaazCspExtras.frameSrc ? `frame-src ${jaazCspExtras.frameSrc}` : null,
-  "img-src 'self' data: blob: https:",
+  `frame-src ${jaazCspExtras.frameSrc || "'self'"}`,
+  "img-src 'self' data: blob: https: http:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   [
@@ -36,11 +40,10 @@ const contentSecurityPolicy = [
     .filter(Boolean)
     .join(" "),
   "worker-src 'self' blob:",
-  process.env.NODE_ENV === "production" ? "upgrade-insecure-requests" : null,
+  isHttps ? "upgrade-insecure-requests" : null,
 ]
   .filter(Boolean)
   .join("; ");
-
 
 const securityHeaders = [
   {
@@ -53,7 +56,7 @@ const securityHeaders = [
   },
   {
     key: "X-Frame-Options",
-    value: "DENY",
+    value: "SAMEORIGIN",
   },
   {
     key: "X-XSS-Protection",
@@ -63,10 +66,14 @@ const securityHeaders = [
     key: "Referrer-Policy",
     value: "strict-origin-when-cross-origin",
   },
-  {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
-  },
+  ...(isHttps
+    ? [
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains; preload",
+        },
+      ]
+    : []),
   {
     key: "Permissions-Policy",
     value:

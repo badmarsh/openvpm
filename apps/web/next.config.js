@@ -22,7 +22,8 @@ const nextConfig = {
     // JAAZ_SERVER_URL je server-side env variable (bez NEXT_PUBLIC_), takže
     // URL Jaaz servera nie je nikdy odhalená klientovi (browseru).
     // Keď nie je nastavená, rewrite sa nevykoná a /jaaz-proxy/* vráti 404.
-    const jaazUrl = process.env.JAAZ_SERVER_URL || "http://localhost:5174";
+    console.log("JAAZ_SERVER_URL in next.config.js is:", process.env.JAAZ_SERVER_URL);
+    const jaazUrl = process.env.JAAZ_SERVER_URL || "http://jaaz-server:5174";
 
     return [
       {
