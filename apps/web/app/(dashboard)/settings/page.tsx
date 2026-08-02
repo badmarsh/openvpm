@@ -153,11 +153,12 @@ const TIMEZONES = [
 
 // Supported regions (ISO 3166-1 alpha-2). US-first; others are UK-ready.
 const COUNTRIES: { code: string; label: string }[] = [
-  { code: "US", label: "United States" },
-  { code: "GB", label: "United Kingdom" },
-  { code: "IE", label: "Ireland" },
-  { code: "CA", label: "Canada" },
-  { code: "AU", label: "Australia" },
+  { code: "US", label: "Spojené štáty" },
+  { code: "GB", label: "Spojené kráľovstvo" },
+  { code: "IE", label: "Írsko" },
+  { code: "CA", label: "Kanada" },
+  { code: "AU", label: "Austrália" },
+  { code: "SK", label: "Slovensko" },
 ];
 
 const CURRENCIES = ["usd", "gbp", "eur", "cad", "aud"];
@@ -657,7 +658,7 @@ function PracticeInfoTab() {
               </label>
               <label className="space-y-1.5">
                 <span className="text-sm font-medium">
-                  VAT number (optional)
+                  IČ DPH (voliteľné)
                 </span>
                 <Input
                   maxLength={SETTINGS_VAT_NUMBER_MAX_LENGTH}

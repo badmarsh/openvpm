@@ -12,11 +12,12 @@ import type { StepHandle } from "../journey-types";
 // Same regions the settings page offers. Choosing a country auto-fills
 // currency and tax for you on the server, so you do not have to.
 const COUNTRIES: { code: string; label: string }[] = [
-  { code: "US", label: "United States" },
-  { code: "GB", label: "United Kingdom" },
-  { code: "IE", label: "Ireland" },
-  { code: "CA", label: "Canada" },
-  { code: "AU", label: "Australia" },
+  { code: "US", label: "Spojené štáty" },
+  { code: "GB", label: "Spojené kráľovstvo" },
+  { code: "IE", label: "Írsko" },
+  { code: "CA", label: "Kanada" },
+  { code: "AU", label: "Austrália" },
+  { code: "SK", label: "Slovensko" },
 ];
 
 // Mirrors the TIMEZONES list on the settings page.

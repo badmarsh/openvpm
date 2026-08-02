@@ -40,13 +40,13 @@ import {
 import { isSafeCheckoutRedirectUrl } from "@/lib/checkout-redirect";
 
 const STATUS_TABS = [
-  { label: "All", value: undefined, isEstimate: false as const },
-  { label: "Draft", value: "draft", isEstimate: false as const },
-  { label: "Sent", value: "sent", isEstimate: false as const },
-  { label: "Paid", value: "paid", isEstimate: false as const },
-  { label: "Overdue", value: "overdue", isEstimate: false as const },
-  { label: "Void", value: "void", isEstimate: false as const },
-  { label: "Estimates", value: undefined, isEstimate: true as const },
+  { label: "Všetky", value: undefined, isEstimate: false as const },
+  { label: "Koncept", value: "draft", isEstimate: false as const },
+  { label: "Odoslané", value: "sent", isEstimate: false as const },
+  { label: "Zaplatené", value: "paid", isEstimate: false as const },
+  { label: "Po splatnosti", value: "overdue", isEstimate: false as const },
+  { label: "Zrušené", value: "void", isEstimate: false as const },
+  { label: "Odhadované", value: undefined, isEstimate: true as const },
 ] as const;
 
 const STATUS_STYLES: Record<string, string> = {
@@ -272,7 +272,7 @@ export default function BillingPage() {
       {/* Accounts receivable at a glance */}
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground">Outstanding</p>
+          <p className="text-sm text-muted-foreground">Neuhradené</p>
           <p className="mt-1 font-heading text-2xl font-semibold">
             {arSummary.isError
               ? "—"
@@ -282,7 +282,7 @@ export default function BillingPage() {
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground">Overdue</p>
+          <p className="text-sm text-muted-foreground">Po splatnosti</p>
           <p
             className={`mt-1 font-heading text-2xl font-semibold ${
               arSummary.data && Number(arSummary.data.overdue) > 0
@@ -298,7 +298,7 @@ export default function BillingPage() {
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground">Collected this month</p>
+          <p className="text-sm text-muted-foreground">Vyzbierané tento mesiac</p>
           <p className="mt-1 font-heading text-2xl font-semibold">
             {arSummary.isError
               ? "—"
@@ -1274,12 +1274,12 @@ function PaymentSection({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium">Payments &amp; Adjustments</h4>
+        <h4 className="text-sm font-medium">Platby a úpravy</h4>
         {canCollect && (
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleOpenForm}>
               <DollarSign className="mr-1 h-3.5 w-3.5" />
-              Record Payment
+              Zaznamenať platbu
             </Button>
             <Button
               variant="outline"
@@ -1292,8 +1292,8 @@ function PaymentSection({
               onClick={() => cardCheckout.mutate({ invoiceId })}
               title={
                 cardPaymentsUnavailable
-                  ? "Card payments are not configured"
-                  : "Take card payment"
+                  ? "Platby kartou nie sú nakonfigurované"
+                  : "Zaplatiť kartou"
               }
             >
               {cardCheckout.isPending ? (
@@ -1301,7 +1301,7 @@ function PaymentSection({
               ) : (
                 <CreditCard className="mr-1 h-3.5 w-3.5" />
               )}
-              Take Card
+              Zaplatiť kartou
             </Button>
             <Button
               variant="outline"
@@ -1309,7 +1309,7 @@ function PaymentSection({
               onClick={handleOpenAdjustmentForm}
             >
               <DollarSign className="mr-1 h-3.5 w-3.5" />
-              Credit / Write Off
+              Kredit / Odpis
             </Button>
           </div>
         )}
@@ -1317,14 +1317,14 @@ function PaymentSection({
 
       {canCollect && cardPaymentsUnavailable && (
         <p className="text-xs text-muted-foreground">
-          Card payments are not configured.
+          Platby kartou nie sú nakonfigurované.
         </p>
       )}
 
       <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-        <span>Paid {formatCurrency(invoicePaidAmount)}</span>
-        <span>Adjusted {formatCurrency(invoiceAdjustedAmount)}</span>
-        <span>Balance {formatCurrency(invoiceBalanceDue)}</span>
+        <span>Zaplatené {formatCurrency(invoicePaidAmount)}</span>
+        <span>Upravené {formatCurrency(invoiceAdjustedAmount)}</span>
+        <span>Zostatok {formatCurrency(invoiceBalanceDue)}</span>
       </div>
 
       {/* Payment form */}
@@ -1553,7 +1553,7 @@ function PaymentSection({
           </table>
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground">No payments recorded.</p>
+        <p className="text-xs text-muted-foreground">Žiadne zaznamenané platby.</p>
       )}
 
       {adjustmentsQuery.isLoading ? (
@@ -1613,7 +1613,7 @@ function PaymentSection({
         </div>
       ) : (
         <p className="text-xs text-muted-foreground">
-          No credits or write-offs recorded.
+          Žiadne zaznamenané kredity alebo odpisy.
         </p>
       )}
     </div>

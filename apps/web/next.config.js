@@ -8,6 +8,7 @@ const nextConfig = {
   output: "standalone",
   poweredByHeader: false,
   transpilePackages: ["@openpims/api", "@openpims/db", "@openpims/email"],
+  optimizeFonts: false,
   async headers() {
     return [
       {

@@ -95,7 +95,7 @@ function LoginPageInner() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError("Neplatný e-mail alebo heslo");
     } else {
       router.push(nextPath);
       router.refresh();
@@ -185,7 +185,7 @@ function LoginPageInner() {
               htmlFor="email"
               className="mb-1.5 block text-sm font-medium text-foreground"
             >
-              Email
+              E-mail
             </label>
             <input
               id="email"
@@ -204,7 +204,7 @@ function LoginPageInner() {
               htmlFor="password"
               className="mb-1.5 block text-sm font-medium text-foreground"
             >
-              Password
+              Heslo
             </label>
             <input
               id="password"
@@ -223,7 +223,7 @@ function LoginPageInner() {
             disabled={!canSubmit || loading}
             className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Prihlasovanie..." : "Prihlásiť sa"}
           </button>
         </form>
 
