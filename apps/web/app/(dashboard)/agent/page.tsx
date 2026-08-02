@@ -27,10 +27,10 @@ import {
 } from "@/lib/agent/policy";
 
 const SUGGESTIONS = [
-  "Which patients are overdue for vaccinations?",
-  "Summarize today's appointments.",
-  "What's the carprofen dose for a 12 kg dog?",
-  "Pull a clinical summary for the next patient checked in.",
+  "Ktorí pacienti majú po termíne očkovania?",
+  "Zhrň dnešné termíny.",
+  "Aká je dávka karprofénu pre 12 kg psa?",
+  "Vytiahni klinické zhrnutie pre ďalšieho prihláseného pacienta.",
 ];
 
 type ToolCall = { name: string; input: unknown; error?: string | null };
