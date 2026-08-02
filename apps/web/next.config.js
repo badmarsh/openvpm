@@ -20,9 +20,15 @@ const nextConfig = {
   async rewrites() {
     // Jaaz Marketing Studio — proxy na interný Docker service.
     // JAAZ_SERVER_URL je server-side env variable (bez NEXT_PUBLIC_).
-    const jaazUrl = process.env.JAAZ_SERVER_URL || "http://jaaz-server:5174";
+    const jaazUrl = process.env.JAAZ_SERVER_URL || "http://127.0.0.1:5174";
 
     return {
+      beforeFiles: [
+        {
+          source: "/socket.io/:path*",
+          destination: `${jaazUrl}/socket.io/:path*`,
+        },
+      ],
       afterFiles: [
         {
           source: "/jaaz-proxy/:path*",
@@ -40,9 +46,11 @@ const nextConfig = {
           source: "/static/:path*",
           destination: `${jaazUrl}/static/:path*`,
         },
+        // Jaaz SPA uses @vercel/analytics which requests /_vercel/insights/script.js
+        // from the origin — proxy it to the Jaaz server so it doesn't 404 on Next.js.
         {
-          source: "/socket.io/:path*",
-          destination: `${jaazUrl}/socket.io/:path*`,
+          source: "/_vercel/:path*",
+          destination: `${jaazUrl}/_vercel/:path*`,
         },
       ],
       fallback: [

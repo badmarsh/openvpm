@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Palette, RefreshCw, WifiOff, ExternalLink } from "lucide-react";
 
 // Marketing Studio page — Jaaz AI generátor social media assets
@@ -25,6 +25,23 @@ export default function MarketingStudioPage() {
   const handleReload = useCallback(() => {
     setLoadState("loading");
     setKey((prev) => prev + 1);
+  }, []);
+
+  // Inject fake Jaaz auth into localStorage to bypass the Jaaz cloud login screen.
+  // Because the iframe is served on the same origin via Next.js proxy (/jaaz-proxy),
+  // they share the same localStorage.
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("jaaz_access_token", "openvpm_local_bypass_token");
+      window.localStorage.setItem(
+        "jaaz_user_info",
+        JSON.stringify({
+          id: "local-user",
+          username: "OpenVPM User",
+          email: "local@openvpm.com",
+        })
+      );
+    }
   }, []);
 
   return (

@@ -59,9 +59,7 @@ const navItems: {
   { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
   { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
   { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
-  ...(process.env.NEXT_PUBLIC_JAAZ_ENABLED !== "false" 
-    ? [{ href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" }] 
-    : []),
+  { href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" },
   { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
   { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
   { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
@@ -97,7 +95,11 @@ export function Sidebar({
     }
   );
   const visibleNavItems = canShowNav
-    ? navItems.filter((item) => item.roles.includes(role))
+    ? navItems.filter((item) => {
+        if (!item.roles.includes(role)) return false;
+        if (item.href === "/tools/jaaz" && process.env.NEXT_PUBLIC_JAAZ_ENABLED === "false") return false;
+        return true;
+      })
     : [];
   const unreadInboxCount = Math.max(0, Number(unreadInbox?.total ?? 0));
   const unreadInboxLabel =
