@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
 import {
   Workflow,
@@ -16,14 +17,6 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const TRIGGER_LABELS: Record<string, string> = {
-  APPOINTMENT_DISCHARGE: "Po prepustení z ambulancie",
-  REVIEW_REQUEST: "Žiadosť o recenziu",
-  ANNUAL_REMINDER: "Ročná pripomienka",
-  BIRTHDAY: "Narodeniny pacienta",
-  WELLNESS_DUE: "Wellness plán — splatnosť",
-};
-
 const ACTION_ICONS: Record<string, React.ElementType> = {
   sms: MessageSquare,
   email: Mail,
@@ -31,6 +24,7 @@ const ACTION_ICONS: Record<string, React.ElementType> = {
 };
 
 export default function AutomationsPage() {
+  const t = useTranslations();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [logsForId, setLogsForId] = useState<string | null>(null);
 
@@ -56,16 +50,14 @@ export default function AutomationsPage() {
             <Workflow className="h-5 w-5 text-violet-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">CRM Automatizácie</h1>
-            <p className="text-sm text-muted-foreground">
-              Pravidlá pre automatickú komunikáciu s klientmi
-            </p>
+            <h1 className="text-2xl font-bold tracking-tight">{t("automations.pageTitle")}</h1>
+            <p className="text-sm text-muted-foreground">{t("automations.pageSubtitle")}</p>
           </div>
         </div>
         {totalCount > 0 && (
           <div className="text-sm text-muted-foreground">
             <span className="font-semibold text-emerald-600">{activeCount}</span> /{" "}
-            {totalCount} aktívnych
+            {t("automations.activeCount", { active: activeCount, total: totalCount })}
           </div>
         )}
       </div>
@@ -73,14 +65,14 @@ export default function AutomationsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Celkom pravidiel", value: totalCount, icon: Workflow, color: "text-violet-600" },
-          { label: "Aktívne", value: activeCount, icon: Activity, color: "text-emerald-600" },
-          { label: "Pozastavené", value: totalCount - activeCount, icon: PowerOff, color: "text-gray-400" },
+          { label: "automations.statsTotal", value: totalCount, icon: Workflow, color: "text-violet-600" },
+          { label: "automations.statsActive", value: activeCount, icon: Activity, color: "text-emerald-600" },
+          { label: "automations.statsPaused", value: totalCount - activeCount, icon: PowerOff, color: "text-gray-400" },
         ].map((s) => (
           <div key={s.label} className="rounded-xl border bg-card p-4 shadow-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
               <s.icon className={`h-4 w-4 ${s.color}`} />
-              <span className="text-xs font-medium">{s.label}</span>
+              <span className="text-xs font-medium">{t(s.label)}</span>
             </div>
             <p className="mt-2 text-3xl font-bold">{isLoading ? "—" : s.value}</p>
           </div>
@@ -95,10 +87,8 @@ export default function AutomationsPage() {
       ) : !automations || automations.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
           <Workflow className="mb-3 h-10 w-10 text-muted-foreground/40" />
-          <p className="font-medium text-muted-foreground">Žiadne automatizácie</p>
-          <p className="mt-1 text-sm text-muted-foreground/70">
-            Inicializujte predvolené SK veterinárne pravidlá
-          </p>
+          <p className="font-medium text-muted-foreground">{t("automations.emptyTitle")}</p>
+          <p className="mt-1 text-sm text-muted-foreground/70">{t("automations.emptyDescription")}</p>
           <button
             onClick={() => seedMutation.mutate()}
             disabled={seedMutation.isPending}
@@ -109,15 +99,14 @@ export default function AutomationsPage() {
             ) : (
               <Sparkles className="h-4 w-4" />
             )}
-            Inicializovať predvolené pravidlá
+            {t("automations.emptyAction")}
           </button>
         </div>
       ) : (
         <div className="space-y-3">
           {automations.map((auto) => {
             const ActionIcon = ACTION_ICONS[auto.actionType as string] ?? MessageSquare;
-            const triggerLabel =
-              TRIGGER_LABELS[auto.triggerType as string] ?? auto.triggerType;
+            const triggerLabel = t(`automations.triggerLabels.${auto.triggerType as string}` as any);
             const isExpanded = expandedId === auto.id;
             const conditions = auto.conditions as { delayDays?: number };
             const payload = auto.actionPayload as { templatePrompt?: string; webhookUrl?: string };
@@ -144,7 +133,7 @@ export default function AutomationsPage() {
                     <p className="text-xs text-muted-foreground">
                       {triggerLabel}
                       {conditions?.delayDays !== undefined && conditions.delayDays > 0
-                        ? ` · ${conditions.delayDays} dní po`
+                        ? ` ${t("automations.daysDelay", { days: conditions.delayDays })}`
                         : ""}
                     </p>
                   </div>
@@ -154,7 +143,7 @@ export default function AutomationsPage() {
                     <button
                       onClick={() => setLogsForId(logsForId === auto.id ? null : auto.id)}
                       className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                      title="Zobraziť logy"
+                      title={t("automations.tooltipLogs")}
                     >
                       <Activity className="h-4 w-4" />
                     </button>
@@ -162,7 +151,7 @@ export default function AutomationsPage() {
                       onClick={() => toggleMutation.mutate({ automationId: auto.id })}
                       disabled={toggleMutation.isPending}
                       className={`rounded-md p-1.5 transition-colors ${auto.isActive ? "text-emerald-600 hover:bg-emerald-50" : "text-gray-400 hover:bg-accent"}`}
-                      title={auto.isActive ? "Pozastaviť" : "Aktivovať"}
+                      title={auto.isActive ? t("automations.tooltipToggleOff") : t("automations.tooltipToggleOn")}
                     >
                       {auto.isActive ? <Power className="h-4 w-4" /> : <PowerOff className="h-4 w-4" />}
                     </button>
@@ -174,13 +163,13 @@ export default function AutomationsPage() {
                     </button>
                     <button
                       onClick={() => {
-                        if (confirm("Odstrániť túto automatizáciu?")) {
+                        if (confirm(t("automations.confirmDelete"))) {
                           deleteMutation.mutate({ automationId: auto.id });
                         }
                       }}
                       disabled={deleteMutation.isPending}
                       className="rounded-md p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                      title="Odstrániť"
+                      title={t("automations.tooltipDelete")}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -190,7 +179,7 @@ export default function AutomationsPage() {
                 {/* Expanded: prompt + logs */}
                 {isExpanded && (
                   <div className="border-t px-4 py-3 text-sm space-y-2">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Prompt šablóna</p>
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("automations.promptTemplate")}</p>
                     <p className="rounded-lg bg-muted/50 px-3 py-2 text-xs leading-relaxed">
                       {payload?.templatePrompt ?? payload?.webhookUrl ?? "—"}
                     </p>
@@ -200,21 +189,19 @@ export default function AutomationsPage() {
                 {/* Logs panel */}
                 {logsForId === auto.id && (
                   <div className="border-t px-4 py-3">
-                    <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      Posledné spustenia
-                    </p>
+                    <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t("automations.logsTitle")}</p>
                     {!logs || logs.length === 0 ? (
-                      <p className="text-xs text-muted-foreground">Žiadne záznamy</p>
+                      <p className="text-xs text-muted-foreground">{t("automations.noLogs")}</p>
                     ) : (
                       <div className="space-y-1.5">
                         {logs.map((log) => (
                           <div key={log.id} className="flex items-center gap-2 text-xs">
                             <span
                               className={`inline-block rounded-full px-1.5 py-0.5 font-medium ${log.status === "sent"
-                                  ? "bg-emerald-100 text-emerald-700"
-                                  : log.status === "failed"
-                                    ? "bg-red-100 text-red-700"
-                                    : "bg-amber-100 text-amber-700"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : log.status === "failed"
+                                  ? "bg-red-100 text-red-700"
+                                  : "bg-amber-100 text-amber-700"
                                 }`}
                             >
                               {log.status as string}
@@ -237,12 +224,8 @@ export default function AutomationsPage() {
 
       {/* Info box */}
       <div className="rounded-xl border bg-muted/30 p-4 text-xs text-muted-foreground">
-        <p className="font-medium mb-1">💡 Ako fungujú automatizácie?</p>
-        <p>
-          Pravidlá sa spúšťajú na základe udalostí (prepustenie z ambulancie, výročie návštevy…).
-          AI generuje správu v slovenčine/maďarčine s Fear-Free tónom. Správy sú odosielané
-          cez SMS alebo e-mail — nakonfigurujte Twilio/Resend v nastaveniach.
-        </p>
+        <p className="font-medium mb-1">{t("automations.infoTitle")}</p>
+        <p>{t("automations.infoDescription")}</p>
       </div>
     </div>
   );

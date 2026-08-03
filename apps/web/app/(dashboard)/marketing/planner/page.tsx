@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
 import {
   CalendarDays,
@@ -28,13 +29,13 @@ const STATUS_COLORS: Record<PostStatus, string> = {
   archived: "bg-gray-100 text-gray-400",
 };
 
-const MONTHS_SK = [
-  "Január", "Február", "Marec", "Apríl", "Máj", "Jún",
-  "Júl", "August", "September", "Október", "November", "December",
-];
-
-const PLATFORM_LABELS: Record<string, string> = {
-  IG: "Instagram", FB: "Facebook", GBP: "Google", TikTok: "TikTok",
+const STATUS_ICONS: Record<PostStatus, React.ElementType> = {
+  draft: FileText,
+  in_review: AlertCircle,
+  approved: CheckCircle2,
+  scheduled: Clock,
+  published: Send,
+  archived: FileText,
 };
 
 function getDaysInMonth(year: number, month: number) {
@@ -45,6 +46,7 @@ function getFirstDayOfMonth(year: number, month: number) {
 }
 
 export default function MarketingPlannerPage() {
+  const t = useTranslations();
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
@@ -87,7 +89,7 @@ export default function MarketingPlannerPage() {
   }, [month]);
 
   const handleGenerate = async () => {
-    if (!topic.trim()) { setGenError("Zadajte tému príspevku"); return; }
+    if (!topic.trim()) { setGenError(t("marketing.planner.errorEmptyTopic")); return; }
     setIsGenerating(true);
     setGenError("");
     try {
@@ -102,9 +104,9 @@ export default function MarketingPlannerPage() {
       });
       const data = await res.json();
       if (data.success) setGeneratedContent(data.content ?? "");
-      else setGenError(data.error ?? "Chyba pri generovaní");
+      else setGenError(data.error ?? t("marketing.planner.errorGeneration"));
     } catch {
-      setGenError("Spojenie zlyhalo. Skúste znovu.");
+      setGenError(t("marketing.planner.errorConnection"));
     } finally {
       setIsGenerating(false);
     }
@@ -139,6 +141,9 @@ export default function MarketingPlannerPage() {
     postsByDay.get(d)!.push(post);
   });
 
+  const months = t.raw("marketing.planner.months") as string[];
+  const dayHeaders = t.raw("marketing.planner.dayHeaders") as string[];
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -148,8 +153,8 @@ export default function MarketingPlannerPage() {
             <CalendarDays className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Plánovač Obsahu</h1>
-            <p className="text-sm text-muted-foreground">Kalendár príspevkov na sociálne siete</p>
+            <h1 className="text-2xl font-bold tracking-tight">{t("marketing.planner.pageTitle")}</h1>
+            <p className="text-sm text-muted-foreground">{t("marketing.planner.pageSubtitle")}</p>
           </div>
         </div>
         <button
@@ -157,7 +162,7 @@ export default function MarketingPlannerPage() {
           className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors"
         >
           <Plus className="h-4 w-4" />
-          Nový príspevok
+          {t("marketing.planner.newPost")}
         </button>
       </div>
 
@@ -168,7 +173,7 @@ export default function MarketingPlannerPage() {
             <ChevronLeft className="h-4 w-4" />
           </button>
           <span className="text-sm font-semibold">
-            {MONTHS_SK[month]} {year}
+            {months[month]} {year}
           </span>
           <button onClick={nextMonth} className="rounded-md p-1.5 hover:bg-accent">
             <ChevronRight className="h-4 w-4" />
@@ -177,7 +182,7 @@ export default function MarketingPlannerPage() {
 
         {/* Day headers */}
         <div className="grid grid-cols-7 border-b bg-muted/30">
-          {["Po", "Ut", "St", "Št", "Pi", "So", "Ne"].map((d) => (
+          {dayHeaders.map((d) => (
             <div key={d} className="py-2 text-center text-xs font-medium text-muted-foreground">
               {d}
             </div>
@@ -217,9 +222,9 @@ export default function MarketingPlannerPage() {
                       <div
                         key={post.id}
                         className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
-                        title={`${PLATFORM_LABELS[plat] ?? plat} — ${status}`}
+                        title={`${t(`marketing.planner.platformLabels.${plat}` as any) ?? plat} — ${t(`marketing.statusLabels.${status}` as any)}`}
                       >
-                        {PLATFORM_LABELS[plat] ?? plat}
+                        {t(`marketing.planner.platformLabels.${plat}` as any) ?? plat}
                       </div>
                     );
                   })}
@@ -232,19 +237,15 @@ export default function MarketingPlannerPage() {
 
       {/* Legend */}
       <div className="flex flex-wrap gap-3">
-        {(Object.entries(STATUS_COLORS) as [PostStatus, string][]).map(([s, c]) => (
-          <span key={s} className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${c}`}>
-            {s === "draft" && <FileText className="h-3 w-3" />}
-            {s === "in_review" && <AlertCircle className="h-3 w-3" />}
-            {s === "approved" && <CheckCircle2 className="h-3 w-3" />}
-            {s === "scheduled" && <Clock className="h-3 w-3" />}
-            {s === "published" && <Send className="h-3 w-3" />}
-            {{
-              draft: "Koncept", in_review: "Na schválenie", approved: "Schválené",
-              scheduled: "Naplánované", published: "Publikované", archived: "Archivované",
-            }[s]}
-          </span>
-        ))}
+        {(Object.entries(STATUS_COLORS) as [PostStatus, string][]).map(([s, c]) => {
+          const Icon = STATUS_ICONS[s];
+          return (
+            <span key={s} className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${c}`}>
+              {Icon && <Icon className="h-3 w-3" />}
+              {t(`marketing.statusLabels.${s}` as any)}
+            </span>
+          );
+        })}
       </div>
 
       {/* AI Generation Wizard Slide-over */}
@@ -253,13 +254,13 @@ export default function MarketingPlannerPage() {
           <button
             className="flex-1 bg-black/40"
             onClick={() => setWizardOpen(false)}
-            aria-label="Zavrieť"
+            aria-label={t("marketing.planner.ariaClose")}
           />
           <div className="flex h-full w-full max-w-lg flex-col bg-surface shadow-2xl overflow-y-auto">
             <div className="flex items-center justify-between border-b px-6 py-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-primary" />
-                <span className="font-semibold">AI Generátor Príspevku</span>
+                <span className="font-semibold">{t("marketing.planner.wizardTitle")}</span>
               </div>
               <button onClick={() => setWizardOpen(false)} className="rounded-md p-1.5 hover:bg-accent">
                 <X className="h-4 w-4" />
@@ -269,7 +270,7 @@ export default function MarketingPlannerPage() {
             <div className="flex-1 space-y-5 px-6 py-5">
               {/* Platform */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Platforma</label>
+                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.platformLabel")}</label>
                 <div className="flex gap-2">
                   {(["IG", "FB", "GBP"] as const).map((p) => (
                     <button
@@ -277,7 +278,7 @@ export default function MarketingPlannerPage() {
                       onClick={() => setPlatform(p)}
                       className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${platform === p ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"}`}
                     >
-                      {PLATFORM_LABELS[p]}
+                      {t(`marketing.planner.platformLabels.${p}` as any)}
                     </button>
                   ))}
                 </div>
@@ -285,12 +286,12 @@ export default function MarketingPlannerPage() {
 
               {/* Topic */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium">Téma príspevku</label>
+                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.topicLabel")}</label>
                 <textarea
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   rows={3}
-                  placeholder="Napr. 'jarná prevencia pred kliešťami', 'predstavenie nového veterinára', 'náš Fear-Free prístup'…"
+                  placeholder={t("marketing.planner.topicPlaceholder")}
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                 />
                 {genError && <p className="mt-1 text-xs text-destructive">{genError}</p>}
@@ -303,13 +304,13 @@ export default function MarketingPlannerPage() {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60 hover:bg-primary/90 transition-colors"
               >
                 {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                {isGenerating ? "Generujem…" : "Generovať s AI"}
+                {isGenerating ? t("marketing.planner.generatingButton") : t("marketing.planner.generateButton")}
               </button>
 
               {/* Generated output */}
               {generatedContent && (
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Vygenerovaný text</label>
+                  <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.generatedLabel")}</label>
                   <textarea
                     value={generatedContent}
                     onChange={(e) => setGeneratedContent(e.target.value)}
@@ -322,7 +323,7 @@ export default function MarketingPlannerPage() {
               {/* Schedule date */}
               {generatedContent && (
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Dátum publikácie (nepovinné)</label>
+                  <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.dateLabel")}</label>
                   <input
                     type="date"
                     value={scheduledDate}
@@ -342,7 +343,7 @@ export default function MarketingPlannerPage() {
                   className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
                 >
                   {createPost.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                  {scheduledDate ? "Naplánovať príspevok" : "Uložiť ako koncept"}
+                  {scheduledDate ? t("marketing.planner.saveSchedule") : t("marketing.planner.saveDraft")}
                 </button>
               </div>
             )}

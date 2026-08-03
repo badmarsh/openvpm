@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
 import {
   Megaphone,
@@ -17,13 +18,13 @@ import Link from "next/link";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
-const STATUS_CONFIG: Record<PostStatus, { label: string; color: string; icon: React.ElementType }> = {
-  draft: { label: "Koncept", color: "bg-gray-100 text-gray-700", icon: FileText },
-  in_review: { label: "Na schválenie", color: "bg-amber-100 text-amber-700", icon: AlertCircle },
-  approved: { label: "Schválené", color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-  scheduled: { label: "Naplánované", color: "bg-blue-100 text-blue-700", icon: Clock },
-  published: { label: "Publikované", color: "bg-green-100 text-green-700", icon: CheckCircle2 },
-  archived: { label: "Archivované", color: "bg-gray-100 text-gray-500", icon: FileText },
+const STATUS_CONFIG: Record<PostStatus, { color: string; icon: React.ElementType }> = {
+  draft: { color: "bg-gray-100 text-gray-700", icon: FileText },
+  in_review: { color: "bg-amber-100 text-amber-700", icon: AlertCircle },
+  approved: { color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
+  scheduled: { color: "bg-blue-100 text-blue-700", icon: Clock },
+  published: { color: "bg-green-100 text-green-700", icon: CheckCircle2 },
+  archived: { color: "bg-gray-100 text-gray-500", icon: FileText },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -36,6 +37,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function MarketingPage() {
+  const t = useTranslations();
   const [activeTab, setActiveTab] = useState<"overview" | "templates">("overview");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
@@ -59,8 +61,8 @@ export default function MarketingPage() {
             <Megaphone className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Marketingové Štúdio</h1>
-            <p className="text-sm text-muted-foreground">Sociálne siete, šablóny a správa obsahu</p>
+            <h1 className="text-2xl font-bold tracking-tight">{t("marketing.pageTitle")}</h1>
+            <p className="text-sm text-muted-foreground">{t("marketing.pageSubtitle")}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -69,7 +71,7 @@ export default function MarketingPage() {
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors"
           >
             <Plus className="h-4 w-4" />
-            Nový príspevok
+            {t("marketing.newPost")}
           </Link>
         </div>
       </div>
@@ -77,15 +79,15 @@ export default function MarketingPage() {
       {/* Stats row */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
-          { label: "Celkom príspevkov", value: stats.total, icon: Megaphone, color: "text-primary" },
-          { label: "Koncepty", value: stats.draft, icon: FileText, color: "text-gray-500" },
-          { label: "Naplánované", value: stats.scheduled, icon: Clock, color: "text-blue-600" },
-          { label: "Publikované", value: stats.published, icon: CheckCircle2, color: "text-emerald-600" },
+          { labelKey: "marketing.statsTotal", value: stats.total, icon: Megaphone, color: "text-primary" },
+          { labelKey: "marketing.statsDraft", value: stats.draft, icon: FileText, color: "text-gray-500" },
+          { labelKey: "marketing.statsScheduled", value: stats.scheduled, icon: Clock, color: "text-blue-600" },
+          { labelKey: "marketing.statsPublished", value: stats.published, icon: CheckCircle2, color: "text-emerald-600" },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-xl border bg-card p-4 shadow-sm">
+          <div key={stat.labelKey} className="rounded-xl border bg-card p-4 shadow-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
-              <span className="text-xs font-medium">{stat.label}</span>
+              <span className="text-xs font-medium">{t(stat.labelKey)}</span>
             </div>
             <p className="mt-2 text-3xl font-bold">{postsLoading ? "—" : stat.value}</p>
           </div>
@@ -95,18 +97,18 @@ export default function MarketingPage() {
       {/* Tabs */}
       <div className="flex items-center gap-1 border-b">
         {[
-          { id: "overview", label: "Prehľad príspevkov" },
-          { id: "templates", label: "Knižnica šablón" },
+          { id: "overview", labelKey: "marketing.tabOverview" },
+          { id: "templates", labelKey: "marketing.tabTemplates" },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as "overview" | "templates")}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+              ? "border-primary text-primary"
+              : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
@@ -116,21 +118,21 @@ export default function MarketingPage() {
         <div className="space-y-4">
           {postsLoading ? (
             <div className="flex items-center justify-center py-16 text-muted-foreground">
-              <span className="text-sm">Načítavam príspevky…</span>
+              <span className="text-sm">{t("marketing.loading")}</span>
             </div>
           ) : !posts || posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
               <Megaphone className="mb-3 h-10 w-10 text-muted-foreground/40" />
-              <p className="font-medium text-muted-foreground">Zatiaľ žiadne príspevky</p>
+              <p className="font-medium text-muted-foreground">{t("marketing.emptyTitle")}</p>
               <p className="mt-1 text-sm text-muted-foreground/70">
-                Vytvorte prvý príspevok pomocou AI generátora
+                {t("marketing.emptyDescription")}
               </p>
               <Link
                 href="/marketing/planner"
                 className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
               >
                 <Sparkles className="h-4 w-4" />
-                Vytvoriť príspevok
+                {t("marketing.emptyAction")}
               </Link>
             </div>
           ) : (
@@ -150,17 +152,17 @@ export default function MarketingPage() {
                     <div className="flex items-center gap-3 min-w-0">
                       <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${cfg.color}`}>
                         <StatusIcon className="h-3 w-3" />
-                        {cfg.label}
+                        {t(`marketing.statusLabels.${status}` as any)}
                       </span>
                       <span className="truncate text-sm text-muted-foreground">
-                        {scheduledDate ? `📅 ${scheduledDate}` : "Bez termínu"}
+                        {scheduledDate ? `📅 ${scheduledDate}` : t("marketing.noDate")}
                       </span>
                     </div>
                     <Link
                       href="/marketing/planner"
                       className="shrink-0 text-xs text-primary hover:underline"
                     >
-                      Otvoriť →
+                      {t("marketing.openLink")}
                     </Link>
                   </div>
                 );
@@ -175,7 +177,7 @@ export default function MarketingPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {templatesLoading ? "Načítavam…" : `${templates?.length ?? 0} šablón dostupných`}
+              {templatesLoading ? t("marketing.templatesLoading") : t("marketing.templatesCount", { count: templates?.length ?? 0 })}
             </p>
             <div className="flex items-center gap-1">
               <button
@@ -202,14 +204,14 @@ export default function MarketingPage() {
           ) : !templates || templates.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
               <FileText className="mb-3 h-10 w-10 text-muted-foreground/40" />
-              <p className="font-medium text-muted-foreground">Žiadne šablóny</p>
+              <p className="font-medium text-muted-foreground">{t("marketing.templatesEmptyTitle")}</p>
               <button
                 onClick={() => seedTemplates.mutate()}
                 disabled={seedTemplates.isPending}
                 className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
               >
                 <Sparkles className="h-4 w-4" />
-                {seedTemplates.isPending ? "Inicializujem…" : "Inicializovať šablóny"}
+                {seedTemplates.isPending ? t("marketing.templatesEmptyActionPending") : t("marketing.templatesEmptyAction")}
               </button>
             </div>
           ) : (
@@ -247,7 +249,7 @@ export default function MarketingPage() {
                       className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Sparkles className="h-3 w-3" />
-                      Použiť šablónu
+                      {t("marketing.templateUse")}
                     </Link>
                   </div>
                 );

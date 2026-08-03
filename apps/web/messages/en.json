@@ -23,7 +23,6 @@
     "ekasaReceipts": "e-Kasa Receipts",
     "ekasaSettings": "e-Kasa Settings"
   },
-
   "chrome": {
     "searchPlaceholder": "Search...",
     "newAction": "New",
@@ -469,6 +468,185 @@
     "addSectionHint": "Add at least one section to save this note.",
     "cancel": "Cancel",
     "failedToSave": "Failed to save:",
-    "aiNotConfigured": "AI is not configured yet. Ask your administrator to add an AI key."
+    "aiNotConfigured": "AI is not configured yet. Ask your administrator to add an AI key.",
+    "automations": {
+      "pageTitle": "CRM Automations",
+      "pageSubtitle": "Rules for automated client communication",
+      "statsTotal": "Total rules",
+      "statsActive": "Active",
+      "statsPaused": "Paused",
+      "activeCount": "{active} / {total} active",
+      "emptyTitle": "No automations",
+      "emptyDescription": "Initialize default rules",
+      "emptyAction": "Initialize default rules",
+      "triggerLabels": {
+        "APPOINTMENT_DISCHARGE": "Post-discharge",
+        "REVIEW_REQUEST": "Review request",
+        "ANNUAL_REMINDER": "Annual reminder",
+        "BIRTHDAY": "Patient birthday",
+        "WELLNESS_DUE": "Wellness plan — due"
+      },
+      "daysDelay": "· {days} days after",
+      "promptTemplate": "Prompt template",
+      "logsTitle": "Recent runs",
+      "noLogs": "No records",
+      "tooltipLogs": "Show logs",
+      "tooltipToggleOn": "Activate",
+      "tooltipToggleOff": "Pause",
+      "tooltipDelete": "Delete",
+      "confirmDelete": "Remove this automation?",
+      "infoTitle": "💡 How do automations work?",
+      "infoDescription": "Rules are triggered by events (discharge, visit anniversary…). AI generates a message in Slovak/Hungarian with a Fear-Free tone. Messages are sent via SMS or email — configure Twilio/Resend in settings."
+    },
+    "canvas": {
+      "pageTitle": "AI Canvas & SOPs",
+      "sidebarTitle": "AI Canvas & SOPs",
+      "tooltipNewDoc": "New document",
+      "loading": "Loading…",
+      "emptyTitle": "No documents",
+      "emptyAction": "Load Master Documents",
+      "noSelectionTitle": "Select a document",
+      "noSelectionDescription": "Click a document in the left sidebar to view its content",
+      "editButton": "Edit",
+      "saveButton": "Save",
+      "cancelButton": "Cancel",
+      "aiPlaceholder": "AI instruction (e.g. 'Complete the table', 'Improve the intro')…",
+      "aiButton": "AI",
+      "contentPlaceholder": "Document content (HTML or Markdown)…",
+      "emptyContent": "Empty document",
+      "ragBadge": "RAG source",
+      "docTypes": {
+        "STRATEGY": "Strategy",
+        "SOP": "SOP",
+        "MANUAL": "Manual",
+        "HR": "HR",
+        "PERSONA": "Personas"
+      },
+      "newDoc": {
+        "title": "New document",
+        "nameLabel": "Title",
+        "namePlaceholder": "e.g. Onboarding SOP for new employees",
+        "typeLabel": "Type",
+        "submitButton": "Create document"
+      }
+    },
+    "marketing": {
+      "pageTitle": "Marketing Studio",
+      "pageSubtitle": "Social media, templates, and content management",
+      "newPost": "New post",
+      "statsTotal": "Total posts",
+      "statsDraft": "Drafts",
+      "statsScheduled": "Scheduled",
+      "statsPublished": "Published",
+      "tabOverview": "Post overview",
+      "tabTemplates": "Template library",
+      "loading": "Loading posts…",
+      "emptyTitle": "No posts yet",
+      "emptyDescription": "Create your first post using the AI generator",
+      "emptyAction": "Create post",
+      "noDate": "No date",
+      "openLink": "Open →",
+      "templatesLoading": "Loading…",
+      "templatesCount": "{count} templates available",
+      "templatesEmptyTitle": "No templates",
+      "templatesEmptyAction": "Initialize templates",
+      "templatesEmptyActionPending": "Initializing…",
+      "templateUse": "Use template",
+      "statusLabels": {
+        "draft": "Draft",
+        "in_review": "In Review",
+        "approved": "Approved",
+        "scheduled": "Scheduled",
+        "published": "Published",
+        "archived": "Archived"
+      },
+      "planner": {
+        "pageTitle": "Content Planner",
+        "pageSubtitle": "Social media post calendar",
+        "newPost": "New post",
+        "dayHeaders": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ],
+        "months": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ],
+        "platformLabels": {
+          "IG": "Instagram",
+          "FB": "Facebook",
+          "GBP": "Google",
+          "TikTok": "TikTok"
+        },
+        "wizardTitle": "AI Post Generator",
+        "platformLabel": "Platform",
+        "topicLabel": "Post topic",
+        "topicPlaceholder": "e.g. 'spring tick prevention', 'introducing our new vet', 'our Fear-Free approach'…",
+        "generateButton": "Generate with AI",
+        "generatingButton": "Generating…",
+        "generatedLabel": "Generated text",
+        "dateLabel": "Publish date (optional)",
+        "saveSchedule": "Schedule post",
+        "saveDraft": "Save as draft",
+        "errorEmptyTopic": "Enter a post topic",
+        "errorGeneration": "Generation error",
+        "errorConnection": "Connection failed. Please try again.",
+        "ariaClose": "Close"
+      },
+      "reviews": {
+        "pageTitle": "Review Management",
+        "pageSubtitle": "AI-assisted responses to Google reviews — Fear-Free and professional",
+        "inputPanel": "Review input",
+        "quickScenarios": "Quick scenarios:",
+        "ratingLabel": "Rating",
+        "reviewTextLabel": "Review text",
+        "reviewTextPlaceholder": "Paste the client's review text…",
+        "generateButton": "Generate response with AI",
+        "generatingButton": "Generating response…",
+        "outputTitle": "Suggested response",
+        "copyButton": "Copy",
+        "copiedButton": "Copied!",
+        "emptyTitle": "Enter a review and click Generate response",
+        "emptyDescription": "AI considers the rating, Fear-Free approach, and GDPR",
+        "warning": "⚠️ Always review the response before publishing. AI can make mistakes — assess the context personally.",
+        "guidelinesTitle": "Review response guidelines",
+        "guidelines": [
+          "⏱️ Respond within 48 hours of publication",
+          "🔒 No patient names or diagnoses (GDPR)",
+          "✍️ Sign off — 'Clinic Team' or 'Dr. X'",
+          "💚 Fear-Free tone — always empathetic and professional"
+        ],
+        "errorEmptyReview": "Enter review text",
+        "errorGeneration": "Generation error",
+        "errorConnection": "Connection failed. Please try again.",
+        "templates": {
+          "price": "Price complaint",
+          "waiting": "Long wait",
+          "death": "Patient death",
+          "praise": "5★ praise"
+        },
+        "templateTexts": {
+          "price": "The treatment cost was too high. I am not satisfied.",
+          "waiting": "We waited a very long time, but the treatment was fine.",
+          "death": "Despite the vet's efforts, we lost our beloved pet. The staff was very empathetic.",
+          "praise": "Excellent care! The vet was patient and our dog was calm throughout the entire examination."
+        }
+      }
+    }
   }
 }
