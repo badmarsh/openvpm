@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { trpc } from "@/lib/trpc/client";
+import { trpc } from "@/lib/trpc";
 import { useAudioRecorder } from "@/hooks/use-audio-recorder";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mic, Square, Loader2, Bot, FileText, CheckCircle2, Play, Pause, Save, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -227,34 +226,34 @@ export default function ClinicalConsultationWorkspace() {
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-muted-foreground uppercase">S - Subjektívne</label>
-                    <Textarea 
+                    <textarea 
                       value={soapData.subjective} 
-                      onChange={(e) => setSoapData({...soapData, subjective: e.target.value})}
-                      className="min-h-[100px] resize-y bg-background"
+                      onChange={(e: any) => setSoapData({...soapData, subjective: e.target.value})}
+                      className="min-h-[100px] resize-y w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-muted-foreground uppercase">O - Objektívne</label>
-                    <Textarea 
+                    <textarea 
                       value={soapData.objective} 
-                      onChange={(e) => setSoapData({...soapData, objective: e.target.value})}
-                      className="min-h-[100px] resize-y bg-background"
+                      onChange={(e: any) => setSoapData({...soapData, objective: e.target.value})}
+                      className="min-h-[100px] resize-y w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-muted-foreground uppercase">A - Zhodnotenie (Assessment)</label>
-                    <Textarea 
+                    <textarea 
                       value={soapData.assessment} 
-                      onChange={(e) => setSoapData({...soapData, assessment: e.target.value})}
-                      className="min-h-[80px] resize-y bg-background"
+                      onChange={(e: any) => setSoapData({...soapData, assessment: e.target.value})}
+                      className="min-h-[80px] resize-y w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-muted-foreground uppercase">P - Plán</label>
-                    <Textarea 
+                    <textarea 
                       value={soapData.plan} 
-                      onChange={(e) => setSoapData({...soapData, plan: e.target.value})}
-                      className="min-h-[100px] resize-y bg-background"
+                      onChange={(e: any) => setSoapData({...soapData, plan: e.target.value})}
+                      className="min-h-[100px] resize-y w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     />
                   </div>
                 </div>

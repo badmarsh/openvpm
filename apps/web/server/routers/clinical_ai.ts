@@ -116,8 +116,7 @@ export const clinicalAiRouter = createRouter({
         .values({
           practiceId: ctx.practiceId,
           patientId: input.patientId,
-          veterinarianId: ctx.user.id,
-          date: new Date().toISOString(),
+          authorId: ctx.user.id,
           subjective: input.soapData.subjective,
           objective: input.soapData.objective,
           assessment: input.soapData.assessment,

@@ -3,7 +3,7 @@ import { Mic, X, Search, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc/client";
+import { trpc } from "@/lib/trpc";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
 
@@ -68,7 +68,7 @@ export function ScribeWidget() {
           ) : patients?.items.length === 0 ? (
             <div className="text-center p-4 text-sm text-muted-foreground">Žiadni pacienti neboli nájdení.</div>
           ) : (
-            patients?.items.map((patient) => (
+            patients?.items.map((patient: any) => (
               <Button 
                 key={patient.id} 
                 variant="ghost" 
