@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   jsonb,
+  boolean,
   index,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
@@ -34,7 +35,7 @@ export const canvasDocuments = pgTable(
     // Tags for filtering: ["Fear-Free", "RAG", "Marketing"]
     tags: jsonb("tags").default([]),
     // Is this document used as RAG context for the AI?
-    isRagSource: jsonb("is_rag_source").default(false),
+    isRagSource: boolean("is_rag_source").notNull().default(false),
   },
   (table) => ({
     practiceIdx: index("canvas_documents_practice_idx").on(

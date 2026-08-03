@@ -65,7 +65,9 @@ export const automationsRouter = createRouter({
   }),
 
   /** Seed default automations for a new practice (idempotent) */
-  seedDefaultAutomations: protectedProcedure.mutation(async ({ ctx }) => {
+  seedDefaultAutomations: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
+    .mutation(async ({ ctx }) => {
     const existing = await ctx.db.query.crmAutomations.findFirst({
       where: and(
         eq(crmAutomations.practiceId, ctx.practiceId),

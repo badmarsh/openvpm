@@ -1,8 +1,29 @@
 import { z } from "zod";
 import { eq, and, isNull, desc } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { createRouter, protectedProcedure } from "../trpc";
+import DOMPurify from "isomorphic-dompurify";
+import { createRouter, protectedProcedure, requireRole } from "../trpc";
 import { canvasDocuments, canvasTemplates } from "@openpims/db";
+
+// ---------------------------------------------------------------------------
+// Server-side HTML sanitization — canvas_documents.content is rendered via
+// dangerouslySetInnerHTML on the frontend, and RAG-source documents are fed
+// directly into AI prompts, so unsanitized input is both a stored-XSS vector
+// and a prompt-injection vector. Allowlist matches the editor's supported tags
+// (headings, lists, tables, task lists, mermaid diagram blocks, basic links).
+// ---------------------------------------------------------------------------
+const CANVAS_ALLOWED_TAGS = [
+  "h1", "h2", "h3", "h4", "p", "ul", "ol", "li", "strong", "em", "u",
+  "table", "thead", "tbody", "tr", "th", "td", "pre", "code", "a", "br", "span",
+];
+const CANVAS_ALLOWED_ATTR = ["class", "href", "target", "style", "border"];
+
+function sanitizeCanvasHtml(html: string): string {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: CANVAS_ALLOWED_TAGS,
+    ALLOWED_ATTR: CANVAS_ALLOWED_ATTR,
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Master documents seeded from the OpenVPM Social Studio knowledge base
@@ -242,7 +263,9 @@ export const canvasRouter = createRouter({
     }),
 
   /** Seed the 5 master documents (idempotent) */
-  seedMasterDocuments: protectedProcedure.mutation(async ({ ctx }) => {
+  seedMasterDocuments: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
+    .mutation(async ({ ctx }) => {
     const existing = await ctx.db.query.canvasDocuments.findFirst({
       where: and(
         eq(canvasDocuments.practiceId, ctx.practiceId),
@@ -263,6 +286,7 @@ export const canvasRouter = createRouter({
 
   /** Create a new document */
   createDocument: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
     .input(
       z.object({
         title: z.string().min(1).max(512),
@@ -280,6 +304,7 @@ export const canvasRouter = createRouter({
           practiceId: ctx.practiceId,
           authorId: ctx.user.id,
           ...input,
+          content: sanitizeCanvasHtml(input.content),
         })
         .returning();
       return doc;
@@ -287,6 +312,7 @@ export const canvasRouter = createRouter({
 
   /** Update document content */
   updateDocument: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
     .input(
       z.object({
         documentId: z.string().uuid(),
@@ -299,6 +325,9 @@ export const canvasRouter = createRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { documentId, ...rest } = input;
+      if (rest.content !== undefined) {
+        rest.content = sanitizeCanvasHtml(rest.content);
+      }
       const existing = await ctx.db.query.canvasDocuments.findFirst({
         where: and(
           eq(canvasDocuments.id, documentId),
@@ -319,6 +348,7 @@ export const canvasRouter = createRouter({
 
   /** Soft-delete a document */
   deleteDocument: protectedProcedure
+    .use(requireRole("admin"))
     .input(z.object({ documentId: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
       const existing = await ctx.db.query.canvasDocuments.findFirst({

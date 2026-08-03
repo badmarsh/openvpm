@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   jsonb,
+  boolean,
   timestamp,
   index,
 } from "drizzle-orm/pg-core";
@@ -32,8 +33,8 @@ export const marketingTemplates = pgTable(
     mediaType: varchar("media_type", { length: 32 }).notNull().default("image"),
     promptSkeleton: text("prompt_skeleton").notNull(),
     exampleCaption: text("example_caption"),
-    requiresConsent: jsonb("requires_consent").default(false),
-    isGlobal: jsonb("is_global").default(false), // true = available to all practices
+    requiresConsent: boolean("requires_consent").notNull().default(false),
+    isGlobal: boolean("is_global").notNull().default(false), // true = available to all practices
   },
   (table) => ({
     practiceIdx: index("marketing_templates_practice_idx").on(
@@ -72,8 +73,8 @@ export const marketingPosts = pgTable(
     // Extra metadata
     topicInputs: jsonb("topic_inputs").default({}),
     overlayText: varchar("overlay_text", { length: 512 }),
-    hasConsent: jsonb("has_consent").default(false),
-    hasWatermark: jsonb("has_watermark").default(true),
+    hasConsent: boolean("has_consent").notNull().default(false),
+    hasWatermark: boolean("has_watermark").notNull().default(true),
   },
   (table) => ({
     practiceIdx: index("marketing_posts_practice_idx").on(

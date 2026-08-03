@@ -4,6 +4,11 @@ import { authOptions } from "@/lib/auth";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { z } from "zod";
+import { rateLimit, rateLimitResponseHeaders } from "@/lib/rate-limit";
+import { recordUsage } from "@/lib/billing/usage";
+
+const MARKETING_AI_RATE_LIMIT = 20;
+const MARKETING_AI_RATE_WINDOW_MS = 60_000;
 
 // ---------------------------------------------------------------------------
 // Input validation
@@ -159,6 +164,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Meter and rate-limit Gemini calls per practice+user, same as the tRPC
+    // ai.ts agent endpoints — this route sits outside tRPC so it doesn't get
+    // that governance for free.
+    const limited = await rateLimit({
+      key: `marketing-ai:${session.user.practiceId}:${session.user.id}`,
+      limit: MARKETING_AI_RATE_LIMIT,
+      windowMs: MARKETING_AI_RATE_WINDOW_MS,
+    });
+    if (!limited.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Wait a minute and try again." },
+        {
+          status: 429,
+          headers: rateLimitResponseHeaders(MARKETING_AI_RATE_LIMIT, limited),
+        }
+      );
+    }
+
     // Parse and validate body
     let body: unknown;
     try {
@@ -185,6 +208,9 @@ export async function POST(req: Request) {
       prompt: finalPrompt,
       temperature: 0.7,
     });
+
+    // Meter successful generations, same as agent AI runs (no-op on self-host).
+    await recordUsage({ practiceId: session.user.practiceId, kind: "ai_run" });
 
     return NextResponse.json({
       success: true,
