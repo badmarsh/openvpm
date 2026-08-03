@@ -16,11 +16,12 @@
     "controlledSubstances": "Omamné a psychotropné látky",
     "reports": "Prehľady",
     "settings": "Nastavenia",
-    "marketingStudio": "Jazz",
     "marketing": "Marketingové Štúdio",
     "marketingPlanner": "Plánovač Obsahu",
     "automations": "CRM Automatizácie",
-    "documents": "AI Canvas a SOP"
+    "documents": "AI Canvas a SOP",
+    "ekasaReceipts": "e-Kasa Doklady",
+    "ekasaSettings": "e-Kasa Nastavenia"
   },
 
   "chrome": {

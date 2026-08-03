@@ -16,11 +16,12 @@
     "controlledSubstances": "Controlled Substances",
     "reports": "Reports",
     "settings": "Settings",
-    "marketingStudio": "Jaaz",
     "marketing": "Marketing Studio",
     "marketingPlanner": "Content Planner",
     "automations": "CRM Automations",
-    "documents": "AI Canvas & SOPs"
+    "documents": "AI Canvas & SOPs",
+    "ekasaReceipts": "e-Kasa Receipts",
+    "ekasaSettings": "e-Kasa Settings"
   },
 
   "chrome": {

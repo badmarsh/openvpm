@@ -11,7 +11,6 @@ const PUBLIC_PATH_PREFIXES = [
   "/assets",
   "/capture",
   "/forgot-password",
-  "/jaaz-proxy",
   "/legal",
   "/login",
   "/portal",

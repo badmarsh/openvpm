@@ -32,6 +32,7 @@ import { messagingRouter } from "./messaging";
 import { marketingRouter } from "./marketing";
 import { automationsRouter } from "./automations";
 import { canvasRouter } from "./canvas";
+import { ekasaRouter } from "./ekasa";
 
 export const appRouter = createRouter({
   auth: authRouter,
@@ -67,6 +68,7 @@ export const appRouter = createRouter({
   marketing: marketingRouter,
   automations: automationsRouter,
   canvas: canvasRouter,
+  ekasa: ekasaRouter,
 });
 
 export type AppRouter = typeof appRouter;

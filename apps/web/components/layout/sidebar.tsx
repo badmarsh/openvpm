@@ -20,7 +20,6 @@ import {
   Settings,
   ShieldAlert,
   Bot,
-  Palette,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -28,6 +27,8 @@ import {
   CalendarDays,
   Workflow,
   BookOpen,
+  ReceiptText,
+  Settings2,
 } from "lucide-react";
 import { PawMark } from "@/components/brand/paw-mark";
 import { useTranslations } from "next-intl";
@@ -59,11 +60,11 @@ const navItems: {
   { href: "/schedule", key: "nav.schedule", icon: Calendar, roles: allRoles },
   { href: "/records", key: "nav.records", icon: FileText, roles: allRoles },
   { href: "/billing", key: "nav.billing", icon: Receipt, roles: allRoles },
+  { href: "/billing/ekasa", key: "nav.ekasaReceipts", icon: ReceiptText, roles: ["admin", "veterinarian"] },
   { href: "/inventory", key: "nav.inventory", icon: Package, roles: allRoles },
   { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
   { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
   { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
-  { href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" },
   // --- Marketing & Growth Module ---
   { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"] },
   { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
@@ -73,6 +74,7 @@ const navItems: {
   { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
   { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
   { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
+  { href: "/settings/ekasa", key: "nav.ekasaSettings", icon: Settings2, roles: ["admin"] },
 ];
 
 type SidebarProps = {
