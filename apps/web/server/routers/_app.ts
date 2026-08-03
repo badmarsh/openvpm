@@ -29,6 +29,9 @@ import { waitlistRouter } from "./waitlist";
 import { subscriptionRouter } from "./subscription";
 import { adminRouter } from "./admin";
 import { messagingRouter } from "./messaging";
+import { marketingRouter } from "./marketing";
+import { automationsRouter } from "./automations";
+import { canvasRouter } from "./canvas";
 
 export const appRouter = createRouter({
   auth: authRouter,
@@ -61,6 +64,9 @@ export const appRouter = createRouter({
   subscription: subscriptionRouter,
   admin: adminRouter,
   messaging: messagingRouter,
+  marketing: marketingRouter,
+  automations: automationsRouter,
+  canvas: canvasRouter,
 });
 
 export type AppRouter = typeof appRouter;

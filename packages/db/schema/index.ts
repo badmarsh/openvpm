@@ -18,3 +18,8 @@ export * from "./usage";
 export * from "./auth-tokens";
 export * from "./messaging";
 export * from "./ai-models";
+export * from "./marketing";
+export * from "./automations";
+export * from "./canvas";
+export * from "./ekasa";
+

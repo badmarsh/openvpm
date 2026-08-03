@@ -16,8 +16,13 @@
     "controlledSubstances": "Omamné a psychotropné látky",
     "reports": "Prehľady",
     "settings": "Nastavenia",
-    "marketingStudio": "Jazz"
+    "marketingStudio": "Jazz",
+    "marketing": "Marketingové Štúdio",
+    "marketingPlanner": "Plánovač Obsahu",
+    "automations": "CRM Automatizácie",
+    "documents": "AI Canvas a SOP"
   },
+
   "chrome": {
     "searchPlaceholder": "Hľadať…",
     "newAction": "Nový",

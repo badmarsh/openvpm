@@ -24,6 +24,10 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Megaphone,
+  CalendarDays,
+  Workflow,
+  BookOpen,
 } from "lucide-react";
 import { PawMark } from "@/components/brand/paw-mark";
 import { useTranslations } from "next-intl";
@@ -60,6 +64,12 @@ const navItems: {
   { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
   { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
   { href: "/tools/jaaz", key: "nav.marketingStudio", icon: Palette, roles: allRoles, badge: "Beta" },
+  // --- Marketing & Growth Module ---
+  { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"] },
+  { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
+  { href: "/automations", key: "nav.automations", icon: Workflow, roles: ["admin"] },
+  { href: "/documents", key: "nav.documents", icon: BookOpen, roles: allRoles },
+  // ---------------------------------
   { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
   { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
   { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },

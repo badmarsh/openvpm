@@ -16,8 +16,13 @@
     "controlledSubstances": "Controlled Substances",
     "reports": "Reports",
     "settings": "Settings",
-    "marketingStudio": "Jaaz"
+    "marketingStudio": "Jaaz",
+    "marketing": "Marketing Studio",
+    "marketingPlanner": "Content Planner",
+    "automations": "CRM Automations",
+    "documents": "AI Canvas & SOPs"
   },
+
   "chrome": {
     "searchPlaceholder": "Search...",
     "newAction": "New",
