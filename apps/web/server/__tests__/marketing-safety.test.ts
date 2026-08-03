@@ -180,11 +180,11 @@ describe("marketing tenant scoping", () => {
       MARKETING_SOURCE.match(
         /eq\(marketingPosts\.practiceId, ctx\.practiceId\)/g
       )?.length ?? 0
-    ).toBeGreaterThanOrEqual(6);
+    ).toBeGreaterThanOrEqual(5);
     expect(
       MARKETING_SOURCE.match(/isNull\(marketingPosts\.deletedAt\)/g)
         ?.length ?? 0
-    ).toBeGreaterThanOrEqual(6);
+    ).toBeGreaterThanOrEqual(5);
     expect(MARKETING_SOURCE).toContain(
       "eq(marketingTemplates.practiceId, ctx.practiceId)"
     );

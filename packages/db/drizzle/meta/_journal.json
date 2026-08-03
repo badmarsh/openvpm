@@ -239,6 +239,13 @@
       "when": 1785782241005,
       "tag": "0033_long_exodus",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1785875166000,
+      "tag": "0034_marketing_canvas_boolean_fix",
+      "breakpoints": true
     }
   ]
 }

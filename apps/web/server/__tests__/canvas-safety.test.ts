@@ -132,7 +132,7 @@ describe("canvas content sanitization", () => {
         '<h1>Title</h1><script>alert(1)</script><img src=x onerror="alert(2)"><p onclick="evil()">Text</p>',
     });
 
-    const inserted = insertValues.mock.calls[0][0] as { content: string };
+    const inserted = (insertValues as any).mock.calls[0][0];
     expect(inserted.content).toContain("<h1>Title</h1>");
     expect(inserted.content).not.toContain("<script");
     expect(inserted.content).not.toContain("onerror");
@@ -149,7 +149,7 @@ describe("canvas content sanitization", () => {
       content: "<p>Safe</p><script>steal(document.cookie)</script>",
     });
 
-    const setArg = updateSet.mock.calls[0][0] as { content: string };
+    const setArg = (updateSet as any).mock.calls[0][0];
     expect(setArg.content).toContain("<p>Safe</p>");
     expect(setArg.content).not.toContain("<script");
   });
