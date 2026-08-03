@@ -11,7 +11,6 @@ import {
   BarChart2,
   CheckSquare,
   Users,
-  Monitor,
   X,
   Save,
   Tag,
@@ -149,11 +148,10 @@ export default function DocumentsPage() {
                 <button
                   key={doc.id}
                   onClick={() => handleOpenDoc(doc.id)}
-                  className={`w-full rounded-xl border p-3 text-left transition-all ${
-                    selectedDoc === doc.id
+                  className={`w-full rounded-xl border p-3 text-left transition-all ${selectedDoc === doc.id
                       ? "border-primary bg-primary/5 shadow-sm"
                       : "border-border bg-card hover:bg-accent/30"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2">
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${color}`}>

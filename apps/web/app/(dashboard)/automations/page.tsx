@@ -4,7 +4,6 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import {
   Workflow,
-  Plus,
   Power,
   PowerOff,
   Trash2,
@@ -211,13 +210,12 @@ export default function AutomationsPage() {
                         {logs.map((log) => (
                           <div key={log.id} className="flex items-center gap-2 text-xs">
                             <span
-                              className={`inline-block rounded-full px-1.5 py-0.5 font-medium ${
-                                log.status === "sent"
+                              className={`inline-block rounded-full px-1.5 py-0.5 font-medium ${log.status === "sent"
                                   ? "bg-emerald-100 text-emerald-700"
                                   : log.status === "failed"
-                                  ? "bg-red-100 text-red-700"
-                                  : "bg-amber-100 text-amber-700"
-                              }`}
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-amber-100 text-amber-700"
+                                }`}
                             >
                               {log.status as string}
                             </span>

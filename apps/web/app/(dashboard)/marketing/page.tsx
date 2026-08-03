@@ -5,7 +5,6 @@ import { trpc } from "@/lib/trpc";
 import {
   Megaphone,
   Plus,
-  Calendar,
   FileText,
   Clock,
   CheckCircle2,
@@ -102,11 +101,10 @@ export default function MarketingPage() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as "overview" | "templates")}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === tab.id
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id
                 ? "border-primary text-primary"
                 : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
           >
             {tab.label}
           </button>
