@@ -57,7 +57,8 @@ DECLARE
     'locations','patients','practice_payment_accounts','prescriptions','problem_list','procedures','products','purchase_orders',
     'recurring_series','rooms','services','sms_suppressions','soap_notes','staff_schedules','suppliers',
     'treatment_plans','treatment_templates','usage_records','users','vaccination_records',
-    'vital_signs','webhooks','wellness_enrollments','wellness_plans'
+    'vital_signs','webhooks','wellness_enrollments','wellness_plans',
+    'canvas_documents','crm_automation_logs','crm_automations','marketing_posts','marketing_templates'
   ];
 BEGIN
   FOREACH t IN ARRAY tbls LOOP
@@ -111,6 +112,16 @@ DROP POLICY IF EXISTS reference_update ON drug_interactions;
 CREATE POLICY reference_update ON drug_interactions FOR UPDATE USING (app_rls_bypass()) WITH CHECK (app_rls_bypass());
 DROP POLICY IF EXISTS reference_delete ON drug_interactions;
 CREATE POLICY reference_delete ON drug_interactions FOR DELETE USING (app_rls_bypass());
+
+ALTER TABLE canvas_templates ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS reference_read ON canvas_templates;
+CREATE POLICY reference_read ON canvas_templates FOR SELECT USING (true);
+DROP POLICY IF EXISTS reference_insert ON canvas_templates;
+CREATE POLICY reference_insert ON canvas_templates FOR INSERT WITH CHECK (app_rls_bypass());
+DROP POLICY IF EXISTS reference_update ON canvas_templates;
+CREATE POLICY reference_update ON canvas_templates FOR UPDATE USING (app_rls_bypass()) WITH CHECK (app_rls_bypass());
+DROP POLICY IF EXISTS reference_delete ON canvas_templates;
+CREATE POLICY reference_delete ON canvas_templates FOR DELETE USING (app_rls_bypass());
 
 -- Stripe webhook event de-duplication is global/system state. Only system
 -- context may read or write it; ordinary tenant context should see nothing.

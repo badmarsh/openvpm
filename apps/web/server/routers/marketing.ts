@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { eq, and, isNull, desc, gte, lte } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { createRouter, protectedProcedure } from "../trpc";
+import { createRouter, protectedProcedure, requireRole } from "../trpc";
 import {
   marketingPosts,
   marketingTemplates,
@@ -102,7 +102,9 @@ export const marketingRouter = createRouter({
   }),
 
   /** Seed the default Slovak templates for a new practice (idempotent) */
-  seedDefaultTemplates: protectedProcedure.mutation(async ({ ctx }) => {
+  seedDefaultTemplates: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
+    .mutation(async ({ ctx }) => {
     const existing = await ctx.db.query.marketingTemplates.findFirst({
       where: and(
         eq(marketingTemplates.practiceId, ctx.practiceId),
@@ -173,6 +175,7 @@ export const marketingRouter = createRouter({
 
   /** Create a new post */
   createPost: protectedProcedure
+    .use(requireRole("admin", "veterinarian", "technician"))
     .input(
       z.object({
         templateId: z.string().uuid().optional(),
@@ -218,6 +221,7 @@ export const marketingRouter = createRouter({
 
   /** Update an existing post's content */
   updatePost: protectedProcedure
+    .use(requireRole("admin", "veterinarian", "technician"))
     .input(
       z.object({
         postId: z.string().uuid(),
@@ -260,6 +264,7 @@ export const marketingRouter = createRouter({
 
   /** Update post status with approval workflow tracking */
   updatePostStatus: protectedProcedure
+    .use(requireRole("admin", "veterinarian", "technician"))
     .input(
       z.object({
         postId: z.string().uuid(),
@@ -307,6 +312,7 @@ export const marketingRouter = createRouter({
 
   /** Soft-delete a post */
   deletePost: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
     .input(z.object({ postId: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
       const existing = await ctx.db.query.marketingPosts.findFirst({
