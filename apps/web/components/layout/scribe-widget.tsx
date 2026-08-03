@@ -15,7 +15,7 @@ export function ScribeWidget() {
 
   // Zjednodušené vyhľadávanie pacientov pre rýchlu konzultáciu
   const { data: patients, isLoading } = trpc.patients.list.useQuery(
-    { page: 1, limit: 5, search: debouncedSearch },
+    { offset: 0, limit: 5, search: debouncedSearch },
     { enabled: open }
   );
 

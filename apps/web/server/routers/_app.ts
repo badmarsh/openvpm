@@ -22,7 +22,7 @@ import { insuranceRouter } from "./insurance";
 import { apiKeysRouter } from "./api-keys";
 import { dosingRouter } from "./dosing";
 import { vitalsRouter } from "./vitals";
-import { agentRouter } from "./agent";
+
 import { treatmentPlansRouter } from "./treatment-plans";
 import { wellnessRouter } from "./wellness";
 import { waitlistRouter } from "./waitlist";
@@ -59,7 +59,7 @@ export const appRouter = createRouter({
   apiKeys: apiKeysRouter,
   dosing: dosingRouter,
   vitals: vitalsRouter,
-  agent: agentRouter,
+
   treatmentPlans: treatmentPlansRouter,
   wellness: wellnessRouter,
   waitlist: waitlistRouter,

@@ -20,7 +20,6 @@ import {
   practices,
 } from "@openpims/db";
 import type { Database } from "@openpims/db/client";
-import { AgentNotConfiguredError } from "@/lib/agent";
 import {
   SOAP_DRAFT_VISIT_CONTEXT_MAX_LENGTH,
   SoapDraftUnavailableError,
@@ -345,12 +344,7 @@ export const aiRouter = createRouter({
         await recordUsage({ practiceId: ctx.practiceId, kind: "ai_run" });
         return draft;
       } catch (e) {
-        if (e instanceof AgentNotConfiguredError) {
-          throw new TRPCError({
-            code: "PRECONDITION_FAILED",
-            message: e.message,
-          });
-        }
+
         if (e instanceof SoapDraftUnavailableError) {
           throw new TRPCError({ code: "BAD_REQUEST", message: e.message });
         }

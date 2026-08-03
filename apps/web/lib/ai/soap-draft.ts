@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { configuredModel } from "@/lib/agent/runner";
+import { openai } from "@ai-sdk/openai";
 import { SOAP_SECTION_MAX_LENGTH } from "@/lib/records/soap-content";
 
 /**
@@ -140,7 +140,8 @@ export async function draftSoapNote(
   context: SoapDraftContext
 ): Promise<SoapDraft> {
   const result = await generateText({
-    model: configuredModel(),
+    // @ts-ignore - mismatch between ai and @ai-sdk/openai versions
+    model: openai("gpt-4o"),
     system: SOAP_DRAFT_SYSTEM_PROMPT,
     prompt: buildSoapDraftPrompt(context),
     maxOutputTokens: SOAP_DRAFT_MAX_OUTPUT_TOKENS,

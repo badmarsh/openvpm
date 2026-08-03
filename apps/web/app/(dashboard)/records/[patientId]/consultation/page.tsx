@@ -26,7 +26,7 @@ export default function ClinicalConsultationWorkspace() {
   const applySoapMutation = trpc.clinicalAi.applyToRecord.useMutation();
   
   // Zistenie informácií o pacientovi
-  const { data: patient } = trpc.patients.getById.useQuery(patientId, { enabled: !!patientId });
+  const { data: patient } = trpc.patients.getById.useQuery({ id: patientId }, { enabled: !!patientId });
 
   // Načítanie session detailov
   const { data: session, refetch: refetchSession } = trpc.clinicalAi.getSession.useQuery(
@@ -267,7 +267,7 @@ export default function ClinicalConsultationWorkspace() {
           </Card>
 
           {/* Návrhy na účtovanie */}
-          {session?.suggestedBillingItems && (
+          {!!session?.suggestedBillingItems && (
             <Card className="flex-shrink-0 border-orange-500/20 shadow-sm bg-orange-500/5 dark:bg-orange-950/10">
               <CardHeader className="py-3 px-4 border-b border-orange-500/10">
                 <CardTitle className="text-sm font-semibold flex items-center justify-between text-orange-600 dark:text-orange-400">

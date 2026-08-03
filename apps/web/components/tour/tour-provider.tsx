@@ -89,10 +89,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     enabled: isAdmin,
     staleTime: 5 * 60_000,
   });
-  const agentStatus = trpc.agent.status.useQuery(undefined, {
-    enabled: isAdmin,
-    staleTime: 5 * 60_000,
-  });
+
 
   // null = no guide running; otherwise the active recipe + step cursor.
   const [run, setRun] = useState<ActiveRun | null>(null);
@@ -145,7 +142,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
           demoPatientId: welcomeCtx.data?.demoPatientId,
           demoInvoiceId: welcomeCtx.data?.demoInvoiceId,
           agentConfigured:
-            ctx.agentConfigured ?? agentStatus.data?.configured,
+            ctx.agentConfigured ?? true,
         });
         prefetchSteps(steps);
         setRun({ recipe, steps, index: 0 });
@@ -157,7 +154,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       prefetchSteps(steps);
       setRun({ recipe, steps, index: 0 });
     },
-    [isAdmin, persist, prefetchSteps, welcomeCtx.data, agentStatus.data]
+    [isAdmin, persist, prefetchSteps, welcomeCtx.data]
   );
 
   // Start ONLY on an explicit ?tour=start deep-link. Onboarding is opt-in: a
@@ -167,7 +164,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     if (autoStarted.current || run !== null || !isAdmin) return;
     // Wait for the tour context to settle so the deep-link never races into
     // the shallow fallback steps (fetch errors still start the fallback).
-    if (welcomeCtx.isLoading || agentStatus.isLoading) return;
+    if (welcomeCtx.isLoading) return;
     const wantStart =
       typeof window !== "undefined" &&
       new URLSearchParams(window.location.search).get("tour") === "start";
@@ -177,7 +174,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       start();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin, stateQuery.data, pathname, run, welcomeCtx.isLoading, agentStatus.isLoading]);
+  }, [isAdmin, stateQuery.data, pathname, run, welcomeCtx.isLoading]);
 
   const step = run ? run.steps[run.index] ?? null : null;
 

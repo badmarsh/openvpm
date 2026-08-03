@@ -106,11 +106,8 @@ export default function NewSoapNotePage() {
     },
   });
 
-  // AI draft availability mirrors the OpenVPM Agent (same key + model config).
-  const agentStatus = trpc.agent.status.useQuery(undefined, {
-    enabled: canCreateSoapNote,
-  });
-  const aiConfigured = agentStatus.data?.configured ?? false;
+  // Agent status removed
+  const aiConfigured = true;
   const draftWithAi = trpc.ai.draftSoapNote.useMutation({
     onSuccess: (draft) => {
       setSubjective(draftTextToHtml(draft.subjective));

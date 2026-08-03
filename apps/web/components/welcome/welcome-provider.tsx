@@ -83,9 +83,7 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
   const welcomeContext = trpc.settings.welcomeContext.useQuery(undefined, {
     enabled: authed,
   });
-  const agentStatus = trpc.agent.status.useQuery(undefined, {
-    enabled: authed && canRunAgentGuideRole(role),
-  });
+
 
   const [open, setOpen] = useState(false);
   const [setupOfferOpen, setSetupOfferOpen] = useState(false);
@@ -198,7 +196,7 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
   const guideContext: GuideContext = {
     portalClient: welcomeContext.data?.portalClient ?? null,
     demoPatientName: welcomeContext.data?.demoPatientName ?? null,
-    agentConfigured: agentStatus.data?.configured,
+    agentConfigured: true,
   };
 
   const headline = isAdmin
