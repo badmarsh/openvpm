@@ -2,55 +2,8 @@ import { z } from "zod";
 import { eq, and, isNull, desc } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { createRouter, protectedProcedure, requireRole } from "../trpc";
-import { crmAutomations, crmAutomationLogs } from "@openpims/db";
-
-// Default automation templates for Slovak veterinary practice
-const DEFAULT_AUTOMATIONS = [
-  {
-    name: "Pripomienka po prepustení (24h)",
-    triggerType: "APPOINTMENT_DISCHARGE",
-    conditions: { delayDays: 1 },
-    actionType: "sms",
-    actionPayload: {
-      templatePrompt:
-        "Napíš priateľskú SMS pacientovi po veterinárnej návšteve. Opýtaj sa, ako sa miláčik cíti, a ponúkni pomoc. Maximálne 160 znakov. Fear-Free tón. SK jazyk.",
-    },
-    isActive: true,
-  },
-  {
-    name: "Žiadosť o Google recenziu (3 dni po návšteve)",
-    triggerType: "REVIEW_REQUEST",
-    conditions: { delayDays: 3 },
-    actionType: "sms",
-    actionPayload: {
-      templatePrompt:
-        "Napíš krátku SMS žiadajúcu klienta o zanechanie Google recenzie po spokojnej návšteve veterinára. Max 160 znakov. SK jazyk.",
-    },
-    isActive: true,
-  },
-  {
-    name: "Ročná preventívna prehliadka",
-    triggerType: "ANNUAL_REMINDER",
-    conditions: { delayDays: 365 },
-    actionType: "email",
-    actionPayload: {
-      templatePrompt:
-        "Napíš e-mail pripomínajúci klientovi ročnú preventívnu prehliadku ich miláčika. Vrúcny, Fear-Free tón. SK jazyk.",
-    },
-    isActive: false,
-  },
-  {
-    name: "Narodeniny pacienta",
-    triggerType: "BIRTHDAY",
-    conditions: { delayDays: 0 },
-    actionType: "sms",
-    actionPayload: {
-      templatePrompt:
-        "Napíš milú narodeninú SMS pre miláčika klienta od veterinárnej kliniky. Zábavná, Fear-Free. Max 160 znakov. SK jazyk.",
-    },
-    isActive: true,
-  },
-];
+import { crmAutomations, crmAutomationLogs, practices } from "@openpims/db";
+import { getLocaleData } from "@openpims/db/data";
 
 export const automationsRouter = createRouter({
   /** List all automations for this practice */
@@ -64,26 +17,34 @@ export const automationsRouter = createRouter({
     });
   }),
 
-  /** Seed default automations for a new practice (idempotent) */
+  /** Seed default automations for a new practice (idempotent, locale-aware) */
   seedDefaultAutomations: protectedProcedure
     .use(requireRole("admin", "veterinarian"))
     .mutation(async ({ ctx }) => {
-    const existing = await ctx.db.query.crmAutomations.findFirst({
-      where: and(
-        eq(crmAutomations.practiceId, ctx.practiceId),
-        isNull(crmAutomations.deletedAt)
-      ),
-    });
-    if (existing) return { seeded: false, message: "Automations already exist" };
+      const existing = await ctx.db.query.crmAutomations.findFirst({
+        where: and(
+          eq(crmAutomations.practiceId, ctx.practiceId),
+          isNull(crmAutomations.deletedAt)
+        ),
+      });
+      if (existing) return { seeded: false, message: "Automations already exist" };
 
-    await ctx.db.insert(crmAutomations).values(
-      DEFAULT_AUTOMATIONS.map((a) => ({
-        practiceId: ctx.practiceId,
-        ...a,
-      }))
-    );
-    return { seeded: true, count: DEFAULT_AUTOMATIONS.length };
-  }),
+      const [practice] = await ctx.db
+        .select({ country: practices.country })
+        .from(practices)
+        .where(eq(practices.id, ctx.practiceId))
+        .limit(1);
+      const locale: "sk" | "en" = practice?.country === "SK" ? "sk" : "en";
+      const { crmAutomationsData } = getLocaleData(locale);
+
+      await ctx.db.insert(crmAutomations).values(
+        crmAutomationsData.map((a) => ({
+          practiceId: ctx.practiceId,
+          ...a,
+        }))
+      );
+      return { seeded: true, count: crmAutomationsData.length };
+    }),
 
   /** Create a new automation rule */
   createAutomation: protectedProcedure

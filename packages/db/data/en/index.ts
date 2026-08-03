@@ -627,3 +627,322 @@ export const treatmentPlansData = [
   },
 ];
 
+
+
+// ---------------------------------------------------------------------------
+// Phase 2 — locale seed data (English). Translations of the Slovak data in
+// data/sk/index.ts; practiceId/authorId are appended by each seed mutation at
+// the call site. Keep in sync with data/sk/index.ts.
+// ---------------------------------------------------------------------------
+
+export const marketingTemplatesData = [
+  {
+    name: "Spring Prevention: Ticks & Parasites",
+    category: "Preventive Care & Wellness",
+    description: "Seasonal reminder for tick and parasite protection.",
+    platforms: ["IG", "FB", "GBP"],
+    aspectRatios: ["1:1", "4:5"],
+    mediaType: "image",
+    promptSkeleton:
+      "Create an educational post about protection against ticks and external parasites. Clinic: {{clinicName}}. Tone: professional, empathetic, Fear-Free. No diagnostics, prevention only.",
+    exampleCaption:
+      "🌿 Spring is here — and with it tick season! Protect your pet before the first walk in nature. Ask us about current antiparasitics. #FearFree #Prevention",
+  },
+  {
+    name: "Fear-Free: Why Visit Us Stress-Free",
+    category: "Practice & Team",
+    description: "Showcasing the clinic's Fear-Free approach.",
+    platforms: ["IG", "FB"],
+    aspectRatios: ["1:1", "4:5", "16:9"],
+    mediaType: "image",
+    promptSkeleton:
+      "Write a post explaining the Fear-Free philosophy of {{clinicName}}. Emphasize the calming environment, pheromone use, slow movements, and rewards. Tone: warm, trustworthy.",
+    exampleCaption:
+      "💚 We know a vet visit can be stressful for your pet. That's why we have separate waiting areas, soothing music, and Adaptil/Feliway diffusers. Your four-legged friend deserves calm care. #FearFree",
+  },
+  {
+    name: "Wellness Plan: An Investment in Health",
+    category: "Promotions & Announcements",
+    description: "Promoting monthly wellness plans (subscription model).",
+    platforms: ["IG", "FB", "GBP"],
+    aspectRatios: ["1:1", "4:5"],
+    mediaType: "image",
+    promptSkeleton:
+      "Write a post promoting the {{clinicName}} wellness plan. Includes: preventive exams, vaccinations, dental check-ups. Monthly fee. Tone: value for money, modern.",
+    exampleCaption:
+      "🐾 Wellness Plan — care with no surprises! Regular exams, vaccinations, and dental hygiene for a fixed monthly fee. Ask us for details. Your pet's health is our priority. #WellnessPlan",
+  },
+  {
+    name: "Meet the Clinic Team",
+    category: "Practice & Team",
+    description: "Introducing the veterinary team — brand personalization.",
+    platforms: ["IG", "FB"],
+    aspectRatios: ["1:1", "4:5"],
+    mediaType: "image",
+    promptSkeleton:
+      "Write a post introducing the veterinary team of {{clinicName}}. Veterinarian's name: {{vetName}}. Tone: warm, personal, trustworthy. Emphasize passion for animals.",
+    exampleCaption:
+      "👨‍⚕️ Let us introduce ourselves! We're the team that cares for your four-legged families every day with love and expertise. We'd love to welcome you! #OurTeam #VeterinaryClinic",
+  },
+  {
+    name: "5-Star Review: Thank You",
+    category: "Client & Patient Engagement",
+    description: "Sharing a positive review with thanks to the client.",
+    platforms: ["IG", "FB", "GBP"],
+    aspectRatios: ["1:1", "4:5"],
+    mediaType: "image",
+    promptSkeleton:
+      "Based on this client review: {{reviewText}} — write a warm post thanking them. Clinic: {{clinicName}}. Do not use the patient's name without consent. Tone: grateful, community-focused.",
+    exampleCaption:
+      "💛 Words like these fill us with joy! Thank you for your trust — it's for you and your pets that we're here every day. #Review #Trust",
+  },
+  {
+    name: "Seasonal Tip: Summer Safety",
+    category: "Educational",
+    description: "Educational tip on protecting pets during summer months.",
+    platforms: ["IG", "FB", "GBP"],
+    aspectRatios: ["1:1", "4:5"],
+    mediaType: "image",
+    promptSkeleton:
+      "Write an educational post about summer pet safety for {{clinicName}}: overheating in cars, hydration, paw burns on hot asphalt. NO diagnostics. Tone: caring.",
+    exampleCaption:
+      "☀️ Hot days are here! Remember: never leave a pet in a parked car. Regular hydration and shady spots are essential. Heading out together? Don't forget water! #SummerSafety",
+  },
+];
+
+export const crmAutomationsData = [
+  {
+    name: "Post-Discharge Follow-up (24h)",
+    triggerType: "APPOINTMENT_DISCHARGE",
+    conditions: { delayDays: 1 },
+    actionType: "sms",
+    actionPayload: {
+      templatePrompt:
+        "Write a friendly SMS to the client after a veterinary visit. Ask how the pet is feeling and offer help. Maximum 160 characters. Fear-Free tone. English language.",
+    },
+    isActive: true,
+  },
+  {
+    name: "Google Review Request (3 days post-visit)",
+    triggerType: "REVIEW_REQUEST",
+    conditions: { delayDays: 3 },
+    actionType: "sms",
+    actionPayload: {
+      templatePrompt:
+        "Write a short SMS asking the client to leave a Google review after a satisfactory veterinary visit. Max 160 characters. English language.",
+    },
+    isActive: true,
+  },
+  {
+    name: "Annual Preventive Exam",
+    triggerType: "ANNUAL_REMINDER",
+    conditions: { delayDays: 365 },
+    actionType: "email",
+    actionPayload: {
+      templatePrompt:
+        "Write an email reminding the client of their pet's annual preventive exam. Warm, Fear-Free tone. English language.",
+    },
+    isActive: false,
+  },
+  {
+    name: "Patient Birthday",
+    triggerType: "BIRTHDAY",
+    conditions: { delayDays: 0 },
+    actionType: "sms",
+    actionPayload: {
+      templatePrompt:
+        "Write a happy birthday SMS for the client's pet from the veterinary clinic. Fun, Fear-Free. Max 160 characters. English language.",
+    },
+    isActive: true,
+  },
+];
+
+export const canvasMasterDocumentsData = [
+  {
+    title: "Master Strategic Plan v8.0",
+    docType: "STRATEGY",
+    status: "published",
+    tags: ["Strategy", "Growth", "Marketing"],
+    isRagSource: true,
+    content: `<h1>Strategy Development and Operational Modernization of the Clinic v8.0</h1>
+<h2>1. Executive Summary</h2>
+<p>A comprehensive, data-driven strategic plan for the digital transformation of a private veterinary clinic. The goal is to build a strong local brand, introduce Fear-Free standards, and implement a subscription model (Wellness Plans).</p>
+<h2>2. Pillars of Growth</h2>
+<ul>
+  <li>Local digital dominance and Google Business Profile optimization</li>
+  <li>Social media and the veterinarian's personal brand (Instagram, Facebook)</li>
+  <li>Wellness Plans — subscription (subscription) care model</li>
+  <li>Fear-Free approach — certification and differentiation from competitors</li>
+  <li>OpenVPM — end-to-end digital clinic management</li>
+</ul>
+<h2>3. Transformation Roadmap (Gate 1 → Gate 4)</h2>
+<ul>
+  <li><strong>Gate 1 (Month 1):</strong> GBP & Web Ready — optimized Google Business, new website, photo gallery</li>
+  <li><strong>Gate 2 (Month 3):</strong> AI Scribe Proven — OpenVPM SOAP notes, automated SMS, first Reels</li>
+  <li><strong>Gate 3 (Month 6):</strong> Wellness Adoption &gt; 3% — at least 3% of clients on a Wellness Plan</li>
+  <li><strong>Gate 4 (Month 12):</strong> Full OpenVPM Migration — complete transition to digital clinic management</li>
+</ul>
+<h2>4. Client Acquisition to Retention Flow</h2>
+<pre class="mermaid">
+graph TD
+    A[Social Media / Local SEO] --> B[Call / Online Booking]
+    B --> C[Fear-Free In-Clinic Visit]
+    C --> D[Discharge Ask — request a Google review]
+    D --> E[Wellness Plan Offer]
+    E --> F[Loyal Long-Term Client]
+    F --> A
+</pre>
+<h2>5. KPI Dashboard (12-month targets)</h2>
+<ul>
+  <li>Google reviews: +50 new, average rating &gt; 4.8★</li>
+  <li>Instagram followers: +500 organically</li>
+  <li>Wellness Plan enrollment: &gt; 3% of active patients</li>
+  <li>Average visit value: +15% YoY</li>
+</ul>`,
+  },
+  {
+    title: "Clinical SOP: Sensory Fear-Free Protocol",
+    docType: "SOP",
+    status: "published",
+    tags: ["Fear-Free", "SOP", "Staff"],
+    isRagSource: false,
+    content: `<h1>Clinical SOP: Sensory Fear-Free Protocol</h1>
+<p><strong>Version:</strong> 2.0 | <strong>Applies to:</strong> All clinic staff</p>
+<p>Basic rules for minimizing animal stress in the veterinary clinic environment. The Fear-Free approach is the clinic's differentiating factor — it must be visible to every client.</p>
+<h2>Morning reception duties (before opening)</h2>
+<ul class="contains-task-list">
+  <li class="task-list-item">[ ] Turn on <strong>Adaptil</strong> (for dogs) and <strong>Feliway</strong> (for cats) diffusers in the waiting room and exam rooms — at least 30 minutes before opening.</li>
+  <li class="task-list-item">[ ] Set up soothing music in the waiting room — classical music or special Pet Acoustics playlists. <strong>No commercial radio.</strong></li>
+  <li class="task-list-item">[ ] Prepare <strong>elevated shelving</strong> for cat carriers — cats must not be on the floor at dog level.</li>
+  <li class="task-list-item">[ ] Visual barriers between the dog area and the cat zone in the waiting room (e.g., a partition, cardboard).</li>
+  <li class="task-list-item">[ ] Have <strong>non-slip mats</strong> ready on all exam tables.</li>
+  <li class="task-list-item">[ ] LickiMat pads with peanut butter or paste ready for blood draws and vaccinations.</li>
+</ul>
+<h2>Principles of Low-Stress Handling</h2>
+<ul>
+  <li><strong>Slow movements:</strong> No sudden gestures or loud sounds. Always approach the animal from the side, not head-on.</li>
+  <li><strong>Rewards during procedures:</strong> Peanut butter, lickable treats, snacks — positive association with the clinic.</li>
+  <li><strong>Minimal restraint:</strong> Never restrain an animal forcefully. If the animal is too stressed, postpone the procedure.</li>
+  <li><strong>Warm lighting:</strong> Replace cold LED lights in the exam room with warmer ones (3000K). Optionally dim lights during feline exams.</li>
+  <li><strong>Cats from carriers:</strong> Never pull a cat out by force — offer a treat and wait for it to come out on its own, or disassemble the carrier.</li>
+</ul>
+<h2>Client Communication</h2>
+<p>Staff always explains to the client what will happen and why — transparency builds trust. Avoid phrases like <em>"Don't worry"</em> (negating fear is ineffective) — instead: <em>"We'll do everything to keep your pet as comfortable as possible."</em></p>`,
+  },
+  {
+    title: "Communication & Crisis Manual: Google Reviews",
+    docType: "MANUAL",
+    status: "published",
+    tags: ["Reputation", "Google", "Crisis communication", "RAG"],
+    isRagSource: true,
+    content: `<h1>Communication & Crisis Manual: Google Reviews</h1>
+<p>Principles for responding to online feedback and managing crisis situations. <strong>This document is a RAG context source for the AI assistant when drafting responses.</strong></p>
+<h2>Basic Rules</h2>
+<ul>
+  <li>Respond to every review within <strong>48 hours</strong>.</li>
+  <li>Never be aggressive, defensive, or sarcastic.</li>
+  <li>Do not use the patient's name or diagnosis in the response (GDPR).</li>
+  <li>Every response is signed with the veterinarian's name or "Clinic Team".</li>
+</ul>
+<h2>Response Matrix by Review Type</h2>
+<table border="1" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background: #f0f0f0;">
+      <th style="padding: 10px; text-align: left;">Review Type</th>
+      <th style="padding: 10px; text-align: left;">Response Tone</th>
+      <th style="padding: 10px; text-align: left;">Example Response (EN)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;">Complaint about high price (1–2★)</td>
+      <td style="padding: 10px;">Professional, firm, transparent, no apology for quality</td>
+      <td style="padding: 10px;"><em>"Hello, we're sorry to hear you were dissatisfied. Veterinary medicine, when done safely and correctly, requires top-tier equipment, certified medications, and ongoing education. We'd be happy to review the details of your invoice with you anytime, but lowering the quality of patient care just to make the bill smaller is something we will never do at our clinic. — Clinic Team"</em></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">Complaint about wait time</td>
+      <td style="padding: 10px;">Empathetic, explanation, offer of a solution</td>
+      <td style="padding: 10px;"><em>"Hello, we apologize for the wait. Every patient deserves our full attention, which sometimes causes delays. We're working on introducing online booking to minimize your wait. Thank you for your patience. — Clinic Team"</em></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">Patient death (even with 5★)</td>
+      <td style="padding: 10px;">Extreme empathy, compassion, no defensiveness, brief</td>
+      <td style="padding: 10px;"><em>"Dear family, the loss has affected us too. You were wonderful owners who did everything possible for your pet until the very end. It was an honor to care for them in their most difficult moments. We stand with you in grief. — Dr. Sykora"</em></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">5★ praise</td>
+      <td style="padding: 10px;">Gratitude, personal, community-oriented, invitation to return</td>
+      <td style="padding: 10px;"><em>"Thank you so much for your kind words and trust! Feedback like this fills us with joy and motivates us every day to do our work with love. We look forward to your next visit! 🐾 — Clinic Team"</em></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">Fake / malicious negative review</td>
+      <td style="padding: 10px;">Calm, factual, unemotional, report to Google</td>
+      <td style="padding: 10px;"><em>"Hello, we find no visit in our system associated with your name. If you have a specific concern, please contact us directly at [email]. We have reported this review to Google for verification. — Clinic Team"</em></td>
+    </tr>
+  </tbody>
+</table>`,
+  },
+  {
+    title: "SOP: Educational TV Management & Export",
+    docType: "SOP",
+    status: "published",
+    tags: ["TV", "Marketing", "Technology", "SOP"],
+    isRagSource: false,
+    content: `<h1>SOP: Educational TV Management & Export for the Waiting Room</h1>
+<p><strong>Responsibility:</strong> Reception | <strong>Update frequency:</strong> Monthly</p>
+<h2>Technical Setup</h2>
+<ul>
+  <li><strong>Hardware:</strong> TV with a free HDMI input + Android TV Stick (Chromecast with Google TV, Raspberry Pi 4, or Xiaomi Mi TV Stick 4K).</li>
+  <li><strong>Software:</strong> <a href="https://yodeck.com" target="_blank">Yodeck</a> (recommended) or Screenly for managing digital content on the TV. Alternative: a simple video player looping via USB stick.</li>
+  <li><strong>Content:</strong> Created in Canva (1920×1080px / 16:9 templates) or directly in the <strong>Marketing & Growth</strong> module in OpenVPM.</li>
+</ul>
+<h2>Export Process from the Marketing Planner (OpenVPM)</h2>
+<ol>
+  <li>Open the <strong>Marketing Studio</strong> module in OpenVPM.</li>
+  <li>Go to the <em>Templates</em> section and filter by the <strong>"TV Slides (16:9)"</strong> category.</li>
+  <li>Select the current seasonal slide and edit the text. <br><strong>Rule:</strong> Maximum <strong>15 words</strong> per slide. Text must be readable from 3 meters (min. size 60pt).</li>
+  <li>Click <em>Export</em> → choose the format <strong>MP4 (1080p, 10s loop)</strong> or <strong>PNG (image set)</strong>.</li>
+  <li>Upload the file directly to the <a href="https://app.yodeck.com" target="_blank">Yodeck admin</a> or to the shared Google Drive TV folder.</li>
+</ol>
+<h2>Seasonal Content Calendar</h2>
+<ul>
+  <li><strong>January–February:</strong> Dental hygiene (Pet Dental Health Month), winter care</li>
+  <li><strong>March–May:</strong> Tick and parasite protection, spring</li>
+  <li><strong>June–August:</strong> Summer safety, overheating, hydration</li>
+  <li><strong>September–November:</strong> Fall prevention, winter preparation</li>
+  <li><strong>December:</strong> Stress and fireworks, lost pets, Christmas and chocolate (toxicity)</li>
+</ul>`,
+  },
+  {
+    title: "Client Personas (Slovak & Hungarian demographics)",
+    docType: "STRATEGY",
+    status: "published",
+    tags: ["Marketing", "Personas", "AI context", "RAG"],
+    isRagSource: true,
+    content: `<h1>Client Personas (Southern Region — Rimavská Sobota and surroundings)</h1>
+<p>A detailed breakdown of target groups for precise targeting of the AI generator's communication tone and marketing campaigns. These personas serve as <strong>RAG context for the AI</strong> when generating content.</p>
+<h2>Persona 1: Local Senior — "János / Mária"</h2>
+<ul>
+  <li><strong>Age:</strong> 60+ years</li>
+  <li><strong>Language:</strong> Predominantly Hungarian-speaking residents of the region</li>
+  <li><strong>Behavior:</strong> Extremely price-sensitive segment, yet immensely loyal once trust is earned. Requires a high degree of personal trust and the direct authority of the doctor. Does not recognize digital communication as primary.</li>
+  <li><strong>Motivators:</strong> Trust in the doctor personally, recommendations from neighbors/friends, stability and tradition</li>
+  <li><strong>Communication:</strong> Prefers in-person contact, phone calls, and paper flyers in the waiting room. <strong>Key: bilingual (SK/HU) communication</strong> at reception and on basic materials. Responds to a conservative, respectful, and patient tone.</li>
+  <li><strong>Barriers:</strong> Price, distrust of new procedures, language barrier (Slovak)</li>
+</ul>
+<h2>Persona 2: Young Family / Millennial — "Tomáš & Lucia"</h2>
+<ul>
+  <li><strong>Age:</strong> 25–40 years</li>
+  <li><strong>Language:</strong> Slovak-speaking or bilingual (SK/HU)</li>
+  <li><strong>Behavior:</strong> View their dog or cat as a full "furry" family member. Willing to invest above-standard resources in prevention, diagnostics, and premium services. Value transparency and a digital approach.</li>
+  <li><strong>Motivators:</strong> Animal welfare, Fear-Free approach, modern clinic, online convenience, prevention over treatment</li>
+  <li><strong>Communication:</strong> Digital-first — online booking, SMS reminders, engaging Instagram (Reels, Stories), educational content, Google reviews. Primary target group for <strong>Wellness Plans</strong>.</li>
+  <li><strong>Barriers:</strong> Distance (prefer a clinic in the city), price without perceived value</li>
+</ul>
+<h2>Language Guidelines for the AI Generator</h2>
+<ul>
+  <li><strong>Persona 1 (HU):</strong> Formal, respectful tone. Avoid slang. Shorter sentences. Address as "Önök" (You, formal). Use examples from traditional life.</li>
+  <li><strong>Persona 2 (SK):</strong> Modern, warm tone. Can be emotional. Emojis are appropriate on social media. Informal "ty" address in casual contexts.</li>
+</ul>`,
+  },
+];

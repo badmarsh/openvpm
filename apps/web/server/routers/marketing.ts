@@ -5,85 +5,9 @@ import { createRouter, protectedProcedure, requireRole } from "../trpc";
 import {
   marketingPosts,
   marketingTemplates,
+  practices,
 } from "@openpims/db";
-
-// ---------------------------------------------------------------------------
-// Seed data — Slovak veterinary content templates
-// ---------------------------------------------------------------------------
-const SEED_TEMPLATES = [
-  {
-    name: "Jarná prevencia: Kliešte a parazity",
-    category: "Preventive Care & Wellness",
-    description: "Sezónna pripomienka na ochranu pred kliešťami a parazitmi.",
-    platforms: ["IG", "FB", "GBP"],
-    aspectRatios: ["1:1", "4:5"],
-    mediaType: "image",
-    promptSkeleton:
-      "Vytvor edukačný príspevok o ochrane pred kliešťami a vonkajšími parazitmi. Klinika: {{clinicName}}. Tón: profesionálny, empatický, Fear-Free. Žiadna diagnostika, len prevencia.",
-    exampleCaption:
-      "🌿 Jar je tu — a s ňou aj sezóna kliešťov! Postarajte sa o ochranu vášho miláčika ešte pred prvou prechádzkou do prírody. Pýtajte sa nás na aktuálne antiparazitiká. #FearFree #Prevencia",
-  },
-  {
-    name: "Fear-Free: Prečo nás navštíviť bez stresu",
-    category: "Practice & Team",
-    description: "Prezentácia Fear-Free prístupu kliniky.",
-    platforms: ["IG", "FB"],
-    aspectRatios: ["1:1", "4:5", "16:9"],
-    mediaType: "image",
-    promptSkeleton:
-      "Napíš príspevok vysvetľujúci Fear-Free filozofiu kliniky {{clinicName}}. Zdôrazni upokojujúce prostredie, použitie feroménov, pomalé pohyby a odmeny. Tón: vrúcny, dôveryhodný.",
-    exampleCaption:
-      "💚 Vieme, že návšteva veterinára môže byť pre vášho miláčika stresujúca. Preto u nás nájdete oddelené čakárne, upokojujúcu hudbu a difuzéry Adaptil/Feliway. Váš štvornohý priateľ si zaslúži pokojnú starostlivosť. #FearFree",
-  },
-  {
-    name: "Wellness Plán: Investícia do zdravia",
-    category: "Promotions & Announcements",
-    description: "Propagácia mesačných wellness plánov (subscription model).",
-    platforms: ["IG", "FB", "GBP"],
-    aspectRatios: ["1:1", "4:5"],
-    mediaType: "image",
-    promptSkeleton:
-      "Napíš príspevok propagujúci wellness plán kliniky {{clinicName}}. Zahŕňa: preventívne prehliadky, vakcinácie, zubná kontrola. Mesačný poplatok. Tón: hodnota za peniaze, moderný.",
-    exampleCaption:
-      "🐾 Wellness Plán — starostlivosť bez prekvapení! Pravidelné prehliadky, vakcinácie a zubná hygiena za fixný mesačný poplatok. Opýtajte sa nás na detaily. Zdravie vášho miláčika je naša priorita. #WellnessPlan",
-  },
-  {
-    name: "Tím ambulancie: Spoznajte nás",
-    category: "Practice & Team",
-    description: "Predstavenie veterinárneho tímu — personalizácia značky.",
-    platforms: ["IG", "FB"],
-    aspectRatios: ["1:1", "4:5"],
-    mediaType: "image",
-    promptSkeleton:
-      "Napíš príspevok predstavujúci veterinárny tím kliniky {{clinicName}}. Meno veterinára: {{vetName}}. Tón: vrúcny, osobný, dôveryhodný. Zdôrazni vášeň pre zvieratá.",
-    exampleCaption:
-      "👨‍⚕️ Dovoľte nám sa predstaviť! Sme tím, ktorý sa každý deň stará o vaše štvornohé rodiny s láskou a odbornosťou. Radi vás privítame! #NášTím #VeterinárnaAmbulancia",
-  },
-  {
-    name: "5-hviezdičková recenzia: Poďakovanie",
-    category: "Client & Patient Engagement",
-    description: "Zdieľanie pozitívnej recenzie s poďakovaním klientovi.",
-    platforms: ["IG", "FB", "GBP"],
-    aspectRatios: ["1:1", "4:5"],
-    mediaType: "image",
-    promptSkeleton:
-      "Na základe tejto recenzie klienta: {{reviewText}} — napíš vrúcny post s poďakovaním. Klinika: {{clinicName}}. Nepoužívaj meno pacienta bez súhlasu. Tón: vďačný, komunitný.",
-    exampleCaption:
-      "💛 Takéto slová nás napĺňajú radosťou! Ďakujeme za vašu dôveru — práve pre vás a vašich miláčikov tu sme každý deň. #Recenzia #Dôvera",
-  },
-  {
-    name: "Sezónna rada: Letná bezpečnosť",
-    category: "Educational",
-    description: "Edukačný tip na ochranu zvierat v letných mesiacoch.",
-    platforms: ["IG", "FB", "GBP"],
-    aspectRatios: ["1:1", "4:5"],
-    mediaType: "image",
-    promptSkeleton:
-      "Napíš edukačný príspevok o letnej bezpečnosti zvierat pre kliniku {{clinicName}}: prehriatje v aute, hydratácia, poranenia labiek na horúcom asfalte. ŽIADNA diagnostika. Tón: starostlivý.",
-    exampleCaption:
-      "☀️ Horúce dni sú tu! Nezabudnite: nikdy nenechávajte zviera v zaparkovanom aute. Pravidelná hydratácia a tienisté miesta sú základ. Pôjdete spolu von? Nezabudnite na vodu! #LetnáBezpečnosť",
-  },
-];
+import { getLocaleData } from "@openpims/db/data";
 
 export const marketingRouter = createRouter({
   // -------------------------------------------------------------------------
@@ -101,26 +25,34 @@ export const marketingRouter = createRouter({
     });
   }),
 
-  /** Seed the default Slovak templates for a new practice (idempotent) */
+  /** Seed the default templates for a new practice (idempotent, locale-aware) */
   seedDefaultTemplates: protectedProcedure
     .use(requireRole("admin", "veterinarian"))
     .mutation(async ({ ctx }) => {
-    const existing = await ctx.db.query.marketingTemplates.findFirst({
-      where: and(
-        eq(marketingTemplates.practiceId, ctx.practiceId),
-        isNull(marketingTemplates.deletedAt)
-      ),
-    });
-    if (existing) return { seeded: false, message: "Templates already exist" };
+      const existing = await ctx.db.query.marketingTemplates.findFirst({
+        where: and(
+          eq(marketingTemplates.practiceId, ctx.practiceId),
+          isNull(marketingTemplates.deletedAt)
+        ),
+      });
+      if (existing) return { seeded: false, message: "Templates already exist" };
 
-    await ctx.db.insert(marketingTemplates).values(
-      SEED_TEMPLATES.map((t) => ({
-        practiceId: ctx.practiceId,
-        ...t,
-      }))
-    );
-    return { seeded: true, count: SEED_TEMPLATES.length };
-  }),
+      const [practice] = await ctx.db
+        .select({ country: practices.country })
+        .from(practices)
+        .where(eq(practices.id, ctx.practiceId))
+        .limit(1);
+      const locale: "sk" | "en" = practice?.country === "SK" ? "sk" : "en";
+      const { marketingTemplatesData } = getLocaleData(locale);
+
+      await ctx.db.insert(marketingTemplates).values(
+        marketingTemplatesData.map((t) => ({
+          practiceId: ctx.practiceId,
+          ...t,
+        }))
+      );
+      return { seeded: true, count: marketingTemplatesData.length };
+    }),
 
   // -------------------------------------------------------------------------
   // Posts
