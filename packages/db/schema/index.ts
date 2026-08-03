@@ -22,4 +22,5 @@ export * from "./marketing";
 export * from "./automations";
 export * from "./canvas";
 export * from "./ekasa";
+export * from "./clinical_ai";
 

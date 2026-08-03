@@ -11,6 +11,7 @@ import { OnboardingJourneyProvider } from "@/components/onboarding/journey-overl
 import { WelcomeProvider } from "@/components/welcome/welcome-provider";
 import { BrandTheme } from "@/components/brand/brand-theme";
 import { VerifyEmailBanner } from "@/components/layout/verify-email-banner";
+import { ScribeWidget } from "@/components/layout/scribe-widget";
 
 export default function DashboardLayout({
   children,
@@ -87,6 +88,7 @@ export default function DashboardLayout({
             open={searchOpen}
             onClose={() => setSearchOpen(false)}
           />
+          <ScribeWidget />
         </div>
         </WelcomeProvider>
       </OnboardingJourneyProvider>

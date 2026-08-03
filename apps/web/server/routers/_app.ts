@@ -33,6 +33,7 @@ import { marketingRouter } from "./marketing";
 import { automationsRouter } from "./automations";
 import { canvasRouter } from "./canvas";
 import { ekasaRouter } from "./ekasa";
+import { clinicalAiRouter } from "./clinical_ai";
 
 export const appRouter = createRouter({
   auth: authRouter,
@@ -69,6 +70,7 @@ export const appRouter = createRouter({
   automations: automationsRouter,
   canvas: canvasRouter,
   ekasa: ekasaRouter,
+  clinicalAi: clinicalAiRouter,
 });
 
 export type AppRouter = typeof appRouter;
