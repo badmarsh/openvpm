@@ -2,8 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Upload, Image as ImageIcon, Loader2, Bot, X } from "lucide-react";
-import { aiService } from "@/lib/ai-service";
-import { aiConfigManager } from "@/lib/ai-config";
+import { analyzeMedicalImage } from "@/actions/ai-actions";
 import { cn } from "@/lib/utils";
 
 export default function ImagingPage() {
@@ -11,7 +10,7 @@ export default function ImagingPage() {
   const [prompt, setPrompt] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState("");
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,34 +35,21 @@ export default function ImagingPage() {
 
   const handleAnalyze = async () => {
     if (!image) return;
-    
+
     setIsProcessing(true);
     try {
-      const activeModel = await aiConfigManager.getActiveModel();
-      if (!activeModel) {
-        alert("Please select and configure an active AI model in AI Settings first.");
-        setIsProcessing(false);
-        return;
-      }
-      
       // Extract base64 part
       const cleanBase64 = image.includes(',') ? image.split(',')[1] : image;
-      
-      const res = await aiService.analyzeMedicalImage({
-        imageData: cleanBase64,
-        imageType: 'xray', // default or extract from prompt
-        analysisType: 'diagnosis',
-        modelId: activeModel.id
-      });
-      
-      if (res.success) {
-        setResult(res.content || "No analysis provided.");
+
+      const res = await analyzeMedicalImage(cleanBase64, prompt);
+      if (res?.text) {
+        setResult(res.text);
       } else {
-        alert("Analysis failed: " + res.error);
+        alert("Analysis failed or returned empty response.");
       }
     } catch (error) {
       console.error("Analysis failed:", error);
-      alert("Failed to analyze image. Check your AI configuration.");
+      alert("Failed to analyze image. Check server authentication and permissions.");
     } finally {
       setIsProcessing(false);
     }

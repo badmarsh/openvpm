@@ -89,7 +89,7 @@ export function EmailLayout({
                       margin: 0,
                     }}
                   >
-                    OpenVPM
+                    VET IS
                   </Text>
                 </Column>
               </Row>

@@ -130,7 +130,7 @@ export function Sidebar({
           )}
           {!isCollapsed && (
             <span className="font-heading text-lg font-semibold">
-              OpenVPM
+              VET IS
             </span>
           )}
         </Link>

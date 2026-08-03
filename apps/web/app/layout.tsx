@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     "Požiadavka na prehľad bola dokončená bez vrátenia údajov. Skúste to znova načítať.",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/favicon.svg",
   },
 };
 

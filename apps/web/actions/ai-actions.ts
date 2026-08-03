@@ -22,7 +22,7 @@ export async function processVoiceScribe(transcription: string) {
   await verifyAuth();
 
   const { text } = await generateText({
-    model: google("gemini-1.5-pro-latest"),
+    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
     system: `You are an expert veterinary assistant. Your task is to extract meaningful clinical information from the raw voice transcription provided by the veterinarian.
 Format the output as a clean SOAP note (Subjective, Objective, Assessment, Plan).
 If the transcription is too short or unclear, summarize what you can and ask for clarification.
@@ -39,7 +39,7 @@ export async function analyzeMedicalImage(base64Image: string, prompt?: string) 
   const userPrompt = prompt || "Analyze this veterinary medical image. Describe any notable findings, abnormalities, or points of interest for a veterinarian.";
 
   const { text } = await generateText({
-    model: google("gemini-1.5-pro-latest"),
+    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
     messages: [
       {
         role: "user",
@@ -60,7 +60,7 @@ export async function analyzeClinicalCase(params: { symptoms: string; medication
   const { symptoms, medications, info } = params;
 
   const { text } = await generateText({
-    model: google("gemini-1.5-pro-latest"),
+    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
     system: `You are a specialized veterinary clinical assistant.
 Analyze the provided case information.
 Provide:
@@ -80,7 +80,7 @@ export async function generateDischargeReport(params: { petName: string; species
   const { petName, species, diagnosis, treatment, followUp } = params;
 
   const { text } = await generateText({
-    model: google("gemini-1.5-pro-latest"),
+    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
     system: `You are a veterinary assistant writing a discharge report for a pet owner.
 Translate the clinical diagnosis, treatment, and follow-up instructions into clear, empathetic, and easily understandable language for a non-medical pet owner.
 Structure the report nicely with greetings, clear sections (Diagnosis, Treatment, Home Care, Follow-up), and a professional closing.`,

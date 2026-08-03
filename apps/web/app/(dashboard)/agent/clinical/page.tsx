@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Stethoscope, Loader2, Bot, AlertTriangle, Activity } from "lucide-react";
-import { aiService } from "@/lib/ai-service";
-import { aiConfigManager } from "@/lib/ai-config";
+import { analyzeClinicalCase } from "@/actions/ai-actions";
 import { cn } from "@/lib/utils";
 
 export default function ClinicalPage() {
@@ -18,31 +17,14 @@ export default function ClinicalPage() {
       alert("Please enter either symptoms or medications to analyze.");
       return;
     }
-    
+
     setIsProcessing(true);
     try {
-      const activeModel = await aiConfigManager.getActiveModel();
-      if (!activeModel) {
-        alert("Please select and configure an active AI model in AI Settings first.");
-        setIsProcessing(false);
-        return;
-      }
-
-      const prompt = `Patient Info: ${info || "None provided"}\nSymptoms: ${symptoms || "None provided"}\nCurrent Medications: ${medications || "None provided"}`;
-      
-      const res = await aiService.generateChatResponse({
-        prompt: `You are a specialized veterinary clinical assistant. Analyze the provided case information. Provide:
-1. Potential differential diagnoses based on symptoms.
-2. Any severe drug interactions or contraindications with the current medications.
-3. Recommended next diagnostic steps.
-Format your response in clean markdown using headers and bullet points. Be concise and professional.\n\n${prompt}`,
-        modelId: activeModel.id
-      });
-      
-      if (res.success) {
-        setResult(res.content || "No analysis provided.");
+      const res = await analyzeClinicalCase({ symptoms, medications, info });
+      if (res?.text) {
+        setResult(res.text);
       } else {
-        alert("Analysis failed: " + res.error);
+        alert("Analysis failed or returned empty response.");
       }
     } catch (error) {
       console.error("Analysis failed:", error);

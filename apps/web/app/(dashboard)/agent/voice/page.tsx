@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Mic, MicOff, Loader2, FileText, Bot } from "lucide-react";
-import { aiService } from "@/lib/ai-service";
-import { aiConfigManager } from "@/lib/ai-config";
+import { processVoiceScribe } from "@/actions/ai-actions";
 import { cn } from "@/lib/utils";
 
 export default function VoiceScribePage() {
@@ -12,7 +11,7 @@ export default function VoiceScribePage() {
   const [interimTranscript, setInterimTranscript] = useState("");
   const [finalTranscript, setFinalTranscript] = useState("");
   const [soapNote, setSoapNote] = useState("");
-  
+
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
@@ -22,8 +21,7 @@ export default function VoiceScribePage() {
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
-        // Hardcoded to US English for prototype, should hook into next-intl locale later
-        recognition.lang = "en-US"; 
+        recognition.lang = "sk-SK";
 
         recognition.onresult = (event: any) => {
           let interim = "";
@@ -48,7 +46,7 @@ export default function VoiceScribePage() {
         recognitionRef.current = recognition;
       }
     }
-    
+
     return () => {
       if (recognitionRef.current) {
         try {
@@ -64,37 +62,23 @@ export default function VoiceScribePage() {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
-      
+
       const fullTranscript = finalTranscript + interimTranscript;
-      
+
       // Process the final transcript
       if (fullTranscript.trim()) {
         setIsProcessing(true);
         setInterimTranscript("");
         try {
-          const activeModel = await aiConfigManager.getActiveModel();
-          if (!activeModel) {
-            alert("Please select and configure an active AI model in AI Settings first.");
-            setIsProcessing(false);
-            return;
-          }
-          
-          const res = await aiService.generateChatResponse({
-            prompt: `You are an expert veterinary assistant. Your task is to extract meaningful clinical information from the raw voice transcription provided by the veterinarian.
-Format the output as a clean SOAP note (Subjective, Objective, Assessment, Plan).
-If the transcription is too short or unclear, summarize what you can and ask for clarification.
-Respond ONLY with the formatted markdown.\n\nRaw Transcription:\n${fullTranscript}`,
-            modelId: activeModel.id
-          });
-          
-          if (res.success) {
-            setSoapNote(res.content || "No SOAP note generated.");
+          const res = await processVoiceScribe(fullTranscript);
+          if (res?.text) {
+            setSoapNote(res.text);
           } else {
-            alert("Processing failed: " + res.error);
+            alert("Processing failed or returned empty response.");
           }
         } catch (error) {
           console.error("Failed to process transcript:", error);
-          alert("Failed to process voice scribe. Check your AI configuration.");
+          alert("Failed to process voice scribe. Check server authentication and permissions.");
         } finally {
           setIsProcessing(false);
         }

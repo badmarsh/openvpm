@@ -7,6 +7,7 @@ import {
 } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { createOpenAI } from "@ai-sdk/openai";
 import {
   AGENT_TOOLS,
   AgentPracticeNotFoundError,
@@ -23,7 +24,7 @@ import { rateLimit } from "@/lib/rate-limit";
  * change. Each tool already carries a Zod schema, which the AI SDK consumes
  * directly, and the SDK runs the tool-use loop for us up to MAX_ITERATIONS.
  */
-const DEFAULT_MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "gemini-1.5-flash";
 const MAX_ITERATIONS = 8;
 const MAX_OUTPUT_TOKENS = 1024;
 export const AGENT_RUN_RATE_WINDOW_MS = 60_000;
@@ -58,7 +59,7 @@ export interface AgentRunResult {
 export class AgentNotConfiguredError extends Error {
   constructor() {
     super(
-      "OpenVPM Agent is not configured. Set an AI key (GOOGLE_API_KEY or GOOGLE_GENERATIVE_AI_API_KEY for Gemini, or ANTHROPIC_API_KEY for Claude) to enable agent runs."
+      "OpenVPM Agent is not configured. Set an AI key (GOOGLE_API_KEY for Gemini, OPENAI_API_KEY for OpenAI, or ANTHROPIC_API_KEY for Claude) to enable agent runs."
     );
     this.name = "AgentNotConfiguredError";
   }
@@ -90,9 +91,12 @@ function activeModelId(override?: string): string {
   );
 }
 
-/** Google (Gemini) vs Anthropic (Claude) inferred from the model id. */
 function isGoogleModel(modelId: string): boolean {
   return /^(google\/|models\/)?gemini/i.test(modelId);
+}
+
+function isOpenAIModel(modelId: string): boolean {
+  return /^(openai\/)?(gpt-|qwen-|deepseek-)/i.test(modelId);
 }
 
 function googleApiKey(): string | undefined {
@@ -102,12 +106,18 @@ function googleApiKey(): string | undefined {
   );
 }
 
+function openaiApiKey(): string | undefined {
+  return nonBlank(process.env.OPENAI_API_KEY);
+}
+
 function anthropicApiKey(): string | undefined {
   return nonBlank(process.env.ANTHROPIC_API_KEY);
 }
 
 function hasProviderKey(modelId: string): boolean {
-  return isGoogleModel(modelId) ? Boolean(googleApiKey()) : Boolean(anthropicApiKey());
+  if (isGoogleModel(modelId)) return Boolean(googleApiKey());
+  if (isOpenAIModel(modelId)) return Boolean(openaiApiKey());
+  return Boolean(anthropicApiKey()) || Boolean(googleApiKey()) || Boolean(openaiApiKey());
 }
 
 /** Whether the configured provider has its API key set. */
@@ -128,12 +138,18 @@ export function configuredModel(): LanguageModel {
 
 /** Build an AI SDK model instance for the given model id. */
 function resolveModel(modelId: string) {
-  if (isGoogleModel(modelId)) {
+  if (isGoogleModel(modelId) && googleApiKey()) {
     const google = createGoogleGenerativeAI({
       apiKey: googleApiKey(),
-      baseURL: "http://host.docker.internal:8045/v1beta"
     });
-    return google(modelId.replace(/^google\//, ""));
+    return google(modelId.replace(/^(google\/|models\/)/, ""));
+  }
+  if (isOpenAIModel(modelId) || openaiApiKey()) {
+    const openai = createOpenAI({
+      apiKey: openaiApiKey(),
+      baseURL: process.env.OPENAI_BASE_URL,
+    });
+    return openai(modelId.replace(/^openai\//, ""));
   }
   const anthropic = createAnthropic({ apiKey: anthropicApiKey() });
   return anthropic(modelId.replace(/^anthropic\//, ""));
