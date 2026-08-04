@@ -33,6 +33,16 @@ export interface AIProvider {
 
 export const AI_PROVIDERS: AIProvider[] = [
   {
+    name: 'Local Proxy (OpenAI Compatible)',
+    models: [
+      'gemini-3-flash', 'gemini-2.5-flash', 'gemini-2.5-pro', 'llama-3.3-70b', 'custom-model'
+    ],
+    pricing: 'Local / Custom',
+    baseUrl: 'http://127.0.0.1:8045/v1',
+    apiKeyFormat: 'sk-...',
+    supportedFeatures: ['text-generation', 'chat', 'vision', 'function-calling']
+  },
+  {
     name: 'OpenAI',
     models: [
       'gpt-5', 'gpt-4.1', 'gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4',
@@ -146,6 +156,24 @@ export const AI_PROVIDERS: AIProvider[] = [
 ];
 
 export const DEFAULT_AI_MODELS: AIModel[] = [
+  {
+    id: 'local-proxy-gemini-3',
+    name: 'Local Proxy Gemini 3 Flash',
+    provider: 'OpenAI',
+    type: 'llm',
+    status: 'active',
+    apiKey: 'sk-4c2ec6f80d904f35b2c1598b1464aaca',
+    endpoint: 'http://127.0.0.1:8045/v1',
+    model: 'gemini-3-flash',
+    maxTokens: 32000,
+    temperature: 0.3,
+    accuracy: 98,
+    speed: 99,
+    cost: 0.0,
+    features: ['Local Proxy Endpoint', 'Gemini 3 Flash', 'Fast Local Inference', 'OpenAI Compatible API'],
+    lastTest: new Date().toLocaleString(),
+    testResults: { accuracy: 98, responseTime: 0.3, reliability: 99 }
+  },
   {
     id: '1',
     name: 'GPT-4o Medical',

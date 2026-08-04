@@ -9,6 +9,15 @@ const nextConfig = {
   poweredByHeader: false,
   transpilePackages: ["@openpims/api", "@openpims/db", "@openpims/email"],
   optimizeFonts: false,
+  experimental: {
+    // jsdom (pulled in via isomorphic-dompurify) reads assets like
+    // default-stylesheet.css relative to its own module location at
+    // runtime. If webpack bundles/traces it into the route output,
+    // that asset isn't copied along and `next build` fails with
+    // ENOENT during "Collecting page data". Keeping it external makes
+    // Node resolve it from node_modules normally instead.
+    serverComponentsExternalPackages: ["jsdom", "isomorphic-dompurify"],
+  },
   async headers() {
     return [
       {

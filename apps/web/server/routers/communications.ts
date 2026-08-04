@@ -208,6 +208,22 @@ const createCommunicationInput = z
   });
 
 export const communicationsRouter = createRouter({
+  /** Lightweight unread count for sidebar indicator */
+  getUnreadCount: protectedProcedure.query(async ({ ctx }) => {
+    const [result] = await ctx.db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(
+        and(
+          eq(communications.practiceId, ctx.practiceId),
+          isNull(communications.deletedAt),
+          eq(communications.direction, "inbound"),
+          isNull(communications.readAt),
+          ne(communications.status, "read")
+        )
+      );
+    return { count: Number(result?.count ?? 0) };
+  }),
   settings: protectedProcedure.query(async ({ ctx }) => ({
     timezone: await practiceTimeZone(ctx),
   })),

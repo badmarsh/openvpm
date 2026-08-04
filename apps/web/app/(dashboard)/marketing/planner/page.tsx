@@ -142,8 +142,14 @@ export default function MarketingPlannerPage() {
     postsByDay.get(d)!.push(post);
   });
 
-  const months = t.raw("marketing.planner.months") as string[];
-  const dayHeaders = t.raw("marketing.planner.dayHeaders") as string[];
+  const rawMonths = t.raw("marketing.planner.months");
+  const months: string[] = Array.isArray(rawMonths)
+    ? (rawMonths as string[])
+    : ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"];
+  const rawDayHeaders = t.raw("marketing.planner.dayHeaders");
+  const dayHeaders: string[] = Array.isArray(rawDayHeaders)
+    ? (rawDayHeaders as string[])
+    : ["Po","Ut","St","Št","Pi","So","Ne"];
 
   return (
     <div className="space-y-6">

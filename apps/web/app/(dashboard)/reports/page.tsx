@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
-  DollarSign,
+  Euro,
   CalendarCheck,
   UserX,
   XCircle,
@@ -64,7 +64,7 @@ type DateRange = { startDate: string; endDate: string };
 type ReportPdfCell = string | number | null | undefined;
 
 const tabs: { key: Tab; label: string; icon: React.ElementType }[] = [
-  { key: "revenue", label: "Výnosy", icon: DollarSign },
+  { key: "revenue", label: "Výnosy", icon: Euro },
   { key: "appointments", label: "Stretnutia", icon: CalendarCheck },
   { key: "services", label: "Služby", icon: BarChart3 },
   { key: "inventory", label: "Inventár", icon: Package },
@@ -409,7 +409,7 @@ function RevenueTab({ dateRange }: { dateRange: DateRange }) {
           title="Vybraný rozsah"
           value={formatCurrency(data.total)}
           subtitle={rangeSubtitle}
-          icon={DollarSign}
+          icon={Euro}
         />
         <KpiCard
           title="Predchádzajúce obdobie"
@@ -437,7 +437,7 @@ function RevenueTab({ dateRange }: { dateRange: DateRange }) {
         ) : (
           <EmptyState
             className="border-0 bg-transparent py-12"
-            icon={DollarSign}
+            icon={Euro}
             title="Žiadne údaje o príjmoch za toto obdobie"
             description="Zaplatené faktúry sa tu zobrazia, keď budú spadať do vybratého rozsahu dátumov."
           />

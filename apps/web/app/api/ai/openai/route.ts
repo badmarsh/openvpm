@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiUrl = endpoint || 'https://api.openai.com/v1/chat/completions';
+    let apiUrl = endpoint || 'https://api.openai.com/v1/chat/completions';
+    if (endpoint) {
+      const cleanEndpoint = endpoint.trim().replace(/\/+$/, '');
+      if (cleanEndpoint.endsWith('/chat/completions')) {
+        apiUrl = cleanEndpoint;
+      } else if (cleanEndpoint.endsWith('/v1')) {
+        apiUrl = `${cleanEndpoint}/chat/completions`;
+      } else {
+        apiUrl = `${cleanEndpoint}/chat/completions`;
+      }
+    }
 
     const response = await fetch(apiUrl, {
       method: 'POST',

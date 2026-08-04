@@ -1,0 +1,63 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.dev.yml — Vývojový režim (lokálny pnpm dev)
+# ─────────────────────────────────────────────────────────────────────────────
+# ÚČEL: Spúšťa iba závislosti (Postgres + MinIO). Next.js bežíte LOKÁLNE
+# cez `pnpm dev` (s hot-reload). Žiadny port konflikt, maximálna rýchlosť.
+#
+# POUŽITIE:
+#   docker compose -f docker/docker-compose.dev.yml up -d
+#   pnpm dev   (v druhom termináli — web beží na http://localhost:3001)
+#
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-openpims}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-openpims}
+      POSTGRES_DB: ${POSTGRES_DB:-openpims}
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openpims"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-openpims}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-openpims123}
+    volumes:
+      - minio_dev_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio-bootstrap:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 openpims openpims123; do
+        sleep 1;
+      done;
+      mc mb --ignore-existing local/openpims;
+      "
+
+volumes:
+  postgres_dev_data:
+  minio_dev_data:

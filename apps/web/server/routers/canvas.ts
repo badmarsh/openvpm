@@ -15,9 +15,14 @@ import { getLocaleData } from "@openpims/db/data";
 // ---------------------------------------------------------------------------
 const CANVAS_ALLOWED_TAGS = [
   "h1", "h2", "h3", "h4", "p", "ul", "ol", "li", "strong", "em", "u",
-  "table", "thead", "tbody", "tr", "th", "td", "pre", "code", "a", "br", "span",
+  "table", "thead", "tbody", "tr", "th", "td", "pre", "code", "a", "br", "span", "hr",
+  "svg", "path", "rect", "circle", "line", "polyline", "polygon", "g", "text", "tspan"
 ];
-const CANVAS_ALLOWED_ATTR = ["class", "href", "target", "style", "border"];
+const CANVAS_ALLOWED_ATTR = [
+  "class", "href", "target", "style", "border",
+  "viewBox", "xmlns", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
+  "width", "height", "x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "d", "points", "transform", "font-size", "text-anchor"
+];
 
 function sanitizeCanvasHtml(html: string): string {
   return DOMPurify.sanitize(html, {

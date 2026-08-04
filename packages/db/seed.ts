@@ -88,7 +88,7 @@ import { reset } from "./reset.js";
 // ---------------------------------------------------------------------------
 async function seed() {
   await reset();
-  const locale = process.env.SEED_LOCALE || "en";
+  const locale = process.env.SEED_LOCALE || "sk";
 
   const localeData = await import(`./data/${locale}/index.js`);
 
