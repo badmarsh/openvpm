@@ -120,6 +120,7 @@ export const marketingRouter = createRouter({
         overlayText: z.string().max(512).optional(),
         hasConsent: z.boolean().default(false),
         hasWatermark: z.boolean().default(true),
+        note: z.string().max(256),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -143,7 +144,7 @@ export const marketingRouter = createRouter({
               status: input.status,
               timestamp: new Date().toISOString(),
               user: ctx.user.name ?? ctx.user.email,
-              note: "Príspevok vytvorený",
+              note: input.note,
             },
           ],
         })

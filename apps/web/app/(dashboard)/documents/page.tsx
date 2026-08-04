@@ -106,7 +106,7 @@ export default function DocumentsPage() {
 
   const cfg = (type: string) => {
     const meta = DOC_TYPE_ICONS[type] ?? { icon: FileText, color: "text-gray-600 bg-gray-50" };
-    return { ...meta, label: t(`canvas.docTypes.${type}` as any) ?? type };
+    return { ...meta, label: t(`canvas.docTypes.${type}`) ?? type };
   };
 
   return (
@@ -326,7 +326,7 @@ export default function DocumentsPage() {
                 className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
                 {Object.keys(DOC_TYPE_ICONS).map((k) => (
-                  <option key={k} value={k}>{t(`canvas.docTypes.${k}` as any)}</option>
+                  <option key={k} value={k}>{t(`canvas.docTypes.${k}`)}</option>
                 ))}
               </select>
             </div>

@@ -552,6 +552,7 @@
       "templatesEmptyAction": "Initialize templates",
       "templatesEmptyActionPending": "Initializing…",
       "templateUse": "Use template",
+      "postCreatedNote": "Post created",
       "statusLabels": {
         "draft": "Draft",
         "in_review": "In Review",

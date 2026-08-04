@@ -82,7 +82,7 @@ describe("marketing RBAC", () => {
     const frontDesk = callerWithDb(db, "front_desk");
 
     await expect(
-      frontDesk.createPost({ status: "draft", variants: {} })
+      frontDesk.createPost({ status: "draft", variants: {}, note: "Post created" })
     ).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(
       frontDesk.updatePost({ postId: POST_ID, status: "approved" })
@@ -104,7 +104,7 @@ describe("marketing RBAC", () => {
   it("blocks viewers from mutating via the global read-only guard", async () => {
     const { db, insertValues } = createDb();
     await expect(
-      callerWithDb(db, "viewer").createPost({ status: "draft", variants: {} })
+      callerWithDb(db, "viewer").createPost({ status: "draft", variants: {}, note: "Post created" })
     ).rejects.toMatchObject({ code: "FORBIDDEN" });
     expect(insertValues).not.toHaveBeenCalled();
   });
@@ -117,6 +117,7 @@ describe("marketing RBAC", () => {
       callerWithDb(writeDb, "technician").createPost({
         status: "draft",
         variants: {},
+        note: "Post created",
       })
     ).resolves.toMatchObject({ id: POST_ID });
     expect(insertValues).toHaveBeenCalledWith(

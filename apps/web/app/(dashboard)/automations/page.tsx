@@ -106,7 +106,7 @@ export default function AutomationsPage() {
         <div className="space-y-3">
           {automations.map((auto) => {
             const ActionIcon = ACTION_ICONS[auto.actionType as string] ?? MessageSquare;
-            const triggerLabel = t(`automations.triggerLabels.${auto.triggerType as string}` as any);
+            const triggerLabel = t(`automations.triggerLabels.${auto.triggerType as string}`);
             const isExpanded = expandedId === auto.id;
             const conditions = auto.conditions as { delayDays?: number };
             const payload = auto.actionPayload as { templatePrompt?: string; webhookUrl?: string };

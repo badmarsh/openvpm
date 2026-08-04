@@ -79,7 +79,7 @@ export default function ReviewsPage() {
   };
 
   const loadTemplate = (tpl: (typeof REVIEW_TEMPLATE_META)[number]) => {
-    setReviewText(t(`marketing.reviews.templateTexts.${tpl.id}` as any));
+    setReviewText(t(`marketing.reviews.templateTexts.${tpl.id}`));
     setRating(tpl.rating);
     setGeneratedReply("");
   };
@@ -117,7 +117,7 @@ export default function ReviewsPage() {
                   className="flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-xs hover:bg-accent transition-colors"
                 >
                   <tpl.icon className={`h-3.5 w-3.5 shrink-0 ${tpl.color}`} />
-                  <span className="truncate font-medium">{t(`marketing.reviews.templates.${tpl.id}` as any)}</span>
+                  <span className="truncate font-medium">{t(`marketing.reviews.templates.${tpl.id}`)}</span>
                 </button>
               ))}
             </div>

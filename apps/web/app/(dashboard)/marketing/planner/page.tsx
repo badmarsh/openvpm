@@ -127,6 +127,7 @@ export default function MarketingPlannerPage() {
       },
       scheduledDate: scheduledDate || undefined,
       topicInputs: { topic },
+      note: t("marketing.postCreatedNote"),
     });
   };
 
@@ -222,9 +223,9 @@ export default function MarketingPlannerPage() {
                       <div
                         key={post.id}
                         className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
-                        title={`${t(`marketing.planner.platformLabels.${plat}` as any) ?? plat} — ${t(`marketing.statusLabels.${status}` as any)}`}
+                        title={`${t(`marketing.planner.platformLabels.${plat}`) ?? plat} — ${t(`marketing.statusLabels.${status}`)}`}
                       >
-                        {t(`marketing.planner.platformLabels.${plat}` as any) ?? plat}
+                        {t(`marketing.planner.platformLabels.${plat}`) ?? plat}
                       </div>
                     );
                   })}
@@ -242,7 +243,7 @@ export default function MarketingPlannerPage() {
           return (
             <span key={s} className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${c}`}>
               {Icon && <Icon className="h-3 w-3" />}
-              {t(`marketing.statusLabels.${s}` as any)}
+              {t(`marketing.statusLabels.${s}`)}
             </span>
           );
         })}
@@ -278,7 +279,7 @@ export default function MarketingPlannerPage() {
                       onClick={() => setPlatform(p)}
                       className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${platform === p ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"}`}
                     >
-                      {t(`marketing.planner.platformLabels.${p}` as any)}
+                      {t(`marketing.planner.platformLabels.${p}`)}
                     </button>
                   ))}
                 </div>

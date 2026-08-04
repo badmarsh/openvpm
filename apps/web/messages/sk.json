@@ -552,6 +552,7 @@
       "templatesEmptyAction": "Inicializovať šablóny",
       "templatesEmptyActionPending": "Inicializujem…",
       "templateUse": "Použiť šablónu",
+      "postCreatedNote": "Príspevok vytvorený",
       "statusLabels": {
         "draft": "Koncept",
         "in_review": "Na schválenie",

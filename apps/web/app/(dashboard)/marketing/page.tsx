@@ -152,7 +152,7 @@ export default function MarketingPage() {
                     <div className="flex items-center gap-3 min-w-0">
                       <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${cfg.color}`}>
                         <StatusIcon className="h-3 w-3" />
-                        {t(`marketing.statusLabels.${status}` as any)}
+                        {t(`marketing.statusLabels.${status}`)}
                       </span>
                       <span className="truncate text-sm text-muted-foreground">
                         {scheduledDate ? `📅 ${scheduledDate}` : t("marketing.noDate")}
