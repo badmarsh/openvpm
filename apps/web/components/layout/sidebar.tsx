@@ -33,6 +33,7 @@ import {
   BookOpen,
   ReceiptText,
   Sparkles,
+  Globe,
 } from "lucide-react";
 import { PawMark } from "@/components/brand/paw-mark";
 import { useTranslations } from "next-intl";
@@ -88,6 +89,7 @@ const navSections: NavSection[] = [
     items: [
       { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"], exact: true },
       { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
+      { href: "/website", key: "nav.website", icon: Globe, roles: ["admin", "veterinarian", "front_desk"] },
       { href: "/automations", key: "nav.automations", icon: Workflow, roles: ["admin"] },
     ],
   },
