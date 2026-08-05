@@ -35,7 +35,6 @@ const OTHER_PRACTICE_ID = "00000000-0000-0000-0000-0000000000bb";
 const USER_ID = "00000000-0000-0000-0000-000000000001";
 const WEBSITE_ID = "00000000-0000-0000-0000-000000000002";
 const PAGE_ID = "00000000-0000-0000-0000-000000000003";
-const BLOCK_ID = "00000000-0000-0000-0000-000000000004";
 
 function callerWithDb(
   db: Record<string, unknown>,
@@ -88,7 +87,7 @@ function createDb(opts?: {
       orderBy: vi.fn(() => builder),
       limit: vi.fn(async () => result),
       then: (
-        resolve: (value: unknown[]) => unknown,
+        resolve: (value: unknown) => unknown,
         reject?: (error: unknown) => unknown
       ) => Promise.resolve(result).then(resolve, reject),
     };
