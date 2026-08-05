@@ -936,11 +936,11 @@ export const communicationsRouter = createRouter({
           status: isDeliverableOutbound
             ? "pending"
             : input.status ??
-              (input.direction === "outbound"
-                ? input.channel === "portal"
-                  ? "delivered"
-                  : "sent"
-                : "pending"),
+            (input.direction === "outbound"
+              ? input.channel === "portal"
+                ? "delivered"
+                : "sent"
+              : "pending"),
         })
         .returning();
 
@@ -1086,21 +1086,5 @@ export const communicationsRouter = createRouter({
         });
       }
       return comm;
-    }),
-
-  getUnreadCount: protectedProcedure
-    .query(async ({ ctx }) => {
-      const result = await ctx.db
-        .select({ count: sql<number>`count(*)` })
-        .from(communications)
-        .where(
-          and(
-            eq(communications.practiceId, ctx.practiceId),
-            eq(communications.direction, "inbound"),
-            isNull(communications.readAt),
-            not(eq(communications.status, "read"))
-          )
-        );
-      return { count: Number(result[0]?.count || 0) };
     }),
 });
