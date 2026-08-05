@@ -4,9 +4,26 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
-  ArrowUpDown,
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
   Eye,
   Globe,
+  GripVertical,
   LayoutTemplate,
   Loader2,
   Plus,
@@ -25,6 +42,51 @@ const templateKeyMap: Record<string, string> = {
   "playful-friendly": "playfulFriendly",
   "emergency-first": "emergencyFirst",
 };
+
+interface SortableItemProps {
+  id: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+function SortableItem({ id, children, className }: SortableItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "flex items-center gap-2",
+        isDragging && "opacity-50",
+        className
+      )}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+        aria-label="Drag to reorder"
+      >
+        <GripVertical className="h-4 w-4" />
+      </button>
+      {children}
+    </div>
+  );
+}
 
 export function SiteEditor() {
   const t = useTranslations("website");
@@ -58,10 +120,69 @@ export function SiteEditor() {
     onError: (err) => toast.error(err.message),
   });
 
+  const reorderPages = trpc.website.reorderPages.useMutation({
+    onSuccess: () => {
+      toast.success(t("editor.saved"));
+      void utils.website.getSite.invalidate();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const reorderBlocks = trpc.website.reorderBlocks.useMutation({
+    onSuccess: () => {
+      toast.success(t("editor.saved"));
+      void utils.website.getSite.invalidate();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   const selectedPage = site?.pages.find((page) => page.id === selectedPageId) ?? site?.pages[0];
 
   if (typeof window !== "undefined" && site && !previewUrl) {
     setPreviewUrl(`${window.location.origin}/site/${site.slug}`);
+  }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handlePageDragEnd(event: DragEndEvent) {
+    if (!site) return;
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = site.pages.findIndex((p) => p.id === active.id);
+    const newIndex = site.pages.findIndex((p) => p.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = arrayMove(site.pages, oldIndex, newIndex);
+    reorderPages.mutate({
+      pageOrders: reordered.map((page, index) => ({
+        id: page.id,
+        sortOrder: index,
+      })),
+    });
+  }
+
+  function handleBlockDragEnd(event: DragEndEvent) {
+    if (!selectedPage) return;
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = selectedPage.blocks.findIndex((b) => b.id === active.id);
+    const newIndex = selectedPage.blocks.findIndex((b) => b.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = arrayMove(selectedPage.blocks, oldIndex, newIndex);
+    reorderBlocks.mutate({
+      blockOrders: reordered.map((block, index) => ({
+        id: block.id,
+        sortOrder: index,
+      })),
+    });
   }
 
   if (isLoading) {
@@ -146,27 +267,40 @@ export function SiteEditor() {
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            <ul className="mt-3 space-y-1">
-              {site.pages.map((page) => (
-                <li key={page.id}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedPageId(page.id)}
-                    className={cn(
-                      "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors",
-                      selectedPageId === page.id || (!selectedPageId && page.isHome)
-                        ? "bg-primary/10 font-medium text-primary"
-                        : "hover:bg-muted"
-                    )}
-                  >
-                    <span>{page.title}</span>
-                    {!page.showInNav && (
-                      <span className="text-xs text-muted-foreground">hidden</span>
-                    )}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handlePageDragEnd}
+            >
+              <SortableContext
+                items={site.pages.map((page) => page.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <ul className="mt-3 space-y-1">
+                  {site.pages.map((page) => (
+                    <li key={page.id}>
+                      <SortableItem id={page.id} className="w-full">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedPageId(page.id)}
+                          className={cn(
+                            "flex flex-1 items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors",
+                            selectedPageId === page.id || (!selectedPageId && page.isHome)
+                              ? "bg-primary/10 font-medium text-primary"
+                              : "hover:bg-muted"
+                          )}
+                        >
+                          <span>{page.title}</span>
+                          {!page.showInNav && (
+                            <span className="text-xs text-muted-foreground">hidden</span>
+                          )}
+                        </button>
+                      </SortableItem>
+                    </li>
+                  ))}
+                </ul>
+              </SortableContext>
+            </DndContext>
           </div>
 
           <div className="rounded-lg border p-4">
@@ -190,36 +324,46 @@ export function SiteEditor() {
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            <div className="divide-y">
-              {selectedPage?.blocks.map((block) => (
-                <div
-                  key={block.id}
-                  className="flex items-center justify-between p-4 hover:bg-muted/50"
-                >
-                  <div>
-                    <p className="text-sm font-medium">
-                      {t(`blocks.${block.blockType}` as "blocks.hero")}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {block.isVisible ? "Visible" : "Hidden"}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" disabled>
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" disabled>
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleBlockDragEnd}
+            >
+              <SortableContext
+                items={selectedPage?.blocks.map((block) => block.id) ?? []}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="divide-y">
+                  {selectedPage?.blocks.map((block) => (
+                    <div
+                      key={block.id}
+                      className="flex items-center justify-between p-4 hover:bg-muted/50"
+                    >
+                      <SortableItem id={block.id} className="flex-1">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">
+                            {t(`blocks.${block.blockType}` as "blocks.hero")}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {block.isVisible ? "Visible" : "Hidden"}
+                          </p>
+                        </div>
+                      </SortableItem>
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="sm" disabled>
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  {selectedPage && selectedPage.blocks.length === 0 && (
+                    <div className="p-8 text-center text-sm text-muted-foreground">
+                      {t("editor.emptyBlocks")}
+                    </div>
+                  )}
                 </div>
-              ))}
-              {selectedPage && selectedPage.blocks.length === 0 && (
-                <div className="p-8 text-center text-sm text-muted-foreground">
-                  {t("editor.emptyBlocks")}
-                </div>
-              )}
-            </div>
+              </SortableContext>
+            </DndContext>
           </div>
         </div>
       </div>

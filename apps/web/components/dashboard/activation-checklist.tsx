@@ -51,11 +51,12 @@ export function ActivationChecklist() {
   const practice = trpc.settings.getPractice.useQuery(undefined, opts);
   const sub = trpc.subscription.get.useQuery(undefined, opts);
   const texting = trpc.messaging.activationSummary.useQuery(undefined, opts);
+  const website = trpc.website.getSite.useQuery(undefined, opts);
   const dismiss = trpc.settings.dismissSetup.useMutation();
 
   if (!isAdmin) return null;
 
-  const loadError = state.error ?? onboarding.error ?? practice.error ?? sub.error;
+  const loadError = state.error ?? onboarding.error ?? practice.error ?? sub.error ?? website.error;
   if (loadError?.data?.code === "UNAUTHORIZED" || loadError?.message === "UNAUTHORIZED") {
     return null;
   }
@@ -69,6 +70,7 @@ export function ActivationChecklist() {
             onboarding.refetch(),
             practice.refetch(),
             sub.refetch(),
+            website.refetch(),
           ]);
         }}
       />
@@ -79,11 +81,12 @@ export function ActivationChecklist() {
     state.isLoading ||
     onboarding.isLoading ||
     practice.isLoading ||
-    sub.isLoading;
+    sub.isLoading ||
+    website.isLoading;
 
   // Wait for the core signals before rendering so we never flash a wrong state.
   if (isChecklistLoading) return <ActivationChecklistLoading />;
-  if (!state.data || !onboarding.data || !practice.data || !sub.data) {
+  if (!state.data || !onboarding.data || !practice.data || !sub.data || website.data === undefined) {
     return (
       <ActivationChecklistError
         message="Setup checklist data was unavailable. Try loading it again."
@@ -93,6 +96,7 @@ export function ActivationChecklist() {
             onboarding.refetch(),
             practice.refetch(),
             sub.refetch(),
+            website.refetch(),
           ]);
         }}
       />
@@ -156,16 +160,23 @@ export function ActivationChecklist() {
       done: texting.data?.hasActiveNumber ?? false,
       href: "/settings?tab=messaging&setup=texting",
     },
+    {
+      key: "website",
+      label: "Vytvorte webovú stránku pre vašu kliniku",
+      hint: "Set up your clinic's website.",
+      done: !!website.data,
+      href: "/website",
+    },
     ...(enforced
       ? [
-          {
-            key: "billing",
-            label: "Potvrdenie pripojenia účtovania",
-            hint: "Stripe keeps the trial ready to convert. Cancel anytime.",
-            done: !!subscriptionData.hasBillingAccount,
-            href: "/settings?tab=billing",
-          } as Milestone,
-        ]
+        {
+          key: "billing",
+          label: "Potvrdenie pripojenia účtovania",
+          hint: "Stripe keeps the trial ready to convert. Cancel anytime.",
+          done: !!subscriptionData.hasBillingAccount,
+          href: "/settings?tab=billing",
+        } as Milestone,
+      ]
       : []),
   ];
 
@@ -193,7 +204,7 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-heading text-sm font-semibold">
-              
+
               Všetko je pripravené 🎉
             </p>
             <p className="text-xs text-zinc-400">
@@ -205,7 +216,7 @@ export function ActivationChecklist() {
             onClick={dontShowAgain}
             className="text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-100"
           >
-            
+
             Odmietnuť
           </button>
         </div>
@@ -234,7 +245,7 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0">
             <p className="truncate font-heading text-sm font-semibold">
-              
+
               Získajte {practiceName}  beží
             </p>
             <p className="text-xs text-zinc-400">
@@ -308,7 +319,7 @@ export function ActivationChecklist() {
             onClick={dontShowAgain}
             className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-200"
           >
-            
+
             Toto už nezobrazovať
           </button>
         </div>
@@ -343,7 +354,7 @@ function ActivationChecklistError({
             onClick={onRetry}
             className="mt-2 border-zinc-700 bg-transparent text-zinc-100 hover:bg-zinc-800"
           >
-            
+
             Skúsiť znova
           </Button>
         </div>

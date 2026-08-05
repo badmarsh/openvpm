@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import {
@@ -27,6 +27,8 @@ const ACTION_ICONS: Record<string, React.ElementType> = {
 
 export default function AutomationsPage() {
   const t = useTranslations();
+  const locale = useLocale();
+  const dateLocale = locale === "sk" ? "sk-SK" : "en-US";
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [logsForId, setLogsForId] = useState<string | null>(null);
 
@@ -37,15 +39,24 @@ export default function AutomationsPage() {
   );
 
   const seedMutation = trpc.automations.seedDefaultAutomations.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetch();
+      toast.success(t("automations.successSeed"));
+    },
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
   const toggleMutation = trpc.automations.toggleAutomation.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetch();
+      toast.success(t("automations.successToggle"));
+    },
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
   const deleteMutation = trpc.automations.deleteAutomation.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetch();
+      toast.success(t("automations.successDelete"));
+    },
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
 
@@ -209,7 +220,7 @@ export default function AutomationsPage() {
                               {log.status as string}
                             </span>
                             <span className="text-muted-foreground">
-                              {new Date(log.createdAt).toLocaleString("sk-SK")}
+                              {new Date(log.createdAt).toLocaleString(dateLocale)}
                             </span>
                             <span className="truncate text-muted-foreground">{log.channel as string}</span>
                           </div>
