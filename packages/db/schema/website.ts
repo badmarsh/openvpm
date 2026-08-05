@@ -6,6 +6,7 @@ import { relations } from "drizzle-orm";
 import { baseColumns } from "./common";
 import { practices } from "./practices";
 import { users } from "./users";
+import { communications } from "./communications";
 
 // ---------------------------------------------------------------------------
 // Websites — one active website per practice (singleton config)
@@ -97,7 +98,8 @@ export const websiteBlocks = pgTable(
       .notNull()
       .references(() => websitePages.id),
     // Block type: hero | services | testimonials | cta | contact_form |
-    //   about | gallery | team | pricing | map | faq | blog_feed | custom_html
+    //   about | gallery | team | pricing | map | faq | blog_feed |
+    //   opening_hours | custom_html
     blockType: varchar("block_type", { length: 64 }).notNull(),
     // Display order within the page
     sortOrder: integer("sort_order").notNull().default(0),
@@ -137,7 +139,7 @@ export const websiteSubmissions = pgTable(
     // Read status
     isRead: boolean("is_read").notNull().default(false),
     // Linked communication record (if created)
-    communicationId: uuid("communication_id"),
+    communicationId: uuid("communication_id").references(() => communications.id),
   },
   (table) => ({
     websiteIdx: index("website_submissions_website_idx").on(
@@ -184,5 +186,9 @@ export const websiteSubmissionsRelations = relations(websiteSubmissions, ({ one 
   website: one(websites, {
     fields: [websiteSubmissions.websiteId],
     references: [websites.id],
+  }),
+  communication: one(communications, {
+    fields: [websiteSubmissions.communicationId],
+    references: [communications.id],
   }),
 }));

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/common/empty-state";
 import { TemplatePicker } from "./template-picker";
 
 const templateKeyMap: Record<string, string> = {
@@ -120,6 +121,14 @@ export function SiteEditor() {
     onError: (err) => toast.error(err.message),
   });
 
+  const updateSite = trpc.website.updateSite.useMutation({
+    onSuccess: () => {
+      toast.success(t("editor.saved"));
+      void utils.website.getSite.invalidate();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   const reorderPages = trpc.website.reorderPages.useMutation({
     onSuccess: () => {
       toast.success(t("editor.saved"));
@@ -138,9 +147,11 @@ export function SiteEditor() {
 
   const selectedPage = site?.pages.find((page) => page.id === selectedPageId) ?? site?.pages[0];
 
-  if (typeof window !== "undefined" && site && !previewUrl) {
-    setPreviewUrl(`${window.location.origin}/site/${site.slug}`);
-  }
+  useEffect(() => {
+    if (site && !previewUrl) {
+      setPreviewUrl(`${window.location.origin}/site/${site.slug}`);
+    }
+  }, [site, previewUrl]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -195,27 +206,16 @@ export function SiteEditor() {
 
   if (!site) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-        <Globe className="h-12 w-12 text-muted-foreground" />
-        <h3 className="mt-4 text-lg font-semibold">{t("title")}</h3>
-        <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          {t("subtitle")}
-        </p>
-        <TemplatePicker
-          onSelect={(templateId, slug) => seed.mutate({ templateId, slug })}
-          trigger={
-            <Button className="mt-6" disabled={seed.isPending}>
-              {seed.isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <LayoutTemplate className="mr-2 h-4 w-4" />
-              )}
-              {t("editor.create")}
-            </Button>
-          }
-          disabled={seed.isPending}
-        />
-      </div>
+      <EmptyState
+        icon={Globe}
+        title={t("title")}
+        description={t("subtitle")}
+        action={{
+          label: t("editor.create"),
+          onClick: () => { },
+          icon: LayoutTemplate,
+        }}
+      />
     );
   }
 
@@ -308,10 +308,20 @@ export function SiteEditor() {
             <p className="mt-1 text-sm text-muted-foreground">
               {t(`templates.${templateKeyMap[site.templateId] ?? "cleanModern"}` as "templates.cleanModern")}
             </p>
-            <Button variant="outline" size="sm" className="mt-3" disabled>
-              <LayoutTemplate className="mr-2 h-4 w-4" />
-              {t("editor.template")}
-            </Button>
+            <TemplatePicker
+              onSelect={(templateId) => updateSite.mutate({ id: site.id, settings: { templateId } })}
+              trigger={
+                <Button variant="outline" size="sm" className="mt-3" disabled={updateSite.isPending}>
+                  {updateSite.isPending ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <LayoutTemplate className="mr-2 h-4 w-4" />
+                  )}
+                  {t("editor.template")}
+                </Button>
+              }
+              disabled={updateSite.isPending}
+            />
           </div>
         </div>
 

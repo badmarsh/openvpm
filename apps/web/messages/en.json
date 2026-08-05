@@ -828,12 +828,29 @@
       "playfulFriendly": "Playful & Friendly",
       "emergencyFirst": "Emergency First"
     },
+    "settings": {
+      "title": "Site Settings",
+      "seoTitle": "SEO Title",
+      "seoDescription": "SEO Description",
+      "ogImage": "Social Media Image",
+      "templateId": "Template",
+      "locale": "Language"
+    },
     "public": {
       "bookAppointment": "Book an Appointment",
       "contactUs": "Contact Us",
       "ourServices": "Our Services",
       "aboutUs": "About Us",
-      "emergencyBanner": "For emergencies call"
+      "emergencyBanner": "For emergencies call",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "Your email",
+      "phonePlaceholder": "Your phone number",
+      "messagePlaceholder": "Your message",
+      "consentText": "I agree to the processing of my personal data in accordance with the privacy policy.",
+      "consentRequired": "You must consent to submit this form.",
+      "submitAnother": "Submit another message",
+      "home": "Home",
+      "menu": "Menu"
     }
   }
 }

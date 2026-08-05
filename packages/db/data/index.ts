@@ -7,7 +7,7 @@ import * as en from "./en/index";
 
 export type Locale = "sk" | "en" | "hu";
 
-export function getLocaleData(locale: Locale = "en") {
+export function getLocaleData(locale: Locale = "sk") {
   const data = locale === "sk" ? sk : en;
   return {
     marketingTemplatesData: data.marketingTemplatesData,

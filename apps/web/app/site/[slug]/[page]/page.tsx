@@ -18,15 +18,27 @@ export async function generateMetadata({ params }: PublicSiteSubPageProps): Prom
     with: {
       pages: {
         where: and(eq(websitePages.slug, page), isNull(websitePages.deletedAt)),
-        columns: { title: true, seoTitle: true, seoDescription: true },
+        columns: { title: true, seoTitle: true, seoDescription: true, ogImage: true },
       },
     },
   });
   const pageData = site?.pages[0];
   if (!pageData) return {};
+  const title = pageData.seoTitle ?? pageData.title;
+  const description = pageData.seoDescription ?? "";
   return {
-    title: pageData.seoTitle ?? pageData.title,
-    description: pageData.seoDescription ?? "",
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
   };
 }
 
@@ -36,7 +48,7 @@ export default async function PublicSiteSubPage({ params }: PublicSiteSubPagePro
     where: and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
     with: {
       practice: {
-        columns: { name: true, phone: true, address: true, logoUrl: true, settings: true },
+        columns: { name: true, phone: true, address: true, logoUrl: true },
       },
       pages: {
         where: and(eq(websitePages.slug, pageSlug), isNull(websitePages.deletedAt)),
@@ -62,7 +74,12 @@ export default async function PublicSiteSubPage({ params }: PublicSiteSubPagePro
     <div className="min-h-screen bg-background">
       <PublicHeader site={site} practice={site.practice} navPages={navPages} />
       <main>
-        <BlockRenderer blocks={page.blocks} practice={site.practice} />
+        <BlockRenderer
+          blocks={page.blocks}
+          practice={site.practice}
+          websiteSlug={slug}
+          pageSlug={pageSlug}
+        />
       </main>
       <PublicFooter site={site} practice={site.practice} />
     </div>

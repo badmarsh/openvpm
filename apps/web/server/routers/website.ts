@@ -499,7 +499,6 @@ export const websiteRouter = createRouter({
               phone: true,
               address: true,
               logoUrl: true,
-              settings: true,
             },
           },
           pages: {

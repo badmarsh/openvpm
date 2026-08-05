@@ -828,12 +828,29 @@
       "playfulFriendly": "Hravá a priateľská",
       "emergencyFirst": "Pohotovosť na prvom mieste"
     },
+    "settings": {
+      "title": "Nastavenia webstránky",
+      "seoTitle": "SEO názov",
+      "seoDescription": "SEO popis",
+      "ogImage": "Obrázok pre sociálne siete",
+      "templateId": "Šablóna",
+      "locale": "Jazyk"
+    },
     "public": {
       "bookAppointment": "Rezervovať termín",
       "contactUs": "Kontaktujte nás",
       "ourServices": "Naše služby",
       "aboutUs": "O nás",
-      "emergencyBanner": "V prípade núdze volajte"
+      "emergencyBanner": "V prípade núdze volajte",
+      "namePlaceholder": "Vaše meno",
+      "emailPlaceholder": "Váš email",
+      "phonePlaceholder": "Vaše telefónne číslo",
+      "messagePlaceholder": "Vaša správa",
+      "consentText": "Súhlasím so spracovaním osobných údajov v súlade so zásadami ochrany súkromia.",
+      "consentRequired": "Pre odoslanie formulára musíte súhlasiť so spracovaním údajov.",
+      "submitAnother": "Odoslať ďalšiu správu",
+      "home": "Domov",
+      "menu": "Menu"
     }
   }
 }

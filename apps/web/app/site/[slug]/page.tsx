@@ -15,12 +15,26 @@ export async function generateMetadata({ params }: PublicSitePageProps): Promise
   const { slug } = await params;
   const site = await db.query.websites.findFirst({
     where: and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
-    columns: { title: true, description: true, seoTitle: true, seoDescription: true },
+    columns: { title: true, description: true, seoTitle: true, seoDescription: true, ogImage: true },
   });
   if (!site) return {};
+  const title = site.seoTitle ?? site.title;
+  const description = site.seoDescription ?? site.description ?? "";
   return {
-    title: site.seoTitle ?? site.title,
-    description: site.seoDescription ?? site.description ?? "",
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(site.ogImage ? { images: [{ url: site.ogImage }] } : {}),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(site.ogImage ? { images: [site.ogImage] } : {}),
+    },
   };
 }
 
@@ -30,7 +44,7 @@ export default async function PublicSitePage({ params }: PublicSitePageProps) {
     where: and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
     with: {
       practice: {
-        columns: { name: true, phone: true, address: true, logoUrl: true, settings: true },
+        columns: { name: true, phone: true, address: true, logoUrl: true },
       },
       pages: {
         where: isNull(websitePages.deletedAt),
@@ -48,17 +62,30 @@ export default async function PublicSitePage({ params }: PublicSitePageProps) {
   if (!site) notFound();
 
   const homePage = site.pages.find((p) => p.isHome) ?? site.pages[0];
-
   const navPages = site.pages.filter((p) => p.showInNav);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VeterinaryCare",
+    name: site.practice?.name ?? site.title,
+    ...(site.practice?.address ? { address: site.practice.address } : {}),
+    ...(site.practice?.phone ? { telephone: site.practice.phone } : {}),
+    url: `/site/${slug}`,
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PublicHeader site={site} practice={site.practice} navPages={navPages} />
       <main>
         {homePage ? (
           <BlockRenderer
             blocks={homePage.blocks}
             practice={site.practice}
+            websiteSlug={slug}
           />
         ) : (
           <div className="px-6 py-20 text-center text-muted-foreground">

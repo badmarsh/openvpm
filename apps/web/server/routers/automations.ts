@@ -52,7 +52,7 @@ export const automationsRouter = createRouter({
     .input(
       z.object({
         name: z.string().min(1).max(255),
-        triggerType: z.string(),
+        triggerType: z.enum(["appointment_created", "appointment_reminder", "post_published", "invoice_paid", "website_form_submission", "REVIEW_REQUEST", "ANNUAL_REMINDER", "custom"]),
         conditions: z.record(z.any()).default({}),
         actionType: z.enum(["sms", "email", "webhook"]),
         actionPayload: z.record(z.any()),
