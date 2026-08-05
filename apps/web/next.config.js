@@ -62,14 +62,18 @@ const nextConfig = {
           destination: `${jaazUrl}/_vercel/:path*`,
         },
       ],
-      fallback: [
-        {
-          // Chytí všetky /api/... requesty, ktoré neboli spracované OpenVPM API routami
-          // a presmeruje ich na Jaaz server (vyžadované pre hardcoded /api cesty v Jaaz SPA).
-          source: "/api/:path*",
-          destination: `${jaazUrl}/api/:path*`,
-        }
-      ]
+      fallback: process.env.JAAZ_SERVER_URL
+        ? [
+            {
+              // Chytí všetky /api/... requesty, ktoré neboli spracované OpenVPM API routami
+              // a presmeruje ich na Jaaz server (vyžadované pre hardcoded /api cesty v Jaaz SPA).
+              // Only active when JAAZ_SERVER_URL is explicitly set — avoids ECONNREFUSED when
+              // Jaaz is not running.
+              source: "/api/:path*",
+              destination: `${jaazUrl}/api/:path*`,
+            },
+          ]
+        : [],
     };
   },
 };

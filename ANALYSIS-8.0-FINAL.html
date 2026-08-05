@@ -1,0 +1,3518 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stratégia rozvoja kliniky MVDr. Sýkoru — V8.0 | August 2026</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 15mm 20mm 15mm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #2b2b2b;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        h1 {
+            color: #1B5E3A;
+            font-size: 22pt;
+            border-bottom: 2px solid #1B5E3A;
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1B5E3A;
+            font-size: 16pt;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 4px;
+            margin-top: 25px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            color: #2e7d32;
+            font-size: 13pt;
+            margin-top: 20px;
+            page-break-after: avoid;
+        }
+
+        h4 {
+            color: #333;
+            font-size: 11pt;
+            margin-top: 15px;
+            page-break-after: avoid;
+        }
+
+        blockquote {
+            background: #f4f8f5;
+            border-left: 4px solid #1B5E3A;
+            margin: 15px 0;
+            padding: 10px 15px;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+
+        th {
+            background-color: #1B5E3A;
+            color: white;
+            text-align: left;
+            padding: 8px 10px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbf9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            page-break-inside: avoid;
+        }
+
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            font-size: 9.5pt;
+        }
+
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 25px 0;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            background: linear-gradient(140deg, #071f12 0%, #0f3d24 30%, #1B5E3A 60%, #0d3321 100%);
+            min-height: 70vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            padding: 48px 56px 40px;
+            box-sizing: border-box;
+            page-break-after: always;
+        }
+
+        .hero-bg-mesh {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse 70% 60% at 80% 10%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 10% 90%, rgba(255, 255, 255, 0.04) 0%, transparent 55%),
+                repeating-linear-gradient(45deg, transparent, transparent 80px, rgba(255, 255, 255, 0.013) 80px, rgba(255, 255, 255, 0.013) 81px);
+            pointer-events: none;
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            animation: heroOrbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .hero-orb-gold {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 70%);
+            top: -140px;
+            right: -60px;
+            animation-delay: 0s;
+        }
+
+        .hero-orb-white {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(200, 240, 215, 0.07) 0%, transparent 70%);
+            bottom: 20px;
+            left: -40px;
+            animation-delay: 4s;
+        }
+
+        @keyframes heroOrbFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(25px, -35px) scale(1.12);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 56px;
+            width: 100%;
+        }
+
+        .hero-text {
+            flex: 1.1;
+            color: white;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(212, 175, 55, 0.08));
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            color: #f0d060;
+            font-size: 8pt;
+            font-weight: 800;
+            padding: 7px 20px;
+            border-radius: 40px;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            margin-bottom: 26px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #d4af37;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #d4af37, 0 0 20px rgba(212, 175, 55, 0.4);
+            animation: heroPulse 2.2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes heroPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 10px #d4af37, 0 0 20px rgba(212, 175, 55, 0.4);
+            }
+
+            50% {
+                opacity: 0.55;
+                transform: scale(0.75);
+                box-shadow: 0 0 4px #d4af37;
+            }
+        }
+
+        .hero-title {
+            font-size: 32pt;
+            font-weight: 900;
+            line-height: 1.08;
+            margin: 0 0 18px 0;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .hero-title-accent {
+            font-weight: 300;
+            font-size: 24pt;
+            color: rgba(255, 255, 255, 0.72);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 11pt;
+            color: #aacebb;
+            margin: 0 0 28px 0;
+            line-height: 1.65;
+        }
+
+        .hero-subtitle strong {
+            color: #ddf0e4;
+        }
+
+        .hero-divider {
+            width: 64px;
+            height: 3px;
+            background: linear-gradient(90deg, #d4af37 0%, rgba(212, 175, 55, 0.25) 100%);
+            border-radius: 2px;
+            margin-bottom: 28px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.065);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 10px 16px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background 0.3s;
+        }
+
+        .hero-meta-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-meta-icon {
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .hero-meta-label {
+            font-size: 7pt;
+            color: rgba(255, 255, 255, 0.48);
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .hero-meta-value {
+            font-size: 9pt;
+            color: white;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-video-wrapper {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.12),
+                0 8px 32px rgba(0, 0, 0, 0.35),
+                0 32px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-video-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 19px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, transparent 45%, rgba(27, 94, 58, 0.4) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-video-wrapper video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .hero-video-shine {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.06) 0%,
+                    transparent 40%,
+                    transparent 70%,
+                    rgba(13, 51, 33, 0.35) 100%);
+            pointer-events: none;
+        }
+
+        .hero-version-tag {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(212, 175, 55, 0.25);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #f0d060;
+            font-size: 7.5pt;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .hero-footer-bar {
+            position: relative;
+            z-index: 2;
+            margin-top: 36px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.5pt;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .hero-footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            font-size: 9pt;
+        }
+
+        .hero-footer-logo-dot {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #d4af37, #a87c1a);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .hero-footer-stamp {
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.75);
+            padding: 5px 18px;
+            border-radius: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-clinic-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* Section Images */
+        .section-image-wrapper {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .section-image-center {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mermaid Diagram Container */
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        /* Boxed Layout for Screen */
+        @media screen {
+            html, body {
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .hero-section {
+                max-width: 1200px;
+                margin: 30px auto;
+                border-radius: 16px;
+                box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+            }
+            .content-container {
+                max-width: 900px;
+                margin: 40px auto;
+                background-color: #ffffff;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                padding: 56px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero-section">
+        <!-- Ambient background layers -->
+        <div class="hero-bg-mesh"></div>
+        <div class="hero-orb hero-orb-gold"></div>
+        <div class="hero-orb hero-orb-white"></div>
+
+        <!-- Main content row -->
+        <div class="hero-content">
+
+            <!-- LEFT: Text -->
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    OPERAČNO-STRATEGICKÝ PLÁN V8.0
+                </div>
+                <h1 class="hero-title">
+                    Stratégia<br>
+                    rozvoja a<br>
+                    operačná<br>
+                    <span class="hero-title-accent">modernizácia kliniky</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Kompletný realizačný a riadiaci rámec pre veterinárnu ambulanciu <strong>MVDr. Martina Sýkoru</strong> v Rimavskej Sobote
+                </p>
+                <div class="hero-divider"></div>
+            </div>
+
+            <!-- RIGHT: Video -->
+            <div class="hero-visual">
+                <div class="hero-video-wrapper">
+                    <video autoplay loop muted playsinline webkit-playsinline="true">
+                        <source src="assets/videos/Animate_this_image4.mp4" type="video/mp4">
+                    </video>
+                    <div class="hero-video-shine"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer bar -->
+        <div class="hero-footer-bar">
+            <div class="hero-footer-logo">
+                <span class="hero-footer-stamp">Ing. Marek Jurkemík MBA, DBA</span>
+            </div>
+
+            <span>Verzia 8.0 &nbsp;·&nbsp; August 2026</span>
+        </div>
+    </section>
+    <div class="content-container">
+
+    <blockquote>
+        <p>Tento dokument (V8.0) zapracúva všetky amendmenty z AMENDMENTS-V7.1.md.<br />
+            Predchádzajúce verzie sú archivované v repozitári.</p>
+    </blockquote>
+    <h2>1. Executive Decision Page &amp; Manažérske zhrnutie</h2>
+    <p><strong>Status:</strong> Rozhodovací uzol pre manažment kliniky<br />
+        <strong>Cieľ:</strong> Poskytnúť prehľad priorít a harmonogramu rozhodnutí.<br />
+        <strong>Odporúčanie:</strong> Schváliť prioritne balík Growth a 30-dňové kroky.<br />
+        <strong>Priorita:</strong> Najvyššia (Krok 0)<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Rozhodnutia sú podmienené kapacitou personálu. Odporúča sa max. 3
+        veľké zmeny za 30 dní (prevencia implementačného preťaženia).
+    </p>
+    <h3>1.1 Časová os rozhodnutí pre MVDr. Sýkoru</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Fáza</th>
+                <th>Akčné kroky</th>
+                <th>Zodpovednosť</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Čo schváliť dnes</strong></td>
+                <td>1. Rozpočet pre "Growth balík" (web, základný marketing).<br>2. Nasadenie pravidla Discharge Ask pre
+                    všetky návštevy.<br>3. Fear-Free certifikácia lekára.</td>
+                <td>MVDr. Sýkora</td>
+            </tr>
+            <tr>
+                <td><strong>Čo spustiť do 30 dní</strong></td>
+                <td>1. Nový Google Business Profile a webstránka.<br>2. Fyzické úpravy čakárne (feromóny,
+                    podložky).<br>3. Pilot AI scribu (VetRec) na overenie úspory času.</td>
+                <td>MVDr. Sýkora / Externista</td>
+            </tr>
+            <tr>
+                <td><strong>Čo otestovať do 90 dní</strong></td>
+                <td>1. Wellness plány (interný pilot na 50 verných klientoch).<br>2. Paralelný pilot OpenVPM len pre
+                    CRM/štítky.<br>3. Prvé spoplatnené telemedicínske úkony.</td>
+                <td>MVDr. Sýkora / Recepcia</td>
+            </tr>
+            <tr>
+                <td><strong>Čo odložiť na Rok 2</strong></td>
+                <td>Plná migrácia účtovníctva na OpenVPM, AI rádiológia, vlastný rozsiahly klientsky portál (Medplum).
+                </td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>1.2 Konkurenčný a demografický kontext</h3>
+    <p>Predložený dokument predstavuje operačno-strategický plán pre prax v Rimavskej Sobote. Zohľadňuje špecifiká
+        malomestského trhu so zvýšenou cenovou senzitivitou.<br />
+        - <strong>Počet obyvateľov (Oficiálny údaj):</strong> 20 943 k 31.12.2025 (klesajúci trend).<br />
+        - <strong>Zameranie rastu:</strong> Keďže trh je obmedzený, odporúča sa nezameriavať na masovú akvizíciu na úkor
+        cien, ale na zvyšovanie hodnoty transakcie a retencie existujúcej klientskej bázy pomocou Fear-Free prístupu a
+        prevencie.</p>
+    <hr />
+    <img src="assets/images/clinic_enhanced_main.png" alt="Clinic Main" class="hero-clinic-image">
+
+
+    <hr />
+    <h2>2. Čo netreba robiť teraz (Prevencia implementačného preťaženia)</h2>
+    <p><strong>Status:</strong> Zásada prevádzkovej disciplíny.<br />
+        <strong>Cieľ:</strong> Ochrániť prax pred zlyhaním v dôsledku implementačnej únavy.<br />
+        <strong>Odporúčanie:</strong> Striktne fázovať nasadzovanie noviniek.<br />
+        <strong>Priorita:</strong> Vysoká.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Najväčšie prevádzkové riziko pri preberaní praxe nie je nedostatok
+        nápadov, ale implementačné preťaženie malej praxe. Navrhuje sa striktné pravidlo: <strong>max. 3 veľké
+            prevádzkové zmeny za 30 dní.</strong>
+    </p>
+    <h3>2.1 Explicitne odložené iniciatívy</h3>
+    <p>Z dôvodu zníženia rizika a kapitálovej náročnosti sa pre Rok 1 <strong>neodporúča</strong>:<br />
+        1. <strong>Full OpenVPM migrácia:</strong> Kompletný prechod účtovníctva a skladu z Vetsoftware V2 do OpenVPM
+        predstavuje vysoké riziko. Neodporúčame full replacement v Roku 1.<br />
+        2. <strong>Custom Medplum build:</strong> Vlastný klientsky portál je finančne aj časovo náročný. V prvom roku
+        postačujú štandardné komunikačné nástroje a rezervačný systém.<br />
+        3. <strong>AI rádiológia (veľká investícia):</strong> Pre malú prax by návratnosť nebola okamžitá.<br />
+        4. <strong>AI experience prvky v čakárni:</strong> Zbytočná technologická záťaž, stačí štandardná edukácia.</p>
+    <hr />
+    <h2>3. Predpoklady finančného modelu</h2>
+    <p><strong>Status:</strong> Definícia modelových vstupov.<br />
+        <strong>Cieľ:</strong> Jasne oddeliť fakty od predpokladov a hypotéz.<br />
+        <strong>Odporúčanie:</strong> Pravidelne (kvartálne) konfrontovať predpoklady s reálnymi dátami.<br />
+        <strong>Priorita:</strong> Kľúčová pre validáciu ROI.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Model zlyhá, ak nebudú naplnené kapacitné podmienky na strane
+        personálu.
+    </p>
+    <h3>3.1 Tabuľka predpokladov a klasifikácia čísel</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Metrika</th>
+                <th>Hodnota pre model</th>
+                <th>Pôvod čísla / Klasifikácia</th>
+                <th>Poznámka</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Aktívna klientska báza</strong></td>
+                <td>1 000 klientov</td>
+                <td>Modelový predpoklad</td>
+                <td>Bude spresnené po audite Vetsoftware V2.</td>
+            </tr>
+            <tr>
+                <td><strong>Priemerný ročný spend</strong></td>
+                <td>200 € / klient</td>
+                <td>Interný odhad</td>
+                <td>Základná úroveň bez Wellness plánov.</td>
+            </tr>
+            <tr>
+                <td><strong>Fixné prevádzkové náklady</strong></td>
+                <td>100 000 € / rok</td>
+                <td>Orientačný scenár</td>
+                <td>Odhad nákladov na chod praxe.</td>
+            </tr>
+            <tr>
+                <td><strong>EBITDA marža (štandard)</strong></td>
+                <td>18,0 %</td>
+                <td>Benchmark odvetvia</td>
+                <td>Bežná maržovosť štandardnej praxe v regióne.</td>
+            </tr>
+            <tr>
+                <td><strong>Maržovosť diagnostiky</strong></td>
+                <td>75 - 85 %</td>
+                <td>Modelový predpoklad</td>
+                <td>Po odrátaní spotrebného materiálu.</td>
+            </tr>
+            <tr>
+                <td><strong>Adopcia Wellness (Rok 1)</strong></td>
+                <td>3 %</td>
+                <td>Konzervatívny scenár</td>
+                <td>Očakávame len early-adopters v prvom roku.</td>
+            </tr>
+            <tr>
+                <td><strong>Kapacita lekára (práca)</strong></td>
+                <td>Plný úväzok</td>
+                <td>Prevádzkový fakt</td>
+                <td>Maximálne 10-15 pacientov denne s rezervou.</td>
+            </tr>
+            <tr>
+                <td><strong>Kapacita recepcie</strong></td>
+                <td>Úväzok / Časť</td>
+                <td>Modelový predpoklad</td>
+                <td>Nutné pokryť na vybavovanie telefonátov a predaj balíkov.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>3.2 Možnosti financovania</h3>
+    <h4>Tabuľka scenárov financovania</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Scenár</th>
+                <th>Zdroj</th>
+                <th>Výška</th>
+                <th>Podmienky</th>
+                <th>Odporúčanie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>A — Vlastné zdroje</strong></td>
+                <td>Prevádzkový cashflow ambulancie</td>
+                <td>2 000 € jednorazovo</td>
+                <td>Bez záväzkov, okamžite dostupné</td>
+                <td><strong>Preferovaný scenár</strong> ak prax generuje pozitívny cashflow od Mesiaca 1</td>
+            </tr>
+            <tr>
+                <td><strong>B — Podnikateľský mikro-úver</strong></td>
+                <td>ČSOB, Tatra banka, Slovak Business Agency (SBA)</td>
+                <td>2 000 – 5 000 €</td>
+                <td>SBA ponúka mikropôžičky pre malé podniky s úrokom ~4–6 % p.a.</td>
+                <td>Vhodné ak cashflow nestačí v prvých mesiacoch</td>
+            </tr>
+            <tr>
+                <td><strong>C — Regionálna dotácia</strong></td>
+                <td>BBSK (Banskobystrický samosprávny kraj), SIEA, IROP</td>
+                <td>Variabilná</td>
+                <td>Vyžaduje projektovú žiadosť, čas schválenia 3–6 mesiacov</td>
+                <td><strong>Doplnkový zdroj</strong> — nevhodný ako primárne financovanie pre Rok 1 kvôli časovej
+                    náročnosti</td>
+            </tr>
+            <tr>
+                <td><strong>D — Kombinácia A+C</strong></td>
+                <td>Vlastné zdroje teraz + dotácia neskôr</td>
+                <td>2 000 € vlastné + potenciálny grant</td>
+                <td>Najoptimálnejší dlhodobý prístup</td>
+                <td><strong>Odporúčané pre Rok 2</strong> (digitalizácia, IT infraštruktúra)</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Praktické kroky (Owner: MVDr. Sýkora)</h4>
+    <ol>
+        <li><strong>Ihneď:</strong> Odhadnúť mesačný cashflow z prvých 3 mesiacov prevádzky.</li>
+        <li><strong>Do 30 dní:</strong> Ak cashflow nestačí, kontaktovať SBA (www.sbagency.sk) pre informácie o
+            mikropôžičke pre začínajúci podnik / prevzatie existujúcej prevádzky.</li>
+        <li><strong>Do 90 dní:</strong> Osloviť regionálneho poradcu SIEA pre zistenie aktuálnych výziev na
+            digitalizáciu malých podnikov — možné spolufinancovanie webu, CRM a IT infraštruktúry.</li>
+    </ol>
+    <blockquote>
+        <p><strong>Dôležitá poznámka:</strong> Mesačný prevádzkový náklad 250 € (AI Scribe + marketing) by mal byť
+            financovaný výlučne z prevádzkového cashflow, nie z jednorazového úveru. Ak ambulancia nevytvára aspoň 300 €
+            mesačného voľného cashflow, odporúča sa Growth balík rozfázovať: najprv web (Mesiac 1), AI Scribe až od
+            Mesiaca 3.</p>
+    </blockquote>
+    <hr />
+    <h2>4. Konkurenčná analýza a lokálna digitálna dominancia</h2>
+    <p><strong>Status:</strong> Overené dáta &amp; Strategické odporúčania.<br />
+        <strong>Cieľ:</strong> Rebranding a etablovanie dominancie v online vyhľadávaní.<br />
+        <strong>Odporúčanie:</strong> Zjednotenie profilov pod hlavičkou novej značky.<br />
+        <strong>Priorita:</strong> MUST HAVE NOW.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Zanedbanie online správy ohrozí príliv nových obyvateľov do
+        ambulancie.
+    </p>
+    <div class="section-image-wrapper">
+        <img src="assets/images/branding.png" alt="Vizuálna identita a branding kliniky MVDr. Martina Sýkoru"
+            class="section-image-center">
+    </div>
+
+    <h3>4.1 Lokálny trh (Overené dáta)</h3>
+    <ul>
+        <li><strong>Veterinárna ambulancia SOVA:</strong> 4,9★ (170 recenzií). Silný trhový líder.</li>
+        <li><strong>Pôvodná prax (VetDrotar):</strong> 4,3★ (11 recenzií), Facebook (359 fans).</li>
+        <li>Konkurencia nemá silne komunikovaný "Fear-Free" prístup, čo vytvára modelový priestor pre diferenciáciu.
+        </li>
+    </ul>
+    <h3>4.2 Kroky pre digitálnu dominanciu (Odporúčania)</h3>
+    <ul>
+        <li><strong>Google Business Profile (GBP):</strong> Optimalizovať kľúčové slová.</li>
+        <li><strong>Konverzný web:</strong> Orientovaný na konverziu s "Rezervovať termín".</li>
+        <li><strong>Reputácia:</strong> Zavedenie "Discharge Ask" – systematická výzva na recenziu pre každého klienta
+            po návšteve. (<em>Právny rámec: v súlade s interným procesom a platnou legislatívou, vyžaduje zamedzenie
+                selektívneho výberu zákazníkov.</em>)</li>
+        <li><strong>Dvojjazyčná (SK/HU) digitálna prítomnosť:</strong> Pre lokality so zmiešanou jazykovou komunitou
+            (Rimavská Sobota, okolie) predstavuje maďarčina priamu konkurenčnú výhodu. Žiadny z lokálnych konkurentov
+            (SOVA, VetDrotar) nemá štruktúrovanú dvojjazyčnú komunikáciu.</li>
+    </ul>
+    <h4>Povinne dvojjazyčné (SK + HU)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Kanál / Obsah</th>
+                <th>Priorita</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Google Business Profile (popis, kategórie)</td>
+                <td><strong>MUST — Mesiac 1</strong></td>
+                <td>Externista</td>
+            </tr>
+            <tr>
+                <td>Webstránka — hlavná stránka a kontaktná stránka</td>
+                <td><strong>MUST — Mesiac 1</strong></td>
+                <td>Externista</td>
+            </tr>
+            <tr>
+                <td>Zmeny ordinačných hodín (Facebook, SMS)</td>
+                <td><strong>MUST — vždy</strong></td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Wellness plány — cenník a popis balíkov</td>
+                <td><strong>MUST — Mesiac 3</strong></td>
+                <td>Recepcia / Copywriter</td>
+            </tr>
+            <tr>
+                <td>Hard Sell ponuky a akcie</td>
+                <td><strong>SHOULD — Rok 1</strong></td>
+                <td>Copywriter</td>
+            </tr>
+            <tr>
+                <td>Fear-Free letáky v čakárni</td>
+                <td><strong>SHOULD — Mesiac 2</strong></td>
+                <td>Externista</td>
+            </tr>
+            <tr>
+                <td>Urgentné upozornenia (kliešče, toxické rastliny)</td>
+                <td><strong>MUST — vždy</strong></td>
+                <td>Copywriter</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Postup zabezpečenia prekladov</h4>
+    <ul>
+        <li><strong>Ideálne:</strong> Recepčná hovorí po maďarsky — v pracovnom inzeráte aktívne uviesť ako výhodu alebo
+            podmienku.</li>
+        <li><strong>Alternatíva:</strong> Zmluva s lokálnym prekladateľom (Rimavská Sobota / Tornaľa) — odhadovaný
+            náklad 50–80 € / mesiac za pravidelné posty.</li>
+        <li><strong>Technická pomoc:</strong> DeepL Pro + manuálna korekcia (nie Google Translate — medicínske termíny
+            vyžadujú kontrolu).</li>
+    </ul>
+    <hr />
+    <h2>5. Personál, zodpovednosti a prevádzková disciplína</h2>
+    <p><strong>Status:</strong> Organizačná štruktúra.<br />
+        <strong>Cieľ:</strong> Zaistiť vykonateľnosť plánu cez jasný ownership.<br />
+        <strong>Odporúčanie:</strong> Zamedziť prenosu administratívy na lekára.<br />
+        <strong>Priorita:</strong> Rok 1.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Plán je realizovateľný len za predpokladu dostupnosti a zaškolenia
+        asistenčného personálu.
+    </p>
+    <h3>5.1 Matica zodpovedností</h3>
+    <ul>
+        <li><strong>Lekár (MVDr. Sýkora):</strong></li>
+        <li>Odborné výkony a diagnostika.</li>
+        <li>Odsúhlasovanie AI SOAP záznamov.</li>
+        <li>Komunikácia diagnózy a odborného plánu.</li>
+        <li><strong>Recepcia / Asistencia:</strong></li>
+        <li>Vedenie rezervačného kalendára.</li>
+        <li>Triage komunikácia (Tier 1).</li>
+        <li>Ponuka a administratíva Wellness plánov.</li>
+        <li>Protokol "Discharge Ask" (výzva na recenzie).</li>
+        <li><strong>Externista (Marketing / IT):</strong></li>
+        <li>Správa sociálnych sietí (publikácia schválených postov).</li>
+        <li>Webmastering a údržba PIMS / n8n automatizácií.</li>
+        <li><strong>Čo nesmie zostať bez ownera:</strong> Správa prichádzajúcich dopytov z portálu a vybavovanie
+            sťažností (zodpovedá Recepcia, eskaluje na Lekára).</li>
+    </ul>
+    <hr />
+    <h2>6. Technologická infraštruktúra a paralelná prevádzka</h2>
+    <p><strong>Status:</strong> Technický pilotný rámec.<br />
+        <strong>Cieľ:</strong> Modernizácia bez ohrozenia cashflow a účtovníctva.<br />
+        <strong>Odporúčanie:</strong> Paralelná prevádzka Vetsoftware V2 a moderných vrstiev.<br />
+        <strong>Priorita:</strong> Do 90 dní.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Výpadok PIMS ohrozí chod kliniky.
+    </p>
+    <h3>6.1 Paralelná prevádzka (Strategické odporúčanie)</h3>
+    <div class="mermaid">
+        flowchart TD
+        classDef core fill:#1b4965,stroke:#62b6cb,stroke-width:2px,color:#ffffff,font-weight:bold;
+        classDef orch fill:#2b2d42,stroke:#8d99ae,stroke-width:2px,color:#ffffff,font-weight:bold;
+        classDef portal fill:#1a5276,stroke:#5499c7,stroke-width:2px,color:#ffffff,font-weight:bold;
+
+        subgraph Layer1 ["Vrstva 1: Paralelný Core"]
+        PIMS["OpenVPM (Pilot)<br />CRM, AI Scribe"]:::core
+        LEGACY["Vetsoftware V2<br />Sklad, eKasa"]:::core
+        end
+        subgraph Layer2 ["Vrstva 2: Automatizácia"]
+        N8N["n8n (Self-Hosted)"]:::orch
+        end
+        subgraph Layer3 ["Vrstva 3: Komunikácia"]
+        PORTAL["Medplum<br />Portálová vrstva"]:::portal
+        end
+        PIMS -- "Webhooky" --> N8N
+        N8N -- "REST API" --> PORTAL
+    </div>
+    <ul>
+        <li><strong>Vetsoftware V2:</strong> Zostáva ako primárny, oficiálny systém pre eKasu a sklad. (Znižuje
+            prevádzkové riziko).</li>
+        <li><strong>OpenVPM (Pilot):</strong> Perspektívny open-source API-first PIMS (AGPLv3). Vhodný na pilot a
+            integračné experimenty. Odporúča sa nasadiť len pre CRM štítky a AI Scribe workflow. Systém má riziká
+            mladého projektu (lokalizácia, chýbajúce napojenie na SK eKasu).</li>
+        <li><strong>Medplum:</strong> FHIR-native open-source platforma (Apache 2.0). Slúži výhradne ako komunikačná
+            vrstva (klientsky portál), nie ako hotový veterinárny systém.</li>
+    </ul>
+    <hr />
+    <h2>7. AI Moduly a riadenie rizík</h2>
+    <p><strong>Status:</strong> Risk-Classified AI Roadmap.<br />
+        <strong>Cieľ:</strong> Úspora času bez klinického a právneho ohrozenia.<br />
+        <strong>Odporúčanie:</strong> Nasadiť AI Scribe, striktne odmietnuť klientsku diagnostickú AI.<br />
+        <strong>Priorita:</strong> Pilot do 30 dní (Scribe).<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Pacientske dáta musia spĺňať GDPR. <em>Odporúčame overiť vybraný
+            nástroj (napr. VetRec) s GDPR konzultantom ohľadom spracovania zvuku.</em>
+    </p>
+    <h3>7.1 Klasifikácia AI use-cases (Prehľad rizík a prínosov)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>AI Use-case</th>
+                <th>Účel</th>
+                <th>Prínos</th>
+                <th>Riziko</th>
+                <th>Čas nasadenia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>AI Scribe (VetRec/ScribbleVet)</strong></td>
+                <td>Prepis hlasu na SOAP</td>
+                <td>Úspora 1-2 hodín denne</td>
+                <td>Nízke (GDPR)</td>
+                <td>Do 30 dní</td>
+            </tr>
+            <tr>
+                <td><strong>AI Review Assistance</strong></td>
+                <td>Generovanie odpovedí na recenzie</td>
+                <td>Profesionálny tón, úspora času</td>
+                <td>Nízke</td>
+                <td>Do 30 dní</td>
+            </tr>
+            <tr>
+                <td><strong>AI Triage Flow</strong></td>
+                <td>Rozradenie dopytov (nie chatbot)</td>
+                <td>Zníženie záťaže telefónov</td>
+                <td>Stredné (Nesprávna triáž)</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td><strong>AI Radiology 2nd Opinion</strong></td>
+                <td>Podpora pre RTG analýzu</td>
+                <td>Zníženie chybovosti lekára</td>
+                <td>Stredné (Zodpovednosť)</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td><strong>AI Klientska diagnostika</strong></td>
+                <td>Autonómne radenie klientom</td>
+                <td>N/A</td>
+                <td><strong>Vysoké (Etické/Právne)</strong></td>
+                <td><strong>Zamietnuté</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><em>Poznámka: Klientsky-facing AI nesmie v žiadnom prípade poskytovať diagnostiku ani navrhovať liečbu.</em></p>
+    <h4>GDPR Pre-Launch Checklist (AI Scribe)</h4>
+    <blockquote>
+        <p><strong>Pravidlo:</strong> Pilot AI Scribe sa nesmie spustiť, kým nie sú splnené <strong>všetky body</strong>
+            nižšie uvedeného checklistu. Zodpovedá: MVDr. Sýkora + externista / IT.</p>
+    </blockquote>
+    <ul>
+        <li>[ ] <strong>1. Overenie hosting regiónu:</strong> Potvrdiť, že VetRec spracúva a ukladá zvukové záznamy
+            výlučne na serveroch v EÚ (nie US). Písomné potvrdenie od dodávateľa.</li>
+        <li>[ ] <strong>2. Podpis DPA (Data Processing Agreement):</strong> Podpísať zmluvu o spracovaní osobných údajov
+            s VetRec podľa čl. 28 GDPR. Bez podpisu DPA je akékoľvek nahrávanie v rozpore s GDPR.</li>
+        <li>[ ] <strong>3. Informovaný súhlas klientov:</strong> Doplniť do čakárne (a na web) oznam v zmysle čl. 13
+            GDPR o tom, že návštevy môžu byť nahrávané na účely tvorby zdravotnej dokumentácie AI nástrojom. Klient má
+            právo odmietnuť — v takom prípade lekár zapisuje ručne.</li>
+        <li>[ ] <strong>4. Retenčná politika:</strong> Definovať, ako dlho sa zvukové záznamy uchovávajú (odporúčanie:
+            automatické mazanie po 24 hodinách od vytvorenia SOAP záznamu).</li>
+        <li>[ ] <strong>5. Konzultácia s DPO / právnikom:</strong> Aspoň 1-hodinová konzultácia s GDPR poradcom pred
+            spustením. Náklad: cca 100–200 €. Odporúčame slovenského právnika so skúsenosťou s e-health.</li>
+        <li>[ ] <strong>6. Záznamy v registri spracovateľských činností:</strong> Doplniť AI Scribe ako novú
+            spracovateľskú aktivitu do interného registra podľa čl. 30 GDPR.</li>
+    </ul>
+    <blockquote>
+        <p><strong>Odhadovaný čas na splnenie checklistu:</strong> 1–2 týždne. Odporúča sa začať paralelne s prípravou
+            webu (Mesiac 1), aby bol AI Scribe pripravený na spustenie v Mesiaci 2.</p>
+    </blockquote>
+    <hr />
+    <h2>8. Telemedicína, legislatíva a Fear-Free prístup</h2>
+    <p><strong>Status:</strong> Prevádzkový a etický štandard.<br />
+        <strong>Cieľ:</strong> Modernizácia priestoru a formalizácia komunikácie.<br />
+        <strong>Odporúčanie:</strong> Zabezpečiť certifikáciu a jasné hranice poskytovania rád.<br />
+        <strong>Priorita:</strong> Kontinuálna.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Porušenie KVL SR smerníc pre dištančnú diagnostiku.
+    </p>
+    <p><img alt="Miestnosť" src="assets/images/clinic_diagnostic_room_green.png" /></p>
+    <h3>8.1 Fear-Free prostredie</h3>
+    <p>Odporúča sa pilotné overenie Fear-Free prístupu (oddělené čakacie zóny, feromóny, certifikácia lekára). Toto
+        predstavuje hmatateľnú diferenciáciu voči konkurencii bez nutnosti masívnych stavebných zásahov.</p>
+    <h3>8.2 Telemedicína a legislatívne podmienky</h3>
+    <p>Akékoľvek telemedicínske úkony a spoplatnené video konzultácie (cez Jitsi / Medplum) sa musia riadiť prísnymi
+        etickými hranicami. <br />
+        - Dištančné predpisovanie liečiv <em>podlieha lokálnemu posúdeniu</em> a musí byť v súlade so smernicami KVL SR.
+        <br />
+        - <em>Odporúčame overiť s právnikom</em> Všeobecné obchodné podmienky pre portálové služby.<br />
+        - Marketingové kampane (SMS/Email) vyžadujú explicitný opt-in od klientov v súlade s GDPR.
+    </p>
+    <hr />
+    <h2>9. Finančný manažérsky model a Break-even logika</h2>
+    <p><strong>Status:</strong> Finančné projekcie (Orientačný manažérsky model).<br />
+        <strong>Cieľ:</strong> Validovať finančnú udržateľnosť implementovaných zmien.<br />
+        <strong>Odporúčanie:</strong> Prijať rozhodnutia na základe konzervatívneho scenára.<br />
+        <strong>Priorita:</strong> Stála.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Model pracuje s predpokladmi, ktoré sa môžu na reálnom trhu
+        odlišovať.
+    </p>
+    <h3>9.1 Wellness plány: Scenáre adopcie a minimálne potreby</h3>
+    <p>Pri modelovej báze 1000 klientov prinášajú Wellness balíky (cca 15 €/mesiac v priemere) stabilizáciu cashflow.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Scenár (Adopcia)</th>
+                <th>Počet klientov</th>
+                <th>Odhad ročného prírastku tržieb</th>
+                <th>Odhadovaná nová EBITDA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Konzervatívny (3 %)</strong></td>
+                <td>30</td>
+                <td>+5 400 €</td>
+                <td>19,5 %</td>
+            </tr>
+            <tr>
+                <td><strong>Štandardný (Benchmark 5 %)</strong></td>
+                <td>50</td>
+                <td>+9 000 €</td>
+                <td>20,8 %</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Kritická podmienka (Minimálne potrebný počet členov):</strong> Aby administratíva spojená s Wellness
+        plánmi dávala zmysel a pokryla náklady na portálovú prevádzku (cca 150 €/mes.), je <strong>minimálny potrebný
+            počet členov 10 (1 % adopcia).</strong> Ak adopcia zostane pod 3 %, odporúča sa pozastaviť aktívny marketing
+        plánov a ponúkať ich len osobne priamo v ambulancii najvernejším klientom.</p>
+    <h3>9.2 Návratnosť AI Scribu (Break-even logika)</h3>
+    <ul>
+        <li><strong>Náklad na AI Scribe:</strong> Cca 100 - 150 € / mesiac.</li>
+        <li><strong>Úspora času:</strong> 1,5 h denne. </li>
+        <li><strong>Minimálny potrebný nárast tržieb:</strong> Pre pokrytie nákladov na AI Scribe stačí, ak vďaka
+            ušetrenému času lekár zrealizuje <strong>1 dodatočné vyšetrenie týždenne</strong> v hodnote 35 €. Za
+            predpokladu, že čas sa využije na produkciu, je ROI takmer okamžité.</li>
+    </ul>
+    <hr />
+    <h2>10. KPI Dashboard — Meranie výkonnosti</h2>
+    <p><strong>Status:</strong> Performance Governance.<br />
+        <strong>Cieľ:</strong> Udržať kontrolu nad metrikami s priamym vplyvom na ziskovosť.<br />
+        <strong>Odporúčanie:</strong> Revízia KPI raz mesačne.<br />
+        <strong>Priorita:</strong> Kontinuálna.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Zlyhanie pri reportingu vedie k neovládateľnému rastu nákladov.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Indikátor (KPI)</th>
+                <th>Cieľ</th>
+                <th>Zodpovednosť</th>
+                <th>Frekvencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Miera adopcie Wellness plánov</strong></td>
+                <td>min. 3 % klientskej bázy (30 klientov)</td>
+                <td>Recepcia</td>
+                <td>Mesačne</td>
+            </tr>
+            <tr>
+                <td><strong>Počet nových Google recenzií</strong></td>
+                <td>&gt; 10 / mesiac</td>
+                <td>Recepcia (Discharge Ask)</td>
+                <td>Mesačne</td>
+            </tr>
+            <tr>
+                <td><strong>Priemerné skóre recenzií</strong></td>
+                <td>&gt; 4.8</td>
+                <td>Lekár / Triage</td>
+                <td>Mesačne</td>
+            </tr>
+            <tr>
+                <td><strong>Úspora času vďaka AI Scribe</strong></td>
+                <td>1,5 h / deň</td>
+                <td>Lekár</td>
+                <td>Týždenne</td>
+            </tr>
+            <tr>
+                <td><strong>Retencia klientov (Ročná)</strong></td>
+                <td>&gt; 75 %</td>
+                <td>Recepcia (CRM pripomienky)</td>
+                <td>Kvartálne</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h2>11. Decision Gates (Rozhodovacie uzly)</h2>
+    <p><strong>Status:</strong> Governance Protocol.<br />
+        <strong>Cieľ:</strong> Zabrániť eskalácii projektov, ktoré zlyhávajú v pilotnej fáze.<br />
+        <strong>Odporúčanie:</strong> Postupovať striktne podľa stage-gate logiky.
+    </p>
+    <pre><code class="language-mermaid">flowchart LR
+    Gate1[&quot;Gate 1 (Mesiac 1)&lt;br/&gt;GBP &amp; Web Ready?&quot;] --&gt;|Go| Gate2[&quot;Gate 2 (Mesiac 3)&lt;br/&gt;AI Scribe Proven?&quot;]
+    Gate2 --&gt;|Go| Gate3[&quot;Gate 3 (Mesiac 6)&lt;br/&gt;Wellness Adoption &gt; 3%?&quot;]
+    Gate3 --&gt;|Go| Gate4[&quot;Gate 4 (Mesiac 12)&lt;br/&gt;Full OpenVPM Migration?&quot;]
+
+    Gate2 -.-&gt;|No-Go| Pause2[&quot;Zotrvať pri manuálnom SOAP&quot;]
+    Gate3 -.-&gt;|No-Go| Pause3[&quot;Úprava cien / repackaging&quot;]
+</code></pre>
+    <hr />
+    <h2>12. Implementačný plán (90-dňový horizont)</h2>
+    <p><strong>Status:</strong> Execution Roadmap.<br />
+        <strong>Cieľ:</strong> Fázovanie prác s limitom max. 3 zmeny / 30 dní.
+    </p>
+    <h3>Mesiac 1: Digitálne základy a stabilizácia</h3>
+    <ul>
+        <li>Zabezpečenie prístupov k Google Business Profile.</li>
+        <li>Spustenie nového konverzného webu s rezervačným CTA.</li>
+        <li>Fyzické Fear-Free úpravy v čakárni (feromóny, podložky).</li>
+    </ul>
+    <h3>Mesiac 2: Úspora času a AI nasadenie</h3>
+    <ul>
+        <li>Štart pilotnej prevádzky AI Scribe (VetRec) pre administratívu.</li>
+        <li>Tréning recepcie na protokol "Discharge Ask".</li>
+        <li>Implementácia automatických SMS pripomienok.</li>
+    </ul>
+    <h3>Mesiac 3: Odomknutie hodnoty (Wellness plány)</h3>
+    <ul>
+        <li>Uvedenie Wellness plánov (najskôr priamo v ambulancii).</li>
+        <li>Vyhodnotenie časovej úspory z AI nástrojov.</li>
+        <li>Skúšobný pilot OpenVPM len pre obmedzený segment.</li>
+    </ul>
+    <hr />
+    <h2>13. Záverečné odporúčanie pre Rok 1 (Verdict)</h2>
+    <p><strong>Status:</strong> Finálny verdikt.<br />
+        <strong>Cieľ:</strong> Jasný plán pre prvých 12 mesiacov.<br />
+        <strong>Odporúčanie:</strong> Striktne nasledovať nižšie uvedený model.<br />
+        <strong>Priorita:</strong> MUST HAVE.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Dodržanie implementačnej disciplíny.
+    </p>
+    <p>Na základe analýzy trhu, technologických možností a rizík sa pre Rok 1 vydávajú nasledovné záverečné odporúčania:
+    </p>
+    <ol>
+        <li><strong>Odporúčaný investičný balík = GROWTH:</strong> Investícia cca 2000 € jednorazovo a 250 € mesačne
+            pokryje tvorbu webu, základné CRM a nasadenie AI Scribu. Toto je optimálny pomer cena/výkon.</li>
+        <li><strong>Odporúčaný technologický prístup = PARALELNÁ PREVÁDZKA:</strong> Vetsoftware V2 zostáva ako core pre
+            eKasu. OpenVPM slúži len na experimenty a spracovanie poznámok.</li>
+        <li><strong>Odporúčaný marketingový prístup = LOKÁLNA DÔVERA + OBSAH + RECENZIE:</strong> Minimalizovať platené
+            Ads. Sústrediť sa na Discharge Ask protokol a Fear-Free komunikáciu (osobná certifikácia).</li>
+        <li><strong>Odporúčaný finančný prístup = KONZERVATÍVNY SCENÁR (3 %):</strong> Budgeting musí vychádzať z
+            predpokladu nízkej (3 %) adopcie Wellness plánov. Zisky z vyššej adopcie tvoria rezervu.</li>
+        <li><strong>Odporúčaný AI prístup = ADMINISTRATÍVNA AI FIRST:</strong> Plné nasadenie hlasových modelov pre SOAP
+            záznamy. Akékoľvek "client-facing" diagnostické AI sú vylúčené.</li>
+    </ol>
+    <h1>ROZŠÍRENÉ PRÍLOHY K OPERAČNO-STRATEGICKÉMU PLÁNU V8.0</h1>
+    <p>Tieto rozšírené prílohy slúžia ako detailný pracovný a rozvojový annex. Pre rozhodovanie v Roku 1 má nadradenosť
+        hlavný dokument V8.0 a jeho prioritizácia. Tieto materiály vracajú do dokumentu konkrétne, vykonateľné postupy z
+        predchádzajúcich analýz (V5.0/V6.0), aby ste po rozhodnutí implementovať konkrétnu iniciatívu mali k dispozícii
+        okamžite použiteľné pracovné podklady – od skriptov pre recepciu až po obsahové plány.</p>
+    <hr />
+    <h2>PRÍLOHA A — PR, PARTNERSTVÁ A LOKÁLNA KOMUNITA</h2>
+    <h3>A.1 Lokálny PR backlog</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Aktivita</th>
+                <th>Účel</th>
+                <th>Cieľová skupina</th>
+                <th>Owner</th>
+                <th>Timing</th>
+                <th>Náročnosť</th>
+                <th>Očakávaný efekt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mýty o kŕmení v regionálnych médiách</td>
+                <td>Budovanie odbornej autority</td>
+                <td>Starší majitelia psov</td>
+                <td>Copywriter / lekár</td>
+                <td>1x za kvartál</td>
+                <td>Stredná</td>
+                <td>Prílev dôveryhodnej, konzervatívnej klientely</td>
+            </tr>
+            <tr>
+                <td>Týždeň bez strachu</td>
+                <td>Predstavenie Fear-Free prístupu</td>
+                <td>Majitelia bojazlivých psov a mačiek</td>
+                <td>Recepcia / lekár</td>
+                <td>1x ročne na jar</td>
+                <td>Vysoká</td>
+                <td>Silné ukotvenie Fear-Free pozície</td>
+            </tr>
+            <tr>
+                <td>Kliešťová mapa regiónu</td>
+                <td>Podpora predaja antiparazitík</td>
+                <td>Všetci majitelia psov</td>
+                <td>Recepcia</td>
+                <td>Marec až apríl</td>
+                <td>Nízka</td>
+                <td>Vyšší pultový predaj antiparazitík</td>
+            </tr>
+            <tr>
+                <td>Fear-Free ambasádor v parku</td>
+                <td>Priama lokálna akvizícia</td>
+                <td>Aktívni majitelia psov</td>
+                <td>Asistentka / brigádnik</td>
+                <td>Letné víkendy</td>
+                <td>Stredná</td>
+                <td>Nové kontakty a vizitky</td>
+            </tr>
+            <tr>
+                <td>Kampaň Skrytá bolesť mačiek</td>
+                <td>Aktivácia mačacej klientely</td>
+                <td>Majitelia mačiek</td>
+                <td>Lekár / copywriter</td>
+                <td>Jeseň</td>
+                <td>Stredná</td>
+                <td>Viac mačacích pacientov</td>
+            </tr>
+            <tr>
+                <td>Vianočná zbierka pre útulok</td>
+                <td>Goodwill a komunita</td>
+                <td>Súčasní klienti</td>
+                <td>Recepcia</td>
+                <td>December</td>
+                <td>Nízka</td>
+                <td>Organické zdieľanie a reputácia</td>
+            </tr>
+            <tr>
+                <td>Weigh-in Wednesday</td>
+                <td>Predaj diét a weight management</td>
+                <td>Majitelia obéznych zvierat</td>
+                <td>Recepcia</td>
+                <td>Každú stredu</td>
+                <td>Nízka</td>
+                <td>Viac predaja krmiva a kontrol</td>
+            </tr>
+            <tr>
+                <td>Čipovanie pred dovolenkami</td>
+                <td>Kombinácia edukácie a úkonu</td>
+                <td>Majitelia nečipovaných zvierat</td>
+                <td>Lekár</td>
+                <td>Máj až jún</td>
+                <td>Nízka</td>
+                <td>Vyšší príjem z administratívy a čipov</td>
+            </tr>
+            <tr>
+                <td>Ukážka prvej pomoci so psovodmi</td>
+                <td>Halo efekt a dôveryhodnosť</td>
+                <td>Kynológovia, verejnosť</td>
+                <td>Lekár</td>
+                <td>Rok 2</td>
+                <td>Vysoká</td>
+                <td>Posilnenie lokálnej autority</td>
+            </tr>
+            <tr>
+                <td>Ako bezpečne cestovať</td>
+                <td>Zásah mimo psíčkarskej bubliny</td>
+                <td>Rodiny so psom a autom</td>
+                <td>Copywriter</td>
+                <td>Pred letom</td>
+                <td>Stredná</td>
+                <td>Nové publikum mimo jadra klientely</td>
+            </tr>
+            <tr>
+                <td>Prednáška na škole</td>
+                <td>Dlhodobý brand equity</td>
+                <td>Deti a rodičia</td>
+                <td>Lekár</td>
+                <td>Október</td>
+                <td>Vysoká</td>
+                <td>Silný lokálny PR dopad</td>
+            </tr>
+            <tr>
+                <td>Happy Visits pre šteniatka</td>
+                <td>Desenzitizácia a lojalita</td>
+                <td>Noví majitelia šteniat</td>
+                <td>Recepcia</td>
+                <td>Denne mimo špičky</td>
+                <td>Nízka</td>
+                <td>Celoživotní klienti</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>A.2 Lokálne partnerstvá</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Partner</th>
+                <th>Logika partnerstva</th>
+                <th>Forma spolupráce</th>
+                <th>Owner</th>
+                <th>Timing</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lokálny útulok</td>
+                <td>Adopcie a prevencia</td>
+                <td>Zľava na prvé vyšetrenie, vizitky pri adopcii</td>
+                <td>Recepcia</td>
+                <td>Okamžite</td>
+            </tr>
+            <tr>
+                <td>Psí salón</td>
+                <td>Koža, srsť, parazity</td>
+                <td>Vzájomné odporúčania</td>
+                <td>Recepcia</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Kynologické cvičisko</td>
+                <td>Prevencia, poslušnosť, edukácia</td>
+                <td>Ročná prednáška</td>
+                <td>Lekár</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Dog-friendly kaviareň</td>
+                <td>Viditeľnosť značky</td>
+                <td>Brandované misky, letáky</td>
+                <td>Copywriter</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Chovateľské potreby</td>
+                <td>Predaj a edukácia</td>
+                <td>Letáky, cross-promo</td>
+                <td>Recepcia</td>
+                <td>Rok 1</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>A.3 Community event backlog</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Účel</th>
+                <th>Timing</th>
+                <th>Owner</th>
+                <th>Náročnosť</th>
+                <th>Efekt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Deň zubov</td>
+                <td>Dentálna konverzia</td>
+                <td>1x mesačne</td>
+                <td>Lekár</td>
+                <td>Nízka</td>
+                <td>Viac objednávok na dentál</td>
+            </tr>
+            <tr>
+                <td>Kurz prvej pomoci pre psíčkarov</td>
+                <td>Autorita a edukácia</td>
+                <td>Rok 2</td>
+                <td>Lekár</td>
+                <td>Vysoká</td>
+                <td>Silný brand a príjem zo vstupeniek</td>
+            </tr>
+            <tr>
+                <td>Dog Trekking</td>
+                <td>Komunita a obsah</td>
+                <td>Rok 2</td>
+                <td>Recepcia</td>
+                <td>Stredná</td>
+                <td>Lokálna viditeľnosť</td>
+            </tr>
+            <tr>
+                <td>Stretnutie plemien v parku</td>
+                <td>Komunita</td>
+                <td>1x ročne</td>
+                <td>Recepcia</td>
+                <td>Stredná</td>
+                <td>Organický reach</td>
+            </tr>
+            <tr>
+                <td>Silvestrový webinár</td>
+                <td>Seasonal content</td>
+                <td>December</td>
+                <td>Copywriter</td>
+                <td>Nízka</td>
+                <td>Prevencia stresu, engagement</td>
+            </tr>
+            <tr>
+                <td>Oslava 1. narodenín kliniky</td>
+                <td>Lojalita</td>
+                <td>1x ročne</td>
+                <td>Lekár</td>
+                <td>Stredná</td>
+                <td>Posilnenie vzťahov</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>A.4 PR témy pre médiá</h3>
+    <ul>
+        <li>Odmietanie kozmetických úprav uší a chvostov ako etická hranica.</li>
+        <li>Falšované antiparazitiká z internetu a riziko otráv.</li>
+        <li>Ako sa zmenila veterinárna medicína: ultrazvuk, inhalácia, Fear-Free.</li>
+        <li>Jedovaté nástrahy v lokálnych parkoch a ako ich rozpoznať.</li>
+        <li>Obezita zvierat ako tichý problém v rodinách.</li>
+    </ul>
+    <h3>A.5 No-Go PR zoznam</h3>
+    <ul>
+        <li>Žiadna politika.</li>
+        <li>Žiadne verejné útoky na konkurenciu.</li>
+        <li>Žiadne agresívne zľavové kampane typu Groupon.</li>
+        <li>Žiadne krvavé alebo šokujúce fotky bez kontextu.</li>
+        <li>Žiadne neoverené medicínske tvrdenia.</li>
+        <li>Žiadne “poistkové” framingy pri wellness balíkoch.</li>
+    </ul>
+    <h2>PRÍLOHA B — Detailný content backlog a sociálne siete</h2>
+    <p>Prechod z náhodného postovania na štruktúrovanú komunikáciu. Tento plán je navrhnutý tak, aby ho mohol kompletne
+        exekuovať externý manažér sociálnych sietí na základe hrubých podkladov z ambulancie.</p>
+    <h3>B.1 Tabuľka obsahových pilierov a rozloženie priorít</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Pilier</th>
+                <th>Podiel obsahu</th>
+                <th>Primárny účel</th>
+                <th>Príklad (Formát)</th>
+                <th>Náročnosť</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Edukácia (Prevencia &amp; Mýty)</strong></td>
+                <td>40 %</td>
+                <td>Budovanie lokálnej autority, prevencia nehôd.</td>
+                <td>Mýtus vs. Fakt (Grafika)</td>
+                <td>Stredná (Vyžaduje presný text lekára)</td>
+            </tr>
+            <tr>
+                <td><strong>Príbehy a zákulisie (Emócie)</strong></td>
+                <td>30 %</td>
+                <td>Budovanie vzťahu, ukážka profesionality a čistoty.</td>
+                <td>Foto pacienta dňa, úsmev asistentky</td>
+                <td>Nízka (Stačí mobilná fotka)</td>
+            </tr>
+            <tr>
+                <td><strong>Klientsky servis (FAQ)</strong></td>
+                <td>20 %</td>
+                <td>Odľahčenie recepcie od repetitívnych otázok.</td>
+                <td>FAQ karta: "Ako sa objednať?"</td>
+                <td>Nízka (Jednorazová tvorba šablón)</td>
+            </tr>
+            <tr>
+                <td><strong>Priamy predaj služieb</strong></td>
+                <td>10 %</td>
+                <td>Konverzia (zarábanie peňazí).</td>
+                <td>Ponuka dentálnej hygieny, Wellness plan</td>
+                <td>Stredná (Musí pôsobiť nevtieravo)</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>B.2 Konkrétne témy postov (20 tém na okamžité použitie)</h3>
+    <ol>
+        <li><strong>Prečo váš pes "sánkuje" a trie si zadok o koberec?</strong> (Edukácia, podpora návštev. Náročnosť:
+            Nízka textová).</li>
+        <li><strong>"Dnes nás navštívil tento hrdina."</strong> (Fotka pokojného pacienta po zákroku. Náročnosť: Nízka).
+        </li>
+        <li><strong>Pozor na tieto bežné izbové rastliny, pre mačky sú toxické.</strong> (Edukácia. Náročnosť: Stredná
+            grafika).</li>
+        <li><strong>Prečo je dôležité čistiť psovi zuby? Ukážka z dnešného odstraňovania kameňa.</strong> (Edukácia +
+            Predaj. Náročnosť: Stredná).</li>
+        <li><strong>5 nenápadných znakov, že vaša mačka trpí bolesťou zubov.</strong> (Edukácia. Náročnosť: Stredná
+            grafika).</li>
+        <li><strong>Zákulisie: Ako prísne sterilizujeme všetky nástroje v autokláve.</strong> (Budovanie dôvery a
+            čistoty. Náročnosť: Stredná - foto + text).</li>
+        <li><strong>Zoznámte sa: Toto je naša asistentka [Meno], ktorá dnes celý deň ukľudňovala pacientov.</strong>
+            (Team. Náročnosť: Nízka).</li>
+        <li><strong>Ako sme vyriešili chronické škriabanie u [Meno psa] - prípadovka.</strong> (Edukácia. Náročnosť:
+            Vysoká - vyžaduje lekárske detaily).</li>
+        <li><strong>Kedy je naozaj potrebné volať pohotovosť a kedy stačí prísť ráno?</strong> (FAQ/Triage. Náročnosť:
+            Stredná).</li>
+        <li><strong>Prečo u nás v čakárni necítite typický "zvierací smrad"?</strong> (PR prístupu k hygiene. Náročnosť:
+            Nízka).</li>
+        <li><strong>Musím očkovať aj vyslovene bytovú mačku? Áno, tu sú 2 hlavné dôvody.</strong> (Edukácia. Náročnosť:
+            Stredná).</li>
+        <li><strong>Strach z ihiel? Takto vyzerá Fear-Free odber krvi u nás s pomocou pamlskov.</strong> (Video.
+            Náročnosť: Vysoká).</li>
+        <li><strong>Zhrnutie dňa: Najčastejší dnešný problém boli uši a osiny. Dávajte pozor.</strong> (Rýchly update.
+            Náročnosť: Nízka).</li>
+        <li><strong>Ukážka reálnej Google recenzie od nášho klienta s poďakovaním.</strong> (Social proof. Náročnosť:
+            Nízka).</li>
+        <li><strong>Sučky musia mať aspoň raz za život šteniatka – pravda alebo mýtus?</strong> (Mýtus. Náročnosť:
+            Stredná).</li>
+        <li><strong>Prečo mačky neschudnú, keď im len "začnete dávať menej jesť".</strong> (Edukácia o metabolizme.
+            Náročnosť: Stredná).</li>
+        <li><strong>Odišiel vám zvierací člen rodiny? 3 organizácie, na ktoré sa viete obrátiť.</strong>
+            (Komunita/Emócia. Náročnosť: Stredná).</li>
+        <li><strong>Čo reálne obsahuje náš nový "Puppy Wellness Plán" a koľko ušetríte.</strong> (Predaj. Náročnosť:
+            Stredná).</li>
+        <li><strong>Prečo používame na recepcii farebné štítky a ako to urýchľuje vašu návštevu.</strong>
+            (Process/Zákulisie. Náročnosť: Nízka).</li>
+        <li><strong>Tento pes zjedol 2 kg čokolády. Našťastie majitelia prišli včas.</strong> (Prípadovka. Náročnosť:
+            Nízka textová).</li>
+    </ol>
+    <h3>B.3 Návrhy na video obsah / Reels (12 nápadov)</h3>
+    <p><em>Všetky Reels majú Vysokú náročnosť (produkcia, strih, titulky). Realizovať maximálne 2x do mesiaca, alebo
+            zveriť externistovi.</em><br />
+        1. <strong>POV (Point of View):</strong> Cesta pacienta od vchodových dverí, cez "čistú" čakáreň až na
+        vyšetrovací stôl.<br />
+        2. <strong>Návod:</strong> Ako správne podať mačke tabletku bez ujmy na zdraví vás aj mačky.<br />
+        3. <strong>Pred a Po (Timelapse):</strong> Čistenie masívneho zubného kameňa u malého plemena psa
+        ultrazvukom.<br />
+        4. <strong>Fear-Free v praxi:</strong> Ukážka, ako používame ukľudňujúcu podložku a arašidové maslo počas odberu
+        krvi.<br />
+        5. <strong>Čo sa skrýva v šuplíkoch veterinára:</strong> Rýchly zostrih nástrojov, ktoré bežne nevidíte
+        (otoskop, oftalmoskop).<br />
+        6. <strong>3 veci, ktoré by MVDr. Sýkora nikdy nedovolil svojmu psovi:</strong> (Napr. hrať sa s tenisákom,
+        hrýzť tvrdé kosti, jazdiť v aute nepripútaný).<br />
+        7. <strong>Rýchlokurz:</strong> Ako správne a bezpečne vytiahnuť kliešťa (so zameraním na nekrútenie!).<br />
+        8. <strong>Q&amp;A "Walk and Talk":</strong> Lekár kráča ambulanciou a asistentka sa ho rýchlo pýta 3 bežné
+        otázky klientov.<br />
+        9. <strong>Kúzlo prebúdzania:</strong> Jemné a tiché prebúdzanie pacienta z inhalačnej anestézie v zateplenom
+        boxe.<br />
+        10. <strong>Rozbaľovanie zásielky (Unboxing):</strong> "Prišli nám nové super-prémiové pamlsky pre našich
+        pacientov."<br />
+        11. <strong>ASMR z ambulancie:</strong> Strih len zvukov (strihanie pazúrikov, pípanie prístrojov, tiché vrnenie
+        mačky, tečúca voda).<br />
+        12. <strong>Rýchla Triage lekcia:</strong> 3 symptómy u psa, kedy okamžite volať pohotovosť, bez čakania do
+        rána.</p>
+    <h3>B.4 Šablóny pre sériu "Mýtus vs. Fakt" (Zásobník textov)</h3>
+    <p><em>Náročnosť: Nízka (stačí jedna predpripravená grafická šablóna).</em><br />
+        - <strong>Séria 1 (Suchý ňufák):</strong> <br />
+        - <em>Mýtus:</em> Ak má pes suchý a teplý ňufák, znamená to, že má horúčku. <br />
+        - <em>Fakt:</em> Teplota a vlhkosť ňufáka závisí od vlhkosti vzduchu, toho či pes spal a prostredia. Horúčka sa
+        meria JEDINE v konečníku.<br />
+        - <strong>Séria 2 (Psy a tráva):</strong> <br />
+        - <em>Mýtus:</em> Pes žerie trávu len vtedy, keď je chorý a potrebuje si vyvolať zvracanie. <br />
+        - <em>Fakt:</em> Väčšina psov žerie trávu, lebo im chutí textúra, z nudy, alebo si tak dopĺňajú vlákninu. (Len
+        menšina zvracia).<br />
+        - <strong>Séria 3 (Pradenie mačky):</strong> <br />
+        - <em>Mýtus:</em> Mačka, ktorá pradie, je 100% spokojná a nič ju nebolí. <br />
+        - <em>Fakt:</em> Mačky pradú aj vtedy, keď majú obrovské bolesti, sú v strese alebo umierajú – je to ich spôsob
+        seba-ukľudňovania (ako keď sa človek kolíše).<br />
+        - <strong>Séria 4 (Ľudské lieky):</strong> <br />
+        - <em>Mýtus:</em> Ak psa niečo bolí, môžem mu dať polovičku ľudského Ibalginu alebo Paralenu. <br />
+        - <em>Fakt:</em> NIKDY! Ľudské lieky proti bolesti sú pre psy a mačky extrémne toxické. Aj jedna tabletka môže
+        spôsobiť smrteľné zlyhanie obličiek alebo pečene.</p>
+    <h3>B.5 FAQ témy na spracovanie do grafických kariet (Carousel posts)</h3>
+    <p><em>Znižujú počet zbytočných otázok na recepciu.</em><br />
+        1. <strong>Môžem prísť s akútnym prípadom aj bez objednania?</strong> (Vysvetlenie triage politiky).<br />
+        2. <strong>Prečo je vstupné vyšetrenie nevyhnutné aj keď si "len prišiel po tabletky na odčervenie"?</strong>
+        (Zákonná povinnosť).<br />
+        3. <strong>Ako sa správne pripraviť na prvú návštevu so šteniatkom?</strong> (Kedy nekŕmiť, doniesť vzorku
+        trusu).<br />
+        4. <strong>Rozdiely v cene za kastrácie (Prečo stojí inak 5kg a 40kg pes).</strong><br />
+        5. <strong>Čo presne všetko v sebe zahŕňa ročný Wellness plán?</strong><br />
+        6. <strong>Storno podmienky: Ako a dokedy zrušiť termín, ak nemôžete prísť?</strong><br />
+        7. <strong>Poskytujete výjazdy k pacientom domov?</strong> (Dôvody, prečo to obmedzujeme).<br />
+        8. <strong>Aké formy platieb u nás akceptujeme?</strong> (Karty, hotovosť, možnosti splátok).<br />
+        9. <strong>Kedy je ideálny čas na kastráciu mačky a prečo nečakať na prvé mraučanie?</strong><br />
+        10. <strong>Prečo musím pred anestéziou môjho staršieho psa nechať urobiť krvný obraz?</strong></p>
+    <h3>B.6 Vzorový 30-dňový Content Kalendár (Frekvencia 3 príspevky týždenne)</h3>
+    <p>Tento kalendár poskytuje ideálny mix predaja, emócie a edukácie.<br />
+        <em>Pondelky: Edukácia | Stredy: Zákulisie/Emócia | Piatky: Promo/Recenzie.</em>
+    </p>
+    <p><strong>Týždeň 1:</strong><br />
+        - <em>Pondelok (Mýtus vs Fakt):</em> Suchý ňufák. (Grafika)<br />
+        - <em>Streda (Zákulisie):</em> Predstavenie prísnej sterilizácie nástrojov. (Foto + Text)<br />
+        - <em>Piatok (Hard Sell):</em> Spustenie "Puppy Wellness Plánu". (Grafika)</p>
+    <p><strong>Týždeň 2:</strong><br />
+        - <em>Pondelok (Edukácia):</em> Toxické izbové rastliny pre mačky. (Grafika - Carousel)<br />
+        - <em>Streda (Pacient dňa):</em> "Dnes nás navštívil hrdina Fíkuš" - po zubnom zákroku. (Foto)<br />
+        - <em>Piatok (Social Proof):</em> Zverejnenie 5★ recenzie od spokojného klienta. (Grafika)</p>
+    <p><strong>Týždeň 3:</strong><br />
+        - <em>Pondelok (FAQ):</em> Môžem prísť bez objednania? (Vysvetlenie pravidiel). (Grafika)<br />
+        - <em>Streda (Reel / Video):</em> Lekár naživo: Ako správne vybrať kliešťa. (Video Reel)<br />
+        - <em>Piatok (Komunita):</em> Upozornenie na lokálny útulok a psíka hľadajúceho domov. (Foto / Zdieľanie)</p>
+    <p><strong>Týždeň 4:</strong><br />
+        - <em>Pondelok (Edukácia):</em> 5 znakov, že pes má bolesti (krívanie nie je jediný). (Grafika)<br />
+        - <em>Streda (Mini-update):</em> Dnešný update z ambulancie – pozor na osiny. (Rýchly text/foto)<br />
+        - <em>Piatok (Hard Sell):</em> Máte už termín na odstránenie zubného kameňa? (Grafika pred/po)</p>
+    <h3>B.7 Dvojjazyčná stratégia (SK/HU)</h3>
+    <p>Pre lokality na juhu Slovenska (ako Rimavská Sobota) je etnická maďarská menšina zásadná demografia s vysokou
+        kúpnou silou.<br />
+        - <strong>NEPREKLADAŤ:</strong> Edukačné dlhé posty, Reels (náročné na produkciu).<br />
+        - <strong>POVINNE PREKLADAŤ (Bilingválne posty na FB):</strong> Všetky zmeny ordinačných hodín, pravidlá
+        urgencií, cenníkové zmeny a Hard Sell ponuky (Wellness plány). Predáva sa v oboch jazykoch rovnako. Zabezpečiť
+        externý preklad, ak nikto na klinike nehovorí po maďarsky.</p>
+    <hr />
+    <h2>PRÍLOHA C — TECHNOLOGICKÉ WORKFLOWY A DECISION LOGIC</h2>
+    <h3>C.1 Workflow 1: Nový klient</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Klient požiada o prvý termín</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Meno, telefón, zviera, dôvod návštevy</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Recepcia založí záznam vo Vetsoftware V2 a identický profil v OpenVPM</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>n8n pošle uvítací SMS/email a intake formulár</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>Vetsoftware V2, OpenVPM pilot, n8n, SMS/email</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Duplicita dát</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Manuálna SMS zo šablóny</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.2 Workflow 2: Follow-up po vyšetrení</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Uzavretie návštevy</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Tag návštevy, kontakt klienta</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Lekár označí typ follow-upu</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>n8n odošle edukáciu alebo kontrolný odkaz</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>OpenVPM, n8n</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Lekár / recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Zle zvolený follow-up</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Manuálny telefonát</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.3 Workflow 3: Vakcinačné pripomienky</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Expirácia vakcíny za 14 dní</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Dátum vakcinácie</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Žiadne</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>OpenVPM → n8n → SMS</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>OpenVPM, n8n, SMS gateway</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Systém / IT</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Duplicitné správy</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Týždenný manuálny export</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.4 Workflow 4: Discharge Ask</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Tag “úspešne ukončené”</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Telefonický kontakt, Google link</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Recepcia alebo lekár pridá tag</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>Po 2 hodinách sa odošle recenzný SMS text</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>OpenVPM, n8n</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Citlivý kontext po úmrtí pacienta</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>QR karta na recepcii</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.5 Workflow 5: Wellness renewal / failure-to-pay</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Neúspešná platba</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Payment webhook</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Recepcia rieši doplatok</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>Označenie klienta a upozornenie</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>Payment systém, n8n, OpenVPM</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Neplatič pokračuje v čerpaní služby</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Mesačná ručná kontrola úhrad</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.6 Workflow 6: AI Scribe to SOAP</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Začiatok vyšetrenia</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Zvuková nahrávka</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Lekár zapne záznam, skontroluje text</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>VetRec vygeneruje SOAP draft</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>VetRec, OpenVPM</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Halucinácia alebo chyba v dávkovaní</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Ručný zápis do V2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Fallback (GDPR No-Go pre VetRec):</strong> Nasadiť <code>hwdsl2/docker-whisper</code> + Qwen2.5 cez Ollama + n8n HTTP workflow. Náklad: 0 €/mes. Nasadenie: ~4 hodiny.</p>
+
+    <h4>Architektúra: Self-Hosted AI Scribe bez VetRec</h4>
+    <p>Celý stack pozostáva z troch vrstiev: STT (transkripcia) → LLM (SOAP generovanie) → n8n (orchestrácia) — všetko beží na tvojom serveri, žiadne dáta neopustia EÚ.</p>
+
+    <p><strong>Vrstva 1: Self-Hosted Whisper STT</strong><br>
+    Najlepšia voľba pre produkčné nasadenie je <code>hwdsl2/docker-whisper</code> — Docker image s faster-whisper backendom, ktorý vystavuje OpenAI-kompatibilné <code>/v1/audio/transcriptions</code> REST API. Kľúčové výhody:</p>
+    <ul>
+        <li>Podporuje speaker diarization (rozlíšenie hlasu lekára vs. majiteľa zvieraťa)</li>
+        <li>NVIDIA GPU (CUDA) akcelerácia + offline mode (žiadne cloudové volania)</li>
+        <li>Aktívne vyvíjaný — posledný update bol dnes (1. august 2026)</li>
+        <li>Multi-arch: amd64 aj arm64 (funguje aj na Raspberry Pi 5)</li>
+    </ul>
+
+    <p>Pre real-time streaming počas vyšetrenia (nie batch po skončení) existuje aj <code>hwdsl2/docker-whisper-live</code> s WebSocket streamingom.</p>
+
+    <pre><code class="language-yaml"># docker-compose.yml fragment
+services:
+  whisper:
+    image: hwdsl2/docker-whisper
+    ports:
+      - "8000:8000"
+    environment:
+      - WHISPER_MODEL=large-v3
+      - LANGUAGE=sk  # slovenčina / maďarčina
+    volumes:
+      - ./audio:/audio
+</code></pre>
+
+    <p><strong>Vrstva 2: SOAP Note Generovanie (LLM)</strong><br>
+    Po transkripcii pošleš text do lokálneho LLM (napr. Qwen2.5-7B-Instruct cez Ollama, ktorý už používaš v Dify) s veterinárnym SOAP promptom. Na GitHub existuje aj <code>yashpatil582/open-scribe</code> — open-source medical scribe pipeline (audio → SOAP → ICD-10 → FHIR R4B Bundle) s evaluáciami na PriMock57 a ACI-Bench benchmarkoch. Toto je priamy open-source ekvivalent VetRec architektúry.</p>
+
+    <p><strong>Vrstva 3: n8n Orchestrácia (Workflow)</strong><br>
+    Z Redditu je overené, že lokálny Whisper server s OpenAI-kompatibilným API funguje priamo v n8n cez HTTP Request node — stačí zmeniť <code>base_url</code>. Workflow vyzerá takto:</p>
+
+    <pre><code class="language-text">[Nahrávka (Audio file)] 
+  → HTTP POST /v1/audio/transcriptions (docker-whisper:8000)
+  → [Transkript SK/HU text]
+  → LLM Node (Qwen via Ollama) + SOAP prompt
+  → [SOAP draft]
+  → OpenVPM API (uloženie záznamu)
+  → Notifikácia lekárovi na review
+</code></pre>
+
+    <p><strong>Porovnanie: VetRec vs. Self-Hosted Stack</strong></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Kritérium</th>
+                <th>VetRec (SaaS)</th>
+                <th>docker-whisper + Qwen + n8n</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GDPR hosting</td>
+                <td>Závisí od DPA, EU región neistý</td>
+                <td>✅ 100% lokálne / EU server</td>
+            </tr>
+            <tr>
+                <td>Náklad</td>
+                <td>~100–150 €/mes</td>
+                <td>~0 €/mes (+ server elektrická energia)</td>
+            </tr>
+            <tr>
+                <td>Veterinárna špecializácia</td>
+                <td>✅ Hotová</td>
+                <td>Vyžaduje custom SOAP prompt</td>
+            </tr>
+            <tr>
+                <td>Integrácia s OpenVPM</td>
+                <td>Manuálna</td>
+                <td>✅ Natívne cez n8n webhook</td>
+            </tr>
+            <tr>
+                <td>Offline prevádzka</td>
+                <td>❌ Nie</td>
+                <td>✅ Áno</td>
+            </tr>
+            <tr>
+                <td>Effort na nasadenie</td>
+                <td>Nízky</td>
+                <td>Stredný (2–4 hodiny)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>C.7 Workflow 7: Triage ticket / call-back flow</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Zmeškaný hovor / web formulár</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Hlasovka, text, číslo klienta</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Recepcia rozozná urgentnosť</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>Ticket sa zapíše do inboxu</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>VOIP/email, OpenVPM</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Prehliadnutie urgentu</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Manuálne počúvanie záznamníka</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.8 Workflow 8: No-show / rebooking</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Obsah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Trigger</td>
+                <td>Pacient neprišiel</td>
+            </tr>
+            <tr>
+                <td>Vstupy</td>
+                <td>Status kalendára</td>
+            </tr>
+            <tr>
+                <td>Kroky človeka</td>
+                <td>Recepcia prepíše status</td>
+            </tr>
+            <tr>
+                <td>Kroky systému</td>
+                <td>n8n pošle slušnú rebooking SMS</td>
+            </tr>
+            <tr>
+                <td>Stack</td>
+                <td>OpenVPM, n8n</td>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>Riziko</td>
+                <td>Urazenie klienta</td>
+            </tr>
+            <tr>
+                <td>Fallback</td>
+                <td>Telefonát alebo email</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>C.9 Go / No-Go podmienky pre OpenVPM</h3>
+    <blockquote>
+        <p><strong>Pravidlo:</strong> Ak do <strong>60 dní od spustenia OpenVPM pilotu</strong> neexistuje funkčná
+            testovacia integrácia SK eKasa (sandbox alebo potvrdená roadmapa od vývojárov OpenVPM s garantovaným
+            dátumom), pilot sa automaticky zastavuje a klinika zostáva výlučne na Vetsoftware V2 pre všetky finančné
+            operácie.</p>
+    </blockquote>
+    <table>
+        <thead>
+            <tr>
+                <th>Podmienka</th>
+                <th>Go</th>
+                <th>No-Go</th>
+                <th><strong>Nový trigger</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>eKasa stabilita</td>
+                <td>Bezchybná integrácia</td>
+                <td>Fakturácia ostáva vo V2</td>
+                <td><strong>Do 60 dní musí existovať SK eKasa sandbox alebo písomný harmonogram od vývojárov</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>Časová úspora</td>
+                <td>Aspoň 1 hodina denne</td>
+                <td>Ostáva len pilot</td>
+                <td>Meranie po 30 dňoch reálnej prevádzky</td>
+            </tr>
+            <tr>
+                <td>Dátová čistota</td>
+                <td>Duplicita pod 5 %</td>
+                <td>Stop automatizácií</td>
+                <td>Týždenný export a kontrola</td>
+            </tr>
+            <tr>
+                <td>IT podpora</td>
+                <td>SLA do 4 hodín</td>
+                <td>Len vedľajší pilot</td>
+                <td>Definovať kontraktuálne pred spustením</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Praktický krok (Owner: Marek / IT)</h4>
+    <ol>
+        <li>Pri onboardingu OpenVPM ihneď kontaktovať vývojárov (GitHub Issues / Discord) s otázkou na SK eKasa
+            roadmapu.</li>
+        <li>Odpoveď archivovať.</li>
+        <li>Ak do 60. dňa nie je odpoveď alebo integrácia — spustiť No-Go protokol.</li>
+    </ol>
+    <h3>C.10 Čo zostáva manuálne v Roku 1</h3>
+    <ul>
+        <li>Fakturácia a sklad vo Vetsoftware V2.</li>
+        <li>Triage cez telefón bez voicebotov.</li>
+        <li>Predaj na pulte ručne.</li>
+        <li>Zložité klientské notifikácie ručne pri výpadku automatizácií.</li>
+    </ul>
+    <hr />
+    <h2>PRÍLOHA D — AI USE-CASES A GOVERNANCE</h2>
+    <h3>D.1 AI use-cases podľa kategórií</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Kategória</th>
+                <th>Use-case</th>
+                <th>Účel</th>
+                <th>Prínos</th>
+                <th>Riziko</th>
+                <th>Dohľad</th>
+                <th>Timing</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Povolené teraz</td>
+                <td>AI Scribe</td>
+                <td>Prepis na SOAP</td>
+                <td>Úspora času</td>
+                <td>Chyba v texte</td>
+                <td>Lekár schvaľuje</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Povolené teraz</td>
+                <td>Odpovede na recenzie</td>
+                <td>Diplomatický tón</td>
+                <td>Úspora času</td>
+                <td>Únik detailov</td>
+                <td>Lekár / CCC</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Povolené teraz</td>
+                <td>Edukačné letáky</td>
+                <td>Discharge materiály</td>
+                <td>Menej telefonátov</td>
+                <td>Nízke</td>
+                <td>Lekár</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Povolené teraz</td>
+                <td>Preklad SK/HU</td>
+                <td>Lokálna dostupnosť</td>
+                <td>Väčší reach</td>
+                <td>Medicínsky preklad</td>
+                <td>Kontrola človekom</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Pilotovať opatrne</td>
+                <td>Email routing</td>
+                <td>Triedenie dopytov</td>
+                <td>Rýchlejšia reakcia</td>
+                <td>Zle zaradený urgent</td>
+                <td>Recepcia kontroluje</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Pilotovať opatrne</td>
+                <td>Smart triage formulár</td>
+                <td>Bezpečné navigovanie</td>
+                <td>Menej chaosu</td>
+                <td>False positive</td>
+                <td>Systém len naviguje</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Pilotovať opatrne</td>
+                <td>Interný RAG FAQ</td>
+                <td>Zaškolenie personálu</td>
+                <td>Menej vyrušovania lekára</td>
+                <td>Zastarané dáta</td>
+                <td>Lekár / IT</td>
+                <td>Rok 1 až 2</td>
+            </tr>
+            <tr>
+                <td>Pilotovať opatrne</td>
+                <td>Inventory prediction</td>
+                <td>Skladové predikcie</td>
+                <td>Lepší cashflow</td>
+                <td>Zlá predikcia</td>
+                <td>Lekár schvaľuje</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Rok 2</td>
+                <td>Radiology second opinion</td>
+                <td>Podpora RTG čítania</td>
+                <td>Vyššia istota</td>
+                <td>Nákladovosť</td>
+                <td>Veterinár vždy rozhoduje</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Rok 2</td>
+                <td>Portálová automatizácia</td>
+                <td>Klientska koordinácia</td>
+                <td>Menej manuálu</td>
+                <td>Integrácia</td>
+                <td>Recepcia</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Zakázané</td>
+                <td>Client-facing diagnóza</td>
+                <td>Radenie klienta</td>
+                <td>Žiadny</td>
+                <td>Vysoké právne riziko</td>
+                <td>Nikto</td>
+                <td>Trvalo no-go</td>
+            </tr>
+            <tr>
+                <td>Zakázané</td>
+                <td>Voicebot</td>
+                <td>Automatizované dvíhanie hovorov</td>
+                <td>Žiadny</td>
+                <td>Rozbitie brandu</td>
+                <td>Nikto</td>
+                <td>No-go</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>D.2 AI governance pravidlá</h3>
+    <ul>
+        <li>AI nikdy nerobí finálne medicínske rozhodnutie.</li>
+        <li>Každý AI výstup schvaľuje človek.</li>
+        <li>Do verejných modelov sa nevkladajú identifikátory klienta.</li>
+        <li>Žiadna klientská diagnostika cez chat.</li>
+        <li>AI texty sa publikujú pod odborne zodpovedným lekárom.</li>
+        <li>Každý nový nástroj ide najprv do sandboxu.</li>
+        <li>Záznamy o použití AI sa archivujú.</li>
+        <li>Zamestnanec zodpovedá za kontrolu aj v prípade chyby AI.</li>
+        <li>Zmena pracovného postupu sa najprv testuje na malej vzorke.</li>
+        <li>Pri pochybnosti platí no-go režim.</li>
+    </ul>
+    <h3>D.3 Čo AI nesmie robiť</h3>
+    <ul>
+        <li>Diagnostikovať.</li>
+        <li>Predpisovať.</li>
+        <li>Radiť urgentné stavy klientovi bez lekára.</li>
+        <li>Nahradiť recepciu pri triáži.</li>
+        <li>Komunikovať s klientom o citlivých diagnózach bez kontroly.</li>
+        <li>Vytvárať “fake” lokálny vizuálny obsah ako náhradu reality.</li>
+    </ul>
+    <h3>D.4 Decision tree</h3>
+    <ol>
+        <li>Komunikuje AI priamo s klientom o zdraví?</li>
+        <li>Áno → zakázané.</li>
+        <li>
+            <p>Nie → pokračuj.</p>
+        </li>
+        <li>
+            <p>Šetrí iba administratívu alebo tvorí šablónový text?</p>
+        </li>
+        <li>Áno → povolené s kontrolou.</li>
+        <li>
+            <p>Nie → pokračuj.</p>
+        </li>
+        <li>
+            <p>Je to drahý diagnostický nástroj?</p>
+        </li>
+        <li>Áno → Rok 2.</li>
+        <li>Nie → opatrný pilot.</li>
+    </ol>
+    <hr />
+    <h2>PRÍLOHA E — REVENUE BACKLOG A SERVICE PACKAGING</h2>
+    <h3>E.1 Revenue / service backlog</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Služba</th>
+                <th>Pre koho</th>
+                <th>Prečo dáva zmysel</th>
+                <th>Náročnosť</th>
+                <th>Cenová logika</th>
+                <th>Potenciál</th>
+                <th>Timing</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Proaktívna dentálna hygiena</td>
+                <td>Psy a mačky 3+</td>
+                <td>Vysoká hodnota, preventíva</td>
+                <td>Nízka</td>
+                <td>Fix podľa váhy a anestézie</td>
+                <td>Vysoký</td>
+                <td>Now</td>
+            </tr>
+            <tr>
+                <td>Pre-anestetický krvný panel</td>
+                <td>Všetky anestézie</td>
+                <td>Bezpečnosť a vyššia tržba</td>
+                <td>Nízka</td>
+                <td>Vložené do cenovej kalkulácie</td>
+                <td>Vysoký</td>
+                <td>Now</td>
+            </tr>
+            <tr>
+                <td>Výročný preventive check-up</td>
+                <td>Dospelé zvieratá</td>
+                <td>Upgrade vakcinácie na prehliadku</td>
+                <td>Nízka</td>
+                <td>Balíková cena namiesto izolovanej vakcíny</td>
+                <td>Stredný</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Geriatrický panel</td>
+                <td>Seniori</td>
+                <td>Zachytí chronické choroby</td>
+                <td>Stredná</td>
+                <td>Silver / Gold stupne</td>
+                <td>Vysoký</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Weight loss clinic</td>
+                <td>Obézne zvieratá</td>
+                <td>Krmivo a dlhodobá retencia</td>
+                <td>Nízka</td>
+                <td>Konzultácia lacná, monetizácia cez produkt</td>
+                <td>Stredný</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Behaviorálna konzultácia</td>
+                <td>Úzkostné zvieratá</td>
+                <td>Niche, vysoká hodnota času</td>
+                <td>Vysoká</td>
+                <td>Účtovanie času</td>
+                <td>Stredný</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Domáca hospicová starostlivosť</td>
+                <td>VIP a koncové stavy</td>
+                <td>Silný lojalizačný efekt</td>
+                <td>Stredná</td>
+                <td>Výjazd + nadštandard</td>
+                <td>Stredný</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>White-label doplnky</td>
+                <td>Staršie zvieratá, GI prípady</td>
+                <td>Marža a retencia</td>
+                <td>Stredná</td>
+                <td>B2B prebalenie, vlastná značka</td>
+                <td>Vysoký</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Fear-Free starter pack</td>
+                <td>Bojazlivé psy a mačky</td>
+                <td>Rýchly retail bundle</td>
+                <td>Nízka</td>
+                <td>Bundlovanie so zľavou oproti kusu</td>
+                <td>Stredný</td>
+                <td>Now</td>
+            </tr>
+            <tr>
+                <td>Indoor cat chip campaign</td>
+                <td>Bytové mačky</td>
+                <td>Rieši stratu a návrat domov</td>
+                <td>Nízka</td>
+                <td>Štandardný úkon + edukácia</td>
+                <td>Nízky</td>
+                <td>Rok 1</td>
+            </tr>
+            <tr>
+                <td>Telemed follow-up</td>
+                <td>Pooperační pacienti</td>
+                <td>Menej návštev v čakárni</td>
+                <td>Stredná</td>
+                <td>Fixná platba za konzultáciu</td>
+                <td>Stredný</td>
+                <td>Rok 2</td>
+            </tr>
+            <tr>
+                <td>Concierge retainer</td>
+                <td>Top klienti</td>
+                <td>Stabilný cashflow</td>
+                <td>Vysoká</td>
+                <td>Mesačný prístupový poplatok</td>
+                <td>Nízky objem, vysoká stabilita</td>
+                <td>Rok 2</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>E.2 Wellness balíky</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Balík</th>
+                <th>Obsah</th>
+                <th>Komunikácia</th>
+                <th>Cenová logika</th>
+                <th>MVA threshold</th>
+                <th>Stop / repackage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Puppy / Kitten Plan</td>
+                <td>Vakcinácie, odčervenie, čip, registrácia, zľava na kastráciu, pazúriky</td>
+                <td>“Rozložme prvý rok na mesačný plán”</td>
+                <td>Mesačný fix pod úrovňou jednorazového šoku</td>
+                <td>20 predplatiteľov do 3. mesiaca</td>
+                <td>Ak nie je aspoň 10 až 15 klientov za 3 mesiace, stop a prepackaging</td>
+            </tr>
+            <tr>
+                <td>Adult Active Plan</td>
+                <td>Ročná prehliadka, vakcína, dentálny prevent, odčervenie, zľava na akútne úkony</td>
+                <td>“Preventívny rok dopredu, bez prekvapení”</td>
+                <td>Stredný mesačný poplatok</td>
+                <td>Aspoň 15 klientov v pilotnej vrstve</td>
+                <td>Pri slabom záujme presun na osobný predaj</td>
+            </tr>
+            <tr>
+                <td>Senior Care Plan</td>
+                <td>Dve prehliadky, geriatrický panel, USG, tlak, zľava na chronické lieky</td>
+                <td>“Včas zachytíme skryté choroby”</td>
+                <td>Vyšší mesačný poplatok</td>
+                <td>Aspoň 10 klientov v senior segmente</td>
+                <td>Ak je adopcia slabá, neškálovať marketing</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>E.3 Ako ich komunikovať bez dojmu poistenia</h3>
+    <ul>
+        <li>Používaj slovo balík alebo plán, nie poistenie.</li>
+        <li>Zdôrazni rozloženie nákladov, nie ochranu pred rizikom.</li>
+        <li>Hovor o prevencii, pohodlí a jednoduchosti.</li>
+        <li>Každý balík viaž na konkrétne úkony, ktoré klient aj tak potrebuje.</li>
+        <li>Predaj iba tam, kde je prirodzený klinický dôvod.</li>
+    </ul>
+    <h3>E.4 Kedy stopnúť alebo prepackagovať</h3>
+    <ul>
+        <li>Ak sa za 3 mesiace nedosiahne aspoň 10 až 15 aktívnych klientov v teste, predaj zúžiť.</li>
+        <li>Ak balík vyvoláva reakciu “to je poistenie”, treba preformulovať komunikáciu.</li>
+        <li>Ak sa nepredáva ani pri osobnom ponúkaní, marketing stopnúť a ponechať len ako interný upsell.</li>
+        <li>Pri slabom záujme presunúť model na jednorazový predplatený bundle namiesto mesačného predplatného.</li>
+    </ul>
+    <h3>E.5 Mini odporúčanie pre zavedenie</h3>
+    <ul>
+        <li>Now: dentál, pre-anestetický panel, Fear-Free starter pack, preventive check-up.</li>
+        <li>Rok 1: senior care, puppy/kitten plan, weight loss clinic, domáca hospicová starostlivosť.</li>
+        <li>Rok 2: white-label doplnky, telemed follow-up, concierge retainer, behaviorálna konzultácia.</li>
+    </ul>
+    <h2>PRÍLOHA F — Experience a brand koncepty mimo core plán (Odložené wow efekty)</h2>
+    <p>Aby klinika nevyzerala ako štátna nemocnica z roku 1990, tu je zoznam dizajnových a experience prvkov rozdelených
+        podľa nákladnosti. Tieto veci budujú podvedomú dôveru.</p>
+    <h3>F.1 Low-Cost Experience (Realistické ihneď, do 100 €)</h3>
+    <ul>
+        <li><strong>Káva pre čakajúcich zadarmo:</strong> Kapsulový kávovar na recepcii s nápisom: "Kým Fíkuša
+            vyšetrujeme, vy si dajte kávu." (Investícia 60 €).</li>
+        <li><strong>Zónovanie Psov a Mačiek (Bariéra):</strong> Umiestnenie dlhého regálu, vysokej rastliny, alebo
+            nepriehľadnej steny do čakárne. Zamedzenie očného kontaktu mačiek so psami radikálne znižuje ich stres už
+            pred vstupom do ambulancie.</li>
+        <li><strong>Ukľudňujúce deky na prepravky:</strong> Zopár hrubších, vždy čistých diek prehodených cez prepravku
+            s mačkou, akonáhle klient vojde do čakárne. Znižuje vizuálny a akustický stres.</li>
+        <li><strong>Pamlskový a Hydratačný Bar:</strong> Nádoby so super-prémiovými odmenami a stále čistá voda (misky z
+            nerezovej ocele, umývané denne).</li>
+    </ul>
+    <h3>F.2 Medium-Cost Experience (Odhlasované na Rok 2, 100 - 1000 €)</h3>
+    <ul>
+        <li><strong>Edukačná TV miesto komerčného Rádia/TV:</strong> Komerčné rádio (reklamy, správy, hlasná hudba) ruší
+            Fear-Free prístup. Riešenie: Tichá edukačná slučka na monitore v čakárni (fabuluje o vakcínach a dentálnej
+            hygiene). Nízkofrekvenčná upokojujúca inštrumentálna hudba na pozadí.</li>
+        <li><strong>Detský kútik na ukľudnenie rodičov:</strong> Stres detí pri veterinárovi sa priamo prenáša na psa a
+            majiteľa. Riešenie: Malý stolček, 3 kresielka, veterinárne omalovánky, 3 hračkárske stetoskopy. </li>
+    </ul>
+    <h3>F.3 Later-Stage Brand Experience (Až pri rekonštrukcii)</h3>
+    <ul>
+        <li><strong>Brandová vôňa:</strong> Špeciálny veterinárny enzýmový čistič s jemnou vôňou, ktorý sa stane
+            "Signature vôňou" kliniky (odstráni zvierací zápach, ale zvieratám samotným nedráždi dýchacie cesty).</li>
+        <li><strong>Glass-box prevádzka (Priehľadnosť):</strong> Čiastočne presklená stena medzi čakárňou a prípravovňou
+            (operácie samozrejme schované). Trend moderných kliník v USA, kde vizualizácia absolútnej čistoty vzadu
+            zbavuje klienta strachu ("nemajú čo skrývať"). <em>(Toto je prísna inšpirácia pre Rok 5+).</em></li>
+    </ul>
+    <hr />
+    <h2>PRÍLOHA G — Operatívne šablóny, skripty a pracovné podklady (Recepcia a Lekár)</h2>
+    <p>Tento oddiel je srdcom operatívy na recepcii. Bez týchto štandardov zlyhá aj ten najlepší strategický plán,
+        pretože recepcia je to, čo určuje tržbu a spokojnosť klienta.</p>
+    <h3>G.1 Protokol "Discharge Ask" (Plné znenie)</h3>
+    <p>Používa sa výlučne na budovanie pozície na Google (zbieranie organických 5★ recenzií). Vždy až po úspešnom,
+        neurgentnom ošetrení bez fatálnej diagnózy. Vyžaduje implementáciu automatizovaného zasielania SMS s odkazom na
+        GMB.</p>
+    <p><strong>Situácia:</strong> Klient po bežnej vakcinácii práve zaplatil za úkon kartou.</p>
+    <blockquote>
+        <p><strong>Recepčná / Lekár:</strong> "Ďakujem, pán Kováč, transakcia prebehla v poriadku. Mimochodom, Rony bol
+            dnes u nás na stole naozaj fantastický pacient, veľmi dobre to zvládol."<br />
+            <em>(Pauza na reakciu klienta - úsmev).</em><br />
+            <strong>Recepčná / Lekár:</strong> "Viete, pán Kováč, pre malú ambulanciu ako sme my, v ktorej si zakladáme
+            na takomto jemnom prístupe, je nesmierne dôležité, aby o nás v Rimavskej Sobote vedelo čo najviac ľudí. Ak
+            ste boli s prístupom pána doktora dnes naozaj spokojný, veľmi by nám pomohlo, keby ste nám zanechali krátku,
+            úprimnú recenziu na Google."<br />
+            <em>(Ak klient prikývne).</em><br />
+            <strong>Recepčná / Lekár:</strong> "Výborne, veľmi si to vážime. Aby ste to nemuseli niekde zložito
+            vyhľadávať, akurát som vám odoslala SMS s priamym odkazom. Zaberie to fakt len minútku. Ešte raz veľmi pekne
+            ďakujeme a vidíme sa o mesiac na kontrole!"
+        </p>
+    </blockquote>
+    <h3>G.2 Plné skripty pre krízové situácie na recepcii (5-10 Skriptov)</h3>
+    <ol>
+        <li>
+            <p><strong>Klient volá s naliehavým stavom, ale klinika má plno</strong></p>
+            <blockquote>
+                <p>"Dobrý deň pani XY. Rozumiem situácii, znie to, že Max potrebuje pomoc. Momentálne však operujeme
+                    akútny prípad s otvoreným bruchom a pán doktor bude nedostupný minimálne hodinu. Toto je prípad
+                    ohrozujúci život. Bezpečne Maxa naložte do auta a ihneď volajte pohotovostnú kliniku v [najbližšie
+                    veľké mesto], aby vás čakali na príjme. Chcem mať istotu, že dostane pomoc hneď."</p>
+            </blockquote>
+        </li>
+        <li>
+            <p><strong>Klient sa chce "len spýtať" lekára k telefónu (Lekár vyšetruje)</strong></p>
+            <blockquote>
+                <p>"Pán doktor sa teraz naplno venuje pacientovi na stole. Ak mi poviete, o čo ide, rada si to zapíšem,
+                    vložím to do Maxovej karty a akonáhle pán doktor skončí ranný blok operácií, hneď vám zavolá späť.
+                    Je to urgentné?"</p>
+            </blockquote>
+        </li>
+        <li>
+            <p><strong>Klient žiada vydať antibiotiká bez vyšetrenia</strong></p>
+            <blockquote>
+                <p>"Rozumiem, že ten istý problém ste mali aj pred 3 mesiacmi. Zákon o liekoch a veterinárnej
+                    starostlivosti nám však vyslovene zakazuje predávať antibiotiká bez toho, aby pán doktor psa
+                    aktuálne vyšetril – mohlo by mu to totiž teraz zničiť obličky, ak by diagnóza bola nakoniec iná. Z
+                    bezpečnostných dôvodov k nám s ním musíte prísť. Mám vás napísať na 14:00?"</p>
+            </blockquote>
+        </li>
+        <li>
+            <p><strong>Nahnevaný klient na recepcii kvôli vysokej faktúre</strong></p>
+            <blockquote>
+                <p>"Pán XY, vidím, že ste nečakali takúto sumu a mrzí ma, ak vás to zaskočilo. Poďme si prejsť položku
+                    po položke. Rozumiem, že to je veľa peňazí, ale pri tej operácii dostal Fíkuš tri rôzne lieky proti
+                    bolesti, infúznu terapiu na stabilizáciu srdca a robili sme mu predoperačný krvný test, aby sme mali
+                    100% istotu, že sa prebudí z anestézie. Pán doktor na jeho bezpečnosti jednoducho nešetril."</p>
+            </blockquote>
+        </li>
+        <li>
+            <p><strong>Odmietnutie klienta, ktorý žiada termín o 20:00 (mimo hodín)</strong></p>
+            <blockquote>
+                <p>"Naše ordinačné hodiny sme museli nastaviť tak, aby si pán doktor po náročných chirurgiách dokázal
+                    oddýchnuť a aby ráno o 8:00 mohol byť k dispozícii plne sústredený. Preto po 18:00 neordinujeme. Na
+                    zajtrajšie doobedie pre vás viem nájsť 15 minútové okienko."</p>
+            </blockquote>
+        </li>
+    </ol>
+    <h3>G.3 Vzory odpovedí na citlivé recenzie na Google My Business</h3>
+    <p><strong>1. Sťažnosť na chladný/arogantný prístup (2★):</strong></p>
+    <blockquote>
+        <p>"Vážený [Meno], veľmi nás mrzí vaša dnešná skúsenosť. Sme klinika, kde si zakladáme na Fear-Free prístupe k
+            zvieratám, no musíme priznať, že ak ide o život alebo o závažnú diagnózu, náš lekár môže pôsobiť priamočiaro
+            a bez emócií, pretože celú svoju kapacitu sústreďuje výlučne na pacienta na stole. Vašu spätnú väzbu si
+            berieme k srdcu a ďakujeme za ňu. Zdravie vášho psíka je však a vždy bude našou jedinou prioritou."</p>
+    </blockquote>
+    <p><strong>2. Sťažnosť na to, že ste "vyciciavači peňazí" (1★):</strong></p>
+    <blockquote>
+        <p>"Dobrý deň [Meno], je nám veľmi ľúto, že sa cítite takto. Veterinárna medicína, ak sa má robiť poctivo a
+            bezpečne, nie je lacná. Aby sme mohli zviera v bezpečí uspať, vyšetriť mu orgány špičkovým ultrazvukom a
+            použiť najkvalitnejšie lieky proti bolesti, musíme tieto technológie a odborné školenia zaplatiť. Detaily
+            vášho účtu s vami kedykoľvek prejdeme, no znižovať kvalitu práce a ohrozovať pacienta len preto, aby bol
+            účet nižší, na našej klinike nikdy nebudeme. MVDr. Sýkora."</p>
+    </blockquote>
+    <p><strong>3. Smutná udalosť (Pacient napriek záchrane zomrel - 5★):</strong></p>
+    <blockquote>
+        <p>"Vážená rodina, strata Fíkuša zasiahla aj nás. Bol to obrovský bojovník a vy ste boli skvelí majitelia, ktorí
+            pre neho urobili maximum až do úplného konca. Bolo nám cťou sa o neho starať. Držíme vám palce."</p>
+    </blockquote>
+    <h3>G.4 Detailný denný checklist recepcie</h3>
+    <p>Toto zabezpečí, že recepčná presne vie, čo sa od nej vyžaduje aj bez dohľadu.</p>
+    <p><strong>Otváranie (7:30 – 8:00):</strong><br />
+        - [ ] Zapnúť Vetsoftware V2 a OpenVPM, skontrolovať internet.<br />
+        - [ ] Odomknúť dvere, vyvetrať a aplikovať "Fear-Free" čistiacu vôňu.<br />
+        - [ ] Skontrolovať zásobu toaleťáku na wc a čistotu podlahy v čakárni.<br />
+        - [ ] Vytlačiť lekárovi "Schedule" na daný deň.<br />
+        - [ ] Vypočuť si zmeškané hovory zo záznamníku a ihneď obvolať naspäť.</p>
+    <p><strong>Počas dňa (Priebežne):</strong><br />
+        - [ ] Denne monitorovať mailovú schránku (Odpoveď ideálne do 2h).<br />
+        - [ ] Triage (Triedenie) pacientov prichádzajúcich bez objednania.<br />
+        - [ ] Dbať na to, aby sa v čakárni nepobili psy s mačkami (okamžitý zásah - "Prosím, posaďte sa za tú
+        bariéru").<br />
+        - [ ] Doplňovať pamlsky do dóz na stole lekára po každom minutí.</p>
+    <p><strong>Zatváranie (17:30 – 18:00):</strong><br />
+        - [ ] Pripraviť "Dennú uzávierku z kasy" a odsúhlasiť s Vetsoftware V2.<br />
+        - [ ] Skontrolovať zajtrajší harmonogram – uistiť sa, že nie sú duplicity a že je vyhradený blok na
+        chirurgiu.<br />
+        - [ ] Zapnúť záznamník s hláškou "Už neordinujeme".<br />
+        - [ ] Vydezinfikovať terminál na karty a plochu recepcie.</p>
+    <h3>G.5 5-bodový checklist pre lekára pred odchodom pacienta</h3>
+    <p>Na elimináciu chaosu a pozabudnutých úkonov.<br />
+        1. [ ] <strong>AI Scribe Vypnutý:</strong> Som si istý, že mikrofón VetRec ukončil nahrávanie a SOAP záznam bol
+        presunutý do OpenVPM?<br />
+        2. [ ] <strong>Účtovanie Uzavreté:</strong> Je každá jedna položka (striekačka, ihla, sedatívum) zapísaná do
+        Vetsoftware V2 pre recepciu?<br />
+        3. [ ] <strong>Edukácia:</strong> Rozumie klient na 100%, koľko tabletiek a kedy má podať doma? (Ideálne
+        potvrdené vytlačeným papierom).<br />
+        4. [ ] <strong>Follow-Up Termín:</strong> Má pacient, ktorý vyžaduje kontrolu, pridelený fixný dátum a čas
+        kontroly predtým, než odíde z ambulancie?<br />
+        5. [ ] <strong>Pozitívny záver:</strong> Bol pacient (zviera) odmenený pamlskom alebo dobrým slovom na zmazanie
+        zlého zážitku zo strachu?</p>
+    <h3>G.6 Fear-Free nákupný zoznam (Realistický)</h3>
+    <ul>
+        <li>[ ] Feliway Optimum Difuzér (Do zásuvky v ambulancii a čakárni).</li>
+        <li>[ ] Adaptil Difuzér pre psov.</li>
+        <li>[ ] Joga matrace (Lacné, strihateľné na vyšetrovací stôl – zabraňujú kĺzaniu a chladu kovu, obrovský vplyv
+            na psychiku zvierat).</li>
+        <li>[ ] Feliway Spray (Na aplikáciu na uteráky do čakárne).</li>
+        <li>[ ] Lízacie podložky s prísavkami (Lickimats) + Arašidové maslo bez xilytolu alebo pečeňové pasty.</li>
+        <li>[ ] Dlhé deky / uteráky (Na prehodenie cez mačacie prepravky v čakárni).</li>
+    </ul>
+    <h3>G.7 Rola "Client Care Coordinator" (CCC) a KPIs</h3>
+    <p>V moderných praxiach sa ustupuje od termínu "Recepčná" (ktorá len dvíha telefón) k termínu CCC (osoba, ktorá
+        manažuje skúsenosť a tržby).</p>
+    <p><strong>Pracovná náplň:</strong><br />
+        - Správa rozvrhu (Scheduling): Udržiavanie "flow" kliniky tak, aby mal lekár čas dýchať a nezhromaždili sa naraz
+        3 akúty a 2 bežné vakcinácie.<br />
+        - Komunikácia ceny: Prezentovanie odhadu nákladov (Estimate) klientom pred samotným zákrokom, aby bol lekár
+        oslobodený od "zjednávania".<br />
+        - Konflikt manažment: Ukľudňovanie hysterických klientov.<br />
+        - Aktívny up-sell Wellness plánov.</p>
+    <p><strong>Kľúčové Výkonnostné Ukazovatele (KPI):</strong><br />
+        - <strong>KPI 1:</strong> % Zodvihnutých hovorov do 3 zazvonení (Cieľ: 90%).<br />
+        - <strong>KPI 2:</strong> Počet získaných Google 5★ recenzií za mesiac (Cieľ: 10 ks/mesiac – hodnotenie
+        protokolu Discharge Ask).<br />
+        - <strong>KPI 3:</strong> Konverzia priateľských up-sellov: (Napr. predané 2 balíky Dentálnej hygieny za týždeň,
+        uzatvorené 2 nové Wellness plány).</p>
+    <h3>G.8 Mini skript na predaj Dentálnej Hygieny (Popri inom vyšetrení)</h3>
+    <p>Vychádza z faktu, že dentálnu hygienu si pýta málokto sám, lekár na ňu musí poukázať aktívne.</p>
+    <blockquote>
+        <p>"Pani Nováková, popri tomto očkovaní som Fíkušovi samozrejme pozrel aj do papuľky. Na stoličkách sa už začal
+            tvoriť pomerne tvrdý zubný kameň a mierny zápal na ďasnách. Ak to necháme takto ešte pol roka, budeme musieť
+            tie zuby trhať. Zatiaľ to však vieme veľmi elegantne vyriešiť čistením ultrazvukom. Na budúci týždeň vo
+            štvrtok máme doobedňajší voľný blok priamo na zuby, môžem vás hneď napísať, aby sme na to nezabudli?"</p>
+    </blockquote>
+    <h3>G.9 Mini skript na predaj "Puppy Wellness Plánu"</h3>
+    <p>Predajca: CCC (Recepčná), nie lekár. </p>
+    <blockquote>
+        <p>"Vítame vás s malým u nás! Keďže je to vaše prvé šteniatko, tento rok budete u nás veľmi často. Čaká nás ešte
+            3x preočkovanie proti infekčným chorobám, odčervovacie tablety každý mesiac a pravdepodobne aj kastrácia.
+            Viete čo, máme tu pre našich nových klientov 'Puppy Wellness Plán'. Za fixnú sumu 15€ mesačne, ktoré sa vám
+            sťahujú z karty ako Netflix, máte kompletne všetky tieto základné vyšetrenia a vakcíny plne pokryté + máte
+            odo mňa 10% zľavu na granule. Odbúra vám to obrovskú časť počiatočných nákladov a budete mať kľud. Mám vám
+            to tam rovno nahodiť?"</p>
+    </blockquote>
+    <hr />
+    <blockquote>
+        <p><strong>ZÁVEREČNÁ REDAKČNÁ POZNÁMKA:</strong> Tieto rozšírené prílohy (A-G) slúžia ako detailný pracovný,
+            vykonateľný a rozvojový annex. Poskytujú reálne použiteľný "Playbook" pre obsluhu a delegovanie. <strong>Pre
+                absolútne rozhodovanie a zameranie v Roku 1 má však stále prísnu nadradenosť hlavný dokument
+                V8.0.</strong> Akýkoľvek projekt z týchto príloh, ktorý by v Roku 1 narušil kapacitu lekára alebo
+            plynulosť prebiehajúcej paralelnej prevádzky (V2 vs. OpenVPM), sa musí automaticky presunúť do Roka 2.</p>
+    </blockquote>
+    <hr />
+    <h2>PRÍLOHA H — ⚡ Quick Reference Card — MVDr. Sýkora</h2>
+    <h3>Veterinárna ambulancia Rimavská Sobota — Akčný plán Rok 1</h3>
+    <blockquote>
+        <p><strong>Ako používať tento dokument:</strong> Toto je vaša osobná "navigácia". Hlavný plán V8.0 obsahuje
+            všetky detaily — tento list vám hovorí len <strong>čo a kedy máte schváliť alebo skontrolovať.</strong> Nič
+            viac.</p>
+    </blockquote>
+    <hr />
+    <h2>🔴 MESIAC 1 — Digitálne základy (Do 31. augusta 2026)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Úloha</th>
+                <th>Kto to robí</th>
+                <th>Váš úkon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Nový Google Business Profile</td>
+                <td>Externista</td>
+                <td>Schváliť texty a fotky</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Nová webstránka s "Rezervovať termín"</td>
+                <td>Externista</td>
+                <td>Schváliť návrh</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Fear-Free čakáreň: feromóny + podložky</td>
+                <td>Recepcia</td>
+                <td>Schváliť nákup (max. 100 €)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Tréning recepcie na "Discharge Ask" protokol</td>
+                <td>Marek / Externista</td>
+                <td>Zúčastniť sa 30-min. brífingu</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>✅ Cieľ mesiaca 1:</strong> Po každej návšteve odchádza klient s SMS odkazom na Google recenziu.</p>
+    <hr />
+    <h2>🟡 MESIAC 2 — Úspora času (Do 30. septembra 2026)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Úloha</th>
+                <th>Kto to robí</th>
+                <th>Váš úkon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>5</td>
+                <td>Spustenie AI Scribe (VetRec) — pilot</td>
+                <td>Marek / IT</td>
+                <td>Podpísať DPA s VetRec, otestovať 1 týždeň</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Automatické SMS pripomienky pred termínom</td>
+                <td>IT (n8n)</td>
+                <td>Odsúhlasiť text SMS šablóny</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>OpenVPM pilot — len CRM štítky</td>
+                <td>IT</td>
+                <td>Žiadny zásah, len dostávať reporting</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>✅ Cieľ mesiaca 2:</strong> Administratíva zaberá o 1–1,5 hodiny menej denne.</p>
+    <hr />
+    <h2>🟢 MESIAC 3 — Odomknutie hodnoty (Do 31. októbra 2026)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Úloha</th>
+                <th>Kto to robí</th>
+                <th>Váš úkon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>8</td>
+                <td>Spustenie Wellness plánov (osobne v ambulancii)</td>
+                <td>Recepcia</td>
+                <td>Schváliť cenník a text balíkov</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Vyhodnotenie AI Scribe pilotu</td>
+                <td>Marek</td>
+                <td>Rozhodnúť: pokračovať / zmeniť nástroj</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Kontrola Gate 2 (OpenVPM SK eKasa test)</td>
+                <td>IT</td>
+                <td>Rozhodnúť: Go / No-Go podľa výsledku</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>✅ Cieľ mesiaca 3:</strong> Aspoň 10 aktívnych Wellness predplatiteľov a úspora ≥1 hod/deň potvrdená.</p>
+    <hr />
+    <h2>🛑 STOP — Toto sa v Roku 1 NEROBÍ</h2>
+    <ul>
+        <li>❌ Full migrácia účtovníctva z Vetsoftware V2</li>
+        <li>❌ Vlastný klientsky portál (Medplum na produkciu)</li>
+        <li>❌ AI rádiológia</li>
+        <li>❌ Akýkoľvek chatbot alebo AI, ktoré radí klientom s diagnózou</li>
+    </ul>
+    <hr />
+    <h2>📊 Kľúčové čísla, ktoré treba sledovať (Raz mesačne, 15 minút)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Merítko</th>
+                <th>Cieľ</th>
+                <th>Kde sa pozrieť</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nové Google recenzie</td>
+                <td>&gt; 10 / mesiac</td>
+                <td>Google Business Profile</td>
+            </tr>
+            <tr>
+                <td>Wellness predplatitelia</td>
+                <td>&gt; 30 (do konca Roka 1)</td>
+                <td>Recepcia (tabuľka)</td>
+            </tr>
+            <tr>
+                <td>Úspora času AI Scribe</td>
+                <td>≥ 1 hod / deň</td>
+                <td>Vlastný pocit + záznam</td>
+            </tr>
+            <tr>
+                <td>Retencia klientov</td>
+                <td>&gt; 75 %</td>
+                <td>Vetsoftware V2 — ročný report</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h2>💰 Rozpočet na schválenie (Jednorazové)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Suma</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Web + GBP optimalizácia</td>
+                <td>~ 1 200 €</td>
+            </tr>
+            <tr>
+                <td>Fear-Free vybavenie čakárne</td>
+                <td>~ 100 €</td>
+            </tr>
+            <tr>
+                <td>AI Scribe (VetRec) — prvý rok</td>
+                <td>~ 1 200 – 1 800 €</td>
+            </tr>
+            <tr>
+                <td><strong>CELKOM jednorazovo</strong></td>
+                <td><strong>~ 2 000 €</strong></td>
+            </tr>
+            <tr>
+                <td>Mesačné prevádzkové náklady</td>
+                <td>~ 250 € / mes.</td>
+            </tr>
+        </tbody>
+    </table>
+    <blockquote>
+        <p><strong>Zdroj financovania:</strong> Odporúča sa vlastné prevádzkové zdroje alebo podnikateľský úver. Pozri
+            AMENDMENTS-V7.1.md pre detaily. Skontrolujte aj dostupnosť regionálnych dotácií (Banskobystrický kraj,
+            SIEA).</p>
+    </blockquote>
+    <hr />
+    <p><em>Celý strategický plán: pozrite ANALYSIS-8.0-FINAL.md — tento dokument je jeho skrátený operatívny výťah.</em>
+    </p>
+    <hr />
+    <h2>PRÍLOHA I — Enterprise Governance &amp; Financial Validation Layer</h2>
+    <p><strong>Status:</strong> Rozšírený enterprise rámec.<br />
+        <strong>Cieľ:</strong> Ochrániť investície, minimalizovať riziká a zabezpečiť právnu a finančnú stabilitu
+        praxe.<br />
+        <strong>Odporúčanie:</strong> Implementovať RAID log a validovať predpoklady pred spustením Roka 2.<br />
+        <strong>Priorita:</strong> Vysoká pre manažment a governance.<br />
+        <strong>Riziko / Podmienka úspechu:</strong> Ignorovanie finančnej validácie môže viesť k nesprávnej alokácii
+        zdrojov a preťaženiu lekára.
+    </p>
+    <hr />
+    <h3>I.1 Finančný model — Sensitivity Analysis (Scenárové tabuľky)</h3>
+    <h4>TABUĽKA 1: Scenáre príjmov podľa adopcie Wellness plánov</h4>
+    <p>Základné parametre: 1 000 klientov, base spend 200 € / klient (Celkom 200 000 €). Fixné náklady 100 000 €. <br />
+        Odhadovaná base EBITDA pri 18 % = 36 000 €. Wellness balík = 180 € ročne. Marža Wellness po odrátaní
+        variabilných nákladov je modelovaná na 80 %.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Scenár</th>
+                <th>Adopcia (%)</th>
+                <th>Počet klientov</th>
+                <th>Mesačný príjem z Wellness</th>
+                <th>Ročný príjem z Wellness</th>
+                <th>Celkové tržby (base + wellness)</th>
+                <th>EBITDA (€)</th>
+                <th>EBITDA (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pesimistický</td>
+                <td>1 %</td>
+                <td>10</td>
+                <td>150 €</td>
+                <td>1 800 €</td>
+                <td>201 800 €</td>
+                <td>37 440 €</td>
+                <td>18,55 %</td>
+            </tr>
+            <tr>
+                <td>Konzervatívny</td>
+                <td>3 %</td>
+                <td>30</td>
+                <td>450 €</td>
+                <td>5 400 €</td>
+                <td>205 400 €</td>
+                <td>40 320 €</td>
+                <td>19,63 %</td>
+            </tr>
+            <tr>
+                <td>Štandardný</td>
+                <td>5 %</td>
+                <td>50</td>
+                <td>750 €</td>
+                <td>9 000 €</td>
+                <td>209 000 €</td>
+                <td>43 200 €</td>
+                <td>20,67 %</td>
+            </tr>
+            <tr>
+                <td>Optimistický</td>
+                <td>8 %</td>
+                <td>80</td>
+                <td>1 200 €</td>
+                <td>14 400 €</td>
+                <td>214 400 €</td>
+                <td>47 520 €</td>
+                <td>22,16 %</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>TABUĽKA 2: Break-even analýza Growth balíku</h4>
+    <p>Náklady: 2 000 € jednorazovo (Mesiac 1) + 250 € / mesiac operatíva. <br />
+        Realistický nárast tržieb (ziskovostný ekvivalent): Odhadovaný zisk z Wellness adopcie (nábeh na 450 €/mes.) a
+        hodnota ušetreného času lekára (AI Scribe = 1 extra pacient/deň = cca 700 €/mes.). Celkový reálny ekvivalent v
+        marži od Mesiaca 3 je odhadovaný na min. 1 150 € mesačne.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Mesiac</th>
+                <th>Kumulatívne náklady (€)</th>
+                <th>Potrebný nárast tržieb na break-even</th>
+                <th>Realistický nárast tržieb (pri 3% Wellness)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mesiac 1</td>
+                <td>2 250 €</td>
+                <td>2 250 €</td>
+                <td>0 € (Nábehová fáza)</td>
+                <td>Záporný</td>
+            </tr>
+            <tr>
+                <td>Mesiac 2</td>
+                <td>2 500 €</td>
+                <td>2 500 €</td>
+                <td>700 € (AI Scribe pilot úspora)</td>
+                <td>Záporný</td>
+            </tr>
+            <tr>
+                <td>Mesiac 3</td>
+                <td>2 750 €</td>
+                <td>2 750 €</td>
+                <td>1 850 € (Wellness štart)</td>
+                <td>Záporný</td>
+            </tr>
+            <tr>
+                <td>Mesiac 4</td>
+                <td>3 000 €</td>
+                <td>3 000 €</td>
+                <td>3 000 €</td>
+                <td><strong>Break-even dosiahnutý</strong></td>
+            </tr>
+            <tr>
+                <td>Mesiac 5</td>
+                <td>3 250 €</td>
+                <td>3 250 €</td>
+                <td>4 150 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 6</td>
+                <td>3 500 €</td>
+                <td>3 500 €</td>
+                <td>5 300 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 7</td>
+                <td>3 750 €</td>
+                <td>3 750 €</td>
+                <td>6 450 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 8</td>
+                <td>4 000 €</td>
+                <td>4 000 €</td>
+                <td>7 600 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 9</td>
+                <td>4 250 €</td>
+                <td>4 250 €</td>
+                <td>8 750 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 10</td>
+                <td>4 500 €</td>
+                <td>4 500 €</td>
+                <td>9 900 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 11</td>
+                <td>4 750 €</td>
+                <td>4 750 €</td>
+                <td>11 050 €</td>
+                <td>Pozitívny</td>
+            </tr>
+            <tr>
+                <td>Mesiac 12</td>
+                <td>5 000 €</td>
+                <td>5 000 €</td>
+                <td>12 200 €</td>
+                <td>Pozitívny (Návratnosť investície)</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>TABUĽKA 3: Sensitivity matrix — Vplyv počtu aktívnych klientov na EBITDA</h4>
+    <p>Základný spend = 200 €/klient. Base marža 18 %. Wellness profitabilita (80 %).</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Počet klientov</th>
+                <th>Tržby base (€)</th>
+                <th>EBITDA bez Wellness (€)</th>
+                <th>EBITDA s 3% Wellness (€)</th>
+                <th>EBITDA s 5% Wellness (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>700</td>
+                <td>140 000 €</td>
+                <td>25 200 €</td>
+                <td>28 224 €</td>
+                <td>30 240 €</td>
+            </tr>
+            <tr>
+                <td>850</td>
+                <td>170 000 €</td>
+                <td>30 600 €</td>
+                <td>34 200 €</td>
+                <td>36 648 €</td>
+            </tr>
+            <tr>
+                <td>1 000</td>
+                <td>200 000 €</td>
+                <td>36 000 €</td>
+                <td>40 320 €</td>
+                <td>43 200 €</td>
+            </tr>
+            <tr>
+                <td>1 200</td>
+                <td>240 000 €</td>
+                <td>43 200 €</td>
+                <td>48 384 €</td>
+                <td>51 840 €</td>
+            </tr>
+            <tr>
+                <td>1 500</td>
+                <td>300 000 €</td>
+                <td>54 000 €</td>
+                <td>60 480 €</td>
+                <td>64 800 €</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h3>I.2 RAID Log — Formálny register rizík, predpokladov a závislostí</h3>
+    <h4>TABUĽKA R — Risks (Riziká)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Riziko</th>
+                <th>Kategória</th>
+                <th>Pravdepodobnosť (V/S/N)</th>
+                <th>Dopad (V/S/N)</th>
+                <th>Risk Score</th>
+                <th>Mitigácia</th>
+                <th>Owner</th>
+                <th>Trigger pre eskaláciu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>R01</td>
+                <td>OpenVPM nebude plne integrované so SK eKasou</td>
+                <td>Technológia</td>
+                <td>V</td>
+                <td>V</td>
+                <td><strong>Kritické</strong></td>
+                <td>Obmedziť pilot iba na CRM, fakturácia zostane vo V2.</td>
+                <td>IT</td>
+                <td>60 dní od štartu bez sandboxu.</td>
+            </tr>
+            <tr>
+                <td>R02</td>
+                <td>VetRec nesplní GDPR požiadavky na EÚ hosting</td>
+                <td>Regulácia</td>
+                <td>S</td>
+                <td>V</td>
+                <td><strong>Vysoké</strong></td>
+                <td>Vyžiadať DPA pred spustením pilotu.</td>
+                <td>IT / Právnik</td>
+                <td>Odmietnutie podpisu DPA.</td>
+            </tr>
+            <tr>
+                <td>R03</td>
+                <td>Adopcia Wellness plánov zostane pod 1 %</td>
+                <td>Trh/Financie</td>
+                <td>S</td>
+                <td>S</td>
+                <td>Stredné</td>
+                <td>Pozastaviť marketing, zamerať sa len na in-clinic up-sell.</td>
+                <td>Recepcia</td>
+                <td>Menej ako 10 plánov za 3 mesiace.</td>
+            </tr>
+            <tr>
+                <td>R04</td>
+                <td>Implementačné preťaženie lekára a personálu</td>
+                <td>Personál</td>
+                <td>V</td>
+                <td>V</td>
+                <td><strong>Kritické</strong></td>
+                <td>Striktne dodržať pravidlo "max. 3 zmeny za 30 dní".</td>
+                <td>Lekár</td>
+                <td>Zlyhávanie rutinných úkonov.</td>
+            </tr>
+            <tr>
+                <td>R05</td>
+                <td>Duplicita dát medzi V2 a OpenVPM vytvára chaos</td>
+                <td>Technológia</td>
+                <td>S</td>
+                <td>V</td>
+                <td><strong>Vysoké</strong></td>
+                <td>Automatické n8n sync pravidlá, denná kontrola.</td>
+                <td>IT</td>
+                <td>Rozdielne klientske stavy nad 5 %.</td>
+            </tr>
+            <tr>
+                <td>R06</td>
+                <td>KVL SR napadne telemedicínu / konzultácie</td>
+                <td>Regulácia</td>
+                <td>N</td>
+                <td>V</td>
+                <td>Stredné</td>
+                <td>Explicitný disclaimer "Len konzultácia, nie diagnostika".</td>
+                <td>Lekár</td>
+                <td>Podnet od KVL SR.</td>
+            </tr>
+            <tr>
+                <td>R07</td>
+                <td>Odchod kľúčového personálu z dôvodu zmien</td>
+                <td>Personál</td>
+                <td>S</td>
+                <td>V</td>
+                <td><strong>Vysoké</strong></td>
+                <td>Adekvátny tréning a finančný bonus za Wellness.</td>
+                <td>Lekár</td>
+                <td>Demotivácia personálu.</td>
+            </tr>
+            <tr>
+                <td>R08</td>
+                <td>Nedostatok cashflow na mesačnú operatívu</td>
+                <td>Financie</td>
+                <td>N</td>
+                <td>S</td>
+                <td>Nízke</td>
+                <td>Rezerva 2 000 € z vlastných zdrojov na začiatku.</td>
+                <td>Lekár</td>
+                <td>Cashflow na úrovni fixných nákladov.</td>
+            </tr>
+            <tr>
+                <td>R09</td>
+                <td>Zákazníci z Maďarska a okolia nerozumejú ponuke</td>
+                <td>Trh</td>
+                <td>S</td>
+                <td>S</td>
+                <td>Stredné</td>
+                <td>Bilingválny SK/HU marketing a vizuály na recepcii.</td>
+                <td>Copywriter</td>
+                <td>Pokles HU hovoriacej klientely.</td>
+            </tr>
+            <tr>
+                <td>R10</td>
+                <td>Konkurencia (SOVA) zníži ceny ako odozvu</td>
+                <td>Trh</td>
+                <td>S</td>
+                <td>S</td>
+                <td>Stredné</td>
+                <td>Sústrediť sa na kvalitu a Fear-Free, nie na cenovú vojnu.</td>
+                <td>Lekár</td>
+                <td>Zvýšený odliv klientov.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>TABUĽKA A — Assumptions (Predpoklady)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Predpoklad</th>
+                <th>Zdroj / Základ</th>
+                <th>Validovaný? (Áno/Nie/Čiastočne)</th>
+                <th>Metóda validácie</th>
+                <th>Dôsledok ak neplatí</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>A01</td>
+                <td>Báza: 1 000 aktívnych klientov ročne</td>
+                <td>Interný odhad</td>
+                <td>Nie</td>
+                <td>Dátový export z Vetsoftware V2.</td>
+                <td>Nižšie tržby, potreba masívnej akvizície.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>A02</td>
+                <td>Priemerný spend: 200 € / klient</td>
+                <td>Interný odhad</td>
+                <td>Nie</td>
+                <td>Analýza faktúr za predchádzajúci rok.</td>
+                <td>Nutnosť zmeniť cenotvorbu.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>A03</td>
+                <td>Fixné náklady: 100 000 € ročne</td>
+                <td>Operatíva</td>
+                <td>Čiastočne</td>
+                <td>Súvaha a výkaz ziskov a strát od účtovníka.</td>
+                <td>Marža klesne pod očakávaných 18 %.</td>
+                <td>Účtovník</td>
+            </tr>
+            <tr>
+                <td>A04</td>
+                <td>AI Scribe ušetrí min. 1,5 h denne</td>
+                <td>Tech pilot</td>
+                <td>Nie</td>
+                <td>Časový log lekára počas 1. týždňa pilotu.</td>
+                <td>Návratnosť (ROI) AI Scribu klesne.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>A05</td>
+                <td>Demografia: RS má stabilnú kúpnu silu pre prémie</td>
+                <td>InfoStat</td>
+                <td>Čiastočne</td>
+                <td>Sledovanie dopytu po prémiových úkonoch.</td>
+                <td>Nutnosť ponúkať budgetové alternatívy.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>A06</td>
+                <td>Maďarská menšina preferuje SK/HU komunikáciu</td>
+                <td>Trhový úzus</td>
+                <td>Áno</td>
+                <td>Lokálna demografia (ŠÚ SR).</td>
+                <td>Strata lokálnej konkurenčnej výhody.</td>
+                <td>Copywriter</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>TABUĽKA I — Issues (Otvorené problémy)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Problém</th>
+                <th>Dátum identifikácie</th>
+                <th>Status</th>
+                <th>Akčný krok</th>
+                <th>Owner</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>I01</td>
+                <td>SK eKasa roadmapa OpenVPM neznáma</td>
+                <td>August 2026</td>
+                <td>Otvorené</td>
+                <td>Kontaktovať vývojárov OpenVPM (GitHub/Discord).</td>
+                <td>IT</td>
+                <td>Mesiac 1</td>
+            </tr>
+            <tr>
+                <td>I02</td>
+                <td>VetRec DPA status neoverený</td>
+                <td>August 2026</td>
+                <td>Otvorené</td>
+                <td>Zaslať žiadosť o EU DPA na VetRec support.</td>
+                <td>IT</td>
+                <td>Pred pilotom</td>
+            </tr>
+            <tr>
+                <td>I03</td>
+                <td>Recepcia neovláda maďarčinu plynule</td>
+                <td>August 2026</td>
+                <td>Otvorené</td>
+                <td>Najat externého SK/HU prekladateľa na marketing.</td>
+                <td>Lekár</td>
+                <td>Mesiac 1</td>
+            </tr>
+            <tr>
+                <td>I04</td>
+                <td>Chýba repo hygiene (dokumentácia)</td>
+                <td>August 2026</td>
+                <td>Vyriešené</td>
+                <td>Vytvorená v8.0 štruktúra a zavedený RAID log.</td>
+                <td>IT</td>
+                <td>Hotovo</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>TABUĽKA D — Dependencies (Závislosti)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Závislosť</th>
+                <th>Typ (Interná/Externá)</th>
+                <th>Blokuje</th>
+                <th>Riziko ak nesplnená</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>D01</td>
+                <td>Schválenie rozpočtu 2000 €</td>
+                <td>Interná</td>
+                <td>Vývoj webu a nákup Fear-Free vybavenia.</td>
+                <td>Zastavenie rastovej fázy v Mesiaci 1.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>D02</td>
+                <td>Získanie DPA od VetRec</td>
+                <td>Externá</td>
+                <td>Spustenie AI Scribu pre pacientske dáta.</td>
+                <td>Porušenie nariadenia GDPR (pokuta).</td>
+                <td>IT</td>
+            </tr>
+            <tr>
+                <td>D03</td>
+                <td>Ochota recepcie osvojiť si zmeny</td>
+                <td>Interná</td>
+                <td>OpenVPM pilot a predaj Wellness plánov.</td>
+                <td>Plán zlyhá na úrovni exekúcie v praxi.</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>D04</td>
+                <td>Stabilita API Vetsoftware V2</td>
+                <td>Externá</td>
+                <td>n8n automatizácie nad starým systémom.</td>
+                <td>Prevádzka zostane na manuálnej úrovni.</td>
+                <td>IT</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h3>I.3 Kontraktné šablóny — SLA a DPA rámce</h3>
+    <h4>ŠABLÓNA 1: IT Externista / Webmaster — SLA základný rámec</h4>
+    <p><strong>Predmet zmluvy:</strong> Poskytovanie IT podpory, správa webovej stránky, správa n8n automatizácií a
+        technická údržba OpenVPM/Medplum.<br />
+        <strong>Rozsah služieb:</strong><br />
+        - Pravidelná správa a bezpečnostné aktualizácie webstránky.<br />
+        - Tvorba a údržba automatizačných workflow v prostredí n8n.<br />
+        - Ad-hoc riešenie výpadkov rezervačného systému a CRM pilotu.<br />
+        <strong>SLA Metriky:</strong><br />
+        - <strong>Response time:</strong> Potvrdenie prijatia požiadavky do 4 hodín (v pracovné dni).<br />
+        - <strong>Uptime:</strong> Dostupnosť kľúčového rezervačného webu 99,5 %.<br />
+        - <strong>Resolution time (Kritické chyby):</strong> Zásah a oprava chýb blokujúcich chod praxe do 12
+        hodín.<br />
+        <strong>Odmena:</strong> Mesačný retainer vo výške [X] € zahŕňajúci [Y] hodín prác. Práce nad rámec hodinovej
+        dotácie účtované sadzbou [Z] € / hod.<br />
+        <strong>Eskalačný protokol:</strong> V prípade kritického výpadku možnosť priameho telefonického kontaktu (24/7
+        priority line).<br />
+        <strong>Výpovedná lehota:</strong> 1 mesiac bez uvedenia dôvodu pre obe zmluvné strany.
+    </p>
+    <h4>ŠABLÓNA 2: Data Processing Agreement (DPA) — Checklist bodov pre VetRec</h4>
+    <p>Na základe čl. 28 nariadenia GDPR musí prevádzkovateľ (ambulancia) a spracovateľ (VetRec) uzavrieť zmluvu o
+        spracúvaní osobných údajov. Toto je kontrolný zoznam:<br />
+        1. [ ] <strong>Identifikácia strán:</strong> Správne definovaný prevádzkovateľ (klinika) a spracovateľ.<br />
+        2. [ ] <strong>Predmet spracovania:</strong> Transkripcia hlasových záznamov vyšetrenia do textového formátu
+        (SOAP).<br />
+        3. [ ] <strong>Kategórie dotknutých osôb:</strong> Majitelia zvierat a personál ambulancie prítomný v
+        nahrávke.<br />
+        4. [ ] <strong>Povinnosti spracovateľa:</strong> Garancia end-to-end šifrovania dát pri prenose a v
+        pokoji.<br />
+        5. [ ] <strong>Subspracovávatelia:</strong> Presný zoznam poskytovateľov LLM modelov (napr. OpenAI, Azure)
+        použitých v pozadí.<br />
+        6. [ ] <strong>Hosting región:</strong> Písomná garancia, že pacientske dáta neopustia dátové centrá v EÚ
+        (European Data Boundary).<br />
+        7. [ ] <strong>Retenčná politika:</strong> Potvrdenie automatického a nevratného zmazania zvukového záznamu do
+        24 – 48 hodín po prepise.<br />
+        8. [ ] <strong>Postup pri porušení:</strong> Povinnosť VetRec bezodkladne (do 24 hodín) nahlásiť únik dát
+        ambulancii.</p>
+    <h4>ŠABLÓNA 3: Lokálny prekladateľ SK/HU — Rámcová zmluva o spolupráci</h4>
+    <p><strong>Predmet:</strong> Jazyková korektúra a rýchly preklad zo slovenského do maďarského jazyka (sociálne
+        siete, letáky, cenníky a oznamy).<br />
+        <strong>Cena:</strong> Rámcová odmena 50–80 € mesačne, podľa fixného balíka (cca 10 postov mesačne), alebo
+        sadzba za normostranu.<br />
+        <strong>Turnaround time:</strong> Štandardné reklamné materiály do 48 hodín. Urgentné klinické oznamy (napr.
+        zmena ordinačných hodín) do 12 hodín od zadania.<br />
+        <strong>Zodpovednosť za medicínske termíny:</strong> Prekladateľ je zodpovedný za použitie štandardizovanej
+        maďarskej veterinárnej terminológie, pre marketingové texty platí princíp voľného prekladu (transcreation) na
+        zachovanie Fear-Free tónu.<br />
+        <strong>Mlčanlivosť:</strong> Striktný zákaz zdieľania interných postupov, know-how alebo obsahu pred jeho
+        oficiálnym zverejnením.
+    </p>
+    <hr />
+    <h3>I.4 Validácia predpokladov — Zdroje a metódy overenia</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Predpoklad</th>
+                <th>Aktuálna hodnota v modeli</th>
+                <th>Odporúčaný zdroj validácie</th>
+                <th>Metóda</th>
+                <th>Termín overenia</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Počet klientov</td>
+                <td>1 000 aktívnych ročne</td>
+                <td>Vetsoftware V2 databáza</td>
+                <td>Export unikátnych klientov s návštevou v posledných 12 mes.</td>
+                <td>Mesiac 1</td>
+                <td>Lekár</td>
+            </tr>
+            <tr>
+                <td>Priemerný spend</td>
+                <td>200 € / rok / klient</td>
+                <td>Účtovníctvo / Vetsoftware</td>
+                <td>Podiel ročných tržieb / počet unikátnych klientov</td>
+                <td>Mesiac 1</td>
+                <td>Účtovník</td>
+            </tr>
+            <tr>
+                <td>Fixné náklady</td>
+                <td>100 000 € ročne</td>
+                <td>Účtovná uzávierka</td>
+                <td>Analýza P&amp;L výkazu (personál, nájom, odpisy, energie)</td>
+                <td>Mesiac 1</td>
+                <td>Účtovník</td>
+            </tr>
+            <tr>
+                <td>Kapacita lekára</td>
+                <td>10-15 pacientov denne</td>
+                <td>Denný log</td>
+                <td>Time-tracking monitoring na vzorke 14 dní prevádzky</td>
+                <td>Mesiac 1</td>
+                <td>Recepcia</td>
+            </tr>
+            <tr>
+                <td>EBITDA Benchmark</td>
+                <td>18 %</td>
+                <td>Sektorové štúdie</td>
+                <td>Porovnanie vlastnej marže so stredoeurópskym priemerom</td>
+                <td>Koniec R1</td>
+                <td>Účtovník</td>
+            </tr>
+            <tr>
+                <td>Demografia (RS)</td>
+                <td>Klesajúca, silná HU menšina</td>
+                <td>INFOSTAT / ŠÚ SR dáta</td>
+                <td>Rešerš kúpnej sily a socioekonomického rastu v regióne</td>
+                <td>Hotovo</td>
+                <td>Externista</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Odporúčané externé zdroje benchmarkov</h4>
+    <ul>
+        <li><strong>Slovenské zdroje:</strong> </li>
+        <li>Komora veterinárnych lekárov SR (KVL SR) a Slovenská veterinárna únia (SVU SR) — usmernenia, etika a etalóny
+            lokálnych cien.</li>
+        <li>Štatistický úrad SR (ŠÚ SR) a INFOSTAT (dáta za okres Rimavská Sobota) pre overenie veľkosti cieľového trhu.
+        </li>
+        <li><strong>Európske zdroje:</strong> </li>
+        <li><em>Federation of Veterinarians of Europe (FVE) Annual Report:</em> Pravidelné štúdie o stave veterinárnej
+            praxe, demografii a tržbách v EÚ.</li>
+        <li><em>BVNA / AVMA Practice Benchmarking Studies:</em> Tieto UK/US prieskumy definujú zlatý štandard maržovosti
+            v malých praxiach. </li>
+        <li><strong>Metodická poznámka (Extrapolácia UK/USA → Slovensko):</strong> Zatiaľ čo UK štúdie hovoria o
+            zdravých EBITDA maržiach na úrovni 22–25 %, slovenský trh v menšom meste má nižšiu ochotu platiť za prémie
+            (tzv. willingness to pay). Preto pri benchmarkovaní treba americké/britské referenčné marže automaticky
+            znížiť o cca 30 % (cieľová realistická EBITDA sa potom pohybuje medzi 15–18 %).</li>
+    </ul>
+    <hr />
+    <blockquote>
+        <p><strong>REDAKČNÁ POZNÁMKA K PRÍLOHE I:</strong> Táto vrstva "Enterprise Governance &amp; Financial
+            Validation" kompletizuje štrukturálnu integritu V8.0. Slúži na to, aby manažment prešiel od intuitívneho
+            rozhodovania k rozhodovaniu riadenému dátami a mitigovanému riziku. </p>
+        <p><strong>Odhadovaný čas na implementáciu (I.1 – I.4):</strong> Celkovo 12 – 15 hodín práce, z toho približne
+            3–4 hodiny pre samotného lekára (štúdium a manažérske rozhodnutia) a zvyšok je úloha pre IT externistu a
+            účtovníka.</p>
+        <p><strong>Odporúčané poradie implementácie:</strong><br />
+            1. <strong>I.2 RAID Log:</strong> Začať aktívnym riadením rizík (okamžitá pozornosť na eKasu a GDPR
+            zmluvu).<br />
+            2. <strong>I.4 Validácia:</strong> Vyžiadať tvrdé dáta z účtovníctva a Vetsoftware (do 30 dní).<br />
+            3. <strong>I.1 Prepočítaný model:</strong> Po získaní reálnych dát zo systému (počet klientov a spend)
+            prepočítať tabuľky a upraviť predikciu break-even bodu.<br />
+            4. <strong>I.3 Zmluvy:</strong> Pripraviť na podpis s externistami a dodávateľmi pred ostrým štartom.</p>
+    </blockquote>
+    </div>
+
+    <!-- Mermaid diagram renderer -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        });
+    </script>
+</body>
+
+</html>

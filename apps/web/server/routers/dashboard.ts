@@ -19,15 +19,6 @@ type DashboardContext = {
   practiceId: string;
 };
 
-function activePracticePredicate(practiceId: string) {
-  return sql`exists (
-    select 1
-    from ${practices}
-    where ${practices.id} = ${practiceId}
-      and ${practices.deletedAt} is null
-  )`;
-}
-
 function practiceNotFound(): TRPCError {
   return new TRPCError({ code: "NOT_FOUND", message: "Practice not found" });
 }
@@ -96,7 +87,6 @@ export const dashboardRouter = createRouter({
         .where(
           and(
             eq(appointments.practiceId, ctx.practiceId),
-            activePracticePredicate(ctx.practiceId),
             isNull(appointments.deletedAt),
             gte(appointments.startTime, today.start),
             lt(appointments.startTime, today.end)
@@ -110,7 +100,6 @@ export const dashboardRouter = createRouter({
         .where(
           and(
             eq(appointments.practiceId, ctx.practiceId),
-            activePracticePredicate(ctx.practiceId),
             isNull(appointments.deletedAt),
             gte(appointments.startTime, today.start),
             lt(appointments.startTime, today.end),
@@ -127,7 +116,6 @@ export const dashboardRouter = createRouter({
         .where(
           and(
             eq(invoices.practiceId, ctx.practiceId),
-            activePracticePredicate(ctx.practiceId),
             isNull(invoices.deletedAt),
             eq(invoices.status, "paid"),
             gte(invoices.createdAt, monthStart),
@@ -142,7 +130,6 @@ export const dashboardRouter = createRouter({
         .where(
           and(
             eq(invoices.practiceId, ctx.practiceId),
-            activePracticePredicate(ctx.practiceId),
             isNull(invoices.deletedAt),
             inArray(invoices.status, ["sent", "overdue"])
           )
@@ -186,7 +173,6 @@ export const dashboardRouter = createRouter({
       .where(
         and(
           eq(appointments.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(appointments.deletedAt),
           gte(appointments.startTime, sevenDaysAgo),
           lt(appointments.startTime, today.end)
@@ -251,7 +237,6 @@ export const dashboardRouter = createRouter({
       .where(
         and(
           eq(invoices.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(invoices.deletedAt),
           eq(invoices.status, "paid"),
           gte(invoices.createdAt, thirtyDaysAgo),
@@ -276,7 +261,6 @@ export const dashboardRouter = createRouter({
       .where(
         and(
           eq(patients.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(patients.deletedAt),
           eq(patients.status, "active")
         )
@@ -312,7 +296,6 @@ export const dashboardRouter = createRouter({
         and(
           eq(invoices.appointmentId, appointments.id),
           eq(appointments.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(appointments.deletedAt)
         )
       )
@@ -321,14 +304,12 @@ export const dashboardRouter = createRouter({
         and(
           eq(appointments.doctorId, users.id),
           eq(users.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(users.deletedAt)
         )
       )
       .where(
         and(
           eq(invoices.practiceId, ctx.practiceId),
-          activePracticePredicate(ctx.practiceId),
           isNull(invoices.deletedAt),
           eq(invoices.status, "paid"),
           gte(invoices.createdAt, monthStart),

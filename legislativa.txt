@@ -1,0 +1,302 @@
+# MEGAPROMPT: e-Kasa & SK Compliance modul pre OpenVPM
+# Repozitár: badmarsh/openvpm (fork z evangauer/openvpm)
+# Stack: Next.js 14 App Router, TypeScript, tRPC, Drizzle ORM, PostgreSQL 16, shadcn/ui
+
+## KONTEXT A CIEĽ
+Implementuj minimálny, produkčne použiteľný compliance modul pre veterinárnu súkromnú kliniku
+na Slovensku (SK). Modul musí spĺňať zákon č. 384/2025 Z. z. o evidencii tržieb (e-kasa,
+účinný od 1.1.2026). Pracuješ v existujúcom monorepo (Turborepo + pnpm).
+Zachovaj existujúcu architektúru: tRPC routre, Drizzle schémy, shadcn/ui komponenty.
+
+## PRAVIDLÁ PRED KÓDOVANÍM
+1. Prečítaj CLAUDE.md — dodržuj Jaz API kontrakt (IDs = resourceId, dátumy = valueDate,
+   riadky = name nie description, saveAsDraft defaultne false pre finalizáciu).
+2. Každý nový tRPC router pridaj do apps/web/server/ a zaregistruj v hlavnom routri.
+3. Každú novú Drizzle schému pridaj do packages/db/ a exportuj z index.ts.
+4. UI komponenty len v apps/web/components/ekasa/ (shadcn/ui + Tailwind, žiadne nové deps).
+5. Všetky texty v SK a EN (i18n-ready, použiť translation keys v sk namespace).
+6. Multi-tenant: každý záznam musí mať practice_id (existujúci vzor v DB).
+7. NIKDY neloguj API kľúče ani tajné hodnoty.
+8. TypeScript strict mode, Zod validácia na každom tRPC vstupe.
+
+---
+
+## TASK 1 — DB SCHÉMA: ekasa_receipts
+
+Vytvor súbor: packages/db/src/schema/ekasa-receipts.ts
+
+Polia (Drizzle + PostgreSQL):
+- id: uuid primary key default crypto.randomUUID()
+- practice_id: uuid NOT NULL references practices(id)
+- invoice_id: uuid references invoices(id) (nullable — môže byť aj priama platba)
+- receipt_number: text NOT NULL UNIQUE — generovaný podľa vzoru: {YYYYMMDD}-{SEQ}
+- uid: text UNIQUE — UID dokladu pridelený FR SR systémom
+- okp: text — OKP (overovací kód podnikateľa)
+- pkp: text — PKP (podpisový kód podnikateľa)
+- qr_code_data: text — obsah QR kódu pre tlač
+- amount_base: numeric(12,2) NOT NULL — základ bez DPH
+- amount_vat: numeric(12,2) NOT NULL DEFAULT 0
+- amount_total: numeric(12,2) NOT NULL — celková suma
+- vat_rate: numeric(5,2) NOT NULL DEFAULT 0 — sadzba DPH (veterinár zvyčajne 0% na lieky,
+  20% na ostatné — použiť enum: 'ZERO' | 'REDUCED' | 'STANDARD')
+- payment_method: text NOT NULL CHECK IN ('CASH', 'CARD', 'TRANSFER', 'OTHER')
+- currency: text NOT NULL DEFAULT 'EUR'
+- issued_at: timestamp NOT NULL DEFAULT now()
+- sent_to_ekasa_at: timestamp — null = ešte neodoslané
+- ekasa_status: text NOT NULL DEFAULT 'PENDING'
+  CHECK IN ('PENDING', 'SENT', 'CONFIRMED', 'FAILED', 'OFFLINE_STORED')
+- raw_response: jsonb — surová odpoveď z FR SR API
+- created_by: uuid references users(id)
+- created_at: timestamp NOT NULL DEFAULT now()
+- updated_at: timestamp NOT NULL DEFAULT now()
+
+Index: practice_id, issued_at DESC
+Index: ekasa_status WHERE ekasa_status IN ('PENDING', 'FAILED') — pre retry queue
+
+---
+
+## TASK 2 — DB SCHÉMA: ekasa_config
+
+Vytvor súbor: packages/db/src/schema/ekasa-config.ts
+
+Polia:
+- id: uuid primary key
+- practice_id: uuid NOT NULL UNIQUE references practices(id)
+- dic: text NOT NULL — DIČ podnikateľa (formát SK + 10 číslic)
+- ic_dph: text — IČ DPH (ak platca DPH)
+- pokladnica_id: text NOT NULL — ID pokladnice pridelené FR SR
+- pokladnica_type: text NOT NULL CHECK IN ('ORP', 'VRP', 'CLOUD')
+  — ORP = online reg. pokladnica, VRP = virtuálna, CLOUD = cloudová SW
+- certificate_path: text — cesta k certifikátu (pre ORP podpisovanie)
+- certificate_password_encrypted: text — zašifrované heslo (AES-256, kľúč z env)
+- ekasa_api_url: text DEFAULT 'https://ekasa.financnasprava.sk/oto/api'
+- offline_mode_enabled: boolean DEFAULT false — povolenie offline režimu (§11 zákona)
+- notice_displayed: boolean DEFAULT false — označenie že oznámenie je fyzicky umiestnené
+- cashless_payment_enabled: boolean DEFAULT false — splnenie povinnosti od 1.5.2026
+- created_at / updated_at: timestamps
+
+---
+
+## TASK 3 — BACKEND SERVICE: ekasa.service.ts
+
+Vytvor: apps/web/lib/ekasa/ekasa.service.ts
+
+Implementuj tieto funkcie (každá musí mať JSDoc s odkazom na paragraf zákona 384/2025):
+
+### 3a. generateReceiptNumber(practiceId: string): Promise<string>
+- Atomický counter per practice_id, formát: YYYYMMDD-NNNNNN (6-miestne číslo)
+- Použiť PostgreSQL sequence alebo SELECT FOR UPDATE na zamedzenie duplikátov
+
+### 3b. signReceipt(data: EkasaReceiptData): Promise<{okp: string, pkp: string}>
+- OKP = SHA-1 hash z: DIC|POKLADNICA_ID|PORADOVE_CISLO|DATUM|SUMA (pipe-separated)
+- PKP = RSA-SHA256 podpis tých istých dát súkromným kľúčom (§8 ods. 1 zákona)
+- Ak certifikát chýba (VRP mode), vráť prázdne OKP/PKP
+- Použiť Node.js crypto module, NIKDY externé podpisové knižnice
+
+### 3c. sendToEkasa(receiptId: string): Promise<EkasaResponse>
+- POST na FR SR API: ekasa_config.ekasa_api_url + '/pokladnica/doklad'
+- Body: { dic, pokladnicaId, poradoveCislo, datumCas, celkovaSuma, zakladDph, dph,
+         sadzbaDph, platobnyProstriedok, okp, pkp }
+- Pri odpovedi 200: ulož uid, pkp z odpovede, nastav ekasa_status = 'CONFIRMED',
+  sent_to_ekasa_at = now()
+- Pri HTTP chybe alebo timeout: nastav ekasa_status = 'FAILED', loguj do raw_response
+- Pri offline_mode_enabled: ulož lokálne, ekasa_status = 'OFFLINE_STORED',
+  naplánuj retry (§11 zákona 384/2025 — odoslanie do 48h po obnovení spojenia)
+
+### 3d. generateQrCode(uid: string, dic: string, suma: number): Promise<string>
+- Formát QR: https://ekasa.financnasprava.sk/mdu/qr?uid={uid}&dic={dic}&s={suma}
+- Vráť base64 data URL (použiť knižnicu 'qrcode' — je už v package.json alebo pridaj)
+
+### 3e. retryFailedReceipts(practiceId: string): Promise<number>
+- Nájdi všetky záznamy s ekasa_status IN ('FAILED', 'OFFLINE_STORED')
+  WHERE sent_to_ekasa_at < now() - interval '5 minutes'
+- Skús opätovne odoslať, vráť počet úspešných
+
+---
+
+## TASK 4 — tRPC ROUTER: ekasa.router.ts
+
+Vytvor: apps/web/server/routers/ekasa.ts
+Zaregistruj v: apps/web/server/root.ts ako ekasa: ekasaRouter
+
+Procedúry:
+
+### createReceipt (mutation)
+Input (Zod):
+  invoiceId?: string (uuid)
+  amountBase: number (positive)
+  amountVat: number (non-negative)
+  amountTotal: number (positive)
+  vatRate: 'ZERO' | 'REDUCED' | 'STANDARD'
+  paymentMethod: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER'
+Logika:
+  1. Skontroluj existujúci invoice (ak invoiceId) — musí patriť tej istej practice
+  2. Generuj receiptNumber
+  3. Podpíš doklad (signReceipt)
+  4. Ulož do DB s ekasa_status = 'PENDING'
+  5. Asynchrónne: sendToEkasa (neblokuj odpoveď)
+  6. Generuj QR kód
+  7. Vráť kompletný receipt s qr_code_data
+
+### getReceipts (query)
+Input: { page: number, limit: number (max 50), status?: EkasaStatus, dateFrom?: string, dateTo?: string }
+Vráť: paginated list + summary (pending count, failed count)
+
+### getConfig (query)
+Vráť ekasa_config pre aktuálnu practice (bez certificate_password_encrypted!)
+
+### updateConfig (mutation) — len Admin role
+Input: Zod schema pre ekasa_config (všetky polia okrem id, practice_id, timestamps)
+Ulož certifikát zašifrovaný: AES-256-GCM, kľúč z process.env.EKASA_CERT_ENCRYPTION_KEY
+
+### retryFailed (mutation) — len Admin/Vet role
+Spusti retryFailedReceipts, vráť { retried: number, succeeded: number }
+
+### printReceipt (query)
+Input: { receiptId: string }
+Vráť: HTML string pre tlač (thermal printer 80mm formát) s QR kódom
+
+---
+
+## TASK 5 — UI STRÁNKY (Next.js App Router)
+
+### 5a. Stránka: /app/(dashboard)/billing/ekasa/page.tsx
+
+Zobraz:
+- StatusBadge (shadcn Badge): PENDING=yellow, CONFIRMED=green, FAILED=red, OFFLINE=orange
+- Tabuľka dokladov (shadcn DataTable): číslo, dátum, suma, DPH, metóda platby, stav
+- Filter: dátum, stav
+- Button "Retry neúspešných" (len Admin/Vet)
+- Button "Tlačiť doklad" — otvorí printReceipt HTML v novom okne
+
+### 5b. Stránka: /app/(dashboard)/settings/ekasa/page.tsx
+
+Formulár pre ekasa_config:
+- DIČ, IČ DPH, ID pokladnice, typ pokladnice (Select), API URL
+- Upload certifikátu (file input → base64)
+- Toggle: Offline mode, Oznámenie umiestnené, Bezhotovostná platba povolená
+- Compliance checklist (§ zákona 384/2025):
+  ☐ Pokladnica eKasa registrovaná na FR SR
+  ☐ Oznámenie o evidencii tržieb umiestnené na viditeľnom mieste
+  ☐ Bezhotovostná platba nad 1 EUR umožnená (povinné od 1.5.2026)
+  ☐ Doklady obsahujú QR kód
+- Uloži cez updateConfig mutation
+
+### 5c. Komponent: EkasaReceiptButton (reusable)
+Umiestni v billing/invoice detail strane ako tlačidlo "Vydať doklad eKasa"
+- Disabled ak invoice.status !== 'PAID'
+- Po kliknutí: zavolaj createReceipt, zobraz toast s výsledkom
+- Ak CONFIRMED: zobraz QR kód v dialógu (shadcn Dialog), ponúkni tlač
+
+---
+
+## TASK 6 — TLAČOVÝ DOKLAD (80mm thermal)
+
+Vytvor: apps/web/lib/ekasa/receipt-template.ts
+
+Funkcia generateReceiptHtml(receipt, practice, config): string
+Povinné náležitosti dokladu podľa §8 zákona 384/2025:
+- Obchodné meno a adresa predávajúceho
+- DIČ
+- ID pokladnice
+- Poradové číslo dokladu
+- Dátum a čas vystavenia (formát: DD.MM.YYYY HH:mm:ss)
+- Zoznam položiek (názov, množstvo, jedn. cena, sadzba DPH, suma)
+- Základ DPH per sadzba, suma DPH per sadzba
+- Celková suma (EUR, 2 desatinné miesta)
+- Spôsob platby
+- OKP a PKP (skrátené — prvých 8 znakov)
+- QR kód (img tag s base64)
+- Text: "Doklad bol zaevidovaný v systéme eKasa FS SR" (pri CONFIRMED)
+  alebo "OFFLINE DOKLAD — bude odoslaný po obnovení spojenia" (pri OFFLINE_STORED)
+
+CSS: max-width 80mm, font-size 10px, monospace, print-friendly (@media print)
+
+---
+
+## TASK 7 — BACKGROUND JOB: retry queue
+
+Vytvor: apps/web/lib/ekasa/retry-queue.ts
+
+Implementuj setInterval-based retry (alebo ak existuje cron/queue systém v repo, použi ho):
+- Spúšťaj každých 5 minút
+- Zavolaj retryFailedReceipts pre všetky active practices
+- Loguj výsledky (winston/pino — použiť existujúci logger)
+- Inicializuj v apps/web/app/api/cron/ekasa-retry/route.ts
+  (Next.js Route Handler, volateľný Vercel Cron alebo externým cron jobom)
+
+---
+
+## TASK 8 — ENV VARIABLES
+
+Pridaj do .env.example tieto premenné (s komentármi):
+
+# e-Kasa (Zákon 384/2025 Z. z. — Finančná správa SR)
+EKASA_CERT_ENCRYPTION_KEY=          # 32-byte hex string pre AES-256 šifrovanie certif.
+EKASA_DEFAULT_API_URL=https://ekasa.financnasprava.sk/oto/api
+EKASA_OFFLINE_RETRY_INTERVAL_MS=300000   # 5 minút
+
+---
+
+## TASK 9 — NAVIGÁCIA
+
+V existujúcom sidebar/nav (nájdi v apps/web/components/):
+1. Do sekcie "Billing" pridaj: "eKasa doklady" → /billing/ekasa
+2. Do sekcie "Settings" pridaj: "eKasa konfigurácia" → /settings/ekasa
+3. Ak existuje ComplianceBadge alebo notification systém, zobraz badge ak:
+   - existujú FAILED doklady (červený badge s počtom)
+   - ekasa_config.notice_displayed = false (žltá warning ikona)
+
+---
+
+## TASK 10 — TESTY
+
+Vytvor: apps/web/__tests__/ekasa/
+
+### ekasa.service.test.ts (Vitest)
+- Test generateReceiptNumber — unikátnosť, formát YYYYMMDD-NNNNNN
+- Test signReceipt — OKP hash overenie, PKP podpis (mock certifikát)
+- Test generateQrCode — validný base64 data URL
+- Test sendToEkasa — mock fetch, test CONFIRMED aj FAILED scenár
+- Test retryFailedReceipts — len záznamy staršie ako 5 min
+
+### ekasa.router.test.ts (Vitest + trpc caller)
+- Test createReceipt — kompletný flow s mock FR SR API
+- Test getReceipts — paginovanie, filtrovanie
+- Test updateConfig — šifrovanie certifikátu, len Admin role
+
+---
+
+## QUALITY GATES (splniť pred dokončením každého tasku)
+
+1. `pnpm typecheck` — 0 TS chýb
+2. `pnpm lint` — 0 ESLint chýb  
+3. `pnpm test` — všetky nové testy prechádzajú
+4. `pnpm db:push` — schéma sa aplikuje bez chýb
+5. Každý nový endpoint musí byť chránený: overTRPCAuth + practice_id check
+6. Žiadne `any` typy — použiť inferované typy z Drizzle a Zod
+
+---
+
+## PRIORITA IMPLEMENTÁCIE (poradie)
+
+1. Tasks 1+2 (DB schémy)
+2. Task 8 (ENV)  
+3. Task 3 (service)
+4. Task 4 (tRPC router)
+5. Task 5 + 6 (UI + tlač)
+6. Task 7 (retry job)
+7. Task 9 (navigácia)
+8. Task 10 (testy)
+
+---
+
+## ZÁKONNÉ MINIMÁ — CHECKLIST (essential only, §384/2025 Z. z.)
+
+- [x] Evidencia každej tržby v eKasa systéme bez odkladu (§3 ods. 1)
+- [x] Vydanie dokladu s QR kódom (§8)
+- [x] OKP a PKP podpis (§8 ods. 1 písm. g, h)
+- [x] Offline režim: uloženie a odoslanie do 48h (§11)
+- [x] Oznámenie na predajnom mieste (§14)
+- [x] Bezhotovostná platba nad 1 EUR (§3a, účinné od 1.5.2026)
+- [x] Archivácia dokladov min. 10 rokov (Zákon č. 431/2002 Z. z. o účtovníctve)

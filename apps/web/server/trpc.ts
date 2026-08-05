@@ -50,12 +50,21 @@ function clientIp(req?: Request): string | null {
   return ip === "unknown" ? null : ip;
 }
 
+const sessionCache = new Map<string, { valid: boolean; at: number }>();
+const SESSION_CACHE_TTL_MS = 30_000;
+
 async function activeSessionOrNull(
   database: Database,
   session: AppSession | null
 ): Promise<AppSession | null> {
   if (!session?.user?.id || !session.user.practiceId) {
     return null;
+  }
+
+  const cacheKey = `${session.user.id}:${session.user.practiceId}`;
+  const cached = sessionCache.get(cacheKey);
+  if (cached && Date.now() - cached.at < SESSION_CACHE_TTL_MS) {
+    return cached.valid ? session : null;
   }
 
   const [activeUser] = await withTenant(database, session.user.practiceId, (tx) =>
@@ -79,7 +88,9 @@ async function activeSessionOrNull(
       .limit(1)
   );
 
-  return activeUser ? session : null;
+  const valid = !!activeUser;
+  sessionCache.set(cacheKey, { valid, at: Date.now() });
+  return valid ? session : null;
 }
 
 export async function createTRPCContext(opts?: {
