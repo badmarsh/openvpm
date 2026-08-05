@@ -18,8 +18,13 @@ import {
   AlertCircle,
   Send,
 } from "lucide-react";
-import { TableSkeleton } from "@/components/common/loading";
-import { EmptyState } from "@/components/common/empty-state";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { PageLoading } from "@/components/common/loading";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
@@ -66,7 +71,7 @@ export default function MarketingPlannerPage() {
   const fromDate = new Date(year, month, 1).toISOString();
   const toDate = new Date(year, month + 1, 0).toISOString();
 
-  const { data: posts, refetch } = trpc.marketing.getPostsByDateRange.useQuery({
+  const { data: posts, isLoading: postsLoading, refetch } = trpc.marketing.getPostsByDateRange.useQuery({
     from: fromDate,
     to: toDate,
   });
@@ -147,14 +152,8 @@ export default function MarketingPlannerPage() {
     postsByDay.get(d)!.push(post);
   });
 
-  const rawMonths = t.raw("marketing.planner.months");
-  const months: string[] = Array.isArray(rawMonths)
-    ? (rawMonths as string[])
-    : ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"];
-  const rawDayHeaders = t.raw("marketing.planner.dayHeaders");
-  const dayHeaders: string[] = Array.isArray(rawDayHeaders)
-    ? (rawDayHeaders as string[])
-    : ["Po", "Ut", "St", "Št", "Pi", "So", "Ne"];
+  const months = t.raw("marketing.planner.months") as string[];
+  const dayHeaders = t.raw("marketing.planner.dayHeaders") as string[];
 
   return (
     <div className="space-y-6">
@@ -178,74 +177,78 @@ export default function MarketingPlannerPage() {
         </button>
       </div>
 
-      {/* Calendar navigation */}
-      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <button onClick={prevMonth} className="rounded-md p-1.5 hover:bg-accent">
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <span className="text-sm font-semibold">
-            {months[month]} {year}
-          </span>
-          <button onClick={nextMonth} className="rounded-md p-1.5 hover:bg-accent">
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+      {/* Calendar */}
+      {postsLoading ? (
+        <PageLoading />
+      ) : (
+        <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between border-b px-4 py-3">
+            <button onClick={prevMonth} className="rounded-md p-1.5 hover:bg-accent">
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="text-sm font-semibold">
+              {months[month]} {year}
+            </span>
+            <button onClick={nextMonth} className="rounded-md p-1.5 hover:bg-accent">
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
 
-        {/* Day headers */}
-        <div className="grid grid-cols-7 border-b bg-muted/30">
-          {dayHeaders.map((d) => (
-            <div key={d} className="py-2 text-center text-xs font-medium text-muted-foreground">
-              {d}
-            </div>
-          ))}
-        </div>
-
-        {/* Calendar grid */}
-        <div className="grid grid-cols-7">
-          {/* Empty cells before first day */}
-          {Array.from({ length: firstDay }).map((_, i) => (
-            <div key={`empty-${i}`} className="min-h-[80px] border-b border-r bg-muted/10" />
-          ))}
-          {/* Day cells */}
-          {Array.from({ length: daysInMonth }).map((_, i) => {
-            const day = i + 1;
-            const isToday =
-              day === today.getDate() &&
-              month === today.getMonth() &&
-              year === today.getFullYear();
-            const dayPosts = postsByDay.get(day) ?? [];
-
-            return (
-              <div
-                key={day}
-                className={`min-h-[80px] border-b border-r p-1.5 ${isToday ? "bg-primary/5" : ""}`}
-              >
-                <div className={`mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
-                  {day}
-                </div>
-                <div className="space-y-0.5">
-                  {dayPosts.map((post) => {
-                    const status = post.status as PostStatus;
-                    const colorClass = STATUS_COLORS[status] ?? STATUS_COLORS.draft;
-                    const variants = post.variants as Record<string, { platform?: string }>;
-                    const plat = Object.keys(variants)[0] ?? "";
-                    return (
-                      <div
-                        key={post.id}
-                        className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
-                        title={`${t(`marketing.planner.platformLabels.${plat}`) ?? plat} — ${t(`marketing.statusLabels.${status}`)}`}
-                      >
-                        {t(`marketing.planner.platformLabels.${plat}`) ?? plat}
-                      </div>
-                    );
-                  })}
-                </div>
+          {/* Day headers */}
+          <div className="grid grid-cols-7 border-b bg-muted/30">
+            {dayHeaders.map((d) => (
+              <div key={d} className="py-2 text-center text-xs font-medium text-muted-foreground">
+                {d}
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Calendar grid */}
+          <div className="grid grid-cols-7">
+            {/* Empty cells before first day */}
+            {Array.from({ length: firstDay }).map((_, i) => (
+              <div key={`empty-${i}`} className="min-h-[80px] border-b border-r bg-muted/10" />
+            ))}
+            {/* Day cells */}
+            {Array.from({ length: daysInMonth }).map((_, i) => {
+              const day = i + 1;
+              const isToday =
+                day === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear();
+              const dayPosts = postsByDay.get(day) ?? [];
+
+              return (
+                <div
+                  key={day}
+                  className={`min-h-[80px] border-b border-r p-1.5 ${isToday ? "bg-primary/5" : ""}`}
+                >
+                  <div className={`mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+                    {day}
+                  </div>
+                  <div className="space-y-0.5">
+                    {dayPosts.map((post) => {
+                      const status = post.status as PostStatus;
+                      const colorClass = STATUS_COLORS[status] ?? STATUS_COLORS.draft;
+                      const variants = post.variants as Record<string, { platform?: string }>;
+                      const plat = Object.keys(variants)[0] ?? "";
+                      return (
+                        <div
+                          key={post.id}
+                          className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
+                          title={`${t(`marketing.planner.platformLabels.${plat}`) ?? plat} — ${t(`marketing.statusLabels.${status}`)}`}
+                        >
+                          {t(`marketing.planner.platformLabels.${plat}`) ?? plat}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Legend */}
       <div className="flex flex-wrap gap-3">
@@ -261,107 +264,97 @@ export default function MarketingPlannerPage() {
       </div>
 
       {/* AI Generation Wizard Slide-over */}
-      {wizardOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          <button
-            className="flex-1 bg-black/40"
-            onClick={() => setWizardOpen(false)}
-            aria-label={t("marketing.planner.ariaClose")}
-          />
-          <div className="flex h-full w-full max-w-lg flex-col bg-surface shadow-2xl overflow-y-auto">
-            <div className="flex items-center justify-between border-b px-6 py-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                <span className="font-semibold">{t("marketing.planner.wizardTitle")}</span>
+      <Dialog open={wizardOpen} onOpenChange={setWizardOpen}>
+        <DialogContent variant="slideover" className="flex flex-col overflow-y-auto">
+          <DialogHeader className="border-b px-6 py-4 -mx-6 -mt-6 mb-0">
+            <DialogTitle className="flex items-center gap-2 text-base">
+              <Sparkles className="h-5 w-5 text-primary" />
+              {t("marketing.planner.wizardTitle")}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 space-y-5 py-2">
+            {/* Platform */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.platformLabel")}</label>
+              <div className="flex gap-2">
+                {(["IG", "FB", "GBP"] as const).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPlatform(p)}
+                    className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${platform === p ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"}`}
+                  >
+                    {t(`marketing.planner.platformLabels.${p}`)}
+                  </button>
+                ))}
               </div>
-              <button onClick={() => setWizardOpen(false)} className="rounded-md p-1.5 hover:bg-accent">
-                <X className="h-4 w-4" />
-              </button>
             </div>
 
-            <div className="flex-1 space-y-5 px-6 py-5">
-              {/* Platform */}
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.platformLabel")}</label>
-                <div className="flex gap-2">
-                  {(["IG", "FB", "GBP"] as const).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => setPlatform(p)}
-                      className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${platform === p ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"}`}
-                    >
-                      {t(`marketing.planner.platformLabels.${p}`)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Topic */}
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.topicLabel")}</label>
-                <textarea
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  rows={3}
-                  placeholder={t("marketing.planner.topicPlaceholder")}
-                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-                />
-                {genError && <p className="mt-1 text-xs text-destructive">{genError}</p>}
-              </div>
-
-              {/* Generate button */}
-              <button
-                onClick={handleGenerate}
-                disabled={isGenerating || !topic.trim()}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60 hover:bg-primary/90 transition-colors"
-              >
-                {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                {isGenerating ? t("marketing.planner.generatingButton") : t("marketing.planner.generateButton")}
-              </button>
-
-              {/* Generated output */}
-              {generatedContent && (
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.generatedLabel")}</label>
-                  <textarea
-                    value={generatedContent}
-                    onChange={(e) => setGeneratedContent(e.target.value)}
-                    rows={10}
-                    className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono"
-                  />
-                </div>
-              )}
-
-              {/* Schedule date */}
-              {generatedContent && (
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.dateLabel")}</label>
-                  <input
-                    type="date"
-                    value={scheduledDate}
-                    onChange={(e) => setScheduledDate(e.target.value)}
-                    className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  />
-                </div>
-              )}
+            {/* Topic */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.topicLabel")}</label>
+              <textarea
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                rows={3}
+                placeholder={t("marketing.planner.topicPlaceholder")}
+                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              />
+              {genError && <p className="mt-1 text-xs text-destructive">{genError}</p>}
             </div>
 
-            {/* Footer */}
+            {/* Generate button */}
+            <button
+              onClick={handleGenerate}
+              disabled={isGenerating || !topic.trim()}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60 hover:bg-primary/90 transition-colors"
+            >
+              {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              {isGenerating ? t("marketing.planner.generatingButton") : t("marketing.planner.generateButton")}
+            </button>
+
+            {/* Generated output */}
             {generatedContent && (
-              <div className="border-t px-6 py-4">
-                <button
-                  onClick={handleSavePost}
-                  disabled={createPost.isPending}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
-                >
-                  {createPost.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                  {scheduledDate ? t("marketing.planner.saveSchedule") : t("marketing.planner.saveDraft")}
-                </button>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.generatedLabel")}</label>
+                <textarea
+                  value={generatedContent}
+                  onChange={(e) => setGeneratedContent(e.target.value)}
+                  rows={10}
+                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono"
+                />
+              </div>
+            )}
+
+            {/* Schedule date */}
+            {generatedContent && (
+              <div>
+                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.dateLabel")}</label>
+                <input
+                  type="date"
+                  value={scheduledDate}
+                  onChange={(e) => setScheduledDate(e.target.value)}
+                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
               </div>
             )}
           </div>
-        </div>
-      )}
+
+          {/* Footer */}
+          {generatedContent && (
+            <div className="border-t pt-4">
+              <button
+                onClick={handleSavePost}
+                disabled={createPost.isPending}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              >
+                {createPost.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+                {scheduledDate ? t("marketing.planner.saveSchedule") : t("marketing.planner.saveDraft")}
+              </button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

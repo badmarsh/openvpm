@@ -28,6 +28,13 @@ import {
 } from "lucide-react";
 import { TableSkeleton } from "@/components/common/loading";
 import { EmptyState } from "@/components/common/empty-state";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { aiService } from "@/lib/ai-service";
 
 const DOC_TYPE_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
@@ -90,7 +97,10 @@ export default function DocumentsPage() {
   );
 
   const seedMutation = trpc.canvas.seedMasterDocuments.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetch();
+      toast.success(t("canvas.successSeed"));
+    },
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
   const createMutation = trpc.canvas.createDocument.useMutation({
@@ -301,10 +311,10 @@ export default function DocumentsPage() {
                 <button
                   onClick={handleCopyContent}
                   className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold hover:bg-accent cursor-pointer transition-colors"
-                  title="Kopírovať obsah"
+                  title={t("canvas.copyContentTitle")}
                 >
                   {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
-                  {copied ? "Kopírované" : "Kopírovať"}
+                  {copied ? t("canvas.copiedButton") : t("canvas.copyButton")}
                 </button>
 
                 {editMode ? (
@@ -314,13 +324,13 @@ export default function DocumentsPage() {
                         onClick={() => setPreviewTab("edit")}
                         className={`flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-md transition-colors ${previewTab === "edit" ? "bg-background shadow-xs text-foreground" : "text-muted-foreground"}`}
                       >
-                        <Edit3 className="h-3 w-3" /> Editor
+                        <Edit3 className="h-3 w-3" /> {t("canvas.editorTab")}
                       </button>
                       <button
                         onClick={() => setPreviewTab("preview")}
                         className={`flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-md transition-colors ${previewTab === "preview" ? "bg-background shadow-xs text-foreground" : "text-muted-foreground"}`}
                       >
-                        <Eye className="h-3 w-3" /> Náhľad
+                        <Eye className="h-3 w-3" /> {t("canvas.previewTab")}
                       </button>
                     </div>
 
@@ -353,7 +363,7 @@ export default function DocumentsPage() {
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
                   <Sparkles className="h-4 w-4 text-amber-500" />
-                  <span>AI Dokumentačný Asistent</span>
+                  <span>{t("canvas.aiAssistantTitle")}</span>
                 </div>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <button
@@ -361,21 +371,21 @@ export default function DocumentsPage() {
                     disabled={isAiLoading}
                     className="inline-flex items-center gap-1 rounded-md bg-background border border-border px-2.5 py-1 text-[11px] font-semibold text-foreground hover:bg-accent cursor-pointer"
                   >
-                    <Search className="h-3 w-3 text-blue-500" /> Prieskum trhu
+                    <Search className="h-3 w-3 text-blue-500" /> {t("canvas.aiModeResearch")}
                   </button>
                   <button
                     onClick={() => handleAiExecute("systemData")}
                     disabled={isAiLoading}
                     className="inline-flex items-center gap-1 rounded-md bg-background border border-border px-2.5 py-1 text-[11px] font-semibold text-foreground hover:bg-accent cursor-pointer"
                   >
-                    <Database className="h-3 w-3 text-emerald-500" /> Systémové dáta
+                    <Database className="h-3 w-3 text-emerald-500" /> {t("canvas.aiModeSystemData")}
                   </button>
                   <button
                     onClick={() => handleAiExecute("diagram")}
                     disabled={isAiLoading}
                     className="inline-flex items-center gap-1 rounded-md bg-background border border-border px-2.5 py-1 text-[11px] font-semibold text-foreground hover:bg-accent cursor-pointer"
                   >
-                    <Code className="h-3 w-3 text-violet-500" /> Mermaid / SVG
+                    <Code className="h-3 w-3 text-violet-500" /> {t("canvas.aiModeDiagram")}
                   </button>
                 </div>
               </div>
@@ -384,7 +394,7 @@ export default function DocumentsPage() {
                 <input
                   value={aiPrompt}
                   onChange={(e) => setAiPrompt(e.target.value)}
-                  placeholder="Napíš zmenu, otázku alebo požiadaj o vygenerovanie (napr. 'Pridaj tabuľku dávkovania', 'Vytvor vývojový diagram')..."
+                  placeholder={t("canvas.aiPromptPlaceholder")}
                   className="flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -399,7 +409,7 @@ export default function DocumentsPage() {
                   className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-60 cursor-pointer shadow-xs"
                 >
                   {isAiLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
-                  Generovať
+                  {t("canvas.aiGenerateButton")}
                 </button>
               </div>
             </div>
@@ -427,15 +437,12 @@ export default function DocumentsPage() {
       </div>
 
       {/* New Document Modal */}
-      {newDocOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-sm rounded-xl bg-surface border border-border shadow-2xl p-6 space-y-4 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between">
-              <h3 className="font-bold text-base">{t("canvas.newDoc.title")}</h3>
-              <button onClick={() => setNewDocOpen(false)} className="rounded-lg p-1 hover:bg-accent cursor-pointer">
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+      <Dialog open={newDocOpen} onOpenChange={setNewDocOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>{t("canvas.newDoc.title")}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
             <div>
               <label className="mb-1.5 block text-xs font-bold text-foreground">{t("canvas.newDoc.nameLabel")}</label>
               <input
@@ -466,8 +473,8 @@ export default function DocumentsPage() {
               {t("canvas.newDoc.submitButton")}
             </button>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
