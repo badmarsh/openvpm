@@ -6,7 +6,7 @@
     "dev": "turbo dev",
     "dev:deps": "docker compose -f docker/docker-compose.dev.yml up -d",
     "dev:deps:stop": "docker compose -f docker/docker-compose.dev.yml down",
-    "dev:setup": "pnpm dev:deps && sleep 3 && pnpm --filter @openpims/db db:push && pnpm --filter @openpims/db db:seed",
+    "dev:setup": "pnpm dev:deps && node -e \"setTimeout(() => {}, 3000)\" && pnpm --filter @openpims/db db:push && pnpm --filter @openpims/db db:seed",
     "dev:prod": "docker compose -f docker/docker-compose.yml up --build",
     "dev:prod:detach": "docker compose -f docker/docker-compose.yml up --build -d",
     "lint": "turbo lint",

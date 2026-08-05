@@ -256,6 +256,8 @@ export default function InboxPage() {
   const smsSummary = messagingStatus?.summary;
   const smsStatusUnavailable =
     !messagingStatusLoading &&
+    messagingStatusError?.data?.code !== "UNAUTHORIZED" &&
+    messagingStatusError?.message !== "UNAUTHORIZED" &&
     (Boolean(messagingStatusError) || !messagingStatus);
   const smsComposeBlocked =
     composeChannel === "sms" && smsSummary?.smsComposeEnabled !== true;
