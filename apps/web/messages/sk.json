@@ -29,7 +29,8 @@
     "agentVoice": "Hlasové Diktovanie",
     "agentClinical": "Diagnostický Asistent",
     "agentImaging": "Analýza Snímkov",
-    "agentDischarge": "Prepúšťacie Správy"
+    "agentDischarge": "Prepúšťacie Správy",
+    "website": "Webstránka"
   },
   "chrome": {
     "searchPlaceholder": "Hľadať…",
@@ -762,6 +763,62 @@
       "recordingError": "Chyba nahrávania počas {action}",
       "stopping": "zastavovanie",
       "starting": "štartovanie"
+    }
+  },
+  "website": {
+    "title": "Webstránka",
+    "subtitle": "Vytvorte a spravujte webstránku vašej kliniky",
+    "status": {
+      "draft": "Koncept",
+      "published": "Publikované",
+      "unpublished": "Nepublikované"
+    },
+    "editor": {
+      "addBlock": "Pridať blok",
+      "saveChanges": "Uložiť zmeny",
+      "preview": "Náhľad",
+      "publish": "Publikovať",
+      "unpublish": "Zrušiť publikovanie",
+      "template": "Šablóna",
+      "pages": "Stránky",
+      "settings": "Nastavenia",
+      "dragToReorder": "Potiahnutím zmeníte poradie",
+      "create": "Vytvoriť webstránku",
+      "saved": "Uložené",
+      "published": "Publikované",
+      "unpublished": "Publikovanie zrušené",
+      "close": "Zavrieť",
+      "emptyBlocks": "Táto stránka zatiaľ neobsahuje žiadne bloky."
+    },
+    "blocks": {
+      "hero": "Hlavný banner",
+      "services": "Služby",
+      "testimonials": "Recenzie",
+      "cta": "Výzva k akcii",
+      "contactForm": "Kontaktný formulár",
+      "about": "O nás",
+      "gallery": "Galéria",
+      "team": "Tím",
+      "pricing": "Cenník",
+      "map": "Mapa",
+      "faq": "Časté otázky",
+      "blogFeed": "Blog",
+      "openingHours": "Ordinačné hodiny",
+      "customHtml": "Vlastný HTML"
+    },
+    "templates": {
+      "cleanModern": "Čistý a moderný",
+      "warmTrusting": "Teplý a dôveryhodný",
+      "clinicalProfessional": "Klinická a profesionálna",
+      "playfulFriendly": "Hravá a priateľská",
+      "emergencyFirst": "Pohotovosť na prvom mieste"
+    },
+    "public": {
+      "bookAppointment": "Rezervovať termín",
+      "contactUs": "Kontaktujte nás",
+      "ourServices": "Naše služby",
+      "aboutUs": "O nás",
+      "emergencyBanner": "V prípade núdze volajte"
     }
   }
 }
