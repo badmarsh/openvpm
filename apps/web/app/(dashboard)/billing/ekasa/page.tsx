@@ -83,13 +83,6 @@ export default function EkasaReceiptsPage() {
     onSuccess: () => refetch(),
   });
 
-  const printMutation = trpc.ekasa.printReceipt.useQuery(
-    { receiptId: printingId! },
-    {
-      enabled: false, // only on demand
-    }
-  );
-
   const handlePrint = async (receiptId: string) => {
     setPrintingId(receiptId);
     const result = await trpc.useContext().ekasa.printReceipt.fetch({
