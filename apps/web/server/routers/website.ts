@@ -106,6 +106,14 @@ export const websiteRouter = createRouter({
     .use(requireRole("admin", "veterinarian"))
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
+      const [site] = await ctx.db
+        .select({ practiceId: websites.practiceId })
+        .from(websites)
+        .where(and(eq(websites.id, input.id), isNull(websites.deletedAt)))
+        .limit(1);
+      if (!site || site.practiceId !== ctx.practiceId) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Website not found" });
+      }
       await ctx.db.update(websites)
         .set({
           status: "published",
@@ -125,6 +133,14 @@ export const websiteRouter = createRouter({
     .use(requireRole("admin", "veterinarian"))
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
+      const [site] = await ctx.db
+        .select({ practiceId: websites.practiceId })
+        .from(websites)
+        .where(and(eq(websites.id, input.id), isNull(websites.deletedAt)))
+        .limit(1);
+      if (!site || site.practiceId !== ctx.practiceId) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Website not found" });
+      }
       await ctx.db.update(websites)
         .set({ status: "unpublished", updatedAt: new Date() })
         .where(and(
