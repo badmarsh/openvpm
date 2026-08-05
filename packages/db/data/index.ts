@@ -5,7 +5,7 @@
 import * as sk from "./sk/index";
 import * as en from "./en/index";
 
-export type Locale = "sk" | "en";
+export type Locale = "sk" | "en" | "hu";
 
 export function getLocaleData(locale: Locale = "en") {
   const data = locale === "sk" ? sk : en;
@@ -13,5 +13,6 @@ export function getLocaleData(locale: Locale = "en") {
     marketingTemplatesData: data.marketingTemplatesData,
     crmAutomationsData: data.crmAutomationsData,
     canvasMasterDocumentsData: data.canvasMasterDocumentsData,
+    websiteTemplatesData: data.websiteTemplatesData,
   };
 }

@@ -432,3 +432,5 @@ export const canvasMasterDocumentsData = [
     isRagSource: true,
   },
 ];
+
+export { websiteTemplatesData } from "./website-templates";
