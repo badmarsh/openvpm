@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { eq, and, desc, sql, isNull, or, ne, isNotNull } from "drizzle-orm";
+import { eq, and, desc, sql, isNull, or, ne, isNotNull, not } from "drizzle-orm";
 import { createRouter, protectedProcedure, requireRole } from "../trpc";
 import {
   communications,
@@ -1086,5 +1086,21 @@ export const communicationsRouter = createRouter({
         });
       }
       return comm;
+    }),
+
+  getUnreadCount: protectedProcedure
+    .query(async ({ ctx }) => {
+      const result = await ctx.db
+        .select({ count: sql<number>`count(*)` })
+        .from(communications)
+        .where(
+          and(
+            eq(communications.practiceId, ctx.practiceId),
+            eq(communications.direction, "inbound"),
+            isNull(communications.readAt),
+            not(eq(communications.status, "read"))
+          )
+        );
+      return { count: Number(result[0]?.count || 0) };
     }),
 });
