@@ -25,6 +25,7 @@ i18n conventions, and security column scoping) are applied. Start execution at P
 - `website_megaprompt_quality_review.md` — Quality review audit log (all 12 items resolved in this document; see Appendix E).
 - `legislativa.txt` — e-Kasa & SK Compliance module megaprompt (incorporated as Appendix F).
 - `RICH_TEXT_IMPLEMENTATION.md` — TipTap rich text editor implementation for SOAP notes (incorporated as Appendix G).
+- `archive/INTEGRATION_MEGAPROMPT.md` + `INTEGRATION_MEGAPROMPT_V3.md` — Social Studio integration megaprompts; blockers consolidated in Appendix H.
 
 ---
 
@@ -2161,4 +2162,59 @@ This PR is ready for:
 **Estimated Merge Time**: 1-2 weeks for testing and feedback
 **Deployment Risk**: Low (backwards compatible, no schema changes)
 **Rollback Difficulty**: None (no database migration)
+
+---
+
+## Appendix H — Integration Megaprompt Blockers (v2 & v3)
+
+The following open decisions and blockers are carried over from the Social
+Studio integration megaprompts (`archive/INTEGRATION_MEGAPROMPT.md` and
+`INTEGRATION_MEGAPROMPT_V3.md`) so that this file can serve as a single
+execution megaprompt.
+
+### Open decisions from integration megaprompts
+
+| # | Decision | Blocks | Current state |
+|---|---|---|---|
+| 1 | Duplicate `seed-suppliers.ts` — keep root copy or `packages/db/` copy? | Phase 1.2 | 🔴 Open — neither file is referenced; root copy uses workspace aliases, `packages/db/` copy uses relative imports |
+| 2 | Dialog primitive strategy — build shared `dialog.tsx` or keep ad-hoc modal markup? | Phase 4.1 | 🔴 Open — no `dialog.tsx` exists in `components/ui/`; website module also needs this (coordinate with OPEN DECISION #1 in this document) |
+
+### Phase 3.5 blockers from INTEGRATION_MEGAPROMPT_V3.md
+
+| # | Blocker | Location | Required action |
+|---|---|---|---|
+| 1 | 11 `as any` casts in i18n component code | `apps/web/app/(dashboard)/{marketing,automations,documents}/**` | Diagnose compiler error, replace with typed maps using `satisfies Record<...>` |
+| 2 | Hardcoded Slovak history note | `apps/web/server/routers/marketing.ts` (`createPost`) | Replace with i18n key (e.g., `marketing.postCreatedNote`) |
+| 3 | `compare-i18n-keys.js` at repo root | repo root | Decide: formalize as pnpm script, move to `scripts/`, or delete |
+
+### Phase 4 blockers from v3
+
+| # | Blocker | Status |
+|---|---|---|
+| 1 | Header pattern not applied — 5 pages still use old icon-box wrapper | Not started |
+| 2 | Loading/empty states missing — zero uses of `TableSkeleton`, `EmptyState`, `sonner` in marketing/automations/documents | Not started |
+| 3 | Mutation feedback missing `onError` on 8 `useMutation()` calls | Not started |
+| 4 | Modal/dialog work blocked by OPEN DECISION #2 above | Open |
+
+### Phase 5 full gate from integration megaprompts
+
+```
+pnpm install
+pnpm -w typecheck
+pnpm -w lint
+pnpm -w build
+pnpm -w test
+pnpm exec playwright test
+```
+
+### Definition-of-done blockers
+
+- [ ] Zero `fix*.js`, `rewrite.js`, `translate_sk.ts`, `test-login.ts` at repo root; no duplicate `seed-suppliers.ts`.
+- [ ] `SEED_TEMPLATES`, `DEFAULT_AUTOMATIONS`, `MASTER_DOCUMENTS` moved to `packages/db/data/{sk,en}/`.
+- [ ] No Slovak diacritics in marketing/automations/documents component files outside JSON/comments.
+- [ ] `sk.json`/`en.json` key sets match for new namespaces.
+- [ ] All 5 integration pages match `patients/page.tsx` inline header pattern and use loading/empty/toast components.
+- [ ] `canvas-safety.test.ts` and all pre-existing security tests pass unmodified.
+- [ ] **OPEN DECISION #1** (`seed-suppliers.ts`) resolved with requester.
+- [ ] **OPEN DECISION #2** (`dialog.tsx` strategy) resolved with requester.
 
