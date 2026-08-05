@@ -3,7 +3,9 @@
     "slug": "dashboard",
     "route": "/",
     "status": 200,
-    "consoleErrors": [],
+    "consoleErrors": [
+      "Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: [[\"website\",\"getSite\"],{\"type\":\"query\"}]"
+    ],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -66,8 +68,10 @@
   {
     "slug": "whiteboard",
     "route": "/whiteboard",
-    "status": 200,
-    "consoleErrors": [],
+    "status": "nav-failed",
+    "consoleErrors": [
+      "navigation error: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/whiteboard\", waiting until \"networkidle\"\u001b[22m\n"
+    ],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -107,7 +111,9 @@
     "slug": "welcome-vignette",
     "route": "/?guides=1&welcomeVariant=vignette",
     "status": 200,
-    "consoleErrors": [],
+    "consoleErrors": [
+      "Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: [[\"website\",\"getSite\"],{\"type\":\"query\"}]"
+    ],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -115,15 +121,9 @@
     "slug": "welcome-imagery",
     "route": "/?guides=1&welcomeVariant=imagery",
     "status": 200,
-    "consoleErrors": [],
-    "emptyHits": [],
-    "horizontalOverflow": false
-  },
-  {
-    "slug": "patient-detail",
-    "route": "/patients/[id]",
-    "status": 200,
-    "consoleErrors": [],
+    "consoleErrors": [
+      "Query data cannot be undefined. Please make sure to return a value other than undefined from your query function. Affected query key: [[\"website\",\"getSite\"],{\"type\":\"query\"}]"
+    ],
     "emptyHits": [],
     "horizontalOverflow": false
   },
