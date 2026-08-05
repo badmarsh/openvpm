@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   Megaphone,
   Plus,
@@ -15,6 +16,8 @@ import {
   List,
 } from "lucide-react";
 import Link from "next/link";
+import { TableSkeleton } from "@/components/common/loading";
+import { EmptyState } from "@/components/common/empty-state";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
@@ -43,7 +46,10 @@ export default function MarketingPage() {
 
   const { data: posts, isLoading: postsLoading } = trpc.marketing.getPosts.useQuery({ limit: 10 });
   const { data: templates, isLoading: templatesLoading } = trpc.marketing.getTemplates.useQuery();
-  const seedTemplates = trpc.marketing.seedDefaultTemplates.useMutation();
+  const seedTemplates = trpc.marketing.seedDefaultTemplates.useMutation({
+    onSuccess: () => { toast.success(t("marketing.templatesSeeded")); },
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
+  });
 
   const stats = {
     total: posts?.length ?? 0,
@@ -61,7 +67,7 @@ export default function MarketingPage() {
             <Megaphone className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">{t("marketing.pageTitle")}</h1>
+            <h2 className="font-heading text-xl font-semibold">{t("marketing.pageTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("marketing.pageSubtitle")}</p>
           </div>
         </div>
@@ -117,24 +123,18 @@ export default function MarketingPage() {
       {activeTab === "overview" && (
         <div className="space-y-4">
           {postsLoading ? (
-            <div className="flex items-center justify-center py-16 text-muted-foreground">
-              <span className="text-sm">{t("marketing.loading")}</span>
-            </div>
+            <TableSkeleton rows={8} cols={3} />
           ) : !posts || posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
-              <Megaphone className="mb-3 h-10 w-10 text-muted-foreground/40" />
-              <p className="font-medium text-muted-foreground">{t("marketing.emptyTitle")}</p>
-              <p className="mt-1 text-sm text-muted-foreground/70">
-                {t("marketing.emptyDescription")}
-              </p>
-              <Link
-                href="/marketing/planner"
-                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-              >
-                <Sparkles className="h-4 w-4" />
-                {t("marketing.emptyAction")}
-              </Link>
-            </div>
+            <EmptyState
+              icon={Megaphone}
+              title={t("marketing.emptyTitle")}
+              description={t("marketing.emptyDescription")}
+              action={{
+                label: t("marketing.emptyAction"),
+                icon: Sparkles,
+                onClick: () => { }
+              }}
+            />
           ) : (
             <div className="space-y-2">
               {posts.map((post) => {

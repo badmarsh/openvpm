@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   Workflow,
   Power,
@@ -12,10 +13,11 @@ import {
   Mail,
   ChevronDown,
   ChevronUp,
-  Loader2,
   Activity,
   Sparkles,
 } from "lucide-react";
+import { TableSkeleton } from "@/components/common/loading";
+import { EmptyState } from "@/components/common/empty-state";
 
 const ACTION_ICONS: Record<string, React.ElementType> = {
   sms: MessageSquare,
@@ -34,9 +36,18 @@ export default function AutomationsPage() {
     { enabled: !!logsForId }
   );
 
-  const seedMutation = trpc.automations.seedDefaultAutomations.useMutation({ onSuccess: () => refetch() });
-  const toggleMutation = trpc.automations.toggleAutomation.useMutation({ onSuccess: () => refetch() });
-  const deleteMutation = trpc.automations.deleteAutomation.useMutation({ onSuccess: () => refetch() });
+  const seedMutation = trpc.automations.seedDefaultAutomations.useMutation({
+    onSuccess: () => refetch(),
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
+  });
+  const toggleMutation = trpc.automations.toggleAutomation.useMutation({
+    onSuccess: () => refetch(),
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
+  });
+  const deleteMutation = trpc.automations.deleteAutomation.useMutation({
+    onSuccess: () => refetch(),
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
+  });
 
   const activeCount = automations?.filter((a) => a.isActive).length ?? 0;
   const totalCount = automations?.length ?? 0;
@@ -50,7 +61,7 @@ export default function AutomationsPage() {
             <Workflow className="h-5 w-5 text-violet-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">{t("automations.pageTitle")}</h1>
+            <h2 className="font-heading text-xl font-semibold">{t("automations.pageTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("automations.pageSubtitle")}</p>
           </div>
         </div>
@@ -81,27 +92,18 @@ export default function AutomationsPage() {
 
       {/* Automations list */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-        </div>
+        <TableSkeleton rows={8} cols={4} />
       ) : !automations || automations.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
-          <Workflow className="mb-3 h-10 w-10 text-muted-foreground/40" />
-          <p className="font-medium text-muted-foreground">{t("automations.emptyTitle")}</p>
-          <p className="mt-1 text-sm text-muted-foreground/70">{t("automations.emptyDescription")}</p>
-          <button
-            onClick={() => seedMutation.mutate()}
-            disabled={seedMutation.isPending}
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
-          >
-            {seedMutation.isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Sparkles className="h-4 w-4" />
-            )}
-            {t("automations.emptyAction")}
-          </button>
-        </div>
+        <EmptyState
+          icon={Workflow}
+          title={t("automations.emptyTitle")}
+          description={t("automations.emptyDescription")}
+          action={{
+            label: t("automations.emptyAction"),
+            icon: Sparkles,
+            onClick: () => seedMutation.mutate(),
+          }}
+        />
       ) : (
         <div className="space-y-3">
           {automations.map((auto) => {

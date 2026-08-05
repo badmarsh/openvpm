@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   CalendarDays,
   ChevronLeft,
@@ -17,6 +18,8 @@ import {
   AlertCircle,
   Send,
 } from "lucide-react";
+import { TableSkeleton } from "@/components/common/loading";
+import { EmptyState } from "@/components/common/empty-state";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
@@ -75,7 +78,9 @@ export default function MarketingPlannerPage() {
       setTopic("");
       setGeneratedContent("");
       setScheduledDate("");
+      toast.success(t("marketing.planner.successCreate"));
     },
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
 
   const prevMonth = useCallback(() => {
@@ -145,11 +150,11 @@ export default function MarketingPlannerPage() {
   const rawMonths = t.raw("marketing.planner.months");
   const months: string[] = Array.isArray(rawMonths)
     ? (rawMonths as string[])
-    : ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"];
+    : ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"];
   const rawDayHeaders = t.raw("marketing.planner.dayHeaders");
   const dayHeaders: string[] = Array.isArray(rawDayHeaders)
     ? (rawDayHeaders as string[])
-    : ["Po","Ut","St","Št","Pi","So","Ne"];
+    : ["Po", "Ut", "St", "Št", "Pi", "So", "Ne"];
 
   return (
     <div className="space-y-6">
@@ -160,7 +165,7 @@ export default function MarketingPlannerPage() {
             <CalendarDays className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">{t("marketing.planner.pageTitle")}</h1>
+            <h2 className="font-heading text-xl font-semibold">{t("marketing.planner.pageTitle")}</h2>
             <p className="text-sm text-muted-foreground">{t("marketing.planner.pageSubtitle")}</p>
           </div>
         </div>

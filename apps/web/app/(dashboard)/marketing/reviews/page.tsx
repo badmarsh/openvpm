@@ -14,6 +14,8 @@ import {
   Copy,
   Check,
 } from "lucide-react";
+import { TableSkeleton } from "@/components/common/loading";
+import { EmptyState } from "@/components/common/empty-state";
 
 const REVIEW_TEMPLATE_META = [
   { id: "price", rating: 2, icon: ThumbsDown, color: "text-rose-600" },
@@ -94,10 +96,8 @@ export default function ReviewsPage() {
           <Star className="h-5 w-5 text-amber-500" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{t("marketing.reviews.pageTitle")}</h1>
-          <p className="text-sm text-muted-foreground">
-            {t("marketing.reviews.pageSubtitle")}
-          </p>
+          <h2 className="font-heading text-xl font-semibold">{t("marketing.reviews.pageTitle")}</h2>
+          <p className="text-sm text-muted-foreground">{t("marketing.reviews.pageSubtitle")}</p>
         </div>
       </div>
 

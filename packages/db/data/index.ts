@@ -3,13 +3,15 @@
 // data set for the practice's country. Additive only — the existing
 // packages/db/seed.ts imports individual locale files directly.
 import * as sk from "./sk/index";
+import * as en from "./en/index";
 
-export type Locale = "sk";
+export type Locale = "sk" | "en";
 
-export function getLocaleData(_locale?: string) {
+export function getLocaleData(locale: Locale = "en") {
+  const data = locale === "sk" ? sk : en;
   return {
-    marketingTemplatesData: sk.marketingTemplatesData,
-    crmAutomationsData: sk.crmAutomationsData,
-    canvasMasterDocumentsData: sk.canvasMasterDocumentsData,
+    marketingTemplatesData: data.marketingTemplatesData,
+    crmAutomationsData: data.crmAutomationsData,
+    canvasMasterDocumentsData: data.canvasMasterDocumentsData,
   };
 }

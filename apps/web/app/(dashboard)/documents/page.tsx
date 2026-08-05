@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   BookOpen,
   Plus,
@@ -25,6 +26,8 @@ import {
   Eye,
   Edit3,
 } from "lucide-react";
+import { TableSkeleton } from "@/components/common/loading";
+import { EmptyState } from "@/components/common/empty-state";
 import { aiService } from "@/lib/ai-service";
 
 const DOC_TYPE_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
@@ -86,17 +89,23 @@ export default function DocumentsPage() {
     { enabled: !!selectedDoc }
   );
 
-  const seedMutation = trpc.canvas.seedMasterDocuments.useMutation({ onSuccess: () => refetch() });
+  const seedMutation = trpc.canvas.seedMasterDocuments.useMutation({
+    onSuccess: () => refetch(),
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
+  });
   const createMutation = trpc.canvas.createDocument.useMutation({
     onSuccess: (doc) => {
       refetch();
       setNewDocOpen(false);
       setNewTitle("");
       setSelectedDoc(doc.id);
+      toast.success(t("canvas.successCreate"));
     },
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
   const updateMutation = trpc.canvas.updateDocument.useMutation({
-    onSuccess: () => { refetch(); setEditMode(false); }
+    onSuccess: () => { refetch(); setEditMode(false); toast.success(t("canvas.successUpdate")); },
+    onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
 
   const handleOpenDoc = (docId: string) => {
@@ -175,9 +184,14 @@ export default function DocumentsPage() {
       {/* Document Sidebar List */}
       <div className="flex w-72 shrink-0 flex-col gap-3 overflow-y-auto pr-1 custom-scrollbar">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-primary" />
-            <span className="text-sm font-bold tracking-tight">{t("canvas.sidebarTitle")}</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <BookOpen className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <h2 className="font-heading text-xl font-semibold">{t("canvas.sidebarTitle")}</h2>
+              <p className="text-sm text-muted-foreground">{t("canvas.sidebarSubtitle")}</p>
+            </div>
           </div>
           <button
             onClick={() => setNewDocOpen(true)}
@@ -189,22 +203,18 @@ export default function DocumentsPage() {
         </div>
 
         {isLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-          </div>
+          <TableSkeleton rows={5} cols={2} />
         ) : !documents || documents.length === 0 ? (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed px-4 py-8 text-center bg-card">
-            <BookOpen className="h-8 w-8 text-muted-foreground/40" />
-            <p className="text-xs text-muted-foreground">{t("canvas.emptyTitle")}</p>
-            <button
-              onClick={() => seedMutation.mutate()}
-              disabled={seedMutation.isPending}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-60 cursor-pointer"
-            >
-              {seedMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
-              {t("canvas.emptyAction")}
-            </button>
-          </div>
+          <EmptyState
+            icon={BookOpen}
+            title={t("canvas.emptyTitle")}
+            description={t("canvas.emptyDescription")}
+            action={{
+              label: t("canvas.emptyAction"),
+              icon: Sparkles,
+              onClick: () => seedMutation.mutate(),
+            }}
+          />
         ) : (
           <div className="space-y-1.5">
             {documents.map((doc) => {
@@ -215,11 +225,10 @@ export default function DocumentsPage() {
                 <button
                   key={doc.id}
                   onClick={() => handleOpenDoc(doc.id)}
-                  className={`w-full rounded-xl border p-3 text-left transition-all cursor-pointer ${
-                    isSelected
-                      ? "border-primary bg-primary/10 shadow-xs ring-1 ring-primary/20"
-                      : "border-border bg-card hover:bg-accent/40"
-                  }`}
+                  className={`w-full rounded-xl border p-3 text-left transition-all cursor-pointer ${isSelected
+                    ? "border-primary bg-primary/10 shadow-xs ring-1 ring-primary/20"
+                    : "border-border bg-card hover:bg-accent/40"
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${color}`}>
@@ -251,17 +260,12 @@ export default function DocumentsPage() {
       {/* Main Canvas Document Workspace */}
       <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         {!selectedDoc || !currentDoc ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center p-8">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <BookOpen className="h-8 w-8" />
-            </div>
-            <div>
-              <h3 className="font-bold text-base text-foreground">{t("canvas.noSelectionTitle")}</h3>
-              <p className="mt-1 text-xs text-muted-foreground max-w-sm">
-                Vyber dokument zo zoznamu alebo vytvor nový pre prípravu SOP, vyhodnotenia či analýz.
-              </p>
-            </div>
-          </div>
+          <EmptyState
+            icon={BookOpen}
+            title={t("canvas.noSelectionTitle")}
+            description={t("canvas.noSelectionDescription")}
+            action={undefined}
+          />
         ) : (
           <>
             {/* Document Header Controls */}
