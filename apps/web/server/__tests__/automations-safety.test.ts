@@ -130,7 +130,7 @@ describe("automations RBAC — mutations require admin or veterinarian", () => {
     });
     await expect(
       callerWithDb(db, "veterinarian").createAutomation({
-        name: "Ročná prehliadka",
+        name: "Annual checkup",
         triggerType: "ANNUAL_REMINDER",
         conditions: { delayDays: 365 },
         actionType: "email",

@@ -138,6 +138,28 @@ describe("health route", () => {
   it("reports hosted config readiness without listing env variable names", async () => {
     mocks.billingEnforced.mockReturnValue(true);
     vi.stubEnv("AI_MODEL", "gemini-2.5-flash");
+    vi.stubEnv("NEXTAUTH_URL", "");
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
+    vi.stubEnv("NEXTAUTH_SECRET", "");
+    vi.stubEnv("DATABASE_URL", "");
+    vi.stubEnv("STRIPE_SECRET_KEY", "");
+    vi.stubEnv("STRIPE_WEBHOOK_SECRET", "");
+    vi.stubEnv("STRIPE_CONNECT_WEBHOOK_SECRET", "");
+    vi.stubEnv("STRIPE_SUBSCRIPTION_WEBHOOK_SECRET", "");
+    vi.stubEnv("STRIPE_PRICE_CLOUD_LOCATION", "");
+    vi.stubEnv("S3_ENDPOINT", "");
+    vi.stubEnv("S3_ACCESS_KEY", "");
+    vi.stubEnv("S3_SECRET_KEY", "");
+    vi.stubEnv("S3_BUCKET", "");
+    vi.stubEnv("S3_REGION", "");
+    vi.stubEnv("RESEND_API_KEY", "");
+    vi.stubEnv("RESEND_WEBHOOK_SECRET", "");
+    vi.stubEnv("EMAIL_SUPPORT_ADDRESS", "");
+    vi.stubEnv("EMAIL_COMPANY_ADDRESS", "");
+    vi.stubEnv("GOOGLE_API_KEY", "");
+    vi.stubEnv("GOOGLE_GENERATIVE_AI_API_KEY", "");
+    vi.stubEnv("CRON_SECRET", "");
+    vi.stubEnv("OPS_ALERT_WEBHOOK_URL", "");
 
     const response = await GET();
     const json = await response.json();

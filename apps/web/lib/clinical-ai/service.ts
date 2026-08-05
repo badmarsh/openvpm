@@ -31,7 +31,7 @@ export async function processConsultationAudio(params: {
   practiceId: string;
 }) {
   const mimeType = params.mimeType || "audio/webm";
-  
+
   // Krok 1: Extrakcia SOAP správy priamo zo zvuku pomocou Gemini 1.5 (Multimodal)
   // Gemini 1.5 natively podporuje audio súbory
   const soapResult = await generateObject({
@@ -43,7 +43,7 @@ export async function processConsultationAudio(params: {
         role: "user",
         content: [
           { type: "text", text: "Analyzuj túto zvukovú nahrávku z veterinárnej konzultácie a vygeneruj z nej SOAP záznam v slovenčine." },
-          // @ts-ignore - závisí od presnej verzie ai-sdk, ak nepodporuje type 'file', použijeme textový fallback v praxi
+          // @ts-expect-error - závisí od presnej verzie ai-sdk, ak nepodporuje type 'file', použijeme textový fallback v praxi
           { type: "file", data: params.audioBase64, mimeType },
         ],
       },
@@ -63,7 +63,7 @@ export async function processConsultationAudio(params: {
         role: "user",
         content: [
           { type: "text", text: "Prepíš tento zvukový záznam." },
-          // @ts-ignore
+          // @ts-expect-error - ai-sdk file type not typed
           { type: "file", data: params.audioBase64, mimeType },
         ],
       },

@@ -45,7 +45,7 @@ function markdownToHtml(md: string): string {
     return md; // Already HTML
   }
 
-  let html = md
+  const html = md
     // Code blocks & Mermaid
     .replace(/```mermaid([\s\S]*?)```/gi, (_, code) => `<pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-xs overflow-x-auto my-3"><code>${code.trim()}</code></pre>`)
     .replace(/```html([\s\S]*?)```/gi, (_, code) => `<div class="my-3 border border-border rounded-xl p-3 bg-muted/20">${code.trim()}</div>`)

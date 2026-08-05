@@ -27,9 +27,7 @@
     "slug": "schedule",
     "route": "/schedule",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/clients. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_re"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -37,9 +35,7 @@
     "slug": "records",
     "route": "/records",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/schedule. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_r"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -54,78 +50,40 @@
   {
     "slug": "inventory",
     "route": "/inventory",
-    "status": 500,
-    "consoleErrors": [
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "Loading plugin data from 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJzdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg==' violates the following Content Security Policy",
-      "Loading plugin data from 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnIj48dGV4dCB4PSIxMCIgeT0iMjAiIGlkPSJzdmctbGluay10ZXh0Ij50ZXh0PC90ZXh0Pjwvc3ZnPg==' violates the following Content Security Policy",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Failed to fetch RSC payload for http://localhost:3001/billing. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_re",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
-    ],
+    "status": 200,
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "inbox",
     "route": "/inbox",
-    "status": "nav-failed",
-    "consoleErrors": [
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "navigation error: page.goto: net::ERR_ABORTED at http://localhost:3001/inbox\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/inbox\", waiting until \"networkidle\"\u001b[22m\n",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
-    ],
+    "status": 200,
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "whiteboard",
     "route": "/whiteboard",
-    "status": "nav-failed",
-    "consoleErrors": [
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent"
-    ],
+    "status": 200,
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "controlled-substances",
     "route": "/controlled-substances",
-    "status": "nav-failed",
-    "consoleErrors": [
-      "navigation error: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/controlled-substances\", waiting until \"networkidle\"\u001b[22m\n",
-      "./app/(dashboard)/billing/page.tsx\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\marek\\Documents\\openvpm\\apps\\web\\app\\(dashboard)\\billing\\page.tsx:245:1]\n 245 |   };\n 246 | \n 247 |   return (\n 248 |     <div>\n     :      ^^^\n 249 |       <div className=\"flex items-cent",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Module build failed (from ../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):\nError: \n  x Unexpected token `div`. Expected jsx identifier\n     ,-[C:\\Users\\"
-    ],
+    "status": 200,
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
   {
     "slug": "reports",
     "route": "/reports",
-    "status": "nav-failed",
-    "consoleErrors": [
-      "navigation error: page.goto: net::ERR_ABORTED at http://localhost:3001/reports\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3001/reports\", waiting until \"networkidle\"\u001b[22m\n"
-    ],
+    "status": 200,
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -133,9 +91,7 @@
     "slug": "settings",
     "route": "/settings",
     "status": 200,
-    "consoleErrors": [
-      "[next-auth][error][CLIENT_FETCH_ERROR] \nhttps://next-auth.js.org/errors#client_fetch_error Failed to fetch {error: Object, url: /api/auth/session, message: Failed to fetch}"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -175,10 +131,7 @@
     "slug": "client-detail",
     "route": "/clients/[id]",
     "status": 200,
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   }

@@ -67,17 +67,17 @@ export const subscriptionRouter = createRouter({
     }
 
     const enforced = billingEnforced();
-    let counts = await countBillableLocationsAndSeats(ctx.db, ctx.practiceId);
-    let billingSync: BillingSyncState | null = await readBillingSyncState(
+    const counts = await countBillableLocationsAndSeats(ctx.db, ctx.practiceId);
+    const billingSync: BillingSyncState | null = await readBillingSyncState(
       ctx.db,
       ctx.practiceId
     );
     const period = currentPeriodMonth();
     const [smsUsed, aiUsed] = enforced
       ? await Promise.all([
-          usageForPractice(ctx.practiceId, "sms", period),
-          usageForPractice(ctx.practiceId, "ai_run", period),
-        ])
+        usageForPractice(ctx.practiceId, "sms", period),
+        usageForPractice(ctx.practiceId, "ai_run", period),
+      ])
       : [0, 0];
 
     return {
@@ -164,8 +164,8 @@ export const subscriptionRouter = createRouter({
       const base = appBaseUrl();
       const activeTrialEnd =
         practice.billingStatus === "trialing" &&
-        practice.trialEndsAt &&
-        new Date(practice.trialEndsAt).getTime() > Date.now()
+          practice.trialEndsAt &&
+          new Date(practice.trialEndsAt).getTime() > Date.now()
           ? practice.trialEndsAt
           : null;
       // Checkout carries only the per-location licensed item so the clinic

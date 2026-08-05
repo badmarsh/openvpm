@@ -46,6 +46,7 @@ vi.mock("@/lib/audit", () => ({
 }));
 
 const { createTRPCContext } = await import("../trpc");
+const { clearSessionCache } = await import("../trpc");
 const { practices, users } = await import("@openpims/db");
 
 const PRACTICE_ID = "00000000-0000-0000-0000-0000000000aa";
@@ -107,6 +108,7 @@ function mockActiveUserLookup(rows: unknown[]) {
 }
 
 afterEach(() => {
+  clearSessionCache();
   mocks.getServerSession.mockReset();
   mocks.db.select.mockReset();
   mocks.assertHostedRlsRoleOnce.mockClear();
@@ -174,6 +176,7 @@ describe("createTRPCContext session hardening", () => {
   });
 
   it("drops stale JWT sessions when the user or practice is missing or deactivated", async () => {
+    clearSessionCache();
     mocks.getServerSession.mockResolvedValueOnce(session());
     mockActiveUserLookup([]);
 

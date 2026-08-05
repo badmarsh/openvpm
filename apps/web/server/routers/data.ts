@@ -807,7 +807,7 @@ export const dataRouter = createRouter({
 
     // Fetch items for each invoice
     const invoiceIds = invoiceRows.map((r) => r.invoiceId);
-    let itemsByInvoice: Record<string, { description: string; quantity: number; unitPrice: string; total: string }[]> = {};
+    const itemsByInvoice: Record<string, { description: string; quantity: number; unitPrice: string; total: string }[]> = {};
 
     if (invoiceIds.length > 0) {
       const allItems = await ctx.db

@@ -9,6 +9,7 @@ export default tseslint.config(
       ".next/**",
       "out/**",
       "node_modules/**",
+      "next.config.js",
     ],
   },
   ...tseslint.configs.recommended,

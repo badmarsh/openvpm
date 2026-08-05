@@ -220,7 +220,7 @@ export const websites = pgTable(
     // Publishing metadata
     publishedAt: timestamp("published_at", { withTimezone: true }),
     publishedBy: uuid("published_by").references(() => users.id),
-    // Locale for seeded content
+    // Locale for seeded content — "sk" | "en" | "hu" (HU supported in templates)
     locale: varchar("locale", { length: 10 }).notNull().default("sk"),
   },
   (table) => ({
@@ -381,15 +381,24 @@ export const websiteSubmissionsRelations = relations(websiteSubmissions, ({ one 
 - [ ] Run `pnpm --filter @openpims/db db:push` to apply (dev only)
 - [ ] Verify tables exist via `pnpm --filter @openpims/db db:studio`
 
-### 1.3 OPEN DECISION #3 — Opening hours storage
+### 1.3 ~~OPEN DECISION #3~~ RESOLVED — Opening hours storage
 
-- **Option A (recommended):** Store in `practices.settings` JSONB as
-  `{ openingHours: [{ day: "mon", open: "08:00", close: "18:00" }, ...] }`
-  — no schema migration, consistent with how other extensible settings
-  are stored. The website reads from `practice.settings.openingHours`.
-- **Option B:** Create a new `practice_hours` table with structured
-  columns — more queryable but heavier migration.
-- **Ask the requester before implementing.**
+**Decision: Option A — JSONB in `practices.settings`.** Both this megaprompt
+and the companion template ZIP (`INTEGRATION.md`) agree on this approach.
+No further discussion needed — implement Option A directly.
+
+- Store as `practices.settings.openingHours` with shape compatible with
+  `HoursRow[]` from `lib/templates/metadata.ts`:
+  ```ts
+  // Human-readable format used by templates
+  type HoursRow = {
+    day: { sk: string; en: string; hu: string };
+    time: string;     // e.g. "8:00 – 18:00" or "Zatvorené"
+    isEmergency?: boolean;
+  };
+  ```
+- The `opening_hours` block's `source: "practice_settings"` reads this
+  field at render time (no separate block content needed).
 
 **Phase 1 verification:**
 ```
@@ -467,7 +476,7 @@ export const websiteRouter = createRouter({
       const [site] = await ctx.db.insert(websites).values({
         practiceId: ctx.practiceId,
         ...input,
-        locale: /* resolved from practice country, see §2.2 */,
+        locale: practice?.country === "HU" ? "hu" : practice?.country === "SK" ? "sk" : "en",
       }).returning();
       return site;
     }),
@@ -650,7 +659,15 @@ export const websiteRouter = createRouter({
           isNull(websites.deletedAt)
         ),
         with: {
-          practice: true,
+          // SECURITY: select only public-safe columns — never expose staff email or internal settings
+          practice: {
+            columns: {
+              name: true,
+              phone: true,
+              address: true,
+              logoUrl: true,
+            },
+          },
           pages: {
             where: isNull(websitePages.deletedAt),
             orderBy: [asc(websitePages.sortOrder)],
@@ -724,7 +741,7 @@ export const websiteRouter = createRouter({
         .from(practices)
         .where(eq(practices.id, ctx.practiceId))
         .limit(1);
-      const locale: "sk" | "en" = practice?.country === "SK" ? "sk" : "en";
+      const locale: "sk" | "en" | "hu" = practice?.country === "HU" ? "hu" : practice?.country === "SK" ? "sk" : "en";
       const { websiteTemplatesData } = getLocaleData(locale);
 
       const template = websiteTemplatesData?.[input.templateId];
@@ -756,16 +773,12 @@ export const websiteRouter = createRouter({
   import * as sk from "./sk/index";
   import * as en from "./en/index";
 
-  export type Locale = "sk" | "en";
+  export type Locale = "sk" | "en" | "hu";
 
-  export function getLocaleData(locale: Locale = "en") {
-    const data = locale === "sk" ? sk : en;
-    return {
-      marketingTemplatesData: data.marketingTemplatesData,
-      crmAutomationsData: data.crmAutomationsData,
-      canvasMasterDocumentsData: data.canvasMasterDocumentsData,
-      websiteTemplatesData: data.websiteTemplatesData,
-    };
+  export function getLocaleData(locale: Locale = "sk") {
+    if (locale === "sk") return sk;
+    if (locale === "hu") return hu; // future: import * as hu from "./hu/index"
+    return en;
   }
   ```
 
@@ -1058,16 +1071,16 @@ templates are:
 |---|---|---|---|---|
 | 1 | `clean-modern` | Čistý a moderný | Clean & Modern | Minimalist, lots of whitespace, sharp typography |
 | 2 | `warm-trusting` | Teplý a dôveryhodný | Warm & Trusting | Earth tones, testimonials-heavy, family-oriented |
-| 3 | `clinical-pro` | Klinický profesionál | Clinical Professional | Data-driven, services-list, authority signals |
-| 4 | `playful-paws` | Hravé labky | Playful Paws | Illustrated, colorful, pet-friendly aesthetic |
+| 3 | `clinical-professional` | Klinická & Profesionálna | Clinical & Professional | Data-driven, services-list, authority signals |
+| 4 | `playful-friendly` | Hravá & Priateľská | Playful & Friendly | Illustrated, colorful, pet-friendly aesthetic |
 | 5 | `emergency-first` | Pohotovosť na prvom mieste | Emergency First | Urgent care CTA prominent, after-hours focus |
 
 ### 6.3 Template rendering
 
 - [ ] `apps/web/components/website/templates/clean-modern.tsx`
 - [ ] `apps/web/components/website/templates/warm-trusting.tsx`
-- [ ] `apps/web/components/website/templates/clinical-pro.tsx`
-- [ ] `apps/web/components/website/templates/playful-paws.tsx`
+- [ ] `apps/web/components/website/templates/clinical-professional.tsx`
+- [ ] `apps/web/components/website/templates/playful-friendly.tsx`
 - [ ] `apps/web/components/website/templates/emergency-first.tsx`
 
 Each template is a React component that takes the block data and
@@ -1081,11 +1094,32 @@ block-level components but differ in layout, colors, and typography.
   rendering changes
 - [ ] Template switch is a single mutation: `updateSite({ templateId })`
 
+### 6.5 Shared OpenVPM component library (`components/openvpm/`)
+
+The companion ZIP (`open-vpm-website-templates.zip`) includes a ready-made
+shared component library. **Do not reinvent these — copy and adapt:**
+
+```
+components/openvpm/
+  BookingCTA.tsx          ← "Rezervovať termín" button, variant-aware
+  ContactBlock.tsx        ← address + phone + email + maps link
+  FearFreeBadge.tsx       ← Fear-Free badge (minimal | full | playful variants)
+  OpeningHoursTable.tsx   ← reads HoursRow[], accent-color aware
+  ServiceCard.tsx         ← icon + title + description card
+  TestimonialCard.tsx     ← stars + quote + author
+  index.ts                ← barrel export
+```
+
+These components accept an `accentColor` prop that maps to the template's
+`palette.accent` from `lib/templates/metadata.ts`. Copy them to
+`apps/web/components/openvpm/` unchanged as the public-site rendering layer.
+
 **Phase 6 verification:**
 ```
 pnpm -w type-check
 pnpm -w build
 # Manual: switch between all 5 templates and confirm rendering
+# Verify openvpm/ components render with all 5 accentColor variants
 ```
 
 ---
@@ -1456,10 +1490,11 @@ Each block type has a defined JSONB content structure:
 
 ## Appendix D — OPEN DECISIONS summary
 
-| # | Decision | Blocks | Recommendation |
-|---|---|---|---|
-| 1 | Dialog primitive strategy | Phase 4 | Build shared `dialog.tsx` with Radix UI |
-| 2 | Onboarding wizard integration | Phase 7 | Post-onboarding dashboard CTA |
-| 3 | Opening hours storage | Phase 1 | JSONB in `practices.settings` |
-| 4 | Drag-and-drop library | Phase 4 | `@dnd-kit` (if not already in deps) |
-| 5 | Booking CTA: link vs. embed | Phase 7 | Link mode (simpler, reuses portal) |
+| # | Decision | Blocks | Recommendation | Status |
+|---|---|---|---|---|
+| 1 | Dialog primitive strategy | Phase 4 | Build shared `dialog.tsx` with Radix UI | 🔴 Open |
+| 2 | Onboarding wizard integration | Phase 7 | Post-onboarding dashboard CTA | 🔴 Open |
+| 3 | ~~Opening hours storage~~ | ~~Phase 1~~ | ~~JSONB in `practices.settings`~~ | ✅ **RESOLVED** — see §1.3 |
+| 4 | Drag-and-drop library | Phase 4 | `@dnd-kit` (if not already in deps) | 🔴 Open |
+| 5 | Booking CTA: link vs. embed | Phase 7 | Link mode (simpler, reuses portal) | 🔴 Open |
+

@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3001";
 const webServerCommand =
-  process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? "pnpm dev --filter=@openpims/web";
+  process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? "pnpm --filter @openpims/web dev";
 
 export default defineConfig({
   testDir: "./e2e",

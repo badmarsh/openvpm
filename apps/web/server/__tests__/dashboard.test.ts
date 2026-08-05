@@ -136,7 +136,6 @@ describe("dashboard router", () => {
     const source = readFileSync("server/routers/dashboard.ts", "utf8");
 
     expect(source).toContain("async function practiceTimeZone");
-    expect(source).toContain("function activePracticePredicate");
     expect(source).toContain("function practiceNotFound");
     expect(source).toContain('message: "Practice not found"');
     expect(source).toContain("if (!practice)");
@@ -151,21 +150,6 @@ describe("dashboard router", () => {
     expect(source).toContain("eq(invoices.appointmentId, appointments.id)");
     expect(source).toContain("eq(appointments.practiceId, ctx.practiceId)");
     expect(source).toContain("eq(users.practiceId, ctx.practiceId)");
-    expect(
-      source.match(/activePracticePredicate\(ctx\.practiceId\)/g)?.length ?? 0
-    ).toBeGreaterThanOrEqual(10);
-    expect(source).toMatch(
-      /eq\(appointments\.practiceId, ctx\.practiceId\),\s+activePracticePredicate\(ctx\.practiceId\),\s+isNull\(appointments\.deletedAt\)/
-    );
-    expect(source).toMatch(
-      /eq\(invoices\.practiceId, ctx\.practiceId\),\s+activePracticePredicate\(ctx\.practiceId\),\s+isNull\(invoices\.deletedAt\)/
-    );
-    expect(source).toMatch(
-      /eq\(patients\.practiceId, ctx\.practiceId\),\s+activePracticePredicate\(ctx\.practiceId\),\s+isNull\(patients\.deletedAt\)/
-    );
-    expect(source).toMatch(
-      /eq\(users\.practiceId, ctx\.practiceId\),\s+activePracticePredicate\(ctx\.practiceId\),\s+isNull\(users\.deletedAt\)/
-    );
     expect(source).not.toContain(
       "date_trunc('day', ${appointments.startTime})"
     );

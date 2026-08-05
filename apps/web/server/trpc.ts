@@ -53,6 +53,10 @@ function clientIp(req?: Request): string | null {
 const sessionCache = new Map<string, { valid: boolean; at: number }>();
 const SESSION_CACHE_TTL_MS = 30_000;
 
+export function clearSessionCache(): void {
+  sessionCache.clear();
+}
+
 async function activeSessionOrNull(
   database: Database,
   session: AppSession | null
@@ -221,7 +225,7 @@ export const protectedProcedure = t.procedure.use(
             rawInput,
             resultData: (result as { data?: unknown }).data,
           })
-        ).catch(() => {});
+        ).catch(() => { });
       }
 
       return result;

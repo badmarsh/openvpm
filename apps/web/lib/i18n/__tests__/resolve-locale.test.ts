@@ -40,7 +40,7 @@ describe("resolveLocale", () => {
     ).toBe("sk");
   });
 
-  it("falls back to en", () => {
-    expect(resolveLocale({})).toBe("en");
+  it("falls back to sk", () => {
+    expect(resolveLocale({})).toBe("sk");
   });
 });

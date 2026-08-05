@@ -140,7 +140,7 @@ export async function draftSoapNote(
   context: SoapDraftContext
 ): Promise<SoapDraft> {
   const result = await generateText({
-    // @ts-ignore - mismatch between ai and @ai-sdk/openai versions
+    // @ts-expect-error - mismatch between ai and @ai-sdk/openai versions
     model: openai("gpt-4o"),
     system: SOAP_DRAFT_SYSTEM_PROMPT,
     prompt: buildSoapDraftPrompt(context),

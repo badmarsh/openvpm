@@ -67,9 +67,9 @@ describe("app base URL helpers", () => {
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
     vi.stubEnv("NEXTAUTH_URL", "");
     vi.stubEnv("NODE_ENV", "production");
-    let module = await importAppUrl();
+    const appUrlModule = await importAppUrl();
 
-    expect(() => module.appBaseUrl()).toThrow(
+    expect(() => appUrlModule.appBaseUrl()).toThrow(
       "Set NEXT_PUBLIC_APP_URL or NEXTAUTH_URL to a valid HTTPS app origin."
     );
 

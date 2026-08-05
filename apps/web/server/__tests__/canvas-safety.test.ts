@@ -126,7 +126,7 @@ describe("canvas content sanitization", () => {
       insertedRows: [{ id: DOC_ID }],
     });
     await callerWithDb(db, "admin").createDocument({
-      title: "Krízový manuál",
+      title: "Crisis manual",
       docType: "MANUAL",
       content:
         '<h1>Title</h1><script>alert(1)</script><img src=x onerror="alert(2)"><p onclick="evil()">Text</p>',

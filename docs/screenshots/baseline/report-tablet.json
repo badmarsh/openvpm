@@ -67,9 +67,7 @@
     "slug": "whiteboard",
     "route": "/whiteboard",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/inbox. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_reac"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -77,9 +75,7 @@
     "slug": "controlled-substances",
     "route": "/controlled-substances",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/whiteboard. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -87,9 +83,7 @@
     "slug": "reports",
     "route": "/reports",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/controlled-substances. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
@@ -105,9 +99,7 @@
     "slug": "agent",
     "route": "/agent",
     "status": 200,
-    "consoleErrors": [
-      "Failed to fetch RSC payload for http://localhost:3001/settings. Falling back to browser navigation. TypeError: Failed to fetch\n    at fetchServerResponse (webpack-internal:///(app-pages-browser)/../../node_modules/.pnpm/next@14.2.35_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_react-dom@18.3.1_r"
-    ],
+    "consoleErrors": [],
     "emptyHits": [],
     "horizontalOverflow": false
   },
