@@ -249,10 +249,10 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <ActivationChecklist />
       {/* KPI Cards */}
-      {statsError || statsDisplayMissing ? (
+      {statsError?.data?.code === "UNAUTHORIZED" || statsError?.message === "UNAUTHORIZED" ? null : statsError || statsDisplayMissing ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
           {t("dashboard.stats.error")}
-          {statsError ? ` ${statsError.message}` : ""}
+          {statsError && statsError.message !== "UNAUTHORIZED" ? ` ${statsError.message}` : ""}
         </div>
       ) : isStatsLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -300,10 +300,10 @@ export default function DashboardPage() {
           </h2>
         </div>
         <div className="space-y-2 p-4">
-          {upcomingError || isUpcomingMissing ? (
+          {upcomingError?.data?.code === "UNAUTHORIZED" || upcomingError?.message === "UNAUTHORIZED" ? null : upcomingError || isUpcomingMissing ? (
             <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
               {t("dashboard.upcoming.error")}
-              {upcomingError ? ` ${upcomingError.message}` : ""}
+              {upcomingError && upcomingError.message !== "UNAUTHORIZED" ? ` ${upcomingError.message}` : ""}
             </div>
           ) : isUpcomingLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
@@ -368,10 +368,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts */}
-      {chartsError || chartsDisplayMissing ? (
+      {chartsError?.data?.code === "UNAUTHORIZED" || chartsError?.message === "UNAUTHORIZED" ? null : chartsError || chartsDisplayMissing ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
           {t("dashboard.charts.error")}
-          {chartsError ? ` ${chartsError.message}` : ""}
+          {chartsError && chartsError.message !== "UNAUTHORIZED" ? ` ${chartsError.message}` : ""}
         </div>
       ) : isChartsLoading ? (
         <>

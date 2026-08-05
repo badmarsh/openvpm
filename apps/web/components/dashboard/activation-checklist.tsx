@@ -56,6 +56,9 @@ export function ActivationChecklist() {
   if (!isAdmin) return null;
 
   const loadError = state.error ?? onboarding.error ?? practice.error ?? sub.error;
+  if (loadError?.data?.code === "UNAUTHORIZED" || loadError?.message === "UNAUTHORIZED") {
+    return null;
+  }
   if (loadError) {
     return (
       <ActivationChecklistError
