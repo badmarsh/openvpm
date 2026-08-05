@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { AlertTriangle, Mail, X, Loader2, Check } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
@@ -13,15 +14,19 @@ const DISMISS_KEY = "ovpm_verify_email_dismissed";
  * for the session, with a one-click resend.
  */
 export function VerifyEmailBanner() {
+  const { status } = useSession();
   const [dismissed, setDismissed] = useState(true); // assume dismissed until we read storage
   const { data, isLoading, error, refetch } = trpc.auth.me.useQuery(undefined, {
     staleTime: 5 * 60 * 1000,
+    enabled: status === "authenticated",
   });
   const resend = trpc.auth.resendVerification.useMutation();
 
   useEffect(() => {
     setDismissed(sessionStorage.getItem(DISMISS_KEY) === "1");
   }, []);
+
+  if (status !== "authenticated") return null;
 
   function dismiss() {
     sessionStorage.setItem(DISMISS_KEY, "1");
@@ -57,7 +62,7 @@ export function VerifyEmailBanner() {
           onClick={() => void refetch()}
           className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-background px-2.5 py-1 text-xs font-medium hover:bg-destructive/10"
         >
-          
+
           Skúsiť znova
         </button>
         <button
@@ -85,7 +90,7 @@ export function VerifyEmailBanner() {
           </span>
         ) : (
           <>
-            
+
             Overte svoj email{data.email ? ` (${data.email})` : ""}  na zabezpečenie vášho
             účtovať a udržiavať upomienky doručiteľné.
           </>
@@ -99,7 +104,7 @@ export function VerifyEmailBanner() {
           className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-amber-300 bg-white px-2.5 py-1 text-xs font-medium text-amber-900 hover:bg-amber-100 disabled:opacity-50"
         >
           {resend.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-          
+
           Znova odoslať e-mail
         </button>
       )}
