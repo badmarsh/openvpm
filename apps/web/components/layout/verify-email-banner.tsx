@@ -52,6 +52,11 @@ export function VerifyEmailBanner() {
     );
   }
 
+  // UNAUTHORIZED = server can't read the session (e.g., blank NEXTAUTH_SECRET in
+  // dev, or a transient race on first load). Hide the banner silently rather than
+  // showing a confusing error to the user.
+  if (error?.data?.code === "UNAUTHORIZED") return null;
+
   if (error || !data) {
     return (
       <div className="flex items-center gap-3 border-b border-destructive/30 bg-destructive/5 px-6 py-2.5 text-sm text-destructive">
@@ -62,7 +67,6 @@ export function VerifyEmailBanner() {
           onClick={() => void refetch()}
           className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-background px-2.5 py-1 text-xs font-medium hover:bg-destructive/10"
         >
-
           Skúsiť znova
         </button>
         <button

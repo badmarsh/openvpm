@@ -53,6 +53,10 @@ export function TrialBadge() {
     );
   }
 
+  // UNAUTHORIZED = server can't read the session; hide silently instead of
+  // showing an alarming "billing status unavailable" link.
+  if (error?.data?.code === "UNAUTHORIZED") return null;
+
   if (error || !data) {
     return (
       <Link
