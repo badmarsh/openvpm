@@ -246,6 +246,13 @@
       "when": 1785875166000,
       "tag": "0034_marketing_canvas_boolean_fix",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1785944750500,
+      "tag": "0035_lively_namora",
+      "breakpoints": true
     }
   ]
 }

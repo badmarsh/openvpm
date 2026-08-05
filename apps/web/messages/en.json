@@ -29,7 +29,8 @@
     "agentVoice": "Voice Scribe",
     "agentClinical": "Clinical Assistant",
     "agentImaging": "Medical Imaging",
-    "agentDischarge": "Discharge Reports"
+    "agentDischarge": "Discharge Reports",
+    "website": "Website"
   },
   "chrome": {
     "searchPlaceholder": "Search...",
@@ -762,6 +763,62 @@
       "recordingError": "Recording error during {action}",
       "stopping": "stopping",
       "starting": "starting"
+    }
+  },
+  "website": {
+    "title": "Website",
+    "subtitle": "Build and manage your clinic's website",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "unpublished": "Unpublished"
+    },
+    "editor": {
+      "addBlock": "Add block",
+      "saveChanges": "Save changes",
+      "preview": "Preview",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "template": "Template",
+      "pages": "Pages",
+      "settings": "Settings",
+      "dragToReorder": "Drag to reorder",
+      "create": "Create website",
+      "saved": "Saved",
+      "published": "Published",
+      "unpublished": "Unpublished",
+      "close": "Close",
+      "emptyBlocks": "This page does not contain any blocks yet."
+    },
+    "blocks": {
+      "hero": "Hero Banner",
+      "services": "Services",
+      "testimonials": "Testimonials",
+      "cta": "Call to Action",
+      "contactForm": "Contact Form",
+      "about": "About Us",
+      "gallery": "Gallery",
+      "team": "Team",
+      "pricing": "Pricing",
+      "map": "Map",
+      "faq": "FAQ",
+      "blogFeed": "Blog Feed",
+      "openingHours": "Opening Hours",
+      "customHtml": "Custom HTML"
+    },
+    "templates": {
+      "cleanModern": "Clean & Modern",
+      "warmTrusting": "Warm & Trusting",
+      "clinicalProfessional": "Clinical & Professional",
+      "playfulFriendly": "Playful & Friendly",
+      "emergencyFirst": "Emergency First"
+    },
+    "public": {
+      "bookAppointment": "Book an Appointment",
+      "contactUs": "Contact Us",
+      "ourServices": "Our Services",
+      "aboutUs": "About Us",
+      "emergencyBanner": "For emergencies call"
     }
   }
 }
