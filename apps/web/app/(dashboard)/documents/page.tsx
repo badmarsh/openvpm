@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
+import { marked } from "marked";
+import mermaid from "mermaid";
 import {
   BookOpen,
   Plus,
@@ -60,9 +62,24 @@ export default function DocumentsPage() {
     onSuccess: () => { refetch(); setEditMode(false); }
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && !editMode) {
+      mermaid.initialize({ startOnLoad: true });
+      mermaid.run({ querySelector: ".language-mermaid", suppressErrors: true });
+    }
+  }, [selectedDoc, editMode, currentDoc]);
+
   const handleOpenDoc = (docId: string) => {
     setSelectedDoc(docId);
     setEditMode(false);
+  };
+
+  const parseMarkdown = (content: string) => {
+    try {
+      return marked.parse(content, { async: false });
+    } catch (e) {
+      return content;
+    }
   };
 
   const handleStartEdit = () => {
@@ -287,7 +304,7 @@ export default function DocumentsPage() {
                 <div
                   className="prose prose-sm max-w-none p-6 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-muted/50"
                   dangerouslySetInnerHTML={{
-                    __html: (currentDoc.content as string) ?? "<p>Prázdny dokument</p>",
+                    __html: typeof currentDoc.content === "string" ? ((currentDoc.content.includes("<") && currentDoc.content.includes(">") && !currentDoc.content.includes("```")) ? currentDoc.content : parseMarkdown(currentDoc.content) as string) : "<p>Prázdny dokument</p>",
                   }}
                 />
               )}

@@ -18,7 +18,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiUrl = endpoint || 'https://api.openai.com/v1/chat/completions';
+    let apiUrl = endpoint || 'https://api.openai.com/v1/chat/completions';
+    if (apiUrl.startsWith('http://') || apiUrl.startsWith('https://')) {
+      // Base URL validation
+      if (!apiUrl.endsWith('/chat/completions')) {
+         apiUrl = apiUrl.endsWith('/') ? apiUrl + 'chat/completions' : apiUrl + '/chat/completions';
+      }
+    } else {
+      apiUrl = 'https://api.openai.com/v1/chat/completions';
+    }
 
     const response = await fetch(apiUrl, {
       method: 'POST',

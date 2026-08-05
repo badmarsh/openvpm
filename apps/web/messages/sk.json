@@ -21,9 +21,12 @@
     "automations": "CRM Automatizácie",
     "documents": "AI Canvas a SOP",
     "ekasaReceipts": "e-Kasa Doklady",
-    "ekasaSettings": "e-Kasa Nastavenia"
+    "ekasaSettings": "e-Kasa Nastavenia",
+    "sectionClinical": "KLINICKÁ PRAX",
+    "sectionMarketing": "MARKETING STUDIO",
+    "sectionAi": "AI VETERINARY",
+    "sectionSettings": "SPRÁVA KLINIKY"
   },
-
   "chrome": {
     "searchPlaceholder": "Hľadať…",
     "newAction": "Nový",

@@ -13,10 +13,12 @@ import { canvasDocuments, canvasTemplates } from "@openpims/db";
 // (headings, lists, tables, task lists, mermaid diagram blocks, basic links).
 // ---------------------------------------------------------------------------
 const CANVAS_ALLOWED_TAGS = [
+  "svg", "path", "g", "polygon", "rect", "circle", "line", "text",
   "h1", "h2", "h3", "h4", "p", "ul", "ol", "li", "strong", "em", "u",
   "table", "thead", "tbody", "tr", "th", "td", "pre", "code", "a", "br", "span",
 ];
-const CANVAS_ALLOWED_ATTR = ["class", "href", "target", "style", "border"];
+const CANVAS_ALLOWED_ATTR = [
+  "xmlns", "viewBox", "fill", "stroke", "d", "x", "y", "width", "height", "r", "cx", "cy", "stroke-width", "stroke-linecap", "stroke-linejoin", "transform", "text-anchor", "font-family", "font-size","class", "href", "target", "style", "border"];
 
 function sanitizeCanvasHtml(html: string): string {
   return DOMPurify.sanitize(html, {

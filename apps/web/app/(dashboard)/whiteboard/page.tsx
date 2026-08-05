@@ -526,8 +526,7 @@ export default function WhiteboardPage() {
   // SSR/client hydration mismatch from Date() evaluating differently.
   useEffect(() => {
     setCurrentTime(new Date());
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
+
   }, []);
 
   const {
@@ -535,7 +534,8 @@ export default function WhiteboardPage() {
     isLoading,
     error,
   } = trpc.whiteboard.getActive.useQuery(undefined, {
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    refetchOnWindowFocus: false,
   });
   const settingsQuery = trpc.whiteboard.settings.useQuery();
   const practiceSettings = settingsQuery.data;

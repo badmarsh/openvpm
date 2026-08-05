@@ -211,7 +211,7 @@ export default function InboxPage() {
     error: inboxError,
   } = trpc.communications.listConversations.useQuery(
     { inboxFilter: filter, limit: 50, offset: 0 },
-    { refetchInterval: 30000 }
+    { refetchInterval: 60000, refetchOnWindowFocus: false }
   );
 
   const {
@@ -249,6 +249,7 @@ export default function InboxPage() {
     refetch: refetchMessagingStatus,
   } = trpc.messaging.getInboxStatus.useQuery(undefined, {
     refetchInterval: 60000,
+    refetchOnWindowFocus: false,
     retry: false,
   });
 

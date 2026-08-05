@@ -77,6 +77,18 @@ export const AI_PROVIDERS: AIProvider[] = [
     supportedFeatures: ['text-generation', 'chat', 'embeddings', 'vision']
   },
   {
+    name: 'Local Proxy (OpenAI Compatible)',
+    models: [
+      'local-model'
+    ],
+    pricing: 'Free',
+    baseUrl: 'http://127.0.0.1:8045/v1',
+    apiKeyFormat: 'sk-...',
+    supportedFeatures: [
+      'text-generation', 'chat', 'vision'
+    ]
+  },
+  {
     name: 'Mistral AI',
     models: [
       'mistral-large-latest', 'mistral-medium-latest', 'mistral-small-latest',

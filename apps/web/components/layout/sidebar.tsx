@@ -47,35 +47,53 @@ function isUserRole(role?: string | null): role is UserRole {
   return allRoles.includes(role as UserRole);
 }
 
-const navItems: {
-  href: string;
-  key: string;
-  icon: React.ElementType;
-  roles: UserRole[];
-  badge?: string;
-}[] = [
-  { href: "/", key: "nav.dashboard", icon: LayoutDashboard, roles: allRoles },
-  { href: "/patients", key: "nav.patients", icon: PawPrint, roles: allRoles },
-  { href: "/clients", key: "nav.clients", icon: Users, roles: allRoles },
-  { href: "/schedule", key: "nav.schedule", icon: Calendar, roles: allRoles },
-  { href: "/records", key: "nav.records", icon: FileText, roles: allRoles },
-  { href: "/billing", key: "nav.billing", icon: Receipt, roles: allRoles },
-  { href: "/billing/ekasa", key: "nav.ekasaReceipts", icon: ReceiptText, roles: ["admin", "veterinarian"] },
-  { href: "/inventory", key: "nav.inventory", icon: Package, roles: allRoles },
-  { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
-  { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
-  { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
-  // --- Marketing & Growth Module ---
-  { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"] },
-  { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
-  { href: "/automations", key: "nav.automations", icon: Workflow, roles: ["admin"] },
-  { href: "/documents", key: "nav.documents", icon: BookOpen, roles: allRoles },
-  // ---------------------------------
-  { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
-  { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
-  { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
-  { href: "/settings/ekasa", key: "nav.ekasaSettings", icon: Settings2, roles: ["admin"] },
+
+type NavItem = { href: string; key: string; icon: React.ElementType; roles: UserRole[]; badge?: string };
+type NavGroup = { key: string; items: NavItem[] };
+
+const navGroups: NavGroup[] = [
+  {
+    key: "nav.sectionClinical",
+    items: [
+      { href: "/", key: "nav.dashboard", icon: LayoutDashboard, roles: allRoles },
+      { href: "/patients", key: "nav.patients", icon: PawPrint, roles: allRoles },
+      { href: "/clients", key: "nav.clients", icon: Users, roles: allRoles },
+      { href: "/schedule", key: "nav.schedule", icon: Calendar, roles: allRoles },
+      { href: "/records", key: "nav.records", icon: FileText, roles: allRoles },
+      { href: "/inbox", key: "nav.inbox", icon: MessageSquare, roles: allRoles },
+      { href: "/whiteboard", key: "nav.whiteboard", icon: ClipboardList, roles: allRoles },
+    ]
+  },
+  {
+    key: "nav.sectionMarketing",
+    items: [
+      { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"] },
+      { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
+      { href: "/automations", key: "nav.automations", icon: Workflow, roles: ["admin"] },
+      { href: "/documents", key: "nav.documents", icon: BookOpen, roles: allRoles },
+    ]
+  },
+  {
+    key: "nav.sectionAi",
+    items: [
+      { href: "/agent", key: "nav.agent", icon: Bot, roles: ["admin", "veterinarian"] },
+    ]
+  },
+  {
+    key: "nav.sectionSettings",
+    items: [
+      { href: "/billing", key: "nav.billing", icon: Receipt, roles: allRoles },
+      { href: "/billing/ekasa", key: "nav.ekasaReceipts", icon: ReceiptText, roles: ["admin", "veterinarian"] },
+      { href: "/inventory", key: "nav.inventory", icon: Package, roles: allRoles },
+      { href: "/controlled-substances", key: "nav.controlledSubstances", icon: ShieldAlert, roles: ["admin", "veterinarian"] },
+      { href: "/reports", key: "nav.reports", icon: BarChart3, roles: ["admin", "veterinarian"] },
+      { href: "/settings", key: "nav.settings", icon: Settings, roles: ["admin"] },
+      { href: "/settings/ekasa", key: "nav.ekasaSettings", icon: Settings2, roles: ["admin"] },
+    ]
+  }
 ];
+
+
 
 type SidebarProps = {
   className?: string;
@@ -98,22 +116,17 @@ export function Sidebar({
   const { data: branding } = trpc.settings.getBranding.useQuery();
   const isCollapsed = collapsible && collapsed;
   const canShowNav = status === "authenticated" && role !== undefined;
-  const { data: unreadInbox } = trpc.communications.listConversations.useQuery(
-    { inboxFilter: "unread", limit: 1, offset: 0 },
+  const { data: unreadInbox } = trpc.communications.getUnreadCount.useQuery(
+    undefined,
     {
       enabled: canShowNav,
-      refetchInterval: 30000,
+      refetchInterval: 60000,
+      refetchOnWindowFocus: false,
       retry: false,
     }
   );
-  const visibleNavItems = canShowNav
-    ? navItems.filter((item) => {
-        if (!item.roles.includes(role)) return false;
-        if (item.href === "/tools/jaaz" && process.env.NEXT_PUBLIC_JAAZ_ENABLED === "false") return false;
-        return true;
-      })
-    : [];
-  const unreadInboxCount = Math.max(0, Number(unreadInbox?.total ?? 0));
+
+  const unreadInboxCount = Math.max(0, Number(unreadInbox?.count ?? 0));
   const unreadInboxLabel =
     unreadInboxCount > 99 ? "99+" : String(unreadInboxCount);
 
@@ -150,60 +163,80 @@ export function Sidebar({
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-2 py-2" role="navigation" aria-label="Main navigation">
-        <ul className="space-y-0.5">
-          {visibleNavItems.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
+
+          {navGroups.map((group) => {
+            const visibleGroupItems = group.items.filter((item) => {
+              if (role === undefined || !item.roles.includes(role)) return false;
+              if (item.href === "/tools/jaaz" && process.env.NEXT_PUBLIC_JAAZ_ENABLED === "false") return false;
+              return true;
+            });
+
+            if (visibleGroupItems.length === 0) return null;
 
             return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  data-tour={`nav-${item.href}`}
-                  aria-current={isActive ? "page" : undefined}
-                  onClick={onNavigate}
-                  className={cn(
-                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  )}
-                >
-                  <span className="relative shrink-0">
-                    <item.icon className="h-4 w-4" />
-                    {isCollapsed &&
-                    item.href === "/inbox" &&
-                    unreadInboxCount > 0 ? (
-                      <span
-                        aria-label={`${unreadInboxCount} unread inbox conversations`}
-                        className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-surface"
-                      />
-                    ) : null}
-                  </span>
-                  {!isCollapsed && <span className="truncate">{t(item.key)}</span>}
-                  {!isCollapsed &&
-                  item.href === "/inbox" &&
-                  unreadInboxCount > 0 ? (
-                    <span
-                      aria-label={`${unreadInboxCount} unread inbox conversations`}
-                      className="ml-auto rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground"
-                    >
-                      {unreadInboxLabel}
-                    </span>
-                  ) : null}
-                  {/* Beta badge pre nové funkcie ako Marketing Studio */}
-                  {!isCollapsed && item.badge ? (
-                    <span className="ml-auto rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-wide text-primary">
-                      {item.badge}
-                    </span>
-                  ) : null}
-                </Link>
-              </li>
+              <div key={group.key} className="mb-4">
+                {!isCollapsed && (
+                  <h4 className="mb-1 px-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                    {t(group.key as any)}
+                  </h4>
+                )}
+                <ul className="space-y-0.5">
+                  {visibleGroupItems.map((item) => {
+                    const isActive =
+                      item.href === "/"
+                        ? pathname === "/"
+                        : pathname.startsWith(item.href);
+
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          data-tour={`nav-${item.href}`}
+                          aria-current={isActive ? "page" : undefined}
+                          onClick={onNavigate}
+                          className={cn(
+                            "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                            isActive
+                              ? "bg-primary/10 text-primary"
+                              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          )}
+                        >
+                          <span className="relative shrink-0">
+                            <item.icon className="h-4 w-4" />
+                            {isCollapsed &&
+                            item.href === "/inbox" &&
+                            unreadInboxCount > 0 ? (
+                              <span
+                                aria-label={`${unreadInboxCount} unread inbox conversations`}
+                                className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-surface"
+                              />
+                            ) : null}
+                          </span>
+                          {!isCollapsed && <span className="truncate">{t(item.key as any)}</span>}
+                          {!isCollapsed &&
+                          item.href === "/inbox" &&
+                          unreadInboxCount > 0 ? (
+                            <span
+                              aria-label={`${unreadInboxCount} unread inbox conversations`}
+                              className="ml-auto rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground"
+                            >
+                              {unreadInboxLabel}
+                            </span>
+                          ) : null}
+                          {!isCollapsed && item.badge ? (
+                            <span className="ml-auto rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-wide text-primary">
+                              {item.badge}
+                            </span>
+                          ) : null}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             );
           })}
-        </ul>
+
       </nav>
 
       {/* User & Collapse */}

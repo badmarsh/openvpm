@@ -21,9 +21,12 @@
     "automations": "CRM Automations",
     "documents": "AI Canvas & SOPs",
     "ekasaReceipts": "e-Kasa Receipts",
-    "ekasaSettings": "e-Kasa Settings"
+    "ekasaSettings": "e-Kasa Settings",
+    "sectionClinical": "CLINICAL PRACTICE",
+    "sectionMarketing": "MARKETING STUDIO",
+    "sectionAi": "AI VETERINARY",
+    "sectionSettings": "CLINIC MANAGEMENT"
   },
-
   "chrome": {
     "searchPlaceholder": "Search...",
     "newAction": "New",
