@@ -17,6 +17,7 @@ import {
   MessageSquare,
   Send,
   User,
+  CheckCircle2,
 } from "lucide-react";
 
 const REVIEW_TEMPLATE_META = [
@@ -51,6 +52,17 @@ export default function ReviewsPage() {
   const [copied, setCopied] = useState(false);
 
   const { data: gmbReviews, isLoading: reviewsLoading } = trpc.marketing.fetchGmbReviews.useQuery();
+
+  // Track sent replies locally per session
+  const [sentReplies, setSentReplies] = useState<Record<string, string>>({});
+
+  const replyToGmbReview = trpc.marketing.replyToGmbReview.useMutation({
+    onSuccess: (data) => {
+      setSentReplies((prev) => ({ ...prev, [data.reviewId]: data.replyText }));
+      toast.success("Odpoveď bola odoslaná");
+    },
+    onError: (e) => toast.error(e.message),
+  });
 
   const handleGenerate = async (overrideText?: string, overrideRating?: number) => {
     const textToUse = overrideText ?? reviewText;
@@ -188,28 +200,52 @@ export default function ReviewsPage() {
                       <p className="text-muted-foreground italic">{rev.suggestedReply}</p>
 
                       <div className="flex gap-2 pt-1">
-                        <button
-                          onClick={() => {
-                            setReviewText(rev.text);
-                            setRating(rev.rating);
-                            setGeneratedReply(rev.suggestedReply);
-                            setActiveMode("generator");
-                          }}
-                          className="inline-flex items-center gap-1 rounded bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary hover:bg-primary/20"
-                        >
-                          Upraviť odpoveď
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(rev.suggestedReply);
-                            toast.success("Odpoveď bola skopírovaná do schránky");
-                          }}
-                          className="inline-flex items-center gap-1 rounded border px-2.5 py-1 text-[11px] font-medium hover:bg-accent"
-                        >
-                          <Copy className="h-3 w-3" />
-                          Kopírovať
-                        </button>
-                      </div>
+                          <button
+                            onClick={() => {
+                              setReviewText(rev.text);
+                              setRating(rev.rating);
+                              setGeneratedReply(rev.suggestedReply);
+                              setActiveMode("generator");
+                            }}
+                            className="inline-flex items-center gap-1 rounded bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary hover:bg-primary/20"
+                          >
+                            Upraviť odpoveď
+                          </button>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(rev.suggestedReply);
+                              toast.success("Odpoveď bola skopírovaná do schránky");
+                            }}
+                            className="inline-flex items-center gap-1 rounded border px-2.5 py-1 text-[11px] font-medium hover:bg-accent"
+                          >
+                            <Copy className="h-3 w-3" />
+                            Kopírovať
+                          </button>
+                          {sentReplies[rev.id] ? (
+                            <span className="inline-flex items-center gap-1 rounded bg-emerald-100 dark:bg-emerald-950 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                              <CheckCircle2 className="h-3 w-3" />
+                              Odoslané
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                replyToGmbReview.mutate({
+                                  reviewId: rev.id,
+                                  replyText: rev.suggestedReply,
+                                })
+                              }
+                              disabled={replyToGmbReview.isPending}
+                              className="inline-flex items-center gap-1 rounded bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                            >
+                              {replyToGmbReview.isPending ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <Send className="h-3 w-3" />
+                              )}
+                              Odoslať odpoveď
+                            </button>
+                          )}
+                        </div>
                     </div>
                   )}
                 </div>

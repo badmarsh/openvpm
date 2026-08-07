@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   CalendarDays,
   ChevronLeft,
@@ -66,6 +67,15 @@ export default function MarketingPlannerPage() {
     to: toDate,
   });
 
+  const updatePost = trpc.marketing.updatePost.useMutation({
+    onSuccess: () => { refetch(); toast.success("Príspevok bol presunutý"); },
+    onError: (e) => toast.error(e.message),
+  });
+
+  // Drag-and-drop reschedule state
+  const [draggedPostId, setDraggedPostId] = useState<string | null>(null);
+  const [dragOverDay, setDragOverDay] = useState<number | null>(null);
+
   const prevMonth = useCallback(() => {
     if (month === 0) { setMonth(11); setYear((y) => y - 1); }
     else setMonth((m) => m - 1);
@@ -79,6 +89,14 @@ export default function MarketingPlannerPage() {
   const handlePostClick = (postId: string) => {
     setSelectedPostId(postId);
     setDetailModalOpen(true);
+  };
+
+  const handleDrop = (day: number) => {
+    if (!draggedPostId) return;
+    const newDate = new Date(year, month, day, 12, 0, 0).toISOString();
+    updatePost.mutate({ postId: draggedPostId, scheduledDate: newDate });
+    setDraggedPostId(null);
+    setDragOverDay(null);
   };
 
   // Build calendar grid
@@ -161,7 +179,12 @@ export default function MarketingPlannerPage() {
               return (
                 <div
                   key={day}
-                  className={`min-h-[90px] border-b border-r p-1.5 ${isToday ? "bg-primary/5" : ""}`}
+                  className={`min-h-[90px] border-b border-r p-1.5 transition-colors ${
+                    isToday ? "bg-primary/5" : ""
+                  } ${dragOverDay === day ? "bg-blue-50 dark:bg-blue-950/30 ring-1 ring-inset ring-blue-400" : ""}`}
+                  onDragOver={(e) => { e.preventDefault(); setDragOverDay(day); }}
+                  onDragLeave={() => setDragOverDay(null)}
+                  onDrop={() => handleDrop(day)}
                 >
                   <div className={`mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
                     {day}
@@ -177,8 +200,11 @@ export default function MarketingPlannerPage() {
                       return (
                         <div
                           key={post.id}
+                          draggable
+                          onDragStart={() => setDraggedPostId(post.id)}
+                          onDragEnd={() => { setDraggedPostId(null); setDragOverDay(null); }}
                           onClick={() => handlePostClick(post.id)}
-                          className={`flex items-center justify-between rounded px-1.5 py-1 text-[10px] font-medium cursor-pointer transition-all hover:opacity-80 shadow-xs ${colorClass}`}
+                          className={`flex items-center justify-between rounded px-1.5 py-1 text-[10px] font-medium cursor-grab active:cursor-grabbing transition-all hover:opacity-80 shadow-xs ${colorClass} ${draggedPostId === post.id ? "opacity-40" : ""}`}
                         >
                           <span className="truncate">{platLabel}</span>
                           <div className="flex items-center gap-0.5 shrink-0 ml-1">

@@ -307,6 +307,25 @@ export function GenerationWizard({
                       className="w-full rounded-lg border bg-background px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono"
                     />
 
+                    {/* Alt text (accessibility description) */}
+                    <div>
+                      <label className="mb-1 block text-[10px] font-medium text-muted-foreground">
+                        Alt text (popis pre prístupnosť)
+                      </label>
+                      <input
+                        type="text"
+                        value={data.altText || ""}
+                        onChange={(e) =>
+                          setGeneratedVariants({
+                            ...generatedVariants,
+                            [plat]: { ...data, altText: e.target.value },
+                          })
+                        }
+                        placeholder="Stručný popis obrázka pre nevidiacich..."
+                        className="w-full rounded-lg border bg-background px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 text-muted-foreground"
+                      />
+                    </div>
+
                     {/* Polish input */}
                     <div className="flex gap-2 pt-1">
                       <input

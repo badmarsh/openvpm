@@ -15,6 +15,8 @@ import {
   ShieldCheck,
   Plus,
   X,
+  Users,
+  Briefcase,
 } from "lucide-react";
 
 export default function BrandKitPage() {
@@ -51,21 +53,37 @@ export default function BrandKitPage() {
   const [disclaimer, setDisclaimer] = useState("");
   const [includeDisclaimer, setIncludeDisclaimer] = useState(true);
 
+  // Team Members state
+  const [teamMembers, setTeamMembers] = useState<{ name: string; role: string; photoUrl: string }[]>([]);
+  const [newMember, setNewMember] = useState({ name: "", role: "", photoUrl: "" });
+
+  // Services state
+  const [services, setServices] = useState<string[]>([]);
+  const [newService, setNewService] = useState("");
+
+
+
+  /** Helper to read arbitrary JSONB fields returned by getBrandKit */
+  const bk = brandKit as Record<string, unknown> | undefined;
+
   useEffect(() => {
-    if (brandKit) {
-      setClinicName((brandKit.clinicName as string) ?? "");
-      setLogoUrl((brandKit.logoUrl as string) ?? "");
-      setPrimaryColor((brandKit.primaryColor as string) ?? "#0f766e");
-      setSecondaryColor((brandKit.secondaryColor as string) ?? "#06b6d4");
-      setAccentColor((brandKit.accentColor as string) ?? "#f59e0b");
-      setTone((brandKit.tone as string) ?? "Fear-Free & Professional");
-      setCustomTone((brandKit.customTone as string) ?? "");
-      setLanguage((brandKit.language as string) ?? "sk");
-      setDefaultHashtags((brandKit.defaultHashtags as string[]) ?? []);
-      setDisclaimer((brandKit.disclaimer as string) ?? "");
-      setIncludeDisclaimer((brandKit.includeDisclaimer as boolean) ?? true);
+    if (bk) {
+      setClinicName((bk.clinicName as string) ?? "");
+      setLogoUrl((bk.logoUrl as string) ?? "");
+      setPrimaryColor((bk.primaryColor as string) ?? "#0f766e");
+      setSecondaryColor((bk.secondaryColor as string) ?? "#06b6d4");
+      setAccentColor((bk.accentColor as string) ?? "#f59e0b");
+      setTone((bk.tone as string) ?? "Fear-Free & Professional");
+      setCustomTone((bk.customTone as string) ?? "");
+      setLanguage((bk.language as string) ?? "sk");
+      setDefaultHashtags((bk.defaultHashtags as string[]) ?? []);
+      setDisclaimer((bk.disclaimer as string) ?? "");
+      setIncludeDisclaimer((bk.includeDisclaimer as boolean) ?? true);
+      setTeamMembers((bk.teamMembers as { name: string; role: string; photoUrl: string }[]) ?? []);
+      setServices((bk.services as string[]) ?? []);
     }
-  }, [brandKit]);
+  }, [bk]);
+
 
   const handleSave = () => {
     updateBrandKit.mutate({
@@ -80,6 +98,8 @@ export default function BrandKitPage() {
       defaultHashtags,
       disclaimer,
       includeDisclaimer,
+      teamMembers,
+      services,
     });
   };
 
@@ -293,7 +313,126 @@ export default function BrandKitPage() {
         </div>
       </div>
 
-      {/* Section 4: Disclaimer */}
+      {/* Section 4: Services */}
+      <div className="rounded-xl border bg-card p-5 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 border-b pb-3 font-semibold text-sm">
+          <Briefcase className="h-4 w-4 text-primary" />
+          Služby kliniky
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newService}
+            onChange={(e) => setNewService(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && newService.trim()) {
+                setServices([...services, newService.trim()]);
+                setNewService("");
+              }
+            }}
+            placeholder="Napr: Vakcínacia, Chirurgia, Zuboločlekárstvo..."
+            className="flex-1 rounded-lg border bg-background px-3 py-1.5 text-xs focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              if (newService.trim()) {
+                setServices([...services, newService.trim()]);
+                setNewService("");
+              }
+            }}
+            className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
+          {services.map((svc, i) => (
+            <span key={i} className="inline-flex items-center gap-1 rounded bg-secondary/60 px-2 py-1 text-xs font-medium">
+              {svc}
+              <button onClick={() => setServices(services.filter((_, idx) => idx !== i))} className="hover:text-destructive">
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          ))}
+          {services.length === 0 && <p className="text-xs text-muted-foreground">Zatiaľ žiadne služby</p>}
+        </div>
+      </div>
+
+      {/* Section 5: Team Members */}
+      <div className="rounded-xl border bg-card p-5 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 border-b pb-3 font-semibold text-sm">
+          <Users className="h-4 w-4 text-primary" />
+          Tím kliniky
+        </div>
+
+        <div className="grid grid-cols-3 gap-2">
+          <input
+            type="text"
+            value={newMember.name}
+            onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+            placeholder="Meno"
+            className="rounded-lg border bg-background px-3 py-1.5 text-xs focus:outline-none"
+          />
+          <input
+            type="text"
+            value={newMember.role}
+            onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+            placeholder="Funkcia (Veterinár, Sestra...)"
+            className="rounded-lg border bg-background px-3 py-1.5 text-xs focus:outline-none"
+          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newMember.photoUrl}
+              onChange={(e) => setNewMember({ ...newMember, photoUrl: e.target.value })}
+              placeholder="URL fotky"
+              className="flex-1 rounded-lg border bg-background px-3 py-1.5 text-xs focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (newMember.name.trim()) {
+                  setTeamMembers([...teamMembers, { ...newMember }]);
+                  setNewMember({ name: "", role: "", photoUrl: "" });
+                }
+              }}
+              className="rounded-lg bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          {teamMembers.map((member, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-lg border bg-muted/30 px-3 py-2">
+              {member.photoUrl ? (
+                <img src={member.photoUrl} alt={member.name} className="h-8 w-8 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                  {member.name.slice(0, 1)}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold truncate">{member.name}</p>
+                <p className="text-[10px] text-muted-foreground truncate">{member.role}</p>
+              </div>
+              <button
+                onClick={() => setTeamMembers(teamMembers.filter((_, idx) => idx !== i))}
+                className="hover:text-destructive text-muted-foreground"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+          {teamMembers.length === 0 && <p className="text-xs text-muted-foreground">Zatiaľ žiadni členovia tímu</p>}
+        </div>
+      </div>
+
+      {/* Section 6: Disclaimer */}
       <div className="rounded-xl border bg-card p-5 space-y-4 shadow-sm">
         <div className="flex items-center gap-2 border-b pb-3 font-semibold text-sm">
           <ShieldCheck className="h-4 w-4 text-primary" />
