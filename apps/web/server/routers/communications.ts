@@ -1087,18 +1087,4 @@ export const communicationsRouter = createRouter({
       }
       return comm;
     }),
-  getUnreadCount: protectedProcedure
-    .query(async ({ ctx }) => {
-      const result = await ctx.db
-        .select({ count: sql<number>`count(*)` })
-        .from(communications)
-        .where(
-          and(
-            eq(communications.direction, "inbound"),
-            isNull(communications.readAt),
-            not(eq(communications.status, "read"))
-          )
-        );
-      return { count: Number(result[0]?.count || 0) };
-    }),
 });
