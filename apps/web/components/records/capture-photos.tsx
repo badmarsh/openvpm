@@ -28,7 +28,8 @@ export function CapturePhotos({ patientId }: { patientId: string }) {
     { patientId },
     {
       enabled: open,
-      refetchInterval: open ? CAPTURE_POLL_INTERVAL_MS : false,
+      refetchInterval: open ? Math.max(CAPTURE_POLL_INTERVAL_MS, 60000) : false,
+      refetchOnWindowFocus: false,
     }
   );
 

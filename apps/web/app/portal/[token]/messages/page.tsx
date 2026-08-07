@@ -18,7 +18,8 @@ export default function PortalMessagesPage() {
 
   const { data, isLoading, error } = trpc.portal.getMessages.useQuery(
     { token },
-    { refetchInterval: 30000 }
+    { refetchInterval: 60000,
+      refetchOnWindowFocus: false }
   );
   const sendMessage = trpc.portal.createMessage.useMutation({
     onSuccess: () => {

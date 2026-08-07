@@ -61,7 +61,8 @@ export function ConsentSign({ patientId }: { patientId: string }) {
     { patientId },
     {
       enabled: open && Boolean(request),
-      refetchInterval: open && request ? CONSENT_POLL_INTERVAL_MS : false,
+      refetchInterval: open && request ? Math.max(CONSENT_POLL_INTERVAL_MS, 60000) : false,
+      refetchOnWindowFocus: false,
     }
   );
 

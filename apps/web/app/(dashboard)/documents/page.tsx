@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -118,9 +118,24 @@ export default function DocumentsPage() {
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && !editMode) {
+      mermaid.initialize({ startOnLoad: true });
+      mermaid.run({ querySelector: ".language-mermaid", suppressErrors: true });
+    }
+  }, [selectedDoc, editMode, currentDoc]);
+
   const handleOpenDoc = (docId: string) => {
     setSelectedDoc(docId);
     setEditMode(false);
+  };
+
+  const parseMarkdown = (content: string) => {
+    try {
+      return marked.parse(content, { async: false });
+    } catch (e) {
+      return content;
+    }
   };
 
   const handleStartEdit = () => {
