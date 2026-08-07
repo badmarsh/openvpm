@@ -23,6 +23,8 @@ import {
   Mic,
   Stethoscope,
   Image as ImageIcon,
+  PenLine,
+  Star,
   FileCheck,
   ChevronLeft,
   ChevronRight,
@@ -35,6 +37,7 @@ import {
   Sparkles,
   Globe,
   Palette,
+  Zap,
 } from "lucide-react";
 import { PawMark } from "@/components/brand/paw-mark";
 import { useTranslations } from "next-intl";
@@ -91,8 +94,11 @@ const navSections: NavSection[] = [
       { href: "/marketing", key: "nav.marketing", icon: Megaphone, roles: ["admin", "veterinarian", "front_desk"], exact: true },
       { href: "/marketing/planner", key: "nav.marketingPlanner", icon: CalendarDays, roles: ["admin", "veterinarian", "front_desk"] },
       { href: "/marketing/brand-kit", key: "nav.marketingBrandKit", icon: Palette, roles: ["admin", "veterinarian"] },
+      { href: "/marketing/automations", key: "nav.automations", icon: Zap, roles: ["admin"] },
+      { href: "/marketing/media", key: "nav.marketingMedia", icon: ImageIcon, roles: ["admin", "veterinarian", "front_desk"] },
+      { href: "/marketing/canvas", key: "nav.marketingCanvas", icon: PenLine, roles: ["admin", "veterinarian"] },
+      { href: "/marketing/reviews", key: "nav.marketingReviews", icon: Star, roles: ["admin", "veterinarian", "front_desk"] },
       { href: "/website", key: "nav.website", icon: Globe, roles: ["admin", "veterinarian", "front_desk"] },
-      { href: "/automations", key: "nav.automations", icon: Workflow, roles: ["admin"] },
     ],
   },
   {

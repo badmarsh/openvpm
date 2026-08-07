@@ -321,6 +321,10 @@ export const marketingRouter = createRouter({
           photoUrl: z.string(),
         })).optional(),
         services: z.array(z.string()).optional(),
+        fontStyle: z.string().optional(),
+        address: z.string().optional(),
+        phone: z.string().optional(),
+        website: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -370,6 +374,11 @@ export const marketingRouter = createRouter({
         hashtags: string[];
         altText: string;
         callToAction: string;
+        styles: {
+          short: string;
+          medium: string;
+          playful: string;
+        };
       }> = {};
 
       for (const plat of input.platforms) {
@@ -399,12 +408,20 @@ export const marketingRouter = createRouter({
           ? []
           : ["#veterinar", "#zdraviezvierat", "#pesapacka", `#${plat.toLowerCase()}`];
 
+        const shortCaption = '⚡ ' + caption.slice(0, 200) + '...';
+        const playfulCaption = '😻 ' + caption.replace('Vaša veterinárna klinika', 'Váš obľúbený vet tím') + ' 🐾✨';
+
         variants[plat] = {
           platform: plat,
           caption: caption.slice(0, charLimit),
           hashtags,
           altText: `Ilustračný obrázok pre príspevok: ${input.topic}`,
           callToAction: "Objednajte sa na prehliadku ešte dnes!",
+          styles: {
+            short: shortCaption,
+            medium: caption.slice(0, charLimit),
+            playful: playfulCaption
+          }
         };
       }
 

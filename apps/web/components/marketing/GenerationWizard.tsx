@@ -27,6 +27,7 @@ interface GenerationWizardProps {
   onOpenChange: (open: boolean) => void;
   onCreated?: () => void;
   initialTopic?: string;
+  initialScheduledDate?: string;
 }
 
 type Platform = "IG" | "FB" | "GBP" | "TikTok" | "Reels";
@@ -37,6 +38,7 @@ export function GenerationWizard({
   onOpenChange,
   onCreated,
   initialTopic = "",
+  initialScheduledDate = "",
 }: GenerationWizardProps) {
   const t = useTranslations();
   const [step, setStep] = useState<number>(1);
@@ -48,7 +50,7 @@ export function GenerationWizard({
   const [language, setLanguage] = useState<"sk" | "en" | "cs">("sk");
 
   // Step 2 State
-  const [generatedVariants, setGeneratedVariants] = useState<Record<string, { caption: string; hashtags: string[]; altText: string }>>({});
+  const [generatedVariants, setGeneratedVariants] = useState<Record<string, { caption: string; hashtags: string[]; altText: string; styles?: { short: string; medium: string; playful: string } }>>({});
   const [isGeneratingCopy, setIsGeneratingCopy] = useState(false);
   const [polishInstructions, setPolishInstructions] = useState<Record<string, string>>({});
 
@@ -63,7 +65,7 @@ export function GenerationWizard({
   const [hasWatermark, setHasWatermark] = useState(true);
 
   // Step 5 State
-  const [scheduledDate, setScheduledDate] = useState("");
+  const [scheduledDate, setScheduledDate] = useState(initialScheduledDate);
 
   const generateVariants = trpc.marketing.generatePostVariants.useMutation({
     onSuccess: (data) => {
@@ -306,6 +308,27 @@ export function GenerationWizard({
                       rows={5}
                       className="w-full rounded-lg border bg-background px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono"
                     />
+
+                    {/* Style variant switcher */}
+                    {data.styles && (
+                      <div>
+                        <label className="mb-1 block text-[10px] font-medium text-muted-foreground">Štýl textu</label>
+                        <div className="flex gap-1.5">
+                          {(['short', 'medium', 'playful'] as const).map((style) => (
+                            <button
+                              key={style}
+                              onClick={() => setGeneratedVariants({
+                                ...generatedVariants,
+                                [plat]: { ...data, caption: data.styles![style] },
+                              })}
+                              className="rounded border px-2 py-1 text-[10px] font-semibold transition-colors hover:bg-accent text-muted-foreground"
+                            >
+                              {style === 'short' ? '⚡ Krátky' : style === 'medium' ? '📝 Stredný' : '😻 Hravý'}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Alt text (accessibility description) */}
                     <div>

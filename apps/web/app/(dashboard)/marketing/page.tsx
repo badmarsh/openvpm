@@ -71,10 +71,14 @@ export default function MarketingPage() {
 
   // Approvals alert dismiss
   const [approvalsDismissed, setApprovalsDismissed] = useState(false);
+  const [reviewsDismissed, setReviewsDismissed] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("All");
 
   const { data: posts, isLoading: postsLoading, refetch: refetchPosts } = trpc.marketing.getPosts.useQuery({ limit: 50 });
   const { data: templates, isLoading: templatesLoading } = trpc.marketing.getTemplates.useQuery();
   const { data: suggestedIdeas, isLoading: ideasLoading } = trpc.marketing.getSuggestedIdeas.useQuery();
+  const { data: gmbReviews } = trpc.marketing.fetchGmbReviews.useQuery();
+  const unrepliedCount = gmbReviews?.filter((r: any) => r.replyStatus !== 'replied').length ?? 0;
 
   const inReviewCount = posts?.filter((p) => (p.status as PostStatus) === "in_review").length ?? 0;
 
@@ -137,6 +141,25 @@ export default function MarketingPage() {
         ))}
       </div>
 
+      {/* Wellness Goal Widget */}
+      <div className="mt-6 rounded-xl border bg-gradient-to-r from-emerald-500/10 to-background p-4 flex items-center gap-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/50">
+          <span className="text-lg">🎯</span>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs font-semibold">Wellness cieľ: 12 príspevkov / mesiac</span>
+            <span className="text-xs font-bold text-emerald-600">{stats.published}/12</span>
+          </div>
+          <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+            <div 
+              className="h-full rounded-full bg-emerald-500 transition-all"
+              style={{ width: `${Math.min(100, (stats.published / 12) * 100)}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Pending Approvals Alert */}
       {!approvalsDismissed && !postsLoading && inReviewCount > 0 && (
         <div className="flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/40 px-4 py-3">
@@ -158,8 +181,29 @@ export default function MarketingPage() {
         </div>
       )}
 
+      {/* Unreplied Reviews Alert */}
+      {!reviewsDismissed && unrepliedCount > 0 && (
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 dark:border-rose-900 dark:bg-rose-950/40 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="h-4 w-4 text-rose-600 shrink-0" />
+            <span className="text-xs font-semibold text-rose-800 dark:text-rose-300">
+              {unrepliedCount} {unrepliedCount === 1 ? "nová recenzia čaká na odpoveď" : "nové recenzie čakajú na odpoveď"}
+            </span>
+            <Link href="/marketing/reviews" className="text-xs font-medium text-rose-700 dark:text-rose-400 underline hover:no-underline">
+              Zobraziť
+            </Link>
+          </div>
+          <button
+            onClick={() => setReviewsDismissed(true)}
+            className="rounded p-0.5 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-600"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* AI Post Ideas Section */}
-      <div className="rounded-xl border bg-gradient-to-r from-amber-500/10 via-primary/5 to-background p-5 space-y-3">
+      <div className="rounded-xl border bg-gradient-to-r from-amber-500/10 via-primary/5 to-background p-5 space-y-3 mt-6">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-2 font-semibold text-sm">
             <Lightbulb className="h-4 w-4 text-amber-500" />
@@ -297,6 +341,33 @@ export default function MarketingPage() {
             </div>
           </div>
 
+          {/* Category filter */}
+          <div className="flex flex-wrap gap-2 py-2">
+            {['All', 'Preventive Care & Wellness', 'Educational', 'Practice & Team', 'Client & Patient Engagement', 'Promotions & Announcements', 'Community & Events'].map((cat) => {
+              const count = cat === 'All' 
+                ? (templates?.length ?? 0) 
+                : (templates?.filter((t) => t.category === cat).length ?? 0);
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setCategoryFilter(cat)}
+                  className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    categoryFilter === cat
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  }`}
+                >
+                  {cat === 'All' ? 'Všetky' : cat}
+                  <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[9px] ${
+                    categoryFilter === cat ? "bg-primary-foreground/20" : "bg-background"
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
           {templatesLoading ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -324,7 +395,7 @@ export default function MarketingPage() {
                   : "space-y-2"
               }
             >
-              {templates.map((tpl) => {
+              {templates.filter(t => categoryFilter === 'All' || t.category === categoryFilter).map((tpl) => {
                 const catColor = CATEGORY_COLORS[tpl.category as string] ?? "bg-gray-50 text-gray-700 border-gray-200";
                 const platforms = (tpl.platforms as string[]) ?? [];
                 return (

@@ -48,6 +48,10 @@ export default function BrandKitPage() {
   const [tone, setTone] = useState("Fear-Free & Professional");
   const [customTone, setCustomTone] = useState("");
   const [language, setLanguage] = useState("sk");
+  const [fontStyle, setFontStyle] = useState("professional");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
   const [defaultHashtags, setDefaultHashtags] = useState<string[]>([]);
   const [newHashtagInput, setNewHashtagInput] = useState("");
   const [disclaimer, setDisclaimer] = useState("");
@@ -76,6 +80,10 @@ export default function BrandKitPage() {
       setTone((bk.tone as string) ?? "Fear-Free & Professional");
       setCustomTone((bk.customTone as string) ?? "");
       setLanguage((bk.language as string) ?? "sk");
+      setFontStyle((bk.fontStyle as string) ?? "professional");
+      setAddress((bk.address as string) ?? "");
+      setPhone((bk.phone as string) ?? "");
+      setWebsite((bk.website as string) ?? "");
       setDefaultHashtags((bk.defaultHashtags as string[]) ?? []);
       setDisclaimer((bk.disclaimer as string) ?? "");
       setIncludeDisclaimer((bk.includeDisclaimer as boolean) ?? true);
@@ -100,6 +108,10 @@ export default function BrandKitPage() {
       includeDisclaimer,
       teamMembers,
       services,
+      fontStyle,
+      address,
+      phone,
+      website,
     });
   };
 
@@ -181,6 +193,21 @@ export default function BrandKitPage() {
           </div>
         </div>
 
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Adresa</label>
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Ulica 1, Mesto" className="w-full rounded-lg border bg-background px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50" />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Telefón</label>
+            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+421 XXX XXX XXX" className="w-full rounded-lg border bg-background px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50" />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Web</label>
+            <input type="url" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="https://..." className="w-full rounded-lg border bg-background px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50" />
+          </div>
+        </div>
+
         <div>
           <label className="mb-2 block text-xs font-medium text-muted-foreground">Farebná paleta kliniky</label>
           <div className="flex gap-4">
@@ -215,6 +242,37 @@ export default function BrandKitPage() {
             </div>
           </div>
         </div>
+
+        {/* Vet color presets */}
+        <div>
+          <label className="mb-2 block text-xs font-medium text-muted-foreground">Rýchle palety</label>
+          <div className="flex gap-2 flex-wrap">
+            {[
+              { name: 'Teal & Care', primary: '#0f766e', secondary: '#06b6d4', accent: '#f59e0b' },
+              { name: 'Forest & Warm', primary: '#166534', secondary: '#4ade80', accent: '#fb923c' },
+              { name: 'Ocean & Trust', primary: '#1d4ed8', secondary: '#38bdf8', accent: '#f0abfc' },
+              { name: 'Berry & Gentle', primary: '#7c3aed', secondary: '#c084fc', accent: '#fb7185' },
+            ].map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                onClick={() => {
+                  setPrimaryColor(preset.primary);
+                  setSecondaryColor(preset.secondary);
+                  setAccentColor(preset.accent);
+                }}
+                className="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold hover:bg-accent transition-colors"
+              >
+                <span className="flex gap-0.5">
+                  <span className="h-3 w-3 rounded-full" style={{ background: preset.primary }} />
+                  <span className="h-3 w-3 rounded-full" style={{ background: preset.secondary }} />
+                  <span className="h-3 w-3 rounded-full" style={{ background: preset.accent }} />
+                </span>
+                {preset.name}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Section 2: Brand Voice */}
@@ -244,6 +302,31 @@ export default function BrandKitPage() {
                 }`}
               >
                 {tPreset}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-medium text-muted-foreground">Štýl písma v komunikácii</label>
+          <div className="flex gap-2">
+            {[
+              { value: 'professional', label: '🎓 Profesionálny', sample: 'Serif / Inter' },
+              { value: 'friendly', label: '😊 Priateľský', sample: 'Rounded / Nunito' },
+              { value: 'playful', label: '🎨 Hravý', sample: 'Display / Poppins' },
+            ].map((f) => (
+              <button
+                key={f.value}
+                type="button"
+                onClick={() => setFontStyle(f.value)}
+                className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold text-center transition-colors ${
+                  fontStyle === f.value
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-border hover:bg-accent text-muted-foreground'
+                }`}
+              >
+                <div>{f.label}</div>
+                <div className="text-[10px] mt-0.5 font-normal opacity-70">{f.sample}</div>
               </button>
             ))}
           </div>

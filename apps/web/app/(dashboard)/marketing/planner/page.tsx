@@ -58,6 +58,8 @@ export default function MarketingPlannerPage() {
   const [wizardOpen, setWizardOpen] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [prefilledDate, setPrefilledDate] = useState<string | null>(null);
 
   const fromDate = new Date(year, month, 1).toISOString();
   const toDate = new Date(year, month + 1, 0).toISOString();
@@ -135,6 +137,21 @@ export default function MarketingPlannerPage() {
         </button>
       </div>
 
+      {/* Status filter */}
+      <div className="flex flex-wrap gap-1.5 mt-2 mb-4">
+        {(['all', 'draft', 'in_review', 'approved', 'scheduled', 'published'] as const).map((s) => (
+          <button
+            key={s}
+            onClick={() => setStatusFilter(s)}
+            className={`rounded-full px-3 py-1 text-[11px] font-semibold transition-colors ${
+              statusFilter === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent'
+            }`}
+          >
+            {s === 'all' ? 'Všetky' : t(`marketing.statusLabels.${s}`)}
+          </button>
+        ))}
+      </div>
+
       {/* Calendar */}
       {postsLoading ? (
         <PageLoading />
@@ -174,12 +191,12 @@ export default function MarketingPlannerPage() {
                 day === today.getDate() &&
                 month === today.getMonth() &&
                 year === today.getFullYear();
-              const dayPosts = postsByDay.get(day) ?? [];
+              const dayPosts = (postsByDay.get(day) ?? []).filter((p) => statusFilter === "all" || p.status === statusFilter);
 
               return (
                 <div
                   key={day}
-                  className={`min-h-[90px] border-b border-r p-1.5 transition-colors ${
+                  className={`group min-h-[90px] border-b border-r p-1.5 transition-colors ${
                     isToday ? "bg-primary/5" : ""
                   } ${dragOverDay === day ? "bg-blue-50 dark:bg-blue-950/30 ring-1 ring-inset ring-blue-400" : ""}`}
                   onDragOver={(e) => { e.preventDefault(); setDragOverDay(day); }}
@@ -223,6 +240,15 @@ export default function MarketingPlannerPage() {
                       );
                     })}
                   </div>
+                  <button
+                    onClick={() => {
+                      setPrefilledDate(new Date(year, month, day).toISOString().slice(0, 16));
+                      setWizardOpen(true);
+                    }}
+                    className="mt-1 w-full rounded text-center text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-accent transition-all py-0.5"
+                  >
+                    + Pridať
+                  </button>
                 </div>
               );
             })}
@@ -257,7 +283,11 @@ export default function MarketingPlannerPage() {
       {/* Full 5-Step AI Generation Wizard */}
       <GenerationWizard
         open={wizardOpen}
-        onOpenChange={setWizardOpen}
+        onOpenChange={(open) => {
+          setWizardOpen(open);
+          if (!open) setPrefilledDate(null);
+        }}
+        initialScheduledDate={prefilledDate ?? undefined}
         onCreated={() => refetch()}
       />
 
