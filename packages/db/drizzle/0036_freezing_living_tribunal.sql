@@ -1,0 +1,2 @@
+ALTER TABLE "practices" ADD COLUMN "brand_kit" jsonb DEFAULT '{}'::jsonb;--> statement-breakpoint
+ALTER TABLE "website_submissions" ADD CONSTRAINT "website_submissions_communication_id_communications_id_fk" FOREIGN KEY ("communication_id") REFERENCES "public"."communications"("id") ON DELETE no action ON UPDATE no action;

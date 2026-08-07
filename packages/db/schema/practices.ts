@@ -27,6 +27,7 @@ export const practices = pgTable(
       .default("America/New_York"),
     logoUrl: varchar("logo_url", { length: 512 }),
     settings: jsonb("settings").default({}),
+    brandKit: jsonb("brand_kit").default({}),
     // Hosted-SaaS subscription (ignored by self-host unless HOSTED_BILLING_ENABLED).
     // subscriptionTier is the canonical plan tier: free | cloud | enterprise.
     subscriptionTier: varchar("subscription_tier", { length: 32 })

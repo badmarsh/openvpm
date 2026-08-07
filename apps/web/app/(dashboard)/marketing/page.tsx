@@ -14,29 +14,32 @@ import {
   Sparkles,
   LayoutGrid,
   List,
+  Lightbulb,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { TableSkeleton } from "@/components/common/loading";
 import { EmptyState } from "@/components/common/empty-state";
+import { GenerationWizard } from "@/components/marketing/GenerationWizard";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
 const STATUS_CONFIG: Record<PostStatus, { color: string; icon: React.ElementType }> = {
-  draft: { color: "bg-gray-100 text-gray-700", icon: FileText },
-  in_review: { color: "bg-amber-100 text-amber-700", icon: AlertCircle },
-  approved: { color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-  scheduled: { color: "bg-blue-100 text-blue-700", icon: Clock },
-  published: { color: "bg-green-100 text-green-700", icon: CheckCircle2 },
-  archived: { color: "bg-gray-100 text-gray-500", icon: FileText },
+  draft: { color: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300", icon: FileText },
+  in_review: { color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300", icon: AlertCircle },
+  approved: { color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300", icon: CheckCircle2 },
+  scheduled: { color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300", icon: Clock },
+  published: { color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300", icon: CheckCircle2 },
+  archived: { color: "bg-gray-100 text-gray-500 dark:bg-gray-900 dark:text-gray-600", icon: FileText },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "Preventive Care & Wellness": "bg-emerald-50 text-emerald-700 border-emerald-200",
-  "Educational": "bg-blue-50 text-blue-700 border-blue-200",
-  "Practice & Team": "bg-violet-50 text-violet-700 border-violet-200",
-  "Client & Patient Engagement": "bg-amber-50 text-amber-700 border-amber-200",
-  "Promotions & Announcements": "bg-rose-50 text-rose-700 border-rose-200",
-  "Community & Events": "bg-cyan-50 text-cyan-700 border-cyan-200",
+  "Preventive Care & Wellness": "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300",
+  "Educational": "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300",
+  "Practice & Team": "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/40 dark:text-violet-300",
+  "Client & Patient Engagement": "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
+  "Promotions & Announcements": "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300",
+  "Community & Events": "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300",
 };
 
 export default function MarketingPage() {
@@ -44,12 +47,23 @@ export default function MarketingPage() {
   const [activeTab, setActiveTab] = useState<"overview" | "templates">("overview");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const { data: posts, isLoading: postsLoading } = trpc.marketing.getPosts.useQuery({ limit: 10 });
+  // Wizard state for post ideas
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [wizardOpen, setWizardOpen] = useState(false);
+
+  const { data: posts, isLoading: postsLoading, refetch: refetchPosts } = trpc.marketing.getPosts.useQuery({ limit: 10 });
   const { data: templates, isLoading: templatesLoading } = trpc.marketing.getTemplates.useQuery();
+  const { data: suggestedIdeas, isLoading: ideasLoading } = trpc.marketing.getSuggestedIdeas.useQuery();
+
   const seedTemplates = trpc.marketing.seedDefaultTemplates.useMutation({
-    onSuccess: () => { toast.success(t("marketing.templatesSeeded")); },
+    onSuccess: () => { toast.success(t("marketing.templatesSeeded") ?? "Šablóny pridané"); },
     onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
+
+  const handleUseIdea = (topicTitle: string) => {
+    setSelectedTopic(topicTitle);
+    setWizardOpen(true);
+  };
 
   const stats = {
     total: posts?.length ?? 0,
@@ -72,13 +86,13 @@ export default function MarketingPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Link
-            href="/marketing/planner"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          <button
+            onClick={() => { setSelectedTopic(""); setWizardOpen(true); }}
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             {t("marketing.newPost")}
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -100,6 +114,49 @@ export default function MarketingPage() {
         ))}
       </div>
 
+      {/* AI Post Ideas Section */}
+      <div className="rounded-xl border bg-gradient-to-r from-amber-500/10 via-primary/5 to-background p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-2 font-semibold text-sm">
+            <Lightbulb className="h-4 w-4 text-amber-500" />
+            💡 AI Nápady na príspevky na tento týždeň
+          </span>
+          <span className="text-[11px] text-muted-foreground font-medium">Automatické odporúčania</span>
+        </div>
+
+        {ideasLoading ? (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-24 animate-pulse rounded-lg bg-muted" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {suggestedIdeas?.slice(0, 3).map((idea) => (
+              <div
+                key={idea.id}
+                className="flex flex-col justify-between rounded-lg border bg-card p-3 shadow-xs hover:shadow-sm transition-all"
+              >
+                <div>
+                  <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
+                    <span className="font-semibold text-primary">{idea.goal}</span>
+                    <span>{idea.platforms.join(", ")}</span>
+                  </div>
+                  <h4 className="text-xs font-bold leading-tight line-clamp-2">{idea.title}</h4>
+                  <p className="mt-1 text-[11px] text-muted-foreground line-clamp-2">{idea.concept}</p>
+                </div>
+                <button
+                  onClick={() => handleUseIdea(idea.title)}
+                  className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                >
+                  Použiť tento nápad <ArrowRight className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Tabs */}
       <div className="flex items-center gap-1 border-b">
         {[
@@ -109,10 +166,11 @@ export default function MarketingPage() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as "overview" | "templates")}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id
-              ? "border-primary text-primary"
-              : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+              activeTab === tab.id
+                ? "border-primary text-primary font-bold"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
           >
             {t(tab.labelKey)}
           </button>
@@ -132,7 +190,7 @@ export default function MarketingPage() {
               action={{
                 label: t("marketing.emptyAction"),
                 icon: Sparkles,
-                onClick: () => { }
+                onClick: () => { setWizardOpen(true); }
               }}
             />
           ) : (
@@ -208,7 +266,7 @@ export default function MarketingPage() {
               <button
                 onClick={() => seedTemplates.mutate()}
                 disabled={seedTemplates.isPending}
-                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60 cursor-pointer"
               >
                 <Sparkles className="h-4 w-4" />
                 {seedTemplates.isPending ? t("marketing.templatesEmptyActionPending") : t("marketing.templatesEmptyAction")}
@@ -244,13 +302,13 @@ export default function MarketingPage() {
                     </div>
                     <h3 className="text-sm font-semibold leading-snug">{tpl.name as string}</h3>
                     <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{tpl.description as string}</p>
-                    <Link
-                      href="/marketing/planner"
-                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    <button
+                      onClick={() => handleUseIdea(tpl.name as string)}
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                     >
                       <Sparkles className="h-3 w-3" />
                       {t("marketing.templateUse")}
-                    </Link>
+                    </button>
                   </div>
                 );
               })}
@@ -258,6 +316,14 @@ export default function MarketingPage() {
           )}
         </div>
       )}
+
+      {/* Generation Wizard Modal */}
+      <GenerationWizard
+        open={wizardOpen}
+        onOpenChange={setWizardOpen}
+        initialTopic={selectedTopic}
+        onCreated={() => refetchPosts()}
+      />
     </div>
   );
 }

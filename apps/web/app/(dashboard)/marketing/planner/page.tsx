@@ -3,38 +3,32 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
 import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   Plus,
-  Sparkles,
-  X,
-  Loader2,
   Clock,
   CheckCircle2,
   FileText,
   AlertCircle,
   Send,
+  Droplet,
+  ShieldAlert,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { PageLoading } from "@/components/common/loading";
+import { PostDetailModal } from "@/components/marketing/PostDetailModal";
+import { GenerationWizard } from "@/components/marketing/GenerationWizard";
 
 type PostStatus = "draft" | "in_review" | "approved" | "scheduled" | "published" | "archived";
 
 const STATUS_COLORS: Record<PostStatus, string> = {
-  draft: "bg-gray-200 text-gray-700",
-  in_review: "bg-amber-200 text-amber-800",
-  approved: "bg-emerald-200 text-emerald-800",
-  scheduled: "bg-blue-200 text-blue-800",
-  published: "bg-green-200 text-green-800",
-  archived: "bg-gray-100 text-gray-400",
+  draft: "bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+  in_review: "bg-amber-200 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+  approved: "bg-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  scheduled: "bg-blue-200 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
+  published: "bg-green-200 text-green-800 dark:bg-green-950 dark:text-green-300",
+  archived: "bg-gray-100 text-gray-400 dark:bg-gray-900 dark:text-gray-600",
 };
 
 const STATUS_ICONS: Record<PostStatus, React.ElementType> = {
@@ -58,15 +52,11 @@ export default function MarketingPlannerPage() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [wizardOpen, setWizardOpen] = useState(false);
 
-  // Wizard state
-  const [topic, setTopic] = useState("");
-  const [platform, setPlatform] = useState<"IG" | "FB" | "GBP">("IG");
-  const [scheduledDate, setScheduledDate] = useState("");
-  const [generatedContent, setGeneratedContent] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [genError, setGenError] = useState("");
+  // Modals state
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
 
   const fromDate = new Date(year, month, 1).toISOString();
   const toDate = new Date(year, month + 1, 0).toISOString();
@@ -74,18 +64,6 @@ export default function MarketingPlannerPage() {
   const { data: posts, isLoading: postsLoading, refetch } = trpc.marketing.getPostsByDateRange.useQuery({
     from: fromDate,
     to: toDate,
-  });
-
-  const createPost = trpc.marketing.createPost.useMutation({
-    onSuccess: () => {
-      refetch();
-      setWizardOpen(false);
-      setTopic("");
-      setGeneratedContent("");
-      setScheduledDate("");
-      toast.success(t("marketing.planner.successCreate"));
-    },
-    onError: (e) => toast.error(e.message ?? t("common.error_default")),
   });
 
   const prevMonth = useCallback(() => {
@@ -98,47 +76,9 @@ export default function MarketingPlannerPage() {
     else setMonth((m) => m + 1);
   }, [month]);
 
-  const handleGenerate = async () => {
-    if (!topic.trim()) { setGenError(t("marketing.planner.errorEmptyTopic")); return; }
-    setIsGenerating(true);
-    setGenError("");
-    try {
-      const res = await fetch("/api/marketing-ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          actionType: "generate_social_post",
-          prompt: topic,
-          platform,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) setGeneratedContent(data.content ?? "");
-      else setGenError(data.error ?? t("marketing.planner.errorGeneration"));
-    } catch {
-      setGenError(t("marketing.planner.errorConnection"));
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleSavePost = () => {
-    if (!generatedContent.trim()) return;
-    createPost.mutate({
-      status: scheduledDate ? "scheduled" : "draft",
-      variants: {
-        [platform]: {
-          platform,
-          caption: generatedContent,
-          hashtags: [],
-          mediaUrl: "",
-          aspectRatio: "1:1",
-        },
-      },
-      scheduledDate: scheduledDate || undefined,
-      topicInputs: { topic },
-      note: t("marketing.postCreatedNote"),
-    });
+  const handlePostClick = (postId: string) => {
+    setSelectedPostId(postId);
+    setDetailModalOpen(true);
   };
 
   // Build calendar grid
@@ -170,7 +110,7 @@ export default function MarketingPlannerPage() {
         </div>
         <button
           onClick={() => setWizardOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
         >
           <Plus className="h-4 w-4" />
           {t("marketing.planner.newPost")}
@@ -183,13 +123,13 @@ export default function MarketingPlannerPage() {
       ) : (
         <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
           <div className="flex items-center justify-between border-b px-4 py-3">
-            <button onClick={prevMonth} className="rounded-md p-1.5 hover:bg-accent">
+            <button onClick={prevMonth} className="rounded-md p-1.5 hover:bg-accent cursor-pointer">
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span className="text-sm font-semibold">
               {months[month]} {year}
             </span>
-            <button onClick={nextMonth} className="rounded-md p-1.5 hover:bg-accent">
+            <button onClick={nextMonth} className="rounded-md p-1.5 hover:bg-accent cursor-pointer">
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
@@ -207,7 +147,7 @@ export default function MarketingPlannerPage() {
           <div className="grid grid-cols-7">
             {/* Empty cells before first day */}
             {Array.from({ length: firstDay }).map((_, i) => (
-              <div key={`empty-${i}`} className="min-h-[80px] border-b border-r bg-muted/10" />
+              <div key={`empty-${i}`} className="min-h-[90px] border-b border-r bg-muted/10" />
             ))}
             {/* Day cells */}
             {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -221,24 +161,38 @@ export default function MarketingPlannerPage() {
               return (
                 <div
                   key={day}
-                  className={`min-h-[80px] border-b border-r p-1.5 ${isToday ? "bg-primary/5" : ""}`}
+                  className={`min-h-[90px] border-b border-r p-1.5 ${isToday ? "bg-primary/5" : ""}`}
                 >
                   <div className={`mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
                     {day}
                   </div>
-                  <div className="space-y-0.5">
+                  <div className="space-y-1">
                     {dayPosts.map((post) => {
                       const status = post.status as PostStatus;
                       const colorClass = STATUS_COLORS[status] ?? STATUS_COLORS.draft;
-                      const variants = post.variants as Record<string, { platform?: string }>;
-                      const plat = Object.keys(variants)[0] ?? "";
+                      const variants = (post.variants as Record<string, any>) ?? {};
+                      const plats = Object.keys(variants);
+                      const platLabel = plats.join(", ") || "Post";
+
                       return (
                         <div
                           key={post.id}
-                          className={`truncate rounded px-1.5 py-0.5 text-[10px] font-medium ${colorClass}`}
-                          title={`${t(`marketing.planner.platformLabels.${plat}`) ?? plat} — ${t(`marketing.statusLabels.${status}`)}`}
+                          onClick={() => handlePostClick(post.id)}
+                          className={`flex items-center justify-between rounded px-1.5 py-1 text-[10px] font-medium cursor-pointer transition-all hover:opacity-80 shadow-xs ${colorClass}`}
                         >
-                          {t(`marketing.planner.platformLabels.${plat}`) ?? plat}
+                          <span className="truncate">{platLabel}</span>
+                          <div className="flex items-center gap-0.5 shrink-0 ml-1">
+                            {!post.hasConsent && (
+                              <span title="Chýba súhlas pacienta">
+                                <ShieldAlert className="h-3 w-3 text-amber-600" />
+                              </span>
+                            )}
+                            {post.hasWatermark && (
+                              <span title="Vodoznak">
+                                <Droplet className="h-2.5 w-2.5 text-blue-600" />
+                              </span>
+                            )}
+                          </div>
                         </div>
                       );
                     })}
@@ -251,110 +205,43 @@ export default function MarketingPlannerPage() {
       )}
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap items-center gap-3 text-xs">
         {(Object.entries(STATUS_COLORS) as [PostStatus, string][]).map(([s, c]) => {
           const Icon = STATUS_ICONS[s];
           return (
-            <span key={s} className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${c}`}>
+            <span key={s} className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-medium ${c}`}>
               {Icon && <Icon className="h-3 w-3" />}
-              {t(`marketing.statusLabels.${s}`)}
+              {t(`marketing.statusLabels.${s}`) ?? s}
             </span>
           );
         })}
+
+        <div className="ml-auto flex items-center gap-3 text-muted-foreground">
+          <span className="inline-flex items-center gap-1">
+            <ShieldAlert className="h-3.5 w-3.5 text-amber-600" />
+            Chýba súhlas
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Droplet className="h-3.5 w-3.5 text-blue-600" />
+            Vodoznak
+          </span>
+        </div>
       </div>
 
-      {/* AI Generation Wizard Slide-over */}
-      <Dialog open={wizardOpen} onOpenChange={setWizardOpen}>
-        <DialogContent variant="slideover" className="flex flex-col overflow-y-auto">
-          <DialogHeader className="border-b px-6 py-4 -mx-6 -mt-6 mb-0">
-            <DialogTitle className="flex items-center gap-2 text-base">
-              <Sparkles className="h-5 w-5 text-primary" />
-              {t("marketing.planner.wizardTitle")}
-            </DialogTitle>
-          </DialogHeader>
+      {/* Full 5-Step AI Generation Wizard */}
+      <GenerationWizard
+        open={wizardOpen}
+        onOpenChange={setWizardOpen}
+        onCreated={() => refetch()}
+      />
 
-          <div className="flex-1 space-y-5 py-2">
-            {/* Platform */}
-            <div>
-              <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.platformLabel")}</label>
-              <div className="flex gap-2">
-                {(["IG", "FB", "GBP"] as const).map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setPlatform(p)}
-                    className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${platform === p ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"}`}
-                  >
-                    {t(`marketing.planner.platformLabels.${p}`)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Topic */}
-            <div>
-              <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.topicLabel")}</label>
-              <textarea
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                rows={3}
-                placeholder={t("marketing.planner.topicPlaceholder")}
-                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-              />
-              {genError && <p className="mt-1 text-xs text-destructive">{genError}</p>}
-            </div>
-
-            {/* Generate button */}
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating || !topic.trim()}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60 hover:bg-primary/90 transition-colors"
-            >
-              {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-              {isGenerating ? t("marketing.planner.generatingButton") : t("marketing.planner.generateButton")}
-            </button>
-
-            {/* Generated output */}
-            {generatedContent && (
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.generatedLabel")}</label>
-                <textarea
-                  value={generatedContent}
-                  onChange={(e) => setGeneratedContent(e.target.value)}
-                  rows={10}
-                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono"
-                />
-              </div>
-            )}
-
-            {/* Schedule date */}
-            {generatedContent && (
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t("marketing.planner.dateLabel")}</label>
-                <input
-                  type="date"
-                  value={scheduledDate}
-                  onChange={(e) => setScheduledDate(e.target.value)}
-                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Footer */}
-          {generatedContent && (
-            <div className="border-t pt-4">
-              <button
-                onClick={handleSavePost}
-                disabled={createPost.isPending}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
-              >
-                {createPost.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                {scheduledDate ? t("marketing.planner.saveSchedule") : t("marketing.planner.saveDraft")}
-              </button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Post Detail Modal */}
+      <PostDetailModal
+        postId={selectedPostId}
+        open={detailModalOpen}
+        onOpenChange={setDetailModalOpen}
+        onUpdated={() => refetch()}
+      />
     </div>
   );
 }
