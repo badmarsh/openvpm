@@ -8,6 +8,8 @@ import {
   practices,
 } from "@openpims/db";
 import { getLocaleData } from "@openpims/db/data";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
 
 export const marketingRouter = createRouter({
   // -------------------------------------------------------------------------
@@ -350,7 +352,7 @@ export const marketingRouter = createRouter({
       return updatedBrandKit;
     }),
 
-  /** Generate AI Post Variants across platforms */
+  /** Generate AI Post Variants across platforms — powered by Gemini 2.5 Flash */
   generatePostVariants: protectedProcedure
     .use(requireRole("admin", "veterinarian", "technician"))
     .input(
@@ -360,13 +362,39 @@ export const marketingRouter = createRouter({
         goal: z.string().optional().default("Awareness"),
         language: z.enum(["sk", "en", "cs"]).default("sk"),
         templateId: z.string().optional(),
-        instruction: z.string().optional(), // For "Polish this"
+        instruction: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // Return generated structured variants per platform
-      const langNames = { sk: "Slovak", en: "English", cs: "Czech" };
-      const selectedLang = langNames[input.language] ?? "Slovak";
+      // Load brand kit for context
+      const practice = await ctx.db.query.practices.findFirst({
+        where: eq(practices.id, ctx.practiceId),
+        columns: { brandKit: true },
+      });
+      const bk = (practice?.brandKit ?? {}) as Record<string, unknown>;
+      const clinicName = (bk.clinicName as string) ?? "Veterinárna ambulancia";
+      const toneOfVoice = (bk.toneOfVoice as string) ?? "profesionálny a empatický";
+      const services = (bk.services as string[]) ?? [];
+
+      const SYSTEM = `Si elitný marketingový copywriter pre veterinárnu kliniku na Slovensku.
+Klinika: ${clinicName}
+Tón: ${toneOfVoice}
+Služby: ${services.slice(0, 5).join(", ") || "veterinárna starostlivosť"}
+
+Pravidlá:
+- Jazyk: ${input.language === "en" ? "angličtina" : input.language === "cs" ? "čeština" : "slovenčina"}
+- Fear-Free prístup — empatia, pozitívna asociácia s veterinárom
+- Žiadna medicínska diagnostika
+- Autentický, nie generický štýl
+- Cieľ príspevku: ${input.goal}`;
+
+      const PLATFORM_RULES: Record<string, { hint: string; charLimit: number; hashtagCount: number }> = {
+        IG:     { hint: "Instagram: zaujímavý hook, body s emojis, max 10 hashtagov na konci",                     charLimit: 2200, hashtagCount: 10 },
+        FB:     { hint: "Facebook: informatívny, komunitne orientovaný, jasné CTA, menej hashtagov",             charLimit: 5000, hashtagCount: 4  },
+        GBP:    { hint: "Google Business Profile: stručný (max 1000 znakov), profesionálny, silné CTA na booking", charLimit: 1000, hashtagCount: 0  },
+        TikTok: { hint: "TikTok popis: krátky hook, odporúčanie trendy zvuku, 3–5 tagov",                        charLimit: 1000, hashtagCount: 5  },
+        Reels:  { hint: "Reels popis: hook veta, krátky popis videa, 3–5 tagov",                                 charLimit: 1000, hashtagCount: 5  },
+      };
 
       const variants: Record<string, {
         platform: string;
@@ -374,55 +402,76 @@ export const marketingRouter = createRouter({
         hashtags: string[];
         altText: string;
         callToAction: string;
-        styles: {
-          short: string;
-          medium: string;
-          playful: string;
-        };
+        styles: { short: string; medium: string; playful: string };
       }> = {};
 
+      const isPolish = Boolean(input.instruction);
+
       for (const plat of input.platforms) {
-        let platformHint = "";
-        let charLimit = 2200;
+        const rules = PLATFORM_RULES[plat] ?? PLATFORM_RULES.IG;
 
-        if (plat === "IG") {
-          platformHint = "Instagram post format: Engaging hook, body paragraphs with emojis, list of relevant hashtags at end.";
-          charLimit = 2200;
-        } else if (plat === "FB") {
-          platformHint = "Facebook post format: Informative, community-oriented, clear Call To Action, link-friendly, fewer hashtags.";
-          charLimit = 5000;
-        } else if (plat === "GBP") {
-          platformHint = "Google Business Profile update format: Concise (under 1500 chars), professional, strong CTA to book appointment or call clinic.";
-          charLimit = 1500;
-        } else if (plat === "TikTok" || plat === "Reels") {
-          platformHint = `${plat} video description format: Short catchy caption, trending audio recommendation, hook sentence, 3-5 tags.`;
-          charLimit = 1000;
+        try {
+          const userPrompt = isPolish
+            ? `Vylepši nasledujúci príspevok pre ${plat} podľa inštrukcie.\nPôvodná téma: ${input.topic}\nInštrukcia: ${input.instruction}\nFormát: ${rules.hint}\n\nVráť IBA:\n1. CAPTION: [text]\n2. HASHTAGS: [oddelené čiarkou]\n3. ALT_TEXT: [1 veta]`
+            : `Vytvor príspevok pre ${plat} na tému: "${input.topic}"\nFormát: ${rules.hint}\nMax znakov: ${rules.charLimit}\n\nVráť IBA v tomto formáte:\n1. CAPTION: [text príspevku]\n2. HASHTAGS: [${rules.hashtagCount} hashtagov oddelených čiarkou, alebo NONE ak GBP]\n3. ALT_TEXT: [1 opisná veta pre accessibility obrázka]`;
+
+          const { text } = await generateText({
+            model: google("gemini-2.5-flash"),
+            system: SYSTEM,
+            prompt: userPrompt,
+          });
+
+          // Parse structured output
+          const captionMatch = text.match(/1\.?\s*CAPTION:\s*([\s\S]*?)(?=2\.?\s*HASHTAGS:|$)/i);
+          const hashtagMatch = text.match(/2\.?\s*HASHTAGS:\s*([\s\S]*?)(?=3\.?\s*ALT_TEXT:|$)/i);
+          const altMatch    = text.match(/3\.?\s*ALT_TEXT:\s*([\s\S]*?)$/i);
+
+          const caption   = (captionMatch?.[1] ?? text).trim().slice(0, rules.charLimit);
+          const rawTags   = (hashtagMatch?.[1] ?? "").trim();
+          const hashtags  = rawTags.toLowerCase() === "none" || !rawTags
+            ? []
+            : rawTags.split(/[,\n]+/).map(t => t.trim().replace(/^#?/, "#")).filter(Boolean).slice(0, rules.hashtagCount);
+          const altText   = (altMatch?.[1] ?? `Veterinárny príspevok: ${input.topic}`).trim();
+
+          // Generate short and playful variants using AI
+          const [shortResult, playfulResult] = await Promise.all([
+            generateText({
+              model: google("gemini-2.5-flash"),
+              system: SYSTEM,
+              prompt: `Skráť nasledujúci ${plat} príspevok na max 200 znakov, zachovaj kľúčové posolstvo a CTA:\n\n${caption}`,
+            }),
+            generateText({
+              model: google("gemini-2.5-flash"),
+              system: SYSTEM,
+              prompt: `Prepíš nasledujúci ${plat} príspevok do hravejšieho, priateľskejšieho štýlu s viac emojis. Max ${Math.min(rules.charLimit, 600)} znakov:\n\n${caption}`,
+            }),
+          ]);
+
+          variants[plat] = {
+            platform: plat,
+            caption,
+            hashtags,
+            altText,
+            callToAction: "Objednajte sa online alebo zavolajte nám!",
+            styles: {
+              short:   shortResult.text.trim().slice(0, 280),
+              medium:  caption,
+              playful: playfulResult.text.trim().slice(0, rules.charLimit),
+            },
+          };
+        } catch (aiErr) {
+          // Graceful fallback — never let AI error break the wizard
+          console.error(`[generatePostVariants] AI error for ${plat}:`, aiErr);
+          const fallback = `🐾 ${input.topic} — ${clinicName}\n\nZdravie vášho miláčika je naša priorita. Objednajte sa ešte dnes!`;
+          variants[plat] = {
+            platform: plat,
+            caption: fallback,
+            hashtags: plat !== "GBP" ? ["#veterinar", "#zdraviezvierat", "#fearfree"] : [],
+            altText: `Príspevok o téme: ${input.topic}`,
+            callToAction: "Objednajte sa online!",
+            styles: { short: fallback.slice(0, 200), medium: fallback, playful: "😻 " + fallback + " 🐾✨" },
+          };
         }
-
-        const isPolish = Boolean(input.instruction);
-        const caption = isPolish
-          ? `[Polished for ${plat}] ${input.topic} — ${input.instruction}`
-          : `🐾 ${input.topic}\n\nVaša veterinárna klinika vám prináša dôležité tipy pre zdravie vášho domáceho miláčika. Nezabúdajte na pravidelné kontroly a preventívnu starostlivosť.\n\n📍 Navštívte nás alebo sa objednajte online!\n\n(${plat} - ${input.goal} - ${selectedLang})`;
-
-        const hashtags = plat === "GBP"
-          ? []
-          : ["#veterinar", "#zdraviezvierat", "#pesapacka", `#${plat.toLowerCase()}`];
-
-        const shortCaption = '⚡ ' + caption.slice(0, 200) + '...';
-        const playfulCaption = '😻 ' + caption.replace('Vaša veterinárna klinika', 'Váš obľúbený vet tím') + ' 🐾✨';
-
-        variants[plat] = {
-          platform: plat,
-          caption: caption.slice(0, charLimit),
-          hashtags,
-          altText: `Ilustračný obrázok pre príspevok: ${input.topic}`,
-          callToAction: "Objednajte sa na prehliadku ešte dnes!",
-          styles: {
-            short: shortCaption,
-            medium: caption.slice(0, charLimit),
-            playful: playfulCaption
-          }
-        };
       }
 
       return { variants };
@@ -568,5 +617,69 @@ export const marketingRouter = createRouter({
         note: "Reply stored locally. GMB API integration pending OAuth setup.",
       };
     }),
+
+  /** Generate AI reply for a Google Business review — powered by Gemini 2.5 Flash */
+  generateReviewReply: protectedProcedure
+    .use(requireRole("admin", "veterinarian", "technician"))
+    .input(
+      z.object({
+        reviewText: z.string().min(1).max(2000),
+        rating: z.number().min(1).max(5),
+        authorName: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const practice = await ctx.db.query.practices.findFirst({
+        where: eq(practices.id, ctx.practiceId),
+        columns: { brandKit: true, name: true },
+      });
+      const bk = (practice?.brandKit ?? {}) as Record<string, unknown>;
+      const clinicName = (bk.clinicName as string) ?? practice?.name ?? "Naša ambulancia";
+      const toneOfVoice = (bk.toneOfVoice as string) ?? "profesionálny a empatický";
+
+      const stars = input.rating;
+      const toneGuide =
+        stars <= 2
+          ? "Profesionálny tón, drž hranice, neospravedlňuj sa za kvalitu starostlivosti, ponúkni riešenie."
+          : stars === 3
+          ? "Empatický tón, uzni spätnú väzbu, ponúkni konkrétne zlepšenie, pozvi späť."
+          : "Vďačný a vrúcny tón, ocen dôveru, pozvi na ďalšiu návštevu.";
+
+      const SYSTEM = `Si PR asistent veterinárnej kliniky "${clinicName}" na Slovensku.
+Tón komunikácie: ${toneOfVoice}.
+Fear-Free filozofia — vždy pozitívna asociácia s veterinárnou starostlivosťou.
+GDPR: Nikdy nespomínaj konkrétne mená pacientov ani diagnózy.
+Odpoveď musí byť v slovenčine, max 120 slov.`;
+
+      try {
+        const { text } = await generateText({
+          model: google("gemini-2.5-flash"),
+          system: SYSTEM,
+          prompt: `Napíš profesionálnu odpoveď na Google recenziu veterinárnej kliniky.
+
+Hodnotenie: ${stars}★
+Text recenzie: "${input.reviewText}"
+${input.authorName ? `Autor: ${input.authorName}` : ""}
+
+Pokyny pre tón: ${toneGuide}
+Podpis: "Tím ${clinicName}"
+
+Vráť IBA text odpovede, bez ďalšieho komentára.`,
+        });
+
+        return { reply: text.trim(), generated: true };
+      } catch (err) {
+        console.error("[generateReviewReply] AI error:", err);
+        // Fallback reply
+        const fallback =
+          stars >= 4
+            ? `Ďakujeme za vašu krásnu recenziu! Teší nás, že ste boli spokojní s našou starostlivosťou. Tešíme sa na vašu ďalšiu návštevu! S pozdravom, tím ${clinicName}.`
+            : `Dobrý deň, ďakujeme za spätnú väzbu. Vezmeme si ju k srdcu a budeme pracovať na ďalšom zlepšení. Radi vás uvítame opäť. S pozdravom, tím ${clinicName}.`;
+        return { reply: fallback, generated: false };
+      }
+    }),
 });
+
+
+
 

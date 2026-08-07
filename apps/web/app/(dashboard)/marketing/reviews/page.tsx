@@ -64,6 +64,15 @@ export default function ReviewsPage() {
     onError: (e) => toast.error(e.message),
   });
 
+  const generateReviewReplyMutation = trpc.marketing.generateReviewReply.useMutation({
+    onSuccess: (data) => {
+      setGeneratedReply(data.reply);
+      setActiveMode("generator");
+      if (!data.generated) toast.info("AI nedostupná — použitá šablóna");
+    },
+    onError: (e) => { setError(e.message); setIsGenerating(false); },
+  });
+
   const handleGenerate = async (overrideText?: string, overrideRating?: number) => {
     const textToUse = overrideText ?? reviewText;
     const ratingToUse = overrideRating ?? rating;
@@ -74,26 +83,12 @@ export default function ReviewsPage() {
     }
     setIsGenerating(true);
     setError("");
-    try {
-      const res = await fetch("/api/marketing-ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          actionType: "suggest_review_reply",
-          reviewText: textToUse,
-          reviewRating: ratingToUse,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setGeneratedReply(data.content ?? "");
-        setActiveMode("generator");
-      } else setError(data.error ?? t("marketing.reviews.errorGeneration"));
-    } catch {
-      setError(t("marketing.reviews.errorConnection"));
-    } finally {
-      setIsGenerating(false);
-    }
+    generateReviewReplyMutation.mutate({
+      reviewText: textToUse,
+      rating: ratingToUse,
+    }, {
+      onSettled: () => setIsGenerating(false),
+    });
   };
 
   const handleCopy = () => {
