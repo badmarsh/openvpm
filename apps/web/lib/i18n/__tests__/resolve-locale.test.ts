@@ -41,6 +41,6 @@ describe("resolveLocale", () => {
   });
 
   it("falls back to en", () => {
-    expect(resolveLocale({})).toBe("sk"); // Fork default
+    expect(resolveLocale({})).toBe("sk");
   });
 });

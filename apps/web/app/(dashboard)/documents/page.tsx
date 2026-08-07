@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { marked } from "marked";
 import mermaid from "mermaid";
@@ -62,13 +62,6 @@ export default function DocumentsPage() {
     onSuccess: () => { refetch(); setEditMode(false); }
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && !editMode) {
-      mermaid.initialize({ startOnLoad: true });
-      mermaid.run({ querySelector: ".language-mermaid", suppressErrors: true });
-    }
-  }, [selectedDoc, editMode, currentDoc]);
-
   const handleOpenDoc = (docId: string) => {
     setSelectedDoc(docId);
     setEditMode(false);
@@ -76,7 +69,7 @@ export default function DocumentsPage() {
 
   const parseMarkdown = (content: string) => {
     try {
-      return marked.parse(content, { async: false });
+      return marked.parse(content, { async: false }) as string;
     } catch (e) {
       return content;
     }
