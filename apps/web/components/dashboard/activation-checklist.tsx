@@ -86,7 +86,7 @@ export function ActivationChecklist() {
 
   // Wait for the core signals before rendering so we never flash a wrong state.
   if (isChecklistLoading) return <ActivationChecklistLoading />;
-  if (!state.data || !onboarding.data || !practice.data || !sub.data || website.data === undefined) {
+  if (!state.data || !onboarding.data || !practice.data || !sub.data || website.isError) {
     return (
       <ActivationChecklistError
         message="Setup checklist data was unavailable. Try loading it again."
