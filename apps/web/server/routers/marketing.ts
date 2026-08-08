@@ -6,6 +6,7 @@ import {
   marketingPosts,
   marketingTemplates,
   practices,
+  files,
 } from "@openpims/db";
 import { getLocaleData } from "@openpims/db/data";
 import { google } from "@ai-sdk/google";
@@ -677,6 +678,47 @@ Vráť IBA text odpovede, bez ďalšieho komentára.`,
             : `Dobrý deň, ďakujeme za spätnú väzbu. Vezmeme si ju k srdcu a budeme pracovať na ďalšom zlepšení. Radi vás uvítame opäť. S pozdravom, tím ${clinicName}.`;
         return { reply: fallback, generated: false };
       }
+    }),
+
+  /** List marketing media assets */
+  getMediaAssets: protectedProcedure
+    .input(z.object({ category: z.enum(["marketing", "ai_generated", "all"]).default("all") }).optional())
+    .query(async ({ ctx, input }) => {
+      const conditions = [
+        eq(files.practiceId, ctx.practiceId),
+        isNull(files.deletedAt),
+        eq(files.entityType, "marketing"),
+      ];
+      if (input?.category && input.category !== "all") {
+        conditions.push(eq(files.category, input.category));
+      }
+      return ctx.db.query.files.findMany({
+        where: and(...conditions),
+        orderBy: [desc(files.createdAt)],
+        limit: 100,
+        columns: { id: true, fileName: true, fileUrl: true, mimeType: true, fileSizeBytes: true, category: true, createdAt: true },
+      });
+    }),
+
+  /** Register a media asset after client-side upload */
+  registerMediaAsset: protectedProcedure
+    .use(requireRole("admin", "veterinarian"))
+    .input(z.object({
+      fileName: z.string().min(1).max(255),
+      fileKey: z.string().min(1).max(512),
+      fileUrl: z.string().url().max(512),
+      mimeType: z.string().max(128).optional(),
+      fileSizeBytes: z.number().int().optional(),
+      category: z.enum(["marketing", "ai_generated"]).default("marketing"),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const [asset] = await ctx.db.insert(files).values({
+        practiceId: ctx.practiceId,
+        uploadedBy: ctx.user.id,
+        entityType: "marketing",
+        ...input,
+      }).returning();
+      return asset;
     }),
 });
 

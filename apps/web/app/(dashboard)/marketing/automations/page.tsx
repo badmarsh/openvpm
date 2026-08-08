@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { 
   Zap, 
@@ -11,45 +11,43 @@ import {
   Play, 
   Edit2, 
   Plus, 
-  Info 
+  Info,
+  Loader2
 } from "lucide-react";
-
-const MOCK_AUTOMATIONS = [
-  {
-    id: "1",
-    trigger: "Návšteva dokončená",
-    snippet: "Ďakujeme za návštevu. Ako ste boli spokojní s našimi službami?",
-    channel: "Email",
-    delay: "Po 1 hodine",
-    active: true,
-  },
-  {
-    id: "2",
-    trigger: "Nestihnutá schôdzka",
-    snippet: "Zabudli ste na schôdzku. Prosím, dohodnite si nový termín v našom kalendári.",
-    channel: "SMS",
-    delay: "Po 24 hodinách",
-    active: false,
-  },
-  {
-    id: "3",
-    trigger: "Platba zlyhala",
-    snippet: "Problém s platbou faktúry. Prosím, skontrolujte si zadané údaje.",
-    channel: "Email",
-    delay: "Okamžite",
-    active: true,
-  },
-];
+import { trpc } from '@/lib/trpc';
 
 export default function AutomationsPage() {
-  const [automations, setAutomations] = useState(MOCK_AUTOMATIONS);
+  const utils = trpc.useUtils();
+  
+  const { data: automations, isLoading, isSuccess } = trpc.automations.getAutomations.useQuery();
+  
+  const seedDefaultAutomations = trpc.automations.seedDefaultAutomations.useMutation({
+    onSuccess: () => {
+      utils.automations.getAutomations.invalidate();
+    }
+  });
+
+  const toggleAutomationMutation = trpc.automations.toggleAutomation.useMutation({
+    onSuccess: () => {
+      utils.automations.getAutomations.invalidate();
+    }
+  });
+
+  const createAutomation = trpc.automations.createAutomation.useMutation({
+    onSuccess: () => {
+      utils.automations.getAutomations.invalidate();
+      toast.success("Automatizácia bola vytvorená.");
+    }
+  });
+
+  useEffect(() => {
+    if (isSuccess && automations && automations.length === 0 && !seedDefaultAutomations.isPending) {
+      seedDefaultAutomations.mutate();
+    }
+  }, [isSuccess, automations, seedDefaultAutomations]);
 
   const toggleAutomation = (id: string) => {
-    setAutomations(prev => 
-      prev.map(auto => 
-        auto.id === id ? { ...auto, active: !auto.active } : auto
-      )
-    );
+    toggleAutomationMutation.mutate({ automationId: id });
   };
 
   const handleTestTrigger = () => {
@@ -58,6 +56,17 @@ export default function AutomationsPage() {
 
   const handleComingSoon = () => {
     toast.info("Táto funkcia bude čoskoro dostupná.");
+  };
+
+  const handleCreateAutomation = () => {
+    createAutomation.mutate({
+      name: 'Nová automatizácia',
+      triggerType: 'appointment_created',
+      conditions: { delayDays: 1 },
+      actionType: 'email',
+      actionPayload: { templatePrompt: 'Ďakujeme za návštevu...' },
+      isActive: false,
+    });
   };
 
   return (
@@ -76,7 +85,7 @@ export default function AutomationsPage() {
           </div>
         </div>
         <button
-          onClick={handleComingSoon}
+          onClick={handleCreateAutomation}
           className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           <Plus className="h-4 w-4" />
@@ -94,66 +103,78 @@ export default function AutomationsPage() {
 
       {/* Automations List */}
       <div className="space-y-4">
-        {automations.map((automation) => (
-          <div 
-            key={automation.id} 
-            className="flex flex-col gap-4 rounded-xl border bg-card p-4 sm:p-5 shadow-sm transition-colors hover:bg-accent/5"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <button 
-                  onClick={() => toggleAutomation(automation.id)}
-                  className="mt-0.5 shrink-0 text-muted-foreground hover:text-primary transition-colors focus:outline-none"
-                  aria-label={automation.active ? "Vypnúť automatizáciu" : "Zapnúť automatizáciu"}
-                >
-                  {automation.active ? (
-                    <ToggleRight className="h-8 w-8 text-primary" />
-                  ) : (
-                    <ToggleLeft className="h-8 w-8 text-muted-foreground/50" />
-                  )}
-                </button>
-                <div className="space-y-1">
-                  <h3 className="font-semibold">{automation.trigger}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-1 max-w-[500px]">
-                    "{automation.snippet}"
-                  </p>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          automations?.map((automation) => {
+            const delayDays = (automation.conditions as { delayDays?: number })?.delayDays;
+            const delayText = delayDays ? `Po ${delayDays} dňoch` : 'Okamžite';
+            const templatePrompt = (automation.actionPayload as { templatePrompt?: string })?.templatePrompt ?? '';
+
+            return (
+              <div 
+                key={automation.id} 
+                className="flex flex-col gap-4 rounded-xl border bg-card p-4 sm:p-5 shadow-sm transition-colors hover:bg-accent/5"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <button 
+                      onClick={() => toggleAutomation(automation.id)}
+                      className="mt-0.5 shrink-0 text-muted-foreground hover:text-primary transition-colors focus:outline-none"
+                      aria-label={automation.isActive ? "Vypnúť automatizáciu" : "Zapnúť automatizáciu"}
+                    >
+                      {automation.isActive ? (
+                        <ToggleRight className="h-8 w-8 text-primary" />
+                      ) : (
+                        <ToggleLeft className="h-8 w-8 text-muted-foreground/50" />
+                      )}
+                    </button>
+                    <div className="space-y-1">
+                      <h3 className="font-semibold">{automation.name}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-1 max-w-[500px]">
+                        "{templatePrompt}"
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={handleTestTrigger}
+                      className="hidden sm:flex h-8 items-center gap-1.5 rounded-md border bg-background px-3 text-xs font-medium hover:bg-accent transition-colors"
+                      title="Test trigger"
+                    >
+                      <Play className="h-3.5 w-3.5" />
+                      Test
+                    </button>
+                    <button
+                      onClick={handleComingSoon}
+                      className="flex h-8 w-8 items-center justify-center rounded-md border bg-background hover:bg-accent transition-colors"
+                      title="Upraviť"
+                    >
+                      <Edit2 className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 pl-12 text-xs font-medium text-muted-foreground">
+                  <div className="flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1">
+                    {automation.actionType.toUpperCase() === "EMAIL" ? (
+                      <Mail className="h-3.5 w-3.5" />
+                    ) : (
+                      <MessageSquare className="h-3.5 w-3.5" />
+                    )}
+                    {automation.actionType.toUpperCase()}
+                  </div>
+                  <div className="flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1">
+                    {delayText}
+                  </div>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  onClick={handleTestTrigger}
-                  className="hidden sm:flex h-8 items-center gap-1.5 rounded-md border bg-background px-3 text-xs font-medium hover:bg-accent transition-colors"
-                  title="Test trigger"
-                >
-                  <Play className="h-3.5 w-3.5" />
-                  Test
-                </button>
-                <button
-                  onClick={handleComingSoon}
-                  className="flex h-8 w-8 items-center justify-center rounded-md border bg-background hover:bg-accent transition-colors"
-                  title="Upraviť"
-                >
-                  <Edit2 className="h-3.5 w-3.5 text-muted-foreground" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 pl-12 text-xs font-medium text-muted-foreground">
-              <div className="flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1">
-                {automation.channel === "Email" ? (
-                  <Mail className="h-3.5 w-3.5" />
-                ) : (
-                  <MessageSquare className="h-3.5 w-3.5" />
-                )}
-                {automation.channel}
-              </div>
-              <div className="flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1">
-                {automation.delay}
-              </div>
-            </div>
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </div>
   );

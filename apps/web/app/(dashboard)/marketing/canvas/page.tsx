@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 import {
   FileText, Plus, Sparkles, Loader2, Save, Search, Tag,
   Archive, Edit3, Trash2, Download, Maximize2, AlignLeft,
@@ -16,11 +17,7 @@ interface CanvasDoc {
   category: DocCategory; tags: string[]; createdAt: string; updatedAt: string;
 }
 
-const INITIAL_DOCS: CanvasDoc[] = [
-  { id: "doc-1", title: "SOP: Prijatie pacienta", content: "# SOP: Prijem noveho pacienta\n\n## Ucel\nTento postup zabezpecuje standardizovany a Fear-Free prijem.\n\n## Kroky\n\n1. Uvitanie majitela a pacienta\n2. Overenie zdravotnej dokumentacie\n3. Meranie vitalnych funkcii\n4. Informovanie veterinara\n\n## Poznamky\n- Vzdy pouzivajte tichy hlas\n- Ponuknite pacientovi pochutku", status: "published", category: "SOP", tags: ["prijem", "fear-free"], createdAt: "2026-08-01T09:00:00Z", updatedAt: "2026-08-05T14:30:00Z" },
-  { id: "doc-2", title: "Strategia: Letna kampan", content: "# Letna marketingova strategia 2026\n\n## Ciel\nZvysit povedomie o letnej prevencii parazitov.\n\n## Platformy\n- Instagram: 3x/tyzden\n- Facebook: 2x/tyzden\n- GBP: 1x/tyzden\n\n## Klucove temy\n1. Prevencia klestov\n2. Ochrana pred prehriatim\n3. Letna hydratacia", status: "draft", category: "Strategy", tags: ["marketing", "leto"], createdAt: "2026-08-03T11:00:00Z", updatedAt: "2026-08-07T08:00:00Z" },
-  { id: "doc-3", title: "Info: Postvakcinacna starostlivost", content: "# Postvakcinacna starostlivost\n\nVazeny majitel,\n\n## Co mozete ocakavat\n- Mierna unava 24-48 hodin\n- Mierne opuchnutie v mieste vpichu\n\n## Kedy nas kontaktovat\nOkamzite ak spozorujete silne opuchnutie tvarobratia zvracanie.\n\nTelefon: [cislo kliniky]", status: "published", category: "Client_Handout", tags: ["vakcinacia", "klient"], createdAt: "2026-07-15T09:00:00Z", updatedAt: "2026-07-20T10:00:00Z" },
-];
+// Initial docs handled by trpc.canvas.seedMasterDocuments
 
 const TEMPLATES = [
   { category: "SOP" as DocCategory, title: "Novy SOP postup", content: "# Nazov SOP\n\n## Ucel\n\n## Postup\n\n1. Krok 1\n2. Krok 2\n\n## Zodpovednost" },
@@ -54,8 +51,47 @@ function renderMd(text: string) {
 }
 
 export default function CanvasPage() {
-  const [docs, setDocs] = useState<CanvasDoc[]>(INITIAL_DOCS);
-  const [selectedId, setSelectedId] = useState<string | null>(INITIAL_DOCS[0].id);
+  const utils = trpc.useUtils();
+  const { data, isLoading } = trpc.canvas.getDocuments.useQuery();
+  
+  const seedDocs = trpc.canvas.seedMasterDocuments.useMutation({
+    onSuccess: () => utils.canvas.getDocuments.invalidate()
+  });
+  const createDoc = trpc.canvas.createDocument.useMutation({
+    onSuccess: () => utils.canvas.getDocuments.invalidate()
+  });
+  const updateDoc = trpc.canvas.updateDocument.useMutation({
+    onSuccess: () => utils.canvas.getDocuments.invalidate()
+  });
+  const deleteDoc = trpc.canvas.deleteDocument.useMutation({
+    onSuccess: () => utils.canvas.getDocuments.invalidate()
+  });
+
+  const docs: CanvasDoc[] = data?.map((d) => ({
+    id: d.id,
+    title: d.title,
+    content: d.content || "",
+    status: d.status as DocStatus,
+    category: d.docType as DocCategory,
+    tags: Array.isArray(d.tags) ? (d.tags as string[]) : [],
+    createdAt: d.createdAt as unknown as string,
+    updatedAt: d.updatedAt as unknown as string,
+  })) ?? [];
+
+  useEffect(() => {
+    if (!isLoading && data?.length === 0 && !seedDocs.isPending) {
+      seedDocs.mutate();
+    }
+  }, [isLoading, data, seedDocs]);
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedId && docs.length > 0) {
+      setSelectedId(docs[0].id);
+    }
+  }, [docs, selectedId]);
+
   const [editMode, setEditMode] = useState(false);
   const [zenMode, setZenMode] = useState(false);
   const [search, setSearch] = useState("");
@@ -73,44 +109,85 @@ export default function CanvasPage() {
   );
 
   const newDoc = (tpl?: typeof TEMPLATES[0]) => {
-    const d: CanvasDoc = { id: `doc-${Date.now()}`, title: tpl?.title ?? "Novy dokument", content: tpl?.content ?? "# Novy dokument\n\nZacnite pisat...", status: "draft", category: tpl?.category ?? "General", tags: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-    setDocs([d, ...docs]); setSelectedId(d.id); setEditMode(true); setShowTpls(false);
-    toast.success("Novy dokument vytvoreny");
+    createDoc.mutate({
+      title: tpl?.title ?? "Novy dokument",
+      docType: tpl?.category ?? "General",
+      content: tpl?.content ?? "# Novy dokument\n\nZacnite pisat...",
+      status: "draft",
+      tags: [],
+      isRagSource: false,
+    }, {
+      onSuccess: (newDocument) => {
+        setSelectedId(newDocument.id);
+        setEditMode(true);
+        setShowTpls(false);
+        toast.success("Novy dokument vytvoreny");
+      }
+    });
   };
 
   const save = () => {
     const ta = document.getElementById("cv-editor") as HTMLTextAreaElement;
     if (!ta || !selectedId) return;
-    setDocs(docs.map((d) => d.id === selectedId ? { ...d, content: ta.value, updatedAt: new Date().toISOString() } : d));
+    updateDoc.mutate({ documentId: selectedId, content: ta.value });
     setEditMode(false); toast.success("Dokument ulozeny");
   };
 
   const setStatus = (id: string, s: DocStatus) => {
-    setDocs(docs.map((d) => d.id === id ? { ...d, status: s } : d));
+    updateDoc.mutate({ documentId: id, status: s });
     toast.success(STATUS_CFG[s].label);
   };
 
   const del = (id: string) => {
-    const rem = docs.filter((d) => d.id !== id);
-    setDocs(rem); setSelectedId(rem[0]?.id ?? null); toast.success("Dokument vymazany");
+    deleteDoc.mutate({ documentId: id });
+    if (selectedId === id) setSelectedId(null);
+    toast.success("Dokument vymazany");
   };
 
   const aiGen = async () => {
     if (!aiPrompt.trim() || !doc) return;
     setGenerating(true);
-    await new Promise((r) => setTimeout(r, 900));
-    const section = `\n\n## ${aiPrompt}\n\n*Obsah vygenerovany AI copilotom. Upravte podla potreby.*\n\n- Bod 1: Popis\n- Bod 2: Postup\n- Bod 3: Poznamky`;
-    setDocs(docs.map((d) => d.id === selectedId ? { ...d, content: d.content + section, updatedAt: new Date().toISOString() } : d));
-    setAiPrompt(""); setGenerating(false); toast.success("Sekcia pridana");
+    try {
+      const { generateText } = await import('ai');
+      const { google } = await import('@ai-sdk/google');
+      const { text } = await generateText({
+        model: google('gemini-2.5-flash'),
+        prompt: `You are a veterinary practice consultant. Write a markdown section titled "${aiPrompt}" for a veterinary practice document. Write in Slovak language. Include 2-3 practical bullet points. Max 200 words.`,
+        temperature: 0.7,
+      });
+      const section = `\n\n## ${aiPrompt}\n\n${text}`;
+      updateDoc.mutate({ documentId: selectedId!, content: doc.content + section });
+      toast.success("Sekcia pridana");
+    } catch (error) {
+      const section = `\n\n## ${aiPrompt}\n\n*Obsah vygenerovany AI copilotom. Upravte podla potreby.*\n\n- Bod 1: Popis\n- Bod 2: Postup\n- Bod 3: Poznamky`;
+      updateDoc.mutate({ documentId: selectedId!, content: doc.content + section });
+      toast.success("Sekcia pridana (fallback)");
+    } finally {
+      setAiPrompt(""); setGenerating(false);
+    }
   };
 
   const addTag = (tag: string) => {
     if (!tag.trim() || !doc) return;
-    setDocs(docs.map((d) => d.id === selectedId && !d.tags.includes(tag.trim()) ? { ...d, tags: [...d.tags, tag.trim()] } : d));
+    const cleanTag = tag.trim();
+    if (!doc.tags.includes(cleanTag)) {
+      updateDoc.mutate({ documentId: selectedId!, tags: [...doc.tags, cleanTag] });
+    }
     setTagInput("");
   };
 
-  const rmTag = (tag: string) => setDocs(docs.map((d) => d.id === selectedId ? { ...d, tags: d.tags.filter((t) => t !== tag) } : d));
+  const rmTag = (tag: string) => {
+    if (!doc) return;
+    updateDoc.mutate({ documentId: selectedId!, tags: doc.tags.filter((t) => t !== tag) });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[calc(100vh-130px)] items-center justify-center border rounded-xl overflow-hidden shadow-sm bg-card">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className={`flex ${zenMode ? "fixed inset-0 z-50 bg-background" : "h-[calc(100vh-130px)]"} border rounded-xl overflow-hidden shadow-sm`}>
