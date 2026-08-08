@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { eq, and, isNull, asc } from "drizzle-orm";
+import { eq, and, isNull, asc, desc } from "drizzle-orm";
 import { db } from "@openpims/db/client";
-import { websites, websitePages, websiteBlocks, practices } from "@openpims/db";
+import { websites, websitePages, websiteBlocks, practices, marketingPosts } from "@openpims/db";
 import { BlockRenderer } from "@/components/website/public/block-renderer";
 import { PublicHeader } from "@/components/website/public/header";
 import { PublicFooter } from "@/components/website/public/footer";
@@ -64,6 +64,17 @@ export default async function PublicSitePage({ params }: PublicSitePageProps) {
   const homePage = site.pages.find((p) => p.isHome) ?? site.pages[0];
   const navPages = site.pages.filter((p) => p.showInNav);
 
+  const posts = site.practiceId ? await db.query.marketingPosts.findMany({
+    where: and(
+      eq(marketingPosts.practiceId, site.practiceId),
+      eq(marketingPosts.status, "published"),
+      isNull(marketingPosts.deletedAt)
+    ),
+    columns: { id: true, overlayText: true, scheduledDate: true, variants: true },
+    orderBy: [desc(marketingPosts.scheduledDate)],
+    limit: 10,
+  }) : [];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "VeterinaryCare",
@@ -86,6 +97,7 @@ export default async function PublicSitePage({ params }: PublicSitePageProps) {
             blocks={homePage.blocks}
             practice={site.practice}
             websiteSlug={slug}
+            posts={posts}
           />
         ) : (
           <div className="px-6 py-20 text-center text-muted-foreground">

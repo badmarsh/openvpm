@@ -80,6 +80,7 @@ export const websiteRouter = createRouter({
       id: z.string().uuid(),
       title: z.string().min(1).max(255).optional(),
       description: z.string().max(1000).optional(),
+      templateId: z.string().max(64).optional(),
       settings: z.record(z.any()).optional(),
       seoTitle: z.string().max(255).optional(),
       seoDescription: z.string().max(500).optional(),

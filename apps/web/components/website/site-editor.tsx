@@ -62,6 +62,11 @@ export function SiteEditor() {
     onError: (err) => toast.error(err.message),
   });
 
+  const createPage = trpc.website.createPage.useMutation({
+    onSuccess: () => { toast.success(t("editor.saved")); invalidateSite(); },
+    onError: (err) => toast.error(err.message),
+  });
+
   const reorderPages = trpc.website.reorderPages.useMutation({
     onSuccess: () => { toast.success(t("editor.saved")); invalidateSite(); },
     onError: (err) => toast.error(err.message),
@@ -73,6 +78,11 @@ export function SiteEditor() {
   });
 
   const removeBlock = trpc.website.removeBlock.useMutation({
+    onSuccess: () => { toast.success(t("editor.saved")); invalidateSite(); },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const addBlock = trpc.website.addBlock.useMutation({
     onSuccess: () => { toast.success(t("editor.saved")); invalidateSite(); },
     onError: (err) => toast.error(err.message),
   });
@@ -131,8 +141,21 @@ export function SiteEditor() {
             onSelectPage={setSelectedPageId}
             onReorderPages={(orders) => reorderPages.mutate({ pageOrders: orders })}
             onChangeTemplate={(templateId) =>
-              updateSite.mutate({ id: site.id, settings: { templateId } })
+              updateSite.mutate({ id: site.id, templateId })
             }
+            onAddPage={() => {
+              if (!site) return;
+              const count = site.pages.length;
+              createPage.mutate({
+                websiteId: site.id,
+                title: `Stránka ${count + 1}`,
+                slug: `stranka-${count + 1}`,
+                pageType: "custom",
+                sortOrder: count,
+                showInNav: true,
+                isHome: false,
+              });
+            }}
           />
         </div>
 
@@ -142,6 +165,21 @@ export function SiteEditor() {
             page={selectedPage}
             onReorderBlocks={(orders) => reorderBlocks.mutate({ blockOrders: orders })}
             onRemoveBlock={(blockId) => removeBlock.mutate({ id: blockId })}
+            onAddBlock={() => {
+              if (!selectedPage) return;
+              // Cycle through block types — for now adds 'cta' as a simple default
+              addBlock.mutate({
+                pageId: selectedPage.id,
+                blockType: "cta",
+                content: {
+                  heading: "Rezervujte si termín",
+                  description: "Sme tu pre vás a vaše zvieratá.",
+                  buttonText: "Rezervovať",
+                  buttonLink: "/portal/booking",
+                },
+                sortOrder: selectedPage.blocks.length,
+              });
+            }}
           />
         </div>
       </div>

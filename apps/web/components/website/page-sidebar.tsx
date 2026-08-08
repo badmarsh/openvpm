@@ -48,6 +48,7 @@ interface PageSidebarProps {
   onSelectPage: (id: string) => void;
   onReorderPages: (pageOrders: { id: string; sortOrder: number }[]) => void;
   onChangeTemplate: (templateId: string) => void;
+  onAddPage?: () => void;
 }
 
 export function PageSidebar({
@@ -59,6 +60,7 @@ export function PageSidebar({
   onSelectPage,
   onReorderPages,
   onChangeTemplate,
+  onAddPage,
 }: PageSidebarProps) {
   const t = useTranslations("website");
 
@@ -87,7 +89,7 @@ export function PageSidebar({
       <div className="rounded-lg border p-4">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">{t("editor.pages")}</h3>
-          <Button variant="ghost" size="sm" disabled aria-label={t("editor.addPage")}>
+          <Button variant="ghost" size="sm" onClick={onAddPage} disabled={!onAddPage} aria-label={t("editor.addPage")}>
             <Plus className="h-4 w-4" />
           </Button>
         </div>

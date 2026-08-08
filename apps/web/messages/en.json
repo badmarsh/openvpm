@@ -793,6 +793,10 @@
       "unpublished": "Unpublished"
     },
     "editor": {
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "addPage": "Add page",
+      "removeBlock": "Remove block",
       "addBlock": "Add block",
       "saveChanges": "Save changes",
       "preview": "Preview",

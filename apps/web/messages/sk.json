@@ -807,7 +807,11 @@
       "published": "Publikované",
       "unpublished": "Publikovanie zrušené",
       "close": "Zavrieť",
-      "emptyBlocks": "Táto stránka zatiaľ neobsahuje žiadne bloky."
+      "emptyBlocks": "Táto stránka zatiaľ neobsahuje žiadne bloky.",
+      "visible": "Viditeľný",
+      "hidden": "Skrytý",
+      "addPage": "Pridať stránku",
+      "removeBlock": "Odstrániť blok"
     },
     "blocks": {
       "hero": "Hlavný banner",

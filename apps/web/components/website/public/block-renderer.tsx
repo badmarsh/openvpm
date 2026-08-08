@@ -15,28 +15,37 @@ function sanitizeHtml(html: string): string {
   return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
 }
 
+export interface BlogPost {
+  id: string;
+  overlayText?: string | null;
+  scheduledDate?: Date | null;
+  variants?: unknown;
+}
+
 interface BlockRendererProps {
   blocks: InferSelectModel<typeof websiteBlocks>[];
   practice: { name: string; phone: string | null; address: string | null; logoUrl: string | null } | null;
   websiteSlug?: string;
   pageSlug?: string;
+  posts?: BlogPost[];
 }
 
-export function BlockRenderer({ blocks, practice, websiteSlug, pageSlug }: BlockRendererProps) {
+export function BlockRenderer({ blocks, practice, websiteSlug, pageSlug, posts }: BlockRendererProps) {
   return (
     <div className="space-y-0">
       {blocks.map((block) => (
-        <Block key={block.id} block={block} practice={practice} websiteSlug={websiteSlug} pageSlug={pageSlug} />
+        <Block key={block.id} block={block} practice={practice} websiteSlug={websiteSlug} pageSlug={pageSlug} posts={posts} />
       ))}
     </div>
   );
 }
 
-function Block({ block, practice, websiteSlug, pageSlug }: {
+function Block({ block, practice, websiteSlug, pageSlug, posts }: {
   block: InferSelectModel<typeof websiteBlocks>;
   practice: BlockRendererProps["practice"];
   websiteSlug?: string;
   pageSlug?: string;
+  posts?: BlogPost[];
 }) {
   const content = (block.content as Record<string, unknown>) ?? {};
   switch (block.blockType) {
@@ -65,7 +74,7 @@ function Block({ block, practice, websiteSlug, pageSlug }: {
     case "faq":
       return <FaqBlock content={content} />;
     case "blog_feed":
-      return <BlogFeedBlock content={content} />;
+      return <BlogFeedBlock content={content} posts={posts} />;
     case "custom_html":
       return <CustomHtmlBlock content={content} />;
     default:
@@ -481,17 +490,38 @@ function FaqBlock({ content }: { content: Record<string, unknown> }) {
   );
 }
 
-function BlogFeedBlock({ content }: { content: Record<string, unknown> }) {
+function BlogFeedBlock({ content, posts }: { content: Record<string, unknown>; posts?: BlogPost[] }) {
   const heading = (content.heading as string) ?? "";
-  // Blog feed is rendered server-side; this block shows a placeholder
-  // that the public page can hydrate with actual posts data.
+  const limit = (content.limit as number) ?? 3;
+  const displayPosts = posts?.slice(0, limit) ?? [];
   return (
     <section className="px-6 py-16">
       <div className="mx-auto max-w-6xl">
         {heading && <h2 className="text-center text-2xl font-bold">{heading}</h2>}
-        <div className="mt-8 text-center text-sm text-muted-foreground">
-          Blog posts are loaded dynamically.
-        </div>
+        {displayPosts.length > 0 ? (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {displayPosts.map((post) => {
+              const variants = (post.variants as Record<string, { caption?: string }> | null) ?? {};
+              const firstVariant = Object.values(variants)[0];
+              const excerpt = firstVariant?.caption?.slice(0, 120) ?? "";
+              return (
+                <div key={post.id} className="rounded-lg border bg-card p-6 shadow-sm">
+                  {post.scheduledDate && (
+                    <p className="mb-2 text-xs text-muted-foreground">
+                      {new Date(post.scheduledDate).toLocaleDateString("sk-SK")}
+                    </p>
+                  )}
+                  <h3 className="font-semibold">{post.overlayText ?? "Príspevok"}</h3>
+                  {excerpt && <p className="mt-2 text-sm text-muted-foreground">{excerpt}…</p>}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mt-8 text-center text-sm text-muted-foreground">
+            Žiadne publikované príspevky.
+          </div>
+        )}
       </div>
     </section>
   );

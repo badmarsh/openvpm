@@ -20,6 +20,11 @@ import { Plus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SortableItem } from "./sortable-item";
 
+function toBlockKey(blockType: string): string {
+  // Convert snake_case to camelCase for i18n key lookup
+  return blockType.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+}
+
 interface Block {
   id: string;
   blockType: string;
@@ -95,7 +100,7 @@ export function BlockPalette({
                 <SortableItem id={block.id} className="flex-1">
                   <div className="flex-1">
                     <p className="text-sm font-medium">
-                      {t(`blocks.${block.blockType}` as "blocks.hero")}
+                      {t(`blocks.${toBlockKey(block.blockType)}` as "blocks.hero")}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {block.isVisible ? t("editor.visible") : t("editor.hidden")}

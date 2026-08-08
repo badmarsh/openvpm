@@ -242,7 +242,8 @@ export default function MarketingPlannerPage() {
                   </div>
                   <button
                     onClick={() => {
-                      setPrefilledDate(new Date(year, month, day).toISOString().slice(0, 16));
+                      const localDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T09:00`;
+                      setPrefilledDate(localDate);
                       setWizardOpen(true);
                     }}
                     className="mt-1 w-full rounded text-center text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-accent transition-all py-0.5"
