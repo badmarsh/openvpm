@@ -488,7 +488,7 @@ export const getTemplatesData = (practiceId: string): Array<TemplateRow & { item
 
 export const miscTranslations = {
   practice: {
-    name: "Susedská Veterinárna Klinika",
+    name: "Súkromná veterinárna klinika MVDr. Martin Sýkora",
     address: "Lúčna 15, 821 08 Bratislava",
   },
   location: {
@@ -513,7 +513,7 @@ export const miscTranslations = {
     notesTemplate: (duration: number) => `Pacient sa dobre zotavil. Pooperačné sledovanie po dobu ${duration} minút. Prepusťený so štandardnými pooperačnými pokynmi.`
   },
   communication: {
-    smsReminderTemplate: (firstName: string) => `Dobrý deň ${firstName}, Susedská Veterinárna Klinika Vám pripomína zajtrajší termín. Odpovedzte C pre potvrdenie alebo R pre zmenu termínu.`
+    smsReminderTemplate: (firstName: string) => `Dobrý deň ${firstName}, SVK MVDr. Martin Sýkora Vám pripomína zajtrajší termín. Odpovedzte C pre potvrdenie alebo R pre zmenu termínu.`
   }
 };
 
