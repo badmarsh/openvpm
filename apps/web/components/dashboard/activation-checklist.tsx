@@ -204,11 +204,10 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-heading text-sm font-semibold">
-
               Všetko je pripravené 🎉
             </p>
             <p className="text-xs text-zinc-400">
-              {practiceName}  je pripravený na spustenie.
+              {practiceName} je pripravená na spustenie.
             </p>
           </div>
           <button
@@ -245,11 +244,10 @@ export function ActivationChecklist() {
           </span>
           <div className="min-w-0">
             <p className="truncate font-heading text-sm font-semibold">
-
-              Získajte {practiceName}  beží
+              Nastavenie kliniky
             </p>
             <p className="text-xs text-zinc-400">
-              {doneCount}  z {total}  hotovo
+              {practiceName} · {doneCount} z {total} hotovo
             </p>
           </div>
         </div>
