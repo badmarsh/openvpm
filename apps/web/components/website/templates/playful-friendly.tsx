@@ -1,6 +1,6 @@
 import { BookingCTA, ContactBlock, FearFreeBadge, ServiceCard, TestimonialCard } from "@/components/openvpm";
 import type { ClinicContent } from "@/lib/templates/adapter";
-import { templateMetadata } from "@/lib/templates/metadata";
+import { TEMPLATES } from "@/lib/templates/metadata";
 
 interface TemplateProps {
   content: ClinicContent;
@@ -9,10 +9,16 @@ interface TemplateProps {
 }
 
 export function PlayfulFriendlyTemplate({ content, practice, websiteSlug }: TemplateProps) {
-  const palette = templateMetadata["playful-friendly"].palette;
+  const templateInfo = TEMPLATES.find(t => t.slug === "playful-friendly")!;
+  const palette = {
+    ...templateInfo.palette,
+    muted: templateInfo.palette.primary + "10",
+    border: templateInfo.palette.primary + "20",
+    card: templateInfo.palette.bg,
+  };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: palette.bg, fontFamily: templateMetadata["playful-friendly"].fontFamily }}>
+    <div className="min-h-screen" style={{ backgroundColor: palette.bg, fontFamily: "Nunito, system-ui, sans-serif" }}>
       {/* Header */}
       <header className="border-b" style={{ borderColor: palette.border }}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">

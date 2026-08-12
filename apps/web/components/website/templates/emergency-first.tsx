@@ -1,6 +1,6 @@
 import { BookingCTA, ContactBlock, OpeningHoursTable } from "@/components/openvpm";
 import type { ClinicContent } from "@/lib/templates/adapter";
-import { templateMetadata } from "@/lib/templates/metadata";
+import { TEMPLATES } from "@/lib/templates/metadata";
 
 interface TemplateProps {
   content: ClinicContent;
@@ -9,13 +9,19 @@ interface TemplateProps {
 }
 
 export function EmergencyFirstTemplate({ content, practice, websiteSlug }: TemplateProps) {
-  const palette = templateMetadata["emergency-first"].palette;
+  const templateInfo = TEMPLATES.find(t => t.slug === "emergency-first")!;
+  const palette = {
+    ...templateInfo.palette,
+    muted: templateInfo.palette.primary + "10",
+    border: templateInfo.palette.primary + "20",
+    card: templateInfo.palette.bg,
+  };
 
   // Find emergency phone from opening hours or content
   const emergencyPhone = content.hours.find((h) => h.isEmergency)?.time ?? practice.phone ?? "";
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: palette.bg, fontFamily: templateMetadata["emergency-first"].fontFamily }}>
+    <div className="min-h-screen" style={{ backgroundColor: palette.bg, fontFamily: "system-ui, sans-serif" }}>
       {/* Emergency banner */}
       <div style={{ backgroundColor: palette.accent }} className="px-6 py-2 text-center text-sm font-bold text-white">
         🚨 POHOTOVOSŤ: {emergencyPhone}
