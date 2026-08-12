@@ -13,8 +13,11 @@ interface PublicSitePageProps {
 
 export async function generateMetadata({ params }: PublicSitePageProps): Promise<Metadata> {
   const { slug } = await params;
+  const isDev = process.env.NODE_ENV === "development";
   const site = await db.query.websites.findFirst({
-    where: and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
+    where: isDev
+      ? and(eq(websites.slug, slug), isNull(websites.deletedAt))
+      : and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
     columns: { title: true, description: true, seoTitle: true, seoDescription: true, ogImage: true },
   });
   if (!site) return {};
@@ -40,8 +43,18 @@ export async function generateMetadata({ params }: PublicSitePageProps): Promise
 
 export default async function PublicSitePage({ params }: PublicSitePageProps) {
   const { slug } = await params;
+  // In development allow draft sites so editor preview works without publishing
+  const isDev = process.env.NODE_ENV === "development";
+  const statusFilter = isDev
+    ? undefined // any status
+    : eq(websites.status, "published");
+
+  const whereClause = statusFilter
+    ? and(eq(websites.slug, slug), statusFilter, isNull(websites.deletedAt))
+    : and(eq(websites.slug, slug), isNull(websites.deletedAt));
+
   const site = await db.query.websites.findFirst({
-    where: and(eq(websites.slug, slug), eq(websites.status, "published"), isNull(websites.deletedAt)),
+    where: whereClause,
     with: {
       practice: {
         columns: { name: true, phone: true, address: true, logoUrl: true },
