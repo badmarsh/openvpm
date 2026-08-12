@@ -226,7 +226,8 @@ export default function CanvasPage() {
                 <button onClick={() => newDoc()} className="mt-2 text-xs font-medium text-primary hover:underline">Vytvorit prvy</button>
               </div>
             ) : filtered.map((d) => {
-              const { Icon } = STATUS_CFG[d.status];
+              const statusCfg = STATUS_CFG[d.status as DocStatus] || STATUS_CFG.draft;
+              const { Icon } = statusCfg;
               return (
                 <button key={d.id} onClick={() => { setSelectedId(d.id); setEditMode(false); }} className={`w-full border-b p-3 text-left hover:bg-accent/50 transition-colors ${selectedId===d.id?"bg-primary/5 border-l-2 border-l-primary":""}`}>
                   <div className="flex items-start justify-between gap-1">

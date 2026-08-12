@@ -105,7 +105,7 @@ export function SiteEditor() {
         action={{
           label: t("editor.create"),
           onClick: () => {
-            seed.mutate({ slug: "moja-klinika", templateId: "clean-modern" });
+            seed.mutate({ slug: "moja-klinika", templateId: "template-1" });
           },
           icon: LayoutTemplate,
         }}
