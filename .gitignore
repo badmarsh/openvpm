@@ -58,3 +58,6 @@ package-lock.json
 .mcp.json
 .codex/
 .gstack/
+
+# Private local pilot evidence (screenshots, traces, logs, exports)
+docs/pilot/local-results/

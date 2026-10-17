@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { TRPCError } from "@trpc/server";
+import { createTRPCContext } from "@/server/trpc";
+import { aiRouter } from "@/server/routers/ai";
+import { readJsonRequestBody } from "@/lib/request-json";
 import { z } from "zod";
-import { rateLimit, rateLimitResponseHeaders } from "@/lib/rate-limit";
-import { recordUsage } from "@/lib/billing/usage";
-
-const MARKETING_AI_RATE_LIMIT = 20;
-const MARKETING_AI_RATE_WINDOW_MS = 60_000;
 
 // ---------------------------------------------------------------------------
 // Input validation
@@ -158,70 +153,18 @@ ${contextText ?? prompt ?? ""}`;
 // ---------------------------------------------------------------------------
 export async function POST(req: Request) {
   try {
-    // Auth check — only authenticated clinic staff can call this
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Meter and rate-limit Gemini calls per practice+user, same as the tRPC
-    // ai.ts agent endpoints — this route sits outside tRPC so it doesn't get
-    // that governance for free.
-    const limited = await rateLimit({
-      key: `marketing-ai:${session.user.practiceId}:${session.user.id}`,
-      limit: MARKETING_AI_RATE_LIMIT,
-      windowMs: MARKETING_AI_RATE_WINDOW_MS,
-    });
-    if (!limited.success) {
-      return NextResponse.json(
-        { error: "Too many requests. Wait a minute and try again." },
-        {
-          status: 429,
-          headers: rateLimitResponseHeaders(MARKETING_AI_RATE_LIMIT, limited),
-        }
-      );
-    }
-
-    // Parse and validate body
-    let body: unknown;
-    try {
-      body = await req.json();
-    } catch {
-      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
-    }
-
-    const parsed = RequestSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Invalid input", details: parsed.error.flatten() },
-        { status: 422 }
-      );
-    }
-
-    const input = parsed.data;
-    const finalPrompt = buildFinalPrompt(input.actionType, input);
-
-    // Call Gemini via the @ai-sdk/google adapter (already installed in OpenVPM)
-    const { text } = await generateText({
-      model: google("gemini-2.5-flash"),
-      system: CORE_SYSTEM_INSTRUCTION,
-      prompt: finalPrompt,
-      temperature: 0.7,
-    });
-
-    // Meter successful generations, same as agent AI runs (no-op on self-host).
-    await recordUsage({ practiceId: session.user.practiceId, kind: "ai_run" });
-
-    return NextResponse.json({
-      success: true,
-      content: text,
-      actionType: input.actionType,
-    });
+    const ctx = await createTRPCContext({ req });
+    if (!ctx.session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (req.headers.get("content-type")?.split(";")[0]?.trim() !== "application/json") return NextResponse.json({ error: "application/json required" }, { status: 415 });
+    const body = await readJsonRequestBody(req, 32 * 1024);
+    if (!body.ok) return NextResponse.json({ error: "Invalid or oversized body" }, { status: body.reason === "too_large" ? 413 : 400 });
+    const parsed = RequestSchema.safeParse(body.data);
+    if (!parsed.success) return NextResponse.json({ error: "Invalid input" }, { status: 422 });
+    const result = await aiRouter.createCaller(ctx).generalText({ prompt: `${CORE_SYSTEM_INSTRUCTION}\n\n${buildFinalPrompt(parsed.data.actionType, parsed.data)}`, maxTokens: 1024, temperature: 0.1 });
+    return NextResponse.json({ success: true, content: result.text, actionType: parsed.data.actionType }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("[marketing-ai] Error:", error);
-    const message =
-      error instanceof Error ? error.message : "Internal Server Error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    const status = error instanceof TRPCError ? (({ UNAUTHORIZED: 401, FORBIDDEN: 403, BAD_REQUEST: 400, PRECONDITION_FAILED: 412, TOO_MANY_REQUESTS: 429 } as Record<string, number>)[error.code] ?? 503) : 503;
+    return NextResponse.json({ error: status === 503 ? "AI unavailable. Continue without AI." : "AI request denied; check access, configuration and request limits." }, { status, headers: { "Cache-Control": "no-store" } });
   }
 }
 

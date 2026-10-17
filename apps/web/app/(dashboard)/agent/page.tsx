@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Bot, Send, Loader2, RotateCcw, Sparkles, User } from "lucide-react";
 import { aiService } from "@/lib/ai-service";
+import { trpc } from "@/lib/trpc";
+import { useSearchParams } from "next/navigation";
+import { emitGuideSignal, GUIDE_SIGNALS } from "@/components/tour/guide-signals";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -14,30 +17,14 @@ type Message = {
   createdAt: Date;
 };
 
-const SYSTEM_PROMPT = `Si veterinárny AI asistent v systéme OpenVPM. Pomáhaš veterinárnym odborníkom s:
-- Klinickými protokolmi a SOPs
-- Liekmi a dávkovaním (vždy odporúčaj overenie u veterinára)
-- Diagnózami a diferenciálnymi diagnózami
-- Prepúšťacími správami a komunikáciou s klientmi
-- Fear-Free postupmi a welfare zvierat
-- Prevádzkovými a administratívnymi otázkami ambulancie
-
-Dôležité pravidlá:
-1. Nikdy neposkytuj konkrétne dávkovanie liekov bez odporúčania overenia u veterinára.
-2. Vždy upozorni ak ide o núdzovú situáciu.
-3. Odpovedaj v jazyku otázky (slovensky alebo anglicky).
-4. Buď stručný, jasný a profesionálny.`;
-
 const SUGGESTED_PROMPTS = [
-  "Aké sú príznaky pankreatitídy u psov?",
-  "Pomôž mi napísať prepúšťaciu správu pre kastráciu mačky",
-  "Vysvetli Fear-Free prístup pri ošetrení",
-  "Ako sa líši DKA od hypoglykémie u mačiek?",
-  "Aké sú indikácie pre chirurgiu GDV?",
-  "Napíš šablónu pre informovaný súhlas majiteľa",
+  "Napíš prázdnu šablónu prepúšťacej správy bez klinických odporúčaní.",
+  "Uprav tento všeobecný oznam: Ambulancia bude v pondelok zatvorená.",
 ];
 
 export default function AgentPage() {
+  const configuration = trpc.ai.configuration.useQuery();
+  const searchParams = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,12 +32,17 @@ export default function AgentPage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const ask = searchParams.get("ask");
+    if (ask) setInput(ask.slice(0, 8000));
+  }, [searchParams]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
   const handleSend = async (text?: string) => {
     const query = (text ?? input).trim();
-    if (!query || isLoading) return;
+    if (!query || isLoading || !configuration.data?.ready) return;
 
     const userMsg: Message = {
       id: crypto.randomUUID(),
@@ -64,10 +56,9 @@ export default function AgentPage() {
 
     try {
       const result = await aiService.generateText({
-        prompt: `${SYSTEM_PROMPT}\n\nOtázka používateľa: ${query}`,
-        modelId: "1",
+        prompt: query,
         maxTokens: 1000,
-        temperature: 0.7,
+        temperature: 0.1,
       });
 
       setMessages((prev) => [
@@ -78,10 +69,11 @@ export default function AgentPage() {
           content:
             result.success && result.content
               ? result.content
-              : "Nepodarilo sa získať odpoveď. Skúste to znova.",
+              : (result.error ?? "Nepodarilo sa získať odpoveď. Skúste to znova."),
           createdAt: new Date(),
         },
       ]);
+      if (result.success) emitGuideSignal(GUIDE_SIGNALS.agentRunSucceeded);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -106,6 +98,12 @@ export default function AgentPage() {
 
   return (
     <div className="flex h-full flex-col">
+      <div className="rounded border p-3 text-sm" role="status">
+        Textový pomocník nevie čítať karty pacientov, vyhľadávať očkovania ani meniť záznamy.
+        Každá odpoveď je neuložený návrh; otázky sa posielajú jednotlivo bez histórie chatu.
+        Neposielajte identifikovateľné údaje bez schválenia spracovania.
+        {configuration.isLoading ? <p>Kontrolujem konfiguráciu…</p> : configuration.error ? <p>Konfiguráciu sa nepodarilo overiť.</p> : !configuration.data?.ready ? <p>AI je vypnutá alebo nesprávne nastavená. Pozrite AI Settings.</p> : <p>Model: {configuration.data.model}</p>}
+      </div>
       {/* Chat messages */}
       <div className="flex-1 overflow-y-auto px-2 py-4 space-y-4">
         {messages.length === 0 && (
@@ -116,14 +114,15 @@ export default function AgentPage() {
             <div>
               <h2 className="text-lg font-semibold">Veterinárny AI Asistent</h2>
               <p className="mt-1 text-sm text-muted-foreground max-w-sm">
-                Opýtaj sa ma čokoľvek — klinické protokoly, lieky, diagnózy,
-                Fear-Free postupy a ďalšie.
+                Pomoc s textovými návrhmi, nie autonómne klinické rozhodovanie.
+                Záznamy a očkovania overujte v karte pacienta.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
               {SUGGESTED_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
+                  disabled={!configuration.data?.ready || isLoading}
                   onClick={() => handleSend(prompt)}
                   className="rounded-lg border border-border bg-card px-3 py-2 text-left text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
@@ -158,6 +157,7 @@ export default function AgentPage() {
               )}
             </div>
             <div
+              data-tour={msg.role === "assistant" ? "agent-reply" : undefined}
               className={cn(
                 "rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
                 msg.role === "user"
@@ -193,6 +193,7 @@ export default function AgentPage() {
             variant="ghost"
             size="icon"
             onClick={handleReset}
+            disabled={isLoading}
             title="Nový rozhovor"
             className="shrink-0"
           >
@@ -200,7 +201,9 @@ export default function AgentPage() {
           </Button>
         )}
         <Input
+          data-tour="agent-input"
           ref={inputRef}
+          maxLength={8000}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -210,13 +213,13 @@ export default function AgentPage() {
             }
           }}
           placeholder="Napíš otázku pre AI asistenta…"
-          disabled={isLoading}
+          disabled={isLoading || !configuration.data?.ready}
           className="flex-1"
           autoFocus
         />
         <Button
           onClick={() => handleSend()}
-          disabled={!input.trim() || isLoading}
+          disabled={!input.trim() || isLoading || !configuration.data?.ready}
           size="icon"
           className="shrink-0"
         >

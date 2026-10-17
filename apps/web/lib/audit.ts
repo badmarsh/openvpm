@@ -12,7 +12,7 @@ const SECRET_KEY_RE = /pass(word)?|secret|token|keyhash|^key$|apikey/i;
 // Bulk import/restore payloads (raw CSV, full backup JSON) can be megabytes of
 // medical records + client PII. The audit trail records who ran the import and
 // when, not a second copy of the data, so these are replaced with a marker.
-const BULK_PAYLOAD_KEY_RE = /^(csv|backup)$/i;
+const BULK_PAYLOAD_KEY_RE = /^(csv|backup|prompt|visitContext|transcription)$/i;
 
 /** "clients.create" -> { entityType: "clients", action: "create" }. */
 export function parseAuditPath(path: string): { entityType: string; action: string } {

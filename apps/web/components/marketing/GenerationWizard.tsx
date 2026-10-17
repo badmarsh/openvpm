@@ -50,7 +50,7 @@ export function GenerationWizard({
   const [language, setLanguage] = useState<"sk" | "en" | "cs">("sk");
 
   // Step 2 State
-  const [generatedVariants, setGeneratedVariants] = useState<Record<string, { caption: string; hashtags: string[]; altText: string; styles?: { short: string; medium: string; playful: string } }>>({});
+  const [generatedVariants, setGeneratedVariants] = useState<Record<string, { generated?: boolean; caption: string; hashtags: string[]; altText: string; styles?: { short: string; medium: string; playful: string } }>>({});
   const [isGeneratingCopy, setIsGeneratingCopy] = useState(false);
   const [polishInstructions, setPolishInstructions] = useState<Record<string, string>>({});
 
@@ -293,7 +293,7 @@ export function GenerationWizard({
                 {Object.entries(generatedVariants).map(([plat, data]) => (
                   <div key={plat} className="rounded-xl border bg-card p-4 space-y-3 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-xs text-primary">{plat} Verzia</span>
+                      <span className="font-semibold text-xs text-primary">{plat} Verzia — {data.generated === true ? "AI návrh na kontrolu" : "Šablóna / pôvod neoverený (nie AI výsledok)"}</span>
                       <span className="text-[10px] text-muted-foreground">{data.caption.length} znakov</span>
                     </div>
 

@@ -16,8 +16,8 @@ two. The same walkthroughs live inside the app: open **Settings** and click
 
 - [Your day sheet](your-day.md). Book visits, check pets in, and keep the
   whole team on the same page.
-- [Ask the AI about a pet](ask-the-ai.md). Stop digging through charts. Just
-  ask in plain words.
+- [AI text helper and its limits](ask-the-ai.md). Draft text for review;
+  chart retrieval and autonomous actions are not available.
 
 ## For your clients
 

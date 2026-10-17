@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { Bot, Sparkles } from "lucide-react";
 import type { StepHandle } from "../journey-types";
 
-const EXAMPLE_QUESTION = "Which pets are overdue for vaccines?";
+const EXAMPLE_QUESTION = "Uprav oznam: Ambulancia bude v pondelok zatvorená.";
 const EXAMPLE_ANSWER =
-  "Two of your sample pets look overdue. Biscuit is past due for the DHPP shot, and Luna is coming up soon. Want me to draft a friendly reminder you can send to each owner?";
+  "Návrh: V pondelok bude naša ambulancia zatvorená. Ďakujeme za pochopenie. (Ukážkový text, nie výsledok AI volania.)";
 
 /** A short, clearly-labeled sample so users see the value even with no AI key. */
 function ExampleChat() {
@@ -49,14 +49,14 @@ export function TryAgentStep({
   return (
     <div className="space-y-4">
       <p className="text-sm leading-6 text-slate-600">
-        AI je zabudovaná priamo do OpenVPM. Môže odpovedať na vaše otázky
-        klinika jednoduchými slovami.
+        Textový pomocník pripravuje neuložené návrhy. Nemá prístup ku kartám pacientov
+        ani nevykonáva úkony za ambulanciu.
       </p>
       <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         <Sparkles className="mt-0.5 h-4 w-4 shrink-0" />
         <p>
-          Váš pomocník AI sa zapne po nastavení kľúča AI. Môžete to skúsiť akokoľvek
-          čas zo stránky Agent.
+          Operátor musí povoliť AI_TEXT_ENABLED a nastaviť model aj kľúč na serveri.
+          Stránka Agent zobrazuje stav konfigurácie; každý návrh overuje človek.
         </p>
       </div>
       <ExampleChat />

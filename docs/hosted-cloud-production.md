@@ -87,6 +87,7 @@ TELNYX_API_KEY=...
 TELNYX_MESSAGING_PROFILE_ID=...
 TELNYX_FROM_NUMBER=...
 TELNYX_PUBLIC_KEY=...
+AI_TEXT_ENABLED=false
 AI_MODEL=claude-sonnet-4-6
 ANTHROPIC_API_KEY=...
 OPS_ALERT_WEBHOOK_URL=...
@@ -103,10 +104,9 @@ Twilio fallback deployment, set `MESSAGING_PROVIDER=twilio` and provide
 `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER` instead of
 the Telnyx send envs.
 
-Hosted AI defaults to Claude and requires `ANTHROPIC_API_KEY`. If you choose a
-Gemini `AI_MODEL`, set either `GOOGLE_API_KEY` or the legacy
-`GOOGLE_GENERATIVE_AI_API_KEY`; `/api/health` requires one matching provider
-credential, not both providers.
+AI text generation is disabled by default (`AI_TEXT_ENABLED=false`). Enable only after approval of provider data handling and the verification cases in [docs/pilot](pilot/README.md). Use a bare `AI_MODEL` and matching server credential: Claude → `ANTHROPIC_API_KEY`, Gemini → `GOOGLE_API_KEY` or legacy `GOOGLE_GENERATIVE_AI_API_KEY`, OpenAI → `OPENAI_API_KEY`. SOAP drafts and marketing text use this same selection; audio/image analysis is unavailable. Browser-managed model rows are no longer used.
+
+`/api/health` reports AI disabled as intentional unavailability, without failing overall PIMS readiness. When text AI is enabled it checks configuration, not provider connectivity or clinical correctness. A green overall health response is **not** AI/pilot readiness. Never enable a new integration based only on env presence. See [AI configuration](ai-configuration.md) for limits, migration and known gaps.
 
 For local or staging signup tests without real email delivery, set `OPENVPM_EXPOSE_AUTH_LINKS=true`. This exposes the verification link after signup so the full flow can be clicked through. Do not enable it in production.
 

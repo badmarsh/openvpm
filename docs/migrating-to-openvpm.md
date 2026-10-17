@@ -13,7 +13,7 @@ On OpenVPM Cloud we will also do this **for you**: send your exports to support 
 | Vaccine history | vaccinations CSV | owner's email + pet name |
 | Medical history (visit notes) | medical history CSV | owner's email + pet name |
 
-Vaccine history is worth the extra file: overdue-vaccine lists, reminders, and the AI assistant all light up with real answers on day one. Medical history brings each pet's past visit notes across so the record is whole from the first appointment; every note keeps its original visit date.
+Vaccine history supports deterministic overdue-vaccine queries and configured reminders. Agent chat does not retrieve vaccination records; verify imported dates and patient links before relying on any list. Medical history brings each pet's past visit notes across so the record is whole from the first appointment; every note keeps its original visit date.
 
 Appointments and invoices can be brought over today via a guided (white-glove) migration; a full OpenVPM backup JSON can also be restored into a fresh practice.
 

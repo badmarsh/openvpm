@@ -30,7 +30,7 @@ export interface GuideContext {
   agentConfigured?: boolean;
 }
 
-export const AGENT_GUIDE_QUESTION = "Which pets are overdue for vaccines?";
+export const AGENT_GUIDE_QUESTION = "Rewrite this notice: The clinic is closed on Monday.";
 
 export function buildGuideSteps(
   recipe: GuideId,
@@ -47,10 +47,10 @@ export function buildGuideSteps(
           id: "ask",
           route: `/agent?ask=${encodeURIComponent(AGENT_GUIDE_QUESTION)}`,
           anchor: "agent-input",
-          title: "Opýtajte sa na domáce zviera",
+          title: "Vyskúšajte textový návrh",
           body: ready
-            ? "Your question is ready to go. Press send and watch the AI check every chart for you."
-            : "Your AI helper turns on once your workspace key is set. Here is where you will ask it questions in plain words.",
+            ? "Review this nonclinical text request, then send it. The helper cannot read patient charts."
+            : "The operator must enable text AI and configure its model and server key. This helper does not retrieve records.",
           advanceOn: ready ? GUIDE_SIGNALS.agentRunSucceeded : undefined,
         },
         {
@@ -58,8 +58,8 @@ export function buildGuideSteps(
           // Spotlight the real answer so the win lands. requiresAnchor lets
           // the guide end quietly if the user never pressed send.
           ...(ready ? { anchor: "agent-reply", requiresAnchor: true } : {}),
-          title: "Zástupca momentálne nie je dostupný. Sme na tom.",
-          body: "The AI just read your charts so you did not have to. Ask it anything about your clinic, any time.",
+          title: "Skontrolujte neuložený návrh",
+          body: "This is an unsaved text draft based only on your request. Check every fact before using it.",
         },
       ];
     }

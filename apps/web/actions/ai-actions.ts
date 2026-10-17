@@ -1,91 +1,26 @@
 "use server";
 
-import { google } from "@ai-sdk/google";
-import { generateText, generateObject } from "ai";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
-import { z } from "zod";
+import { aiRouter } from "@/server/routers/ai";
+import { createTRPCContext } from "@/server/trpc";
 
-async function verifyAuth() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
-  const role = session.user.role;
-  if (role !== "admin" && role !== "veterinarian") {
-    throw new Error("Forbidden: Insufficient permissions");
-  }
-  return session;
+async function draft(prompt: string) {
+  const ctx = await createTRPCContext();
+  const result = await aiRouter.createCaller(ctx).generalText({ prompt, maxTokens: 1024, temperature: 0.1 });
+  return { text: result.text };
 }
 
 export async function processVoiceScribe(transcription: string) {
-  await verifyAuth();
-
-  const { text } = await generateText({
-    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
-    system: `You are an expert veterinary assistant. Your task is to extract meaningful clinical information from the raw voice transcription provided by the veterinarian.
-Format the output as a clean SOAP note (Subjective, Objective, Assessment, Plan).
-If the transcription is too short or unclear, summarize what you can and ask for clarification.
-Respond ONLY with the formatted markdown.`,
-    prompt: `Raw Transcription:\n${transcription}`,
-  });
-
-  return { text };
+  return draft(`Create an UNSAVED SOAP draft using only this transcription. Do not invent clinical facts. Flag missing sections for clinician review.\n${transcription}`);
 }
 
-export async function analyzeMedicalImage(base64Image: string, prompt?: string) {
-  await verifyAuth();
-
-  const userPrompt = prompt || "Analyze this veterinary medical image. Describe any notable findings, abnormalities, or points of interest for a veterinarian.";
-
-  const { text } = await generateText({
-    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: userPrompt },
-          { type: "image", image: base64Image }
-        ],
-      }
-    ],
-  });
-
-  return { text };
+export async function analyzeMedicalImage(_base64Image: string, _prompt?: string): Promise<{ text: string }> {
+  throw new Error("AI image analysis is unavailable. No image was analyzed.");
 }
 
-export async function analyzeClinicalCase(params: { symptoms: string; medications: string; info: string }) {
-  await verifyAuth();
-
-  const { symptoms, medications, info } = params;
-
-  const { text } = await generateText({
-    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
-    system: `You are a specialized veterinary clinical assistant.
-Analyze the provided case information.
-Provide:
-1. Potential differential diagnoses based on symptoms.
-2. Any severe drug interactions or contraindications with the current medications.
-3. Recommended next diagnostic steps.
-Format your response in clean markdown using headers and bullet points. Be concise and professional.`,
-    prompt: `Patient Info: ${info || "None provided"}\nSymptoms: ${symptoms || "None provided"}\nCurrent Medications: ${medications || "None provided"}`,
-  });
-
-  return { text };
+export async function analyzeClinicalCase(_params: { symptoms: string; medications: string; info: string }): Promise<{ text: string }> {
+  throw new Error("Automated diagnosis and treatment recommendations are unavailable. Review the case with a veterinarian.");
 }
 
 export async function generateDischargeReport(params: { petName: string; species: string; diagnosis: string; treatment: string; followUp: string }) {
-  await verifyAuth();
-
-  const { petName, species, diagnosis, treatment, followUp } = params;
-
-  const { text } = await generateText({
-    model: google(process.env.AI_MODEL || "gemini-flash-latest"),
-    system: `You are a veterinary assistant writing a discharge report for a pet owner.
-Translate the clinical diagnosis, treatment, and follow-up instructions into clear, empathetic, and easily understandable language for a non-medical pet owner.
-Structure the report nicely with greetings, clear sections (Diagnosis, Treatment, Home Care, Follow-up), and a professional closing.`,
-    prompt: `Pet Name: ${petName}\nSpecies/Breed: ${species}\nDiagnosis: ${diagnosis}\nTreatment/Medications Given: ${treatment}\nFollow-up Instructions: ${followUp}`,
-  });
-
-  return { text };
+  return draft(`Create an UNSAVED plain-language discharge draft using only these staff-supplied facts. Do not add treatments or doses.\n${JSON.stringify(params)}`);
 }

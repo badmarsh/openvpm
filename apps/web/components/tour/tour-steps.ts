@@ -29,7 +29,7 @@ export interface TourStep {
   advanceOn?: string;
 }
 
-export const AGENT_TOUR_QUESTION = "Which pets are overdue for vaccines?";
+export const AGENT_TOUR_QUESTION = "Rewrite this notice: The clinic is closed on Monday.";
 
 export interface TourContext {
   /** First demo patient's name, e.g. "Biscuit", when demo data is present. */
@@ -113,8 +113,8 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
     anchor: "agent-input",
     title: "Na skúšku",
     body: agentReady
-      ? "We typed a real question for you. Press send and watch it check every chart in seconds."
-      : "Ask about your pets and your data in plain words, right here. Your AI helper turns on once your workspace key is set.",
+      ? "Try a nonclinical text draft. The helper cannot read charts or perform actions."
+      : "Text AI requires operator configuration. Use patient records directly for clinical facts.",
     advanceOn: agentReady ? GUIDE_SIGNALS.agentRunSucceeded : undefined,
   });
 
@@ -126,8 +126,8 @@ export function buildTourSteps(ctx: TourContext = {}): TourStep[] {
       id: "agent-reply",
       anchor: "agent-reply",
       requiresAnchor: true,
-      title: "Táto oblasť je určená len pre operátorov platformy OpenVPM.",
-      body: "The AI read your charts and answered in plain words. Take a moment and read it. You can ask anything like this, any time.",
+      title: "Skontrolujte textový návrh",
+      body: "The helper produced an unsaved text draft, not a chart lookup. Review it before use.",
     });
   }
 

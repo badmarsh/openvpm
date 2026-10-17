@@ -46,7 +46,6 @@ vi.mock("@/lib/audit", () => ({
 }));
 
 const { createTRPCContext } = await import("../trpc");
-const { clearSessionCache } = await import("../trpc");
 const { practices, users } = await import("@openpims/db");
 
 const PRACTICE_ID = "00000000-0000-0000-0000-0000000000aa";
@@ -108,7 +107,6 @@ function mockActiveUserLookup(rows: unknown[]) {
 }
 
 afterEach(() => {
-  clearSessionCache();
   mocks.getServerSession.mockReset();
   mocks.db.select.mockReset();
   mocks.assertHostedRlsRoleOnce.mockClear();
@@ -144,7 +142,7 @@ describe("createTRPCContext session hardening", () => {
 
   it("keeps active sessions and verifies the user and practice inside the tenant", async () => {
     mocks.getServerSession.mockResolvedValueOnce(session());
-    const lookup = mockActiveUserLookup([{ id: USER_ID }]);
+    const lookup = mockActiveUserLookup([{ id: USER_ID, role: "front_desk", email: "current@example.com", name: "Current" }]);
 
     const ctx = await createTRPCContext({
       req: new Request("https://app.example.test/api/trpc", {
@@ -175,8 +173,24 @@ describe("createTRPCContext session hardening", () => {
     expect(sqlIncludesColumn(condition, users.deletedAt)).toBe(true);
   });
 
+  it("uses the current DB role/email, not stale JWT privileges", async () => {
+    const stale = session();
+    mocks.getServerSession.mockResolvedValueOnce({ ...stale, user: { ...stale.user, role: "admin", email: "former-operator@example.com" } });
+    mockActiveUserLookup([{ id: USER_ID, role: "viewer", email: "current@example.com", name: "Current" }]);
+    const ctx = await createTRPCContext();
+    expect(ctx.session?.user.role).toBe("viewer");
+    expect(ctx.session?.user.email).toBe("current@example.com");
+  });
+
+  it("does not cache positive authorization across requests", async () => {
+    mocks.getServerSession.mockResolvedValue(session());
+    mockActiveUserLookup([{ id: USER_ID, role: "front_desk", email: "current@example.com", name: "Current" }]);
+    expect((await createTRPCContext()).session).not.toBeNull();
+    mockActiveUserLookup([]);
+    expect((await createTRPCContext()).session).toBeNull();
+  });
+
   it("drops stale JWT sessions when the user or practice is missing or deactivated", async () => {
-    clearSessionCache();
     mocks.getServerSession.mockResolvedValueOnce(session());
     mockActiveUserLookup([]);
 

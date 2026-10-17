@@ -4,7 +4,7 @@ Thank you for your interest in contributing to OpenVPM!
 
 ## Development Setup
 
-1. **Prerequisites**: Node.js 20+, pnpm 9+, Docker
+1. **Prerequisites**: Node.js 22.22.2+ on the 22.x LTS line (see `package.json` engines for other supported lines), pnpm 9+, Docker
 2. **Clone and install**:
    ```bash
    git clone https://github.com/evangauer/openvpm.git

@@ -41,13 +41,13 @@ practice — a key can only ever read or write its own practice's data.
 | `appointments:read` | List/read appointments |
 | `appointments:write` | Create appointments |
 | `records:write` | Create clinical record entries such as SOAP notes |
-| `agent:run` | Run the OpenVPM Agent over the API |
-| `agent:write` | Allow write-enabled agent runs when paired with `agent:run`; write tools still require their resource scopes |
+| `agent:run` | Reserved/legacy scope; no implemented agent endpoint |
+| `agent:write` | Reserved/legacy scope; does not enable an agent or authorize tools |
 | `*` | All of the above |
 
 A request missing the required scope returns `403`.
 API key creation rejects `agent:write` unless the key also includes `agent:run`
-or `*`, because `agent:write` only enables write mode for agent runs.
+or `*` for legacy compatibility. These scopes do not correspond to an implemented route.
 
 ## Rate limits
 
@@ -194,21 +194,14 @@ or veterinarian in the authenticated practice. At least one SOAP section must
 contain clinical text. Returns `201` with `{ data: <soap_note> }` and fires the
 `soap_note.created` webhook.
 
-### `POST /api/v1/agent`
-Scope `agent:run`. Run the OpenVPM Agent over the API, scoped to the key's
-practice. Body:
+## Unimplemented agent API
 
-```json
-{ "instruction": "Which patients are overdue for vaccinations?", "allow_writes": false }
-```
+`/api/v1/agent` and the `agent` tRPC router are not implemented in this revision.
+Do not build an integration against earlier examples using `allow_writes`.
+Reserved `agent:run` / `agent:write` scopes do not provide this capability.
 
-`instruction` must contain non-whitespace text and is trimmed before the agent
-runs. `allow_writes` (default `false`) gates write tools such as booking
-appointments, recording vitals, and drafting SOAP notes. Requests with
-`allow_writes: true` also require `agent:write`; when the agent invokes a write
-tool, the key must also carry that tool's resource scope, such as
-`appointments:write` for booking or `records:write` for vitals/SOAP notes. Returns
-`{ data: { text, toolCalls, iterations, stopReason } }`, where `toolCalls`
-traces every tool the agent invoked. Returns `503` if the configured model
-provider is missing its key (`GOOGLE_API_KEY` or legacy
-`GOOGLE_GENERATIVE_AI_API_KEY` for Gemini, or `ANTHROPIC_API_KEY` for Claude).
+The Agent UI uses session-authenticated `POST /api/ai/text` (not API keys),
+which produces unsaved text drafts without chart retrieval or tools. Its contract,
+limits, configuration and retired endpoints are documented in
+[AI configuration](../ai-configuration.md). Structured data helpers are dashboard
+tRPC queries, not additional API-key REST endpoints.
