@@ -7,3 +7,10 @@
 .github
 .vscode
 .claude
+
+# Secret environments and private local verification artifacts
+**/.env*
+.pilot-evidence
+docs/pilot/local-results
+test-results
+playwright-report

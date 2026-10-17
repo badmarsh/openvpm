@@ -33,8 +33,8 @@ export interface WelcomeCardCopy {
 
 export const WELCOME_CARD_COPY: Record<WelcomeCardId, WelcomeCardCopy> = {
   "ask-ai": {
-    caption: "Ask the AI about a pet",
-    sub: "Stop digging through charts. Just ask.",
+    caption: "Try a text draft",
+    sub: "Draft text for review. No chart access.",
     chip: "About 1 minute",
   },
   "your-day": {
@@ -56,6 +56,6 @@ export const WELCOME_CARD_COPY: Record<WelcomeCardId, WelcomeCardCopy> = {
 
 /** The animated AI vignette's scripted exchange. */
 export const AI_VIGNETTE = {
-  question: "Which pets are overdue for vaccines?",
-  answer: "Biscuit is 5 days past due for the DHPP shot.",
+  question: "Rewrite this notice: The clinic is closed on Monday.",
+  answer: "Example draft: Our clinic will be closed on Monday. Thank you for understanding.",
 } as const;

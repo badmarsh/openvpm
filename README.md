@@ -89,7 +89,7 @@ Treatment templates can populate draft invoices, with itemized manual service/pr
 Product catalog with stock levels, reorder point alerts, lot/batch tracking, and expiration dates. Auto-deduction when products are dispensed from invoices or EMR prescriptions. Supplier contact management for reorder workflows.
 
 **Controlled Substance Tracking**
-DEA-compliant controlled substance logging with full audit trails.
+Controlled substance logging with audit trails; jurisdiction-specific compliance must be independently validated.
 
 ### Phase 2 — Communication & Intelligence (Implemented)
 
@@ -111,7 +111,7 @@ Pet owners can view health records, request appointments, download vaccination c
 Versioned `/api/v1` REST API for external integrations, with API reference documentation. Webhook system for real-time events (appointment created, patient checked in, invoice paid). API key management with scopes and rate limiting. Audit logging.
 
 **AI-Ready Architecture**
-Structured data models queryable by AI agents. Signed webhook events for agent subscriptions. Integration points for SOAP note generation, appointment booking, checked-in appointment events, and hosted agent runs.
+Structured data models queryable by AI agents. Signed webhook events for agent subscriptions. Integration points for SOAP note generation, appointment booking, checked-in appointment events, and staff-reviewed text drafts (no built-in practice-aware agent runner).
 
 ## Tech Stack
 
@@ -174,7 +174,7 @@ Dashboard procedures include Zod validation and role-based access control throug
 
 - **Multi-tenancy:** Row-level isolation via `practice_id` on every table
 - **RBAC:** Four roles (Admin, Veterinarian, Technician, Front Desk) enforced at the API layer
-- **Auth:** NextAuth.js with bcrypt password hashing and database sessions
+- **Auth:** NextAuth.js with bcrypt password hashing and JWT sessions with DB-backed active-account/role revalidation
 - **Headers:** CSP, HSTS, Permissions-Policy, X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy
 - **Audit:** Full audit logging of all data changes
 
@@ -182,7 +182,7 @@ Dashboard procedures include Zod validation and role-based access control throug
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22.22.2+ on the 22.x LTS line (see `package.json` engines for other supported lines)
 - pnpm 9+
 - Docker (for PostgreSQL and MinIO)
 
@@ -243,7 +243,7 @@ OpenVPM is **API-first**: dashboard workflows use typed tRPC procedures, while t
 
 ### REST API (v1)
 
-A versioned, public REST API over the core records, authenticated with scoped API keys — built so integrators (booking, reminders, client comms, AI agents, and AI scribes) can read clients/patients/appointments, create appointments, create SOAP notes, and run the agent without touching the internal client. Response shapes are owned by an explicit contract and frozen independently of the database, so internal changes never break integrations.
+A versioned, public REST API over the core records, authenticated with scoped API keys — built so integrators (booking, reminders, client comms, AI agents, and AI scribes) can read clients/patients/appointments, create appointments and SOAP notes without touching the internal client. A practice-aware natural-language tool agent is not implemented in this revision. Response shapes are owned by an explicit contract and frozen independently of the database, so internal changes never break integrations.
 
 ```bash
 curl https://demo.openvpm.com/api/v1/clients \
@@ -280,16 +280,22 @@ Scoped API keys with rate limiting and audit logging. Create keys via the Settin
 
 OpenVPM's structured data models and signed webhook events make it the ideal foundation for veterinary AI:
 
-- **Automation and voice agents** can create appointments and run the OpenVPM Agent through scoped API-key endpoints
+- **External automation** can create appointments through scoped API-key endpoints; voice-agent integrations must implement and validate their own orchestration.
 - **AI scribes** can write SOAP notes directly into the medical record
 - **Webhook subscribers** can react to appointment, patient, invoice, and SOAP-note events
 - **Reminder systems** can use current clients/patients/appointments endpoints and signed events, with broader campaign APIs tracked as explicit roadmap work
 
 The PIMS is the system of record. AI agents are first-class citizens.
 
-### OpenVPM Agent
+### AI text drafts and structured helpers
 
-OpenVPM ships with a built-in AI agent that operates on practice data through a typed tool layer (find clients/patients, pull a clinical summary, list overdue vaccinations, calculate a weight-based drug dose, book appointments). It runs a provider-agnostic tool-use loop scoped to a single practice, gates every write behind an explicit opt-in, and degrades gracefully when no matching model key is set. Choose the model with `AI_MODEL` and bring your own `GOOGLE_API_KEY` or legacy `GOOGLE_GENERATIVE_AI_API_KEY` for Gemini, or `ANTHROPIC_API_KEY` for Claude. Available in-app under **Agent** and via the `agent` tRPC router plus `/api/v1/agent`.
+The **Agent** page is a text drafting helper, not a practice-aware agent. It has no chart retrieval, tool loop, booking or record-write capability. It sends one prompt at a time (no chat history). Only active admins/veterinarians can generate text; every output is an unsaved draft for review.
+
+Set `AI_TEXT_ENABLED=true`, a bare `AI_MODEL`, and the matching server-side credential: `ANTHROPIC_API_KEY` for `claude-*`, `GOOGLE_API_KEY` (legacy `GOOGLE_GENERATIVE_AI_API_KEY` fallback) for `gemini-*`, or `OPENAI_API_KEY` for `gpt-*` / supported o-series IDs. Disabled by default. No keys or custom provider URLs are accepted from the browser. **AI Settings** shows configuration problems, not proof of provider connectivity. SOAP drafts use the same configuration; saving a reviewed note is a separate workflow.
+
+Authenticated dashboard helpers (`ai.patientsOverdueVaccinations`, `ai.patientsNeedingFollowUp`, `ai.dailySummary`) query practice data deterministically. Agent chat does not call these helpers. `/api/v1/agent` and an `agent` tRPC router are **not implemented**; reserved agent scopes do not activate them. Legacy browser-managed AI model settings, provider proxy routes and image/audio analysis are unavailable. Legacy routes return `410 Gone`.
+
+See [AI configuration and compatibility](docs/ai-configuration.md) and the [local-agent pilot verification queue](docs/pilot/README.md). Do not infer clinical safety, regulatory compliance, or launch readiness from feature checkboxes or passing unit tests.
 
 ## OpenVPM Cloud
 
@@ -350,7 +356,7 @@ See **[ROADMAP.md](ROADMAP.md)** for what's shipping now, next, and later — an
 - [x] Open API with webhooks
 - [x] AI integration points
 - [x] Public REST API (`/api/v1`) with scoped API keys
-- [x] OpenVPM Agent — operate the practice via natural language over the API
+- [ ] Practice-aware OpenVPM tool agent — not implemented; current Agent UI drafts text only
 - [x] Drug dosing calculator, vital signs, treatment plans
 - [x] Wellness plans / recurring billing
 - [x] Self-service online booking (client portal)

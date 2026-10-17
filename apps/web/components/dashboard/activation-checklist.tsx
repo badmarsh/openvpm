@@ -142,7 +142,7 @@ export function ActivationChecklist() {
     {
       key: "ai",
       label: "Opýtajte sa asistenta AI na niečo",
-      hint: "Try “Which pets are overdue for vaccines?”",
+      hint: "Try “Rewrite this notice: The clinic is closed on Monday.”",
       done: (subscriptionData.usage?.aiRuns ?? 0) > 0,
       href: "/agent",
     },

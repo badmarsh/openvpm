@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { configuredAiModel } from "./model";
 import { SOAP_SECTION_MAX_LENGTH } from "@/lib/records/soap-content";
 
 /**
@@ -135,16 +135,17 @@ export class SoapDraftUnavailableError extends Error {
   }
 }
 
-/** Generate a SOAP draft. Throws AgentNotConfiguredError when no AI key is set. */
+/** Generate an unsaved SOAP draft using the shared server configuration. */
 export async function draftSoapNote(
   context: SoapDraftContext
 ): Promise<SoapDraft> {
   const result = await generateText({
-    // @ts-expect-error - mismatch between ai and @ai-sdk/openai versions
-    model: openai("gpt-4o"),
+    model: configuredAiModel(),
     system: SOAP_DRAFT_SYSTEM_PROMPT,
     prompt: buildSoapDraftPrompt(context),
     maxOutputTokens: SOAP_DRAFT_MAX_OUTPUT_TOKENS,
+    abortSignal: AbortSignal.timeout(30_000),
+    maxRetries: 0,
   });
 
   const draft = parseSoapDraft(result.text);

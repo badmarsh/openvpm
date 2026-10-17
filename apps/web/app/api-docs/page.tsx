@@ -762,7 +762,7 @@ const sections: Section[] = [
         name: "apiKeys.create",
         method: "POST",
         description:
-          "Vytvorte kľúč API pre integrácie REST. Surový kľúč sa vráti raz a nikdy sa neuloží ako čistý text. Rozsah agent:write musí byť spárovaný s agentom:run alebo *.",
+          "Vytvorte kľúč API pre integrácie REST. Surový kľúč sa vráti raz a nikdy sa neuloží ako čistý text. Rozsahy agent:run a agent:write sú rezervované; endpoint agenta nie je implementovaný.",
         input: `{
   name: string,
   scopes: Array<"clients:read" | "patients:read" | "appointments:read" | "appointments:write" | "records:write" | "agent:run" | "agent:write" | "*">
@@ -867,18 +867,6 @@ const sections: Section[] = [
 }`,
         response: `{ data: SoapNote }`,
         auth: "API key: records:write",
-      },
-      {
-        name: "POST /api/v1/agent",
-        method: "POST",
-        description:
-          "Spustite OpenVPM Agenta z externej automatizácie. Text pokynov je orezaný a nesmie byť prázdny. Spustenia s povoleným zápisom vyžadujú agent:write plus rozsah prostriedkov každého nástroja na zápis.",
-        input: `{
-  instruction: string,
-  allow_writes?: boolean
-}`,
-        response: `{ data: AgentRunResult }`,
-        auth: "API key: agent:run; agent:write plus resource write scopes when allow_writes=true",
       },
     ],
   },

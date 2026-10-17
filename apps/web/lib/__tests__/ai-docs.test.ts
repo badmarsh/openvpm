@@ -1,27 +1,21 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-describe.skip("AI integration docs", () => {
-  it("documents live API key and webhook integration paths", () => {
+describe("current AI integration documentation", () => {
+  it("describes actual entrypoints and explicitly unavailable capabilities", () => {
     const source = readFileSync("app/api-docs/ai/page.tsx", "utf8");
-
-    expect(source).toContain("POST https://your-practice.openvpm.com/api/v1/agent");
-    expect(source).toContain("POST /api/v1/soap-notes");
-    expect(source).toContain("records:write");
-    expect(source).toContain("agent:run");
-    expect(source).toContain("agent:write");
-    expect(source).toContain("webhooks.create");
-    expect(source).toContain("Dashboard Query Helpers");
-    expect(source).toContain("not API-key REST endpoints");
-    expect(source).toContain(
-      "tRPC: ai.patientsOverdueVaccinations (session cookie)"
-    );
-    expect(source).not.toContain("/api/trpc/ai.createSoapFromAI");
-    expect(source).not.toContain("GET /api/trpc/ai.");
-    expect(source).not.toContain("next-auth.session-token");
-    expect(source).not.toContain("Webhook registration endpoint coming soon");
-    expect(source).not.toContain("API Key Authentication");
-    expect(source).not.toContain("Coming Soon");
-    expect(source).not.toContain("Voice Agent Integration");
+    for (const text of ["POST /api/ai/text", "POST /api/v1/soap-notes", "records:write", "ai.configuration", "AI_TEXT_ENABLED", "410 Gone", "not API-key REST endpoints", "webhooks.create"]) expect(source).toContain(text);
+    expect(source).not.toContain("curl -X POST https://your-practice.openvpm.com/api/v1/agent");
+    expect(source).not.toContain("allow_writes: true");
+  });
+  it("does not teach chart lookup through text chat", () => {
+    const help = readFileSync("../../docs/help/ask-the-ai.md", "utf8");
+    expect(help).toContain("does **not** read");
+    expect(help).toContain("patient charts");
+    expect(help).toContain("unsaved draft");
+    expect(help).toContain("Only active admins and veterinarians");
+    const onboarding = readFileSync("components/onboarding/steps/try-agent.tsx", "utf8");
+    expect(onboarding).not.toContain("Which pets are overdue for vaccines?");
+    expect(onboarding).toContain("AI_TEXT_ENABLED");
   });
 });

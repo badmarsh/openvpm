@@ -67,6 +67,11 @@ describe("redactSecrets", () => {
     expect(restore.backup).toBe("[redacted-bulk-payload]");
     expect(restore.confirmFreshPractice).toBe(true);
   });
+  it("does not copy AI prompt or visit context into audit records", () => {
+    expect(redactSecrets({ prompt: "private chart", visitContext: "private visit", transcription: "private speech", patientId: UUID })).toEqual({
+      prompt: "[redacted-bulk-payload]", visitContext: "[redacted-bulk-payload]", transcription: "[redacted-bulk-payload]", patientId: UUID,
+    });
+  });
   it("returns null for null/undefined", () => {
     expect(redactSecrets(null)).toBeNull();
     expect(redactSecrets(undefined)).toBeNull();

@@ -8,14 +8,17 @@ This roadmap is a living document. The fastest way to influence it: [open an iss
 
 - Core PIMS: patients, clients, scheduling, medical records (SOAP, labs, vaccinations, prescriptions), billing & invoicing, inventory, controlled substances, reporting, client portal, real-time whiteboard
 - **Public REST API** (`/api/v1`) with scoped, per-practice API keys
-- **OpenVPM Agent** — a typed tool layer + Claude tool-use runner; operate the practice in natural language, in-app or over `POST /api/v1/agent`
+- **AI text drafting** — authenticated server-configured text drafts and structured dashboard queries. No practice-aware chat/tool agent or `/api/v1/agent` route. Image/audio processing is unavailable pending validation.
 - **Scheduling engine** — strict conflict detection (doctor *and* room), reschedule, open-slot availability
 - **Clinical depth** — weight-based drug dosing calculator, vital signs, treatment plans linked to the problem list
 - **Wellness plans / recurring billing**
 - **Self-service online booking** via the client portal
 - **CSV import** for migrating clients & patients (pairs with full JSON export)
 
-## 🔜 Next (no external dependencies — community PRs very welcome)
+## 🔜 Next (readiness work; provider validation may need external access)
+
+- Practice-aware agent: explicit read-only retrieval, source attribution, ambiguity handling, authorization and durable action trace; not currently shipped
+- Complete the local verification queue in [docs/pilot](docs/pilot/README.md) before a live-data pilot
 
 - Staff calendar UX: drag-to-reschedule on the live calendar (the API already supports it)
 - Appointment waitlist
@@ -25,8 +28,8 @@ This roadmap is a living document. The fastest way to influence it: [open an iss
 
 ## 🌅 Later (needs integrations or larger design)
 
-- Payments (Stripe) — online invoice payment + wellness-plan charge capture
-- SMS / email delivery (Twilio / Resend) for reminders and two-way client comms
+- Stripe payments exist behind configuration; validate invoice checkout, Connect settlement and wellness charge capture separately before rollout
+- SMS/email delivery adapters exist (Telnyx/Twilio/Resend); provisioning, consent, callbacks and delivery need target-environment validation
 - Lab integrations (IDEXX, Antech, Zoetis) — order + auto-result matching
 - **PIMS-compatibility connectors** — mirror an incumbent's public API so existing integrations work against OpenVPM, and so a clinic can keep a live, owned copy of their data
 - Imaging / DICOM, multi-location, FHIR-inspired veterinary data standard, mobile companion app

@@ -58,6 +58,7 @@ vi.mock("@/lib/s3", () => ({
 const { GET } = await import("./route");
 
 function stubHostedRequiredEnvs() {
+  vi.stubEnv("AI_TEXT_ENABLED", "true");
   vi.stubEnv("NEXTAUTH_URL", "https://app.example");
   vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://app.example");
   vi.stubEnv("NEXTAUTH_SECRET", "secret");
@@ -179,7 +180,7 @@ describe("health route", () => {
       detail: "Hosted subscription tax is not enabled",
     });
     expect(json.checks.hostedAi.detail).toBe(
-      "1 required hosted configuration value is missing"
+      "AI text disabled; generation unavailable"
     );
     expect(json.checks.hostedEmail.detail).toBe(
       "4 required hosted configuration values are missing"
@@ -331,7 +332,7 @@ describe("health route", () => {
     mocks.billingEnforced.mockReturnValue(true);
     stubHostedRequiredEnvs();
     vi.stubEnv("AI_MODEL", "   ");
-    vi.stubEnv("AGENT_MODEL", " google/gemini-2.5-flash ");
+    vi.stubEnv("AGENT_MODEL", " gemini-2.5-flash ");
     vi.stubEnv("GOOGLE_API_KEY", "AIza-test");
     vi.stubEnv("ANTHROPIC_API_KEY", "");
 
@@ -349,7 +350,7 @@ describe("health route", () => {
   it("accepts the legacy Google Generative AI key for hosted Gemini readiness", async () => {
     mocks.billingEnforced.mockReturnValue(true);
     stubHostedRequiredEnvs();
-    vi.stubEnv("AI_MODEL", "google/gemini-2.5-flash");
+    vi.stubEnv("AI_MODEL", "gemini-2.5-flash");
     vi.stubEnv("GOOGLE_API_KEY", "   ");
     vi.stubEnv("GOOGLE_GENERATIVE_AI_API_KEY", "AIza-fallback");
     vi.stubEnv("ANTHROPIC_API_KEY", "");

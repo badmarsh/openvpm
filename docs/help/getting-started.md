@@ -22,9 +22,9 @@ payment online. No retyping, no paper chase.
 
 ## Your AI helper
 
-**Agent** is your AI helper. Ask it about your pets and your data in plain
-words, and it does the work. Try asking: "Which pets are overdue for
-vaccines?"
+**Agent** drafts text for staff review. It does not read patient charts, list
+overdue vaccines, book appointments or save records. It may be disabled until
+the server operator configures it. Check facts in the patient record.
 
 ## Your data is yours
 
@@ -35,7 +35,7 @@ connect by API when you are ready. See
 ## Keep exploring
 
 - [Your day sheet](your-day.md)
-- [Ask the AI about a pet](ask-the-ai.md)
+- [AI text helper and limits](ask-the-ai.md)
 - [Give every client a portal](client-portal.md)
 - [See your schedule in your own calendar](calendar-feed.md)
 

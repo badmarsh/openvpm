@@ -9,8 +9,18 @@ import {
   files,
 } from "@openpims/db";
 import { getLocaleData } from "@openpims/db/data";
-import { google } from "@ai-sdk/google";
+import { configuredAiModel } from "@/lib/ai/model";
 import { generateText } from "ai";
+import { consumeAiTextBudget } from "@/lib/ai/budget";
+import { recordUsage } from "@/lib/billing/usage";
+
+async function marketingText(ctx: { practiceId: string; user: { id: string } }, input: { system: string; prompt: string }) {
+  const model = configuredAiModel();
+  await consumeAiTextBudget(ctx.practiceId, ctx.user.id);
+  const result = await generateText({ ...input, model, maxOutputTokens: 1024, maxRetries: 0, abortSignal: AbortSignal.timeout(30_000) });
+  await recordUsage({ practiceId: ctx.practiceId, kind: "ai_run" });
+  return result;
+}
 
 export const marketingRouter = createRouter({
   // -------------------------------------------------------------------------
@@ -358,15 +368,16 @@ export const marketingRouter = createRouter({
     .use(requireRole("admin", "veterinarian", "technician"))
     .input(
       z.object({
-        topic: z.string().min(1),
-        platforms: z.array(z.enum(["IG", "FB", "GBP", "TikTok", "Reels"])).min(1),
-        goal: z.string().optional().default("Awareness"),
+        topic: z.string().trim().min(1).max(2000),
+        platforms: z.array(z.enum(["IG", "FB", "GBP", "TikTok", "Reels"])).min(1).max(5),
+        goal: z.string().max(500).optional().default("Awareness"),
         language: z.enum(["sk", "en", "cs"]).default("sk"),
         templateId: z.string().optional(),
-        instruction: z.string().optional(),
+        instruction: z.string().max(2000).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      configuredAiModel(); // Fail closed before fallback templates when AI is disabled.
       // Load brand kit for context
       const practice = await ctx.db.query.practices.findFirst({
         where: eq(practices.id, ctx.practiceId),
@@ -399,6 +410,7 @@ Pravidlá:
 
       const variants: Record<string, {
         platform: string;
+        generated: boolean;
         caption: string;
         hashtags: string[];
         altText: string;
@@ -416,8 +428,7 @@ Pravidlá:
             ? `Vylepši nasledujúci príspevok pre ${plat} podľa inštrukcie.\nPôvodná téma: ${input.topic}\nInštrukcia: ${input.instruction}\nFormát: ${rules.hint}\n\nVráť IBA:\n1. CAPTION: [text]\n2. HASHTAGS: [oddelené čiarkou]\n3. ALT_TEXT: [1 veta]`
             : `Vytvor príspevok pre ${plat} na tému: "${input.topic}"\nFormát: ${rules.hint}\nMax znakov: ${rules.charLimit}\n\nVráť IBA v tomto formáte:\n1. CAPTION: [text príspevku]\n2. HASHTAGS: [${rules.hashtagCount} hashtagov oddelených čiarkou, alebo NONE ak GBP]\n3. ALT_TEXT: [1 opisná veta pre accessibility obrázka]`;
 
-          const { text } = await generateText({
-            model: google("gemini-2.5-flash"),
+          const { text } = await marketingText(ctx, {
             system: SYSTEM,
             prompt: userPrompt,
           });
@@ -436,13 +447,11 @@ Pravidlá:
 
           // Generate short and playful variants using AI
           const [shortResult, playfulResult] = await Promise.all([
-            generateText({
-              model: google("gemini-2.5-flash"),
+            marketingText(ctx, {
               system: SYSTEM,
               prompt: `Skráť nasledujúci ${plat} príspevok na max 200 znakov, zachovaj kľúčové posolstvo a CTA:\n\n${caption}`,
             }),
-            generateText({
-              model: google("gemini-2.5-flash"),
+            marketingText(ctx, {
               system: SYSTEM,
               prompt: `Prepíš nasledujúci ${plat} príspevok do hravejšieho, priateľskejšieho štýlu s viac emojis. Max ${Math.min(rules.charLimit, 600)} znakov:\n\n${caption}`,
             }),
@@ -450,6 +459,7 @@ Pravidlá:
 
           variants[plat] = {
             platform: plat,
+            generated: true,
             caption,
             hashtags,
             altText,
@@ -462,10 +472,11 @@ Pravidlá:
           };
         } catch (aiErr) {
           // Graceful fallback — never let AI error break the wizard
-          console.error(`[generatePostVariants] AI error for ${plat}:`, aiErr);
+          void aiErr;
           const fallback = `🐾 ${input.topic} — ${clinicName}\n\nZdravie vášho miláčika je naša priorita. Objednajte sa ešte dnes!`;
           variants[plat] = {
             platform: plat,
+            generated: false,
             caption: fallback,
             hashtags: plat !== "GBP" ? ["#veterinar", "#zdraviezvierat", "#fearfree"] : [],
             altText: `Príspevok o téme: ${input.topic}`,
@@ -478,7 +489,7 @@ Pravidlá:
       return { variants };
     }),
 
-  /** Generate AI Image (mock / placeholder generator for post visual) */
+  /** No image provider is implemented; never return stock imagery as AI output. */
   generateImage: protectedProcedure
     .use(requireRole("admin", "veterinarian", "technician"))
     .input(
@@ -488,15 +499,8 @@ Pravidlá:
         tier: z.enum(["fast", "standard", "hifi"]).default("standard"),
       })
     )
-    .mutation(async ({ input }) => {
-      // Placeholder image generator service endpoint
-      const encodedPrompt = encodeURIComponent(input.prompt);
-      const imageUrl = `https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80&prompt=${encodedPrompt}`;
-
-      return {
-        imageUrl,
-        aspectRatio: input.aspectRatio,
-      };
+    .mutation(async (): Promise<{ imageUrl: string; aspectRatio: string }> => {
+      throw new TRPCError({ code: "PRECONDITION_FAILED", message: "AI image generation is unavailable. Choose an approved existing media asset instead." });
     }),
 
   /** Get AI-suggested weekly post ideas */
@@ -638,6 +642,7 @@ Pravidlá:
       const clinicName = (bk.clinicName as string) ?? practice?.name ?? "Naša ambulancia";
       const toneOfVoice = (bk.toneOfVoice as string) ?? "profesionálny a empatický";
 
+      configuredAiModel();
       const stars = input.rating;
       const toneGuide =
         stars <= 2
@@ -653,8 +658,7 @@ GDPR: Nikdy nespomínaj konkrétne mená pacientov ani diagnózy.
 Odpoveď musí byť v slovenčine, max 120 slov.`;
 
       try {
-        const { text } = await generateText({
-          model: google("gemini-2.5-flash"),
+        const { text } = await marketingText(ctx, {
           system: SYSTEM,
           prompt: `Napíš profesionálnu odpoveď na Google recenziu veterinárnej kliniky.
 
@@ -670,7 +674,7 @@ Vráť IBA text odpovede, bez ďalšieho komentára.`,
 
         return { reply: text.trim(), generated: true };
       } catch (err) {
-        console.error("[generateReviewReply] AI error:", err);
+        void err;
         // Fallback reply
         const fallback =
           stars >= 4

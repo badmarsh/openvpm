@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { publicAiConfiguration } from "@/lib/ai/config";
 import { sql } from "drizzle-orm";
 import { db } from "@openpims/db/client";
 import {
@@ -64,38 +65,10 @@ const HOSTED_EMAIL_ENV_NAMES = [
   "EMAIL_SUPPORT_ADDRESS",
   "EMAIL_COMPANY_ADDRESS",
 ];
-const HOSTED_GOOGLE_AI_ENV_NAMES = [
-  "GOOGLE_API_KEY",
-  "GOOGLE_GENERATIVE_AI_API_KEY",
-];
-const HOSTED_ANTHROPIC_AI_ENV_NAMES = ["ANTHROPIC_API_KEY"];
-
-// AI is provider-agnostic: the model is chosen by AI_MODEL and the provider is
-// inferred from the id, so require the matching provider key (Gemini vs Claude).
-function activeAiModel(): string {
-  return envValue("AI_MODEL") ?? envValue("AGENT_MODEL") ?? "claude-sonnet-4-6";
-}
-
-function isGeminiModel(model: string): boolean {
-  return /^(google\/|models\/)?gemini/i.test(model);
-}
-
 function hostedAiCheck(): { ok: boolean; detail: string } {
-  const model = activeAiModel();
-  if (isGeminiModel(model)) {
-    const ok = HOSTED_GOOGLE_AI_ENV_NAMES.some((name) => configured(name));
-    return {
-      ok,
-      detail: ok
-        ? "Hosted AI envs present"
-        : "1 required hosted configuration value is missing",
-    };
-  }
-
-  return hostedEnvCheck(
-    HOSTED_ANTHROPIC_AI_ENV_NAMES,
-    "Hosted AI envs present"
-  );
+  const config = publicAiConfiguration();
+  if (!config.enabled) return { ok: true, detail: "AI text disabled; generation unavailable" };
+  return { ok: config.ready, detail: config.ready ? "Hosted AI envs present" : "AI configuration invalid or missing" };
 }
 
 // Required ops config: cron auth + at least one platform-admin operator.

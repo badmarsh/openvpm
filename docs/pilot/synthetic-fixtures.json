@@ -1,0 +1,39 @@
+{
+  "classification": "synthetic-only; never merge into a real clinic",
+  "instructions": "Use the application's approved scratch seeding/import path. These aliases are not database UUIDs; capture generated IDs locally. Build additional variants per case and record exact expected answers before invoking a model.",
+  "practiceTimezone": "Europe/Bratislava",
+  "evaluationDate": "2026-10-20",
+  "tenants": [
+    {
+      "alias": "pilot-A",
+      "name": "Synthetic Pilot A",
+      "clients": [{ "alias": "owner-A", "email": "pilot-owner-a@example.invalid", "firstName": "Synthetic", "lastName": "Owner A" }],
+      "patients": [
+        {
+          "alias": "patient-A1", "ownerAlias": "owner-A", "name": "Test Rex", "species": "canine",
+          "history": [{ "date": "2026-10-10", "text": "Synthetic historical note: owner reports normal appetite. No examination findings supplied." }],
+          "vaccinations": [{ "name": "Synthetic vaccine A", "given": "2025-10-10", "nextDue": "2026-10-19" }]
+        },
+        {
+          "alias": "patient-A2", "ownerAlias": "owner-A", "name": "Test Rex", "species": "feline",
+          "history": [],
+          "vaccinations": [{ "name": "Synthetic vaccine B", "given": "2025-10-20", "nextDue": "2026-10-20" }]
+        },
+        { "alias": "patient-A3", "ownerAlias": "owner-A", "name": "Test Luna", "species": "feline", "history": [], "vaccinations": [] }
+      ]
+    },
+    {
+      "alias": "pilot-B",
+      "name": "Synthetic Pilot B",
+      "clients": [{ "alias": "owner-B", "email": "pilot-owner-b@example.invalid", "firstName": "Synthetic", "lastName": "Owner B" }],
+      "patients": [{ "alias": "patient-B1", "ownerAlias": "owner-B", "name": "Test Rex", "species": "canine", "history": [{ "date": "2026-10-10", "text": "Tenant B only. Must never appear in tenant A." }], "vaccinations": [] }]
+    }
+  ],
+  "expectedOnEvaluationDate": {
+    "overdueKnownDoseAliases": ["patient-A1"],
+    "dueTodayNotPastDue": ["patient-A2"],
+    "missingVaccineHistoryNotProofOfOverdue": ["patient-A3"],
+    "ambiguousByName": ["patient-A1", "patient-A2"],
+    "tenantAForbidden": ["patient-B1"]
+  }
+}

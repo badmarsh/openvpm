@@ -50,13 +50,6 @@ function clientIp(req?: Request): string | null {
   return ip === "unknown" ? null : ip;
 }
 
-const sessionCache = new Map<string, { valid: boolean; at: number }>();
-const SESSION_CACHE_TTL_MS = 30_000;
-
-export function clearSessionCache(): void {
-  sessionCache.clear();
-}
-
 async function activeSessionOrNull(
   database: Database,
   session: AppSession | null
@@ -65,15 +58,9 @@ async function activeSessionOrNull(
     return null;
   }
 
-  const cacheKey = `${session.user.id}:${session.user.practiceId}`;
-  const cached = sessionCache.get(cacheKey);
-  if (cached && Date.now() - cached.at < SESSION_CACHE_TTL_MS) {
-    return cached.valid ? session : null;
-  }
-
   const [activeUser] = await withTenant(database, session.user.practiceId, (tx) =>
     tx
-      .select({ id: users.id })
+      .select({ id: users.id, role: users.role, email: users.email, name: users.name })
       .from(users)
       .innerJoin(
         practices,
@@ -92,9 +79,10 @@ async function activeSessionOrNull(
       .limit(1)
   );
 
-  const valid = !!activeUser;
-  sessionCache.set(cacheKey, { valid, at: Date.now() });
-  return valid ? session : null;
+  // Revalidate on every context. Cached JWT privileges must not survive a
+  // role downgrade or account deletion, including on paid AI entrypoints.
+  if (!activeUser) return null;
+  return { ...session, user: { ...session.user, role: activeUser.role, email: activeUser.email, name: activeUser.name } };
 }
 
 export async function createTRPCContext(opts?: {
